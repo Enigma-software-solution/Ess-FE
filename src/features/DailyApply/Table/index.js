@@ -62,7 +62,6 @@ const CustomTable = () => {
             <Header />
             <div>
                 <Table dataSource={mockData} columns={columns} />
-
             </div>
         </>
     );
