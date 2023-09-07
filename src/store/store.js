@@ -7,7 +7,7 @@ import { tokenMiddleware } from "./tokenMiddleware";
 const store = configureStore({
   reducer: {
     auth: authReducer,
-    auth: dailyApplyReducer,
+    dailyApply: dailyApplyReducer,
     theme: globalReducer,
   },
   middleware: [

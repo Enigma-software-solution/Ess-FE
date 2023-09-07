@@ -21,7 +21,7 @@ const dailyApplySlice = createSlice({
 
     builder.addCase(dailyApplies.fulfilled, (state, action) => {
       state.status = "succeeded";
-      state.dailyApply = action.payload;
+      state.dailyApply = action.payload.data;
     });
 
     builder.addCase(dailyApplies.rejected, (state, action) => {
