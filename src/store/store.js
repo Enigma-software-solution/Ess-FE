@@ -3,7 +3,7 @@ import authReducer from "./slices/authSlice";
 import dailyApplyReducer from "./slices/dailyApplySlice";
 import profileReducer from "./slices/profielSlice"
 import globalReducer from "./slices/globalSlice";
-import { tokenMiddleware } from "./tokenMiddleware";
+// import { tokenMiddleware } from "./tokenMiddleware";
 
 const store = configureStore({
   reducer: {
@@ -16,7 +16,7 @@ const store = configureStore({
     ...getDefaultMiddleware({
       serializableCheck: false, // to avoid serialization error
     }),
-    tokenMiddleware, // custom middleware to add token to request headers
+    // tokenMiddleware, // custom middleware to add token to request headers
   ],
 });
 

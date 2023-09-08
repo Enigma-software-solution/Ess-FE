@@ -1,20 +1,48 @@
-import axios from "axios";
+import axios from 'axios';
 
 const api = axios.create({
   baseURL: process.env.REACT_APP_API_BASE_URL,
-  headers: {
-    "Content-Type": "application/json",
-    Accept: "application/json",
-  },
 });
 
-api.interceptors.response.use(
-  (response) => {
-    return response.data;
+// Add a request interceptor
+api.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
   },
-  (error) => {
-    return Promise.reject(error.response);
+  (error) => Promise.reject(error)
+);
+
+export default api
+
+// Add a response interceptor
+api.interceptors.response.use(
+  (response) => response.data,
+  async (error) => {
+    const originalRequest = error.config;
+    if (error.response.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
+
+      try {
+        const refreshToken = localStorage.getItem('refresh_token');
+        const response = await api.post('/refresh_token', { refreshToken });
+        console.log(response,'rrr')
+        const  token  = response.token;
+
+        localStorage.setItem('token', token);
+
+        // Retry the original request with the new token
+        originalRequest.headers.Authorization = `Bearer ${token}`;
+        return axios(originalRequest);
+      } catch (error) {
+        // Handle refresh token error or redirect to login
+      }
+    }
+
+    return Promise.reject(error);
   }
 );
 
-export default api;
