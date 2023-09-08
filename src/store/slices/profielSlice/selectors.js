@@ -1,0 +1,1 @@
+export const getAllProfiles = (state) => state?.profile?.data
