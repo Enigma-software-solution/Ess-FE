@@ -5,7 +5,7 @@ import { loginUser } from "./apis";
 
 
 const initialState = {
-  user: {},
+  user:JSON.parse(localStorage.getItem("user")),
   status: "idle",
   error: null,
   token: localStorage.getItem("token") || null,
@@ -25,7 +25,8 @@ const authSlice = createSlice({
       state.status = "succeeded";
       state.user = action.payload.user;
       state.token = action.payload?.token;
-      localStorage.setItem("token", action.payload.token); // Store token in local storage
+      localStorage.setItem("token", action.payload.token); 
+      localStorage.setItem("refresh_token", action.payload.refresh_token); 
     });
 
     builder.addCase(loginUser.rejected, (state, action) => {
@@ -33,17 +34,16 @@ const authSlice = createSlice({
       state.error = action.error.message;
     });
   },
-  // reducers: {
-  //   login(state, action) {
-  //     state.isAuthenticated = true;
-  //     state.user = action.payload;
-  //   },
-  //   logout(state) {
-  //     state.isAuthenticated = false;
-  //     state.user = null;
-  //   },
-  // },
+  reducers: {
+    updateUser(state, action) {
+      state.user = action.payload;
+    },
+    // logout(state) {
+    //   state.token = null;
+    //   state.user = null;
+    // },
+  },
 });
 
-// export const {} = authSlice.actions;
+export const {updateUser} = authSlice.actions;
 export default authSlice.reducer;

@@ -60,7 +60,7 @@ const CustomTable = () => {
     return (
         <>
             <Header />
-            <div>
+            <div style={{height:'70vh'}}>
                 <Table dataSource={mockData} columns={columns} />
             </div>
         </>
