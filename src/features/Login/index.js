@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import Reac from "react";
 import { Form, Input, Button, Checkbox, Avatar, message } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
