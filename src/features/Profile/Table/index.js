@@ -2,16 +2,15 @@ import React,{ useEffect } from "react";
 import { Table } from 'antd';
 import EditButton from 'src/components/buttons/EditButton';
 import DeleteButton from 'src/components/buttons/DeleteButton';
-import Header from '../Header';
 import { useDispatch, useSelector } from 'react-redux';
-import { getdailyApplies } from 'src/store/slices/dailyApplySlice/apis';
-import { getAllDailyApplies } from "src/store/slices/dailyApplySlice/selectors";
+import { getProfiles } from "src/store/slices/profielSlice/apis";
+import { getAllProfiles } from "src/store/slices/profielSlice/selectors";
 
-const CustomTable = () => {
+const ProfileTable = () => {
 
     const dispatch = useDispatch()
 
-    const dailyAppliesData = useSelector(getAllDailyApplies)
+    const profileData = useSelector(getAllProfiles)
 
     const handleEdit = (record) => {
         // Implement your edit logic here
@@ -26,24 +25,18 @@ const CustomTable = () => {
     const columns = [
         {
             key: "name",
-            title: "Name",
-            dataIndex: "clientName",
+            title: "Profile Name",
+            dataIndex: "name",
         },
         {
-            title: "Link",
-            dataIndex: "link",
+            key: "email",
+            title: "Email",
+            dataIndex: "email",
         },
         {
-            title: "Position To Apply",
-            dataIndex: "positionToApply",
-        },
-        {
-            title: "Platform",
-            dataIndex: "platform",
-        },
-        {
-            title: "User Email",
-            dataIndex: ["user", "email"], 
+            key: "age",
+            title: "Age",
+            dataIndex: "age",
         },
         {
             key: "action",
@@ -57,20 +50,20 @@ const CustomTable = () => {
             )
         },
     ];
-    
 
     useEffect(() => {
-      dispatch(getdailyApplies())
+      dispatch(getProfiles())
     }, [])
 
+    console.log("profileData", profileData);
+    
     return (
         <>
-            <Header />
             <div>
-                <Table dataSource={dailyAppliesData} columns={columns} />
+                <Table dataSource={profileData} columns={columns} />
             </div>
         </>
     );
 };
 
-export default CustomTable;
+export default ProfileTable;

@@ -8,6 +8,7 @@ import ProtectedRoutes from './components/ProtectedRoutes';
 import Dashobard from './pages/Dashobard';
 import { routes } from './constant/routes';
 import DailyApply from './pages/DailyApply';
+import Profile from './pages/Profile';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <Route path="/" element={<DashobardLayout />}>
               <Route index element={<Dashobard />} />
               <Route path={routes.DAILY_APPLY} element={<DailyApply />} />
+              <Route path={routes.PROFILE} element={<Profile />} />
             </Route>
           </Route>
           <Route path="/login" element={<Login />} />

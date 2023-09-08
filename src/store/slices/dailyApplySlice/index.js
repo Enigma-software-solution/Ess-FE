@@ -1,13 +1,13 @@
 import {
   createSlice,
 } from "@reduxjs/toolkit";
-import {  dailyApplies } from "./apis";
+import {  getdailyApplies } from "./apis";
 
 
 const initialState = {
   status: "idle",
   error: null,
-  dailyApply:[]
+  data:[]
 };
 
 
@@ -15,16 +15,16 @@ const dailyApplySlice = createSlice({
   name: "dailyApply",
   initialState,
   extraReducers(builder) {
-    builder.addCase(dailyApplies.pending, (state, action) => {
+    builder.addCase(getdailyApplies.pending, (state, action) => {
       state.status = "loading";
     });
 
-    builder.addCase(dailyApplies.fulfilled, (state, action) => {
+    builder.addCase(getdailyApplies.fulfilled, (state, action) => {
       state.status = "succeeded";
-      state.dailyApply = action.payload.data;
+      state.data = action.payload.data;
     });
 
-    builder.addCase(dailyApplies.rejected, (state, action) => {
+    builder.addCase(getdailyApplies.rejected, (state, action) => {
       state.status = "error";
       state.error = action.error.message;
     });

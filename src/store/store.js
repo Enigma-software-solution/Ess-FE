@@ -1,6 +1,7 @@
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
-import authReducer from "./slices/authSlices";
+import authReducer from "./slices/authSlice";
 import dailyApplyReducer from "./slices/dailyApplySlice";
+import profileReducer from "./slices/profielSlice"
 import globalReducer from "./slices/globalSlice";
 // import { tokenMiddleware } from "./tokenMiddleware";
 
@@ -8,6 +9,7 @@ const store = configureStore({
   reducer: {
     auth: authReducer,
     dailyApply: dailyApplyReducer,
+    profile:profileReducer,
     theme: globalReducer,
   },
   middleware: [

@@ -1,0 +1,1 @@
+export const getAllDailyApplies = (state) => state?.dailyApply?.data
