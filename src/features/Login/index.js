@@ -4,7 +4,9 @@ import { UserOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
 import { Navigate, useNavigate } from "react-router-dom";
 import { FormContainer, Title, Wrapper } from "./styled";
-import { loginUser } from "src/store/slices/authSlices/apis";
+import { loginUser } from "src/store/slices/authSlice/apis";
+
+
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
