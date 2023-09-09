@@ -21,10 +21,10 @@ const ApplyDrawer = ({ isOpen, handleDrawer }) => {
         console.log(values, "valuesvalues")
         const data =
         {
-            name:values.clientName,
-            companyName: values.companyName,
-            platForm: values.platForm,
-            position: values.positionToApply,
+          clientName:values.clientName,
+            // companyName: values.companyName,
+            platform: values.platform,
+            positionToApply: values?.positionToApply,
             link: values.link,
             user: userId,
             profile: values.profile
@@ -110,7 +110,7 @@ const ApplyDrawer = ({ isOpen, handleDrawer }) => {
               ]}
             >
               <Select placeholder="Please select a Position">
-                <Option value="FrontEndEng">FrontEnd</Option>
+                <Option value="front_end_eng">FrontEnd</Option>
                 <Option value="FullStack">FullStack</Option>
               </Select>
             </Form.Item>
