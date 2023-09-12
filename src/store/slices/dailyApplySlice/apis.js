@@ -1,7 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import api from "src/helpers/api";
 
-export const getdailyApplies = createAsyncThunk("dailyApply/get-dailyApply", async (data) => {
+export const getdailyAppliesApi = createAsyncThunk("dailyApply/get-dailyApply", async (data) => {
   try {
     const response = await api.get("/apply");
     return response;
@@ -10,17 +10,44 @@ export const getdailyApplies = createAsyncThunk("dailyApply/get-dailyApply", asy
   }
 });
 
-export const postDailyApplies = createAsyncThunk(
+export const createDailyAppliesApi = createAsyncThunk(
   "dailyApply/post-dailyApply",
   async (applyData, { rejectWithValue }) => {
     console.log(applyData, "applyDAta")
     try {
-      // Modify this line to send the data to your backend API
       const response = await api.post("/apply", applyData);
 
-      return response.data; // Assuming your API returns data as response.data
+      return response;
     } catch (error) {
       return rejectWithValue(error.response?.data || "An error occurred");
+    }
+  }
+);
+
+export const updateDailyAppliesApi = createAsyncThunk(
+  "dailyApply/patch-dailyApply",
+  async (applyId, { rejectWithValue }) => {
+    console.log(applyId, "applyId")
+    try {
+      const response = await api.patch(`/apply/${applyId}`);
+
+      return {applyId};
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "An error occurred");
+    }
+  }
+);
+
+export const deteleDailyAppliesApi = createAsyncThunk(
+  "dailyApply/delete-dailyApply",
+  async (applyId, { rejectWithValue }) => {
+    console.log(applyId, "applyId")
+    try {
+      const response = await api.delete(`/apply/${applyId}`);
+
+      return {applyId} ;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data || "An error occurred");
     }
   }
 );

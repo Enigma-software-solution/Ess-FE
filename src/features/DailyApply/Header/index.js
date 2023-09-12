@@ -15,7 +15,7 @@ const Header = () => {
     return (
         <div className='d-flex justify-content-between mb-2'>
             <Input.Search placeholder='Search' className='w-25' size='large' allowClear />
-            <AddButton onClick={handleDrawer} text='Add New User' />
+            <AddButton onClick={handleDrawer} text='New Apply' />
             <Drawer isOpen={isOpen} handleDrawer={handleDrawer} />
 
         </div>

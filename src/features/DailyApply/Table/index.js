@@ -1,26 +1,31 @@
-import React,{ useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Table } from 'antd';
 import EditButton from 'src/components/buttons/EditButton';
 import DeleteButton from 'src/components/buttons/DeleteButton';
 import Header from '../Header';
 import { useDispatch, useSelector } from 'react-redux';
-import { getdailyApplies } from 'src/store/slices/dailyApplySlice/apis';
-import { getAllDailyApplies } from "src/store/slices/dailyApplySlice/selectors";
+import { getdailyAppliesApi, deteleDailyAppliesApi } from 'src/store/slices/dailyApplySlice/apis';
+import { getAllDailyApplies, getLoadingStatus } from "src/store/slices/dailyApplySlice/selectors";
+import DailyApplyDrawer from "../Drawer";
+import { setSelectedApply } from "src/store/slices/dailyApplySlice";
+import {toast } from 'react-toastify'
 
-const CustomTable = () => {
+const DailyAppliesTable = () => {
 
     const dispatch = useDispatch()
-
     const dailyAppliesData = useSelector(getAllDailyApplies)
+    const loadingStatus = useSelector(getLoadingStatus)
+    const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
 
     const handleEdit = (record) => {
-        // Implement your edit logic here
-        console.log("Edit clicked for:", record);
+        setIsEditDrawerOpen(true)
+        dispatch(setSelectedApply(record))
+        toast.success("Edited Successfully");
     };
 
     const handleDelete = (record) => {
-        // Implement your delete logic here
-        console.log("Delete clicked for:", record);
+        dispatch(deteleDailyAppliesApi(record._id))
+        toast.success("Deleted Successfully");
     };
 
     const columns = [
@@ -32,6 +37,7 @@ const CustomTable = () => {
         {
             title: "Link",
             dataIndex: "link",
+            render: (text) => (<a href={text}>{text}</a>)
         },
         {
             title: "Position To Apply",
@@ -43,7 +49,7 @@ const CustomTable = () => {
         },
         {
             title: "User Email",
-            dataIndex: ["user", "email"], 
+            dataIndex: ["user", "email"],
         },
         {
             key: "action",
@@ -57,20 +63,25 @@ const CustomTable = () => {
             )
         },
     ];
-    
 
     useEffect(() => {
-      dispatch(getdailyApplies())
+        if (!dailyAppliesData.length) {
+            dispatch(getdailyAppliesApi())
+        }
     }, [])
 
     return (
         <>
             <Header />
-            <div>
-                <Table dataSource={dailyAppliesData} columns={columns} />
-            </div>
+            <Table dataSource={dailyAppliesData} size="small" columns={columns} loading={loadingStatus === "loading" && true}  />
+            <DailyApplyDrawer
+                isOpen={isEditDrawerOpen}
+                handleDrawer={() => {
+                    setIsEditDrawerOpen(false);
+                }}
+            />
         </>
     );
 };
 
-export default CustomTable;
+export default DailyAppliesTable;
