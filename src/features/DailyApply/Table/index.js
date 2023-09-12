@@ -8,7 +8,7 @@ import { getdailyAppliesApi, deteleDailyAppliesApi } from 'src/store/slices/dail
 import { getAllDailyApplies, getLoadingStatus } from "src/store/slices/dailyApplySlice/selectors";
 import DailyApplyDrawer from "../Drawer";
 import { setSelectedApply } from "src/store/slices/dailyApplySlice";
-import {toast } from 'react-toastify'
+import {toast } from 'react-toastify';
 
 const DailyAppliesTable = () => {
 
@@ -18,9 +18,8 @@ const DailyAppliesTable = () => {
     const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
 
     const handleEdit = (record) => {
-        setIsEditDrawerOpen(true)
         dispatch(setSelectedApply(record))
-        toast.success("Edited Successfully");
+        setIsEditDrawerOpen(true)
     };
 
     const handleDelete = (record) => {
@@ -70,15 +69,18 @@ const DailyAppliesTable = () => {
         }
     }, [])
 
+const handleDrawer =()=>{
+    setIsEditDrawerOpen(false);
+    dispatch(setSelectedApply(null))
+}
+
     return (
         <>
             <Header />
             <Table dataSource={dailyAppliesData} size="small" columns={columns} loading={loadingStatus === "loading" && true}  />
             <DailyApplyDrawer
                 isOpen={isEditDrawerOpen}
-                handleDrawer={() => {
-                    setIsEditDrawerOpen(false);
-                }}
+                handleDrawer={handleDrawer}
             />
         </>
     );

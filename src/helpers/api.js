@@ -29,7 +29,6 @@ api.interceptors.response.use(
       try {
         const refreshToken = localStorage.getItem('refresh_token');
         const response = await api.post('/refresh_token', { refreshToken });
-        console.log(response,'rrr')
         const  token  = response.token;
 
         localStorage.setItem('token', token);
@@ -38,6 +37,7 @@ api.interceptors.response.use(
         originalRequest.headers.Authorization = `Bearer ${token}`;
         return axios(originalRequest);
       } catch (error) {
+        throw new Error(error)
         // Handle refresh token error or redirect to login
       }
     }

@@ -1,7 +1,7 @@
 import AddButton from 'src/components/buttons/AddButton'
-import { Input, Space } from 'antd'
 import React, { useState } from 'react'
 import Drawer from '../Drawer'
+import { Button } from 'antd'
 
 
 const Header = () => {
@@ -14,7 +14,11 @@ const Header = () => {
 
     return (
         <div className='d-flex justify-content-between mb-2'>
-            <Input.Search placeholder='Search' className='w-25' size='large' allowClear />
+            <div className='d-flex gap-1'>
+                <Button>Today</Button>
+                <Button>Yesterday</Button>
+                <Button>Last Week</Button>
+            </div>
             <AddButton onClick={handleDrawer} text='New Apply' />
             <Drawer isOpen={isOpen} handleDrawer={handleDrawer} />
 

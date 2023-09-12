@@ -55,8 +55,6 @@ const ProfileTable = () => {
       dispatch(getProfilesApi())
     }, [])
 
-    console.log("profileData", profileData);
-    
     return (
         <>
             <div>
