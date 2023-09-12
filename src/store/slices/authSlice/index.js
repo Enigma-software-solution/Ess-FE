@@ -1,7 +1,7 @@
 import {
     createSlice,
   } from "@reduxjs/toolkit";
-  import { loginUser } from "./apis";
+  import { loginUser, refresh } from "./apis";
   
   
   const initialState = {
@@ -33,6 +33,15 @@ import {
         state.status = "error";
         state.error = action.error.message;
       });
+
+      builder.addCase(refresh.fulfilled, (state, action) => {
+        console.log(action.payload,'pppp')
+        state.status = "succeeded";
+        state.user = action.payload.user;
+        state.token = action.payload?.token;
+        localStorage.setItem("token", action.payload.token); 
+      });
+
     },
     reducers: {
       updateUser(state, action) {
