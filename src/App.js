@@ -14,6 +14,8 @@ import { useEffect } from 'react';
 import { refresh } from './store/slices/authSlice/apis';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import Agenda from  './pages/Agenda'
+
 
 function App() {
 
@@ -34,6 +36,7 @@ const refresh_token = localStorage.getItem("refresh_token")
               <Route index element={<Dashobard />} />
               <Route path={routes.DAILY_APPLY} element={<DailyApply />} />
               <Route path={routes.PROFILE} element={<Profile />} />
+              <Route path={routes.AGENDA} element={<Agenda />} />
             </Route>
           </Route>
           <Route path="/login" element={<Login />} />
