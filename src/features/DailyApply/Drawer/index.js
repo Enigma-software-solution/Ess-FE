@@ -1,7 +1,6 @@
 import React, { useEffect } from 'react';
 import { Form, Row, Col, Input, Select, Space, Drawer, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
-import { setSelectedApply } from 'src/store/slices/dailyApplySlice';
 import { createDailyAppliesApi, updateDailyAppliesApi } from 'src/store/slices/dailyApplySlice/apis';
 import { getProfilesApi } from 'src/store/slices/profielSlice/apis';
 import { getAllProfiles } from 'src/store/slices/profielSlice/selectors';
@@ -12,6 +11,7 @@ const { Option } = Select;
 
 const initialFormValues = {
   clientName: '',
+  companyName:'',
   link: '',
   profile: undefined,
   platform: undefined,
@@ -39,6 +39,7 @@ const DailyApplyDrawer = ({ isOpen, handleDrawer }) => {
         link,
         profile: selectedProfile,
         platform,
+        companyName,
         positionToApply,
       } = selectedApply;
 
@@ -47,7 +48,9 @@ const DailyApplyDrawer = ({ isOpen, handleDrawer }) => {
         link,
         profile: selectedProfile?._id,
         platform,
+        companyName,
         positionToApply,
+        
       });
     } else {
       form.setFieldsValue(initialFormValues);
@@ -61,6 +64,7 @@ const DailyApplyDrawer = ({ isOpen, handleDrawer }) => {
         platform,
         positionToApply,
         link,
+        companyName,
         profile,
       } = values;
 
@@ -69,9 +73,13 @@ const DailyApplyDrawer = ({ isOpen, handleDrawer }) => {
         platform,
         positionToApply,
         link,
+        companyName,
         user: userId,
         profile,
+        
       };
+
+      console.log(selectedApply, "sdfsdfafasfd")
 
       if (selectedApply) {
         dispatch(updateDailyAppliesApi({ data, id: selectedApply._id }));
@@ -79,10 +87,7 @@ const DailyApplyDrawer = ({ isOpen, handleDrawer }) => {
         dispatch(createDailyAppliesApi(data));
       }
 
-      // Clear the form values
       form.setFieldsValue(initialFormValues);
-
-      // Close the drawer
       handleDrawer();
     } catch (error) {
       console.error('Form submission error:', error);
@@ -90,7 +95,10 @@ const DailyApplyDrawer = ({ isOpen, handleDrawer }) => {
   };
 
   return (
-    <Drawer open={isOpen} onClose={handleDrawer} width={800}>
+    <Drawer open={isOpen} onClose={handleDrawer} width={800}
+    title={selectedApply ? 'Update Daily Apply' : 'Create Daily Apply'}
+    >
+       
       <Form form={form} layout="vertical" hideRequiredMark onFinish={handleSubmit}>
         <Row gutter={16}>
           <Col span={12}>
@@ -111,6 +119,7 @@ const DailyApplyDrawer = ({ isOpen, handleDrawer }) => {
               <Input placeholder="Please enter Link" />
             </Form.Item>
           </Col>
+          
         </Row>
         <Row gutter={16}>
           <Col span={12}>
@@ -154,6 +163,15 @@ const DailyApplyDrawer = ({ isOpen, handleDrawer }) => {
                 <Option value="front_end_eng">FrontEnd</Option>
                 <Option value="full_stack">FullStack</Option>
               </Select>
+            </Form.Item>
+          </Col>
+          <Col span={12}>
+            <Form.Item
+              name="companyName"
+              label="Company Name"
+              rules={[{ message: 'Please enter Company Name' }]}
+            >
+              <Input placeholder="Please enter company Name" />
             </Form.Item>
           </Col>
         </Row>

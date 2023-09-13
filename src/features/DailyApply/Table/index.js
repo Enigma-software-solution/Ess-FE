@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Table } from 'antd';
+import { Table, Popconfirm, Button, message } from 'antd';
 import EditButton from 'src/components/buttons/EditButton';
 import DeleteButton from 'src/components/buttons/DeleteButton';
 import Header from '../Header';
@@ -8,23 +8,20 @@ import { getdailyAppliesApi, deteleDailyAppliesApi } from 'src/store/slices/dail
 import { getAllDailyApplies, getLoadingStatus } from "src/store/slices/dailyApplySlice/selectors";
 import DailyApplyDrawer from "../Drawer";
 import { setSelectedApply } from "src/store/slices/dailyApplySlice";
-import {toast } from 'react-toastify';
 
 const DailyAppliesTable = () => {
-
-    const dispatch = useDispatch()
-    const dailyAppliesData = useSelector(getAllDailyApplies)
-    const loadingStatus = useSelector(getLoadingStatus)
+    const dispatch = useDispatch();
+    const dailyAppliesData = useSelector(getAllDailyApplies);
+    const loadingStatus = useSelector(getLoadingStatus);
     const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
 
     const handleEdit = (record) => {
-        dispatch(setSelectedApply(record))
-        setIsEditDrawerOpen(true)
+        dispatch(setSelectedApply(record));
+        setIsEditDrawerOpen(true);
     };
 
-    const handleDelete = (record) => {
-        dispatch(deteleDailyAppliesApi(record._id))
-        toast.success("Deleted Successfully");
+    const handleConfirmDelete = (recordToDelete) => {
+            dispatch(deteleDailyAppliesApi(recordToDelete._id))
     };
 
     const columns = [
@@ -51,13 +48,26 @@ const DailyAppliesTable = () => {
             dataIndex: ["user", "email"],
         },
         {
+            title: "Company Name",
+            dataIndex: "companyName",
+        },
+        {
             key: "action",
             title: "Action",
             dataIndex: "action",
             render: (text, record) => (
                 <div className='d-flex gap-1'>
                     <EditButton onClick={() => handleEdit(record)} />
-                    <DeleteButton onClick={() => handleDelete(record)} />
+                    <Popconfirm
+                        title="Are you sure to delete this task?"
+                        onConfirm={()=>handleConfirmDelete(record)}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <DeleteButton>
+                            Delete
+                        </DeleteButton>
+                    </Popconfirm>
                 </div>
             )
         },
@@ -65,19 +75,19 @@ const DailyAppliesTable = () => {
 
     useEffect(() => {
         if (!dailyAppliesData.length) {
-            dispatch(getdailyAppliesApi())
+            dispatch(getdailyAppliesApi());
         }
-    }, [])
+    }, []);
 
-const handleDrawer =()=>{
-    setIsEditDrawerOpen(false);
-    dispatch(setSelectedApply(null))
-}
+    const handleDrawer = () => {
+        setIsEditDrawerOpen(false);
+        dispatch(setSelectedApply(null));
+    };
 
     return (
         <>
             <Header />
-            <Table dataSource={dailyAppliesData} size="small" columns={columns} loading={loadingStatus === "loading" && true}  />
+            <Table dataSource={dailyAppliesData} size="small" columns={columns} loading={loadingStatus === "loading" && true} />
             <DailyApplyDrawer
                 isOpen={isEditDrawerOpen}
                 handleDrawer={handleDrawer}
