@@ -30,6 +30,7 @@ export const updateDailyAppliesApi = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await api.patch(`/apply/${data.id}`,data.data);
+      toast.success("Apply Updated Successfully")
 
       return response;
     } catch (error) {
@@ -43,6 +44,7 @@ export const deteleDailyAppliesApi = createAsyncThunk(
   async (applyId, { rejectWithValue }) => {
     try {
       const response = await api.delete(`/apply/${applyId}`);
+      toast.success("Apply deleted Successfully")
 
       return {applyId} ;
     } catch (error) {
