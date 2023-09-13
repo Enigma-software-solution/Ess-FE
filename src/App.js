@@ -14,6 +14,8 @@ import { useEffect } from 'react';
 import { refresh } from './store/slices/authSlice/apis';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import 'react-quill/dist/quill.snow.css';
+
 import Agenda from  './pages/Agenda'
 
 
