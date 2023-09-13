@@ -2,9 +2,9 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import api from "src/helpers/api";
 
-export const getdailyAppliesApi = createAsyncThunk("dailyApply/get-dailyApply", async (data) => {
+export const getdailyAppliesApi = createAsyncThunk("dailyApply/get-dailyApply", async (q) => {
   try {
-    const response = await api.get("/apply");
+    const response = await api.get(`/apply?${q}`);
     return response;
   } catch (error) {
     throw error;

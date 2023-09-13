@@ -82,7 +82,7 @@ const DailyApplyDrawer = ({ isOpen, handleDrawer }) => {
       console.log(selectedApply, "sdfsdfafasfd")
 
       if (selectedApply) {
-        dispatch(updateDailyAppliesApi({ data, id: selectedApply._id }));
+        dispatch(updateDailyAppliesApi({ data, id: selectedApply?._id }));
       } else {
         dispatch(createDailyAppliesApi(data));
       }

@@ -1,19 +1,23 @@
 import React, { useState, useEffect } from "react";
-import { Table, Popconfirm, Button, message } from 'antd';
+import { Table, Popconfirm, Button, message, Pagination } from 'antd';
 import EditButton from 'src/components/buttons/EditButton';
 import DeleteButton from 'src/components/buttons/DeleteButton';
 import Header from '../Header';
 import { useDispatch, useSelector } from 'react-redux';
 import { getdailyAppliesApi, deteleDailyAppliesApi } from 'src/store/slices/dailyApplySlice/apis';
 import { getAllDailyApplies, getLoadingStatus } from "src/store/slices/dailyApplySlice/selectors";
-import DailyApplyDrawer from "../Drawer";
+import DailyApplyDrawer from "../Drawers/CreateDrawer";
 import { setSelectedApply } from "src/store/slices/dailyApplySlice";
+import qs from 'qs'
 
 const DailyAppliesTable = () => {
     const dispatch = useDispatch();
     const dailyAppliesData = useSelector(getAllDailyApplies);
     const loadingStatus = useSelector(getLoadingStatus);
     const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
+
+    const { totalItems, pageSize, totalPages, page } = dailyAppliesData?.paginator ?? {};
+
 
     const handleEdit = (record) => {
         dispatch(setSelectedApply(record));
@@ -87,7 +91,31 @@ const DailyAppliesTable = () => {
     return (
         <>
             <Header />
-            <Table dataSource={dailyAppliesData} size="small" columns={columns} loading={loadingStatus === "loading" && true} />
+            <Table  pagination={false}   dataSource={dailyAppliesData.daily_applies} size="small" columns={columns} loading={loadingStatus === "loading" && true} />
+          
+          {
+            dailyAppliesData?.paginator && dailyAppliesData.daily_applies.length ?
+            <Pagination
+            total={totalItems}
+            showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
+            defaultPageSize={pageSize}
+            defaultCurrent={page}
+            onChange={(page, pageSize) => {
+                console.log(`Page: ${page}, PageSize: ${pageSize}`);
+                // Call your API here with the new page and page size
+                const queryStringResult = qs.stringify({ page, pageSize });
+                dispatch(getdailyAppliesApi(queryStringResult));
+              }}
+              onShowSizeChange={(current, size) => {
+                // Handle page size change event here
+                console.log(`Current: ${current}, PageSize: ${size}`);
+              }}
+          />
+
+          : null
+
+    }
+
             <DailyApplyDrawer
                 isOpen={isEditDrawerOpen}
                 handleDrawer={handleDrawer}
