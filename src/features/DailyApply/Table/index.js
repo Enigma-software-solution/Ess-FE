@@ -10,14 +10,13 @@ import DailyApplyDrawer from "../Drawers/CreateDrawer";
 import { setSelectedApply } from "src/store/slices/dailyApplySlice";
 import qs from 'qs'
 
-const DailyAppliesTable = () => {
+const CreateDailyAppliesTable = () => {
     const dispatch = useDispatch();
     const dailyAppliesData = useSelector(getAllDailyApplies);
     const loadingStatus = useSelector(getLoadingStatus);
     const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
 
     const { totalItems, pageSize, totalPages, page } = dailyAppliesData?.paginator ?? {};
-
 
     const handleEdit = (record) => {
         dispatch(setSelectedApply(record));
@@ -92,7 +91,6 @@ const DailyAppliesTable = () => {
         <>
             <Header />
             <Table  pagination={false}   dataSource={dailyAppliesData.daily_applies} size="small" columns={columns} loading={loadingStatus === "loading" && true} />
-          
           {
             dailyAppliesData?.paginator && dailyAppliesData.daily_applies.length ?
             <Pagination
@@ -111,11 +109,8 @@ const DailyAppliesTable = () => {
                 console.log(`Current: ${current}, PageSize: ${size}`);
               }}
           />
-
           : null
-
     }
-
             <DailyApplyDrawer
                 isOpen={isEditDrawerOpen}
                 handleDrawer={handleDrawer}
@@ -124,4 +119,4 @@ const DailyAppliesTable = () => {
     );
 };
 
-export default DailyAppliesTable;
+export default CreateDailyAppliesTable;
