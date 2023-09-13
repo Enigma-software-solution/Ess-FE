@@ -35,7 +35,6 @@ import {
       });
 
       builder.addCase(refresh.fulfilled, (state, action) => {
-        console.log(action.payload,'pppp')
         state.status = "succeeded";
         state.user = action.payload.user;
         state.token = action.payload?.token;

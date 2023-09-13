@@ -3,7 +3,7 @@ import { Table } from 'antd';
 import EditButton from 'src/components/buttons/EditButton';
 import DeleteButton from 'src/components/buttons/DeleteButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { getProfiles } from "src/store/slices/profielSlice/apis";
+import { getProfilesApi } from "src/store/slices/profielSlice/apis";
 import { getAllProfiles } from "src/store/slices/profielSlice/selectors";
 
 const ProfileTable = () => {
@@ -52,11 +52,9 @@ const ProfileTable = () => {
     ];
 
     useEffect(() => {
-      dispatch(getProfiles())
+      dispatch(getProfilesApi())
     }, [])
 
-    console.log("profileData", profileData);
-    
     return (
         <>
             <div>

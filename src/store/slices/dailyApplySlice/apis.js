@@ -1,7 +1,8 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 import api from "src/helpers/api";
 
-export const getdailyApplies = createAsyncThunk("dailyApply/get-dailyApply", async (data) => {
+export const getdailyAppliesApi = createAsyncThunk("dailyApply/get-dailyApply", async (data) => {
   try {
     const response = await api.get("/apply");
     return response;
@@ -10,17 +11,42 @@ export const getdailyApplies = createAsyncThunk("dailyApply/get-dailyApply", asy
   }
 });
 
-export const postDailyApplies = createAsyncThunk(
+export const createDailyAppliesApi = createAsyncThunk(
   "dailyApply/post-dailyApply",
   async (applyData, { rejectWithValue }) => {
-    console.log(applyData, "applyDAta")
     try {
-      // Modify this line to send the data to your backend API
       const response = await api.post("/apply", applyData);
+      toast.success(response?.message)
+      return response;
+    } catch (error) {
+      toast.warn(error.response.data.message || error?.message)
+      return rejectWithValue(error.response?.data || "An error occurred");
+    }
+  }
+);
 
-      return response.data; // Assuming your API returns data as response.data
+export const updateDailyAppliesApi = createAsyncThunk(
+  "dailyApply/patch-dailyApply",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await api.patch(`/apply/${data.id}`,data.data);
+
+      return response;
     } catch (error) {
       return rejectWithValue(error.response?.data || "An error occurred");
+    }
+  }
+);
+
+export const deteleDailyAppliesApi = createAsyncThunk(
+  "dailyApply/delete-dailyApply",
+  async (applyId, { rejectWithValue }) => {
+    try {
+      const response = await api.delete(`/apply/${applyId}`);
+
+      return {applyId} ;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data || "An error occurred");
     }
   }
 );

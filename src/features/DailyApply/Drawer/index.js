@@ -1,56 +1,97 @@
-import React, {useEffect} from 'react';
+import React, { useEffect } from 'react';
 import { Form, Row, Col, Input, Select, Space, Drawer, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
-import { postDailyApplies } from 'src/store/slices/dailyApplySlice/apis';
-import { getProfiles } from 'src/store/slices/profielSlice/apis';
+import { setSelectedApply } from 'src/store/slices/dailyApplySlice';
+import { createDailyAppliesApi, updateDailyAppliesApi } from 'src/store/slices/dailyApplySlice/apis';
+import { getProfilesApi } from 'src/store/slices/profielSlice/apis';
 import { getAllProfiles } from 'src/store/slices/profielSlice/selectors';
 import { getUserId } from 'src/store/slices/authSlice/selectors';
-
+import { getSelectedApply } from 'src/store/slices/dailyApplySlice/selectors';
 
 const { Option } = Select;
 
-const ApplyDrawer = ({ isOpen, handleDrawer }) => {
-  const dispatch = useDispatch();
+const initialFormValues = {
+  clientName: '',
+  link: '',
+  profile: undefined,
+  platform: undefined,
+  positionToApply: undefined,
+};
 
+const DailyApplyDrawer = ({ isOpen, handleDrawer }) => {
+  const dispatch = useDispatch();
   const userId = useSelector(getUserId);
-  const AllProfiles = useSelector(getAllProfiles);
+  const allProfiles = useSelector(getAllProfiles);
+  const selectedApply = useSelector(getSelectedApply);
+
+  const [form] = Form.useForm();
+
+  useEffect(() => {
+    if ( !allProfiles?.length) {
+      dispatch(getProfilesApi());
+    }
+  }, [dispatch, allProfiles]);
+
+  useEffect(() => {
+    if (selectedApply) {
+      const {
+        clientName,
+        link,
+        profile: selectedProfile,
+        platform,
+        positionToApply,
+      } = selectedApply;
+
+      form.setFieldsValue({
+        clientName,
+        link,
+        profile: selectedProfile?._id,
+        platform,
+        positionToApply,
+      });
+    } else {
+      form.setFieldsValue(initialFormValues);
+    }
+  }, [selectedApply, form]);
 
   const handleSubmit = async (values) => {
     try {
+      const {
+        clientName,
+        platform,
+        positionToApply,
+        link,
+        profile,
+      } = values;
 
-        console.log(values, "valuesvalues")
-        const data =
-        {
-          clientName:values.clientName,
-            // companyName: values.companyName,
-            platform: values.platform,
-            positionToApply: values?.positionToApply,
-            link: values.link,
-            user: userId,
-            profile: values.profile
-        }
-      // Dispatch the postDailyApplies action with the form data
-      const response = dispatch(postDailyApplies(data));
+      const data = {
+        clientName,
+        platform,
+        positionToApply,
+        link,
+        user: userId,
+        profile,
+      };
 
-      // Handle success, reset the form, or close the drawer
-      console.log('Form submitted successfully:', response);
-      // Reset form or close drawer
+      if (selectedApply) {
+        dispatch(updateDailyAppliesApi({ data, id: selectedApply._id }));
+      } else {
+        dispatch(createDailyAppliesApi(data));
+      }
+
+      // Clear the form values
+      form.setFieldsValue(initialFormValues);
+
+      // Close the drawer
+      handleDrawer();
     } catch (error) {
-      // Handle errors, show error messages, etc.
       console.error('Form submission error:', error);
     }
   };
 
-  useEffect(() => {
-   dispatch(getProfiles())
-  }, [])
-  
-
-  console.log(AllProfiles, "getAllProfilesgetAllProfiles")
-
   return (
     <Drawer open={isOpen} onClose={handleDrawer} width={800}>
-      <Form layout="vertical" hideRequiredMark onFinish={handleSubmit}>
+      <Form form={form} layout="vertical" hideRequiredMark onFinish={handleSubmit}>
         <Row gutter={16}>
           <Col span={12}>
             <Form.Item
@@ -79,9 +120,9 @@ const ApplyDrawer = ({ isOpen, handleDrawer }) => {
               rules={[{ required: true, message: 'Please select the Profile' }]}
             >
               <Select placeholder="Please select a Profile">
-                {AllProfiles.map((profile, index) => (
-                  <Option key={index} value={profile._id}>
-                    {profile.name}
+                {allProfiles?.map((profile) => (
+                  <Option key={profile?._id} value={profile?._id}>
+                    {profile?.name}
                   </Option>
                 ))}
               </Select>
@@ -111,7 +152,7 @@ const ApplyDrawer = ({ isOpen, handleDrawer }) => {
             >
               <Select placeholder="Please select a Position">
                 <Option value="front_end_eng">FrontEnd</Option>
-                <Option value="FullStack">FullStack</Option>
+                <Option value="full_stack">FullStack</Option>
               </Select>
             </Form.Item>
           </Col>
@@ -129,4 +170,4 @@ const ApplyDrawer = ({ isOpen, handleDrawer }) => {
   );
 };
 
-export default ApplyDrawer;
+export default DailyApplyDrawer;

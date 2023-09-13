@@ -12,6 +12,8 @@ import Profile from './pages/Profile';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { refresh } from './store/slices/authSlice/apis';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Agenda from  './pages/Agenda'
 
 
@@ -26,6 +28,7 @@ const refresh_token = localStorage.getItem("refresh_token")
   return (
     <div className="App">
       <ThemeProvider theme={lightTheme}>
+        <ToastContainer/>
         <GlobalStyles />
         <Routes>
           <Route element={<ProtectedRoutes />}>
