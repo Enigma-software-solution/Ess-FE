@@ -57,11 +57,20 @@ const CreateEventDrawer = ({
         open={isDrawerOpen}
         width={860}
       >
+
+<div className="d-flex justify-content-end align-items-end flex-column  mb-1">
+            <p>Date: {format(new Date(selectedDate?.start), "dd-MM-yyyy")}</p>
+            <p>
+              Time: {format(new Date(selectedDate.start), "p")} -{" "}
+              {format(new Date(selectedDate.end), "p")}
+            </p>
+          </div>
         <Form
           name="event-form"
           onFinish={handleAddEvent}
           form={form}
         >
+
           <div className="d-flex justify-content-between mb-1">
             <div style={{ flex: 1, marginRight: "20px" }}>
               {/* Left column of form fields */}
