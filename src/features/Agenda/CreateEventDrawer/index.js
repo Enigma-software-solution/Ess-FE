@@ -1,10 +1,14 @@
-import React, { useState } from "react";
-// import { setSelectedEvent } from '@/app/store/slices/agenda';
+import React, { useEffect, useState } from "react";
 import { Button, Form, Input, Select } from "antd";
 import { format } from "date-fns";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Drawer } from "antd";
-import NotesDrawer from "../NotesDrawer";
+import { createEventsApi } from "src/store/slices/agenda/apis";
+import { CallType } from "src/constant/callTypes";
+import { CallPlatform } from "src/constant/callplatform";
+import { getUserId } from "src/store/slices/authSlice/selectors";
+import { getProfilesApi } from "src/store/slices/profielSlice/apis";
+import { getAllProfiles } from "src/store/slices/profielSlice/selectors";
 const { Option } = Select;
 
 const CreateEventDrawer = ({
@@ -12,29 +16,36 @@ const CreateEventDrawer = ({
   isDrawerOpen,
   handleDrawerClose,
 }) => {
-  const [isNotesDrawer, setIsNotesDrawer] = useState(false);
+
   const [form] = Form.useForm();
 
   const dispatch = useDispatch();
 
+  const allProfiles = useSelector(getAllProfiles);
+  const userId = useSelector(getUserId);
+
   const handleReset = () => {
-    form.resetFields(); // Reset all form fields
+    form.resetFields();
   };
 
   const handleAddEvent = (values) => {
     const preparedData = {
+      user: userId,
       ...selectedDate,
       ...values,
     };
-    // dispatch(setSelectedEvent(preparedData))
+    dispatch(createEventsApi(preparedData));
     handleReset();
     handleDrawerClose();
     console.log("Submitted values:", values);
   };
 
-  const handleNotesDrawer = () => {
-    setIsNotesDrawer(!isNotesDrawer);
-  };
+
+  useEffect(() => {
+    if (!allProfiles?.length) {
+      dispatch(getProfilesApi());
+    }
+  }, [dispatch, allProfiles]);
 
   return (
     <>
@@ -48,70 +59,97 @@ const CreateEventDrawer = ({
       >
         <Form
           name="event-form"
-          labelCol={{ span: 8 }}
-          wrapperCol={{ span: 12 }}
           onFinish={handleAddEvent}
           form={form}
         >
-          <Button onClick={handleNotesDrawer}>Add Notes</Button>
-          <div className="d-flex justify-content-end align-items-end flex-column  mb-1">
-            <p>Date: {format(new Date(selectedDate?.start), "dd-MM-yyyy")}</p>
-            <p>
-              Time: {format(new Date(selectedDate.start), "p")} -{" "}
-              {format(new Date(selectedDate.end), "p")}
-            </p>
+          <div className="d-flex justify-content-between mb-1">
+            <div style={{ flex: 1, marginRight: "20px" }}>
+              {/* Left column of form fields */}
+              <Form.Item
+                name="companyName"
+                label="Company name"
+                rules={[{ required: true }]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                name="jobTitle"
+                label="Job title"
+                rules={[{ required: true }]}
+              >
+                <Input />
+              </Form.Item>
+              <Form.Item
+                name="callDurition"
+                label="Call duration"
+                rules={[{ required: true }]}
+              >
+                <Input type="text" />
+              </Form.Item>
+              <Form.Item
+                name="numOfGuests"
+                label="Number of Guests"
+                rules={[{ required: true }]}
+              >
+                <Input type="number" />
+              </Form.Item>
+              <Form.Item name="callMode" label="Call Mode">
+                <Select>
+                  <Option value="voice">Voice</Option>
+                  <Option value="video">Video</Option>
+                </Select>
+              </Form.Item>
+            </div>
+            <div style={{ flex: 1 }}>
+              {/* Right column of form fields */}
+              <Form.Item
+                name="callType"
+                label="Call Type"
+                rules={[{ required: true }]}
+              >
+                <Select>
+                  <Option value={CallType.Initial}>Initial</Option>
+                  <Option value={CallType.Technical}>Technical </Option>
+                  <Option value={CallType.Final}>Final</Option>
+                  <Option value={CallType.Reschedule}>Reschedule</Option>
+                </Select>
+              </Form.Item>
+              <Form.Item
+                name="callPlatform"
+                label="Call Platform"
+                rules={[{ required: true }]}
+              >
+                <Select>
+                  <Option value={CallPlatform.Zoom}>Zoom</Option>
+                  <Option value={CallPlatform.GoogleMeet}>Google Meet</Option>
+                  <Option value={CallPlatform.MicrosoftTeams}>
+                    Microsoft Teams
+                  </Option>
+                </Select>
+              </Form.Item>
+              <Form.Item
+                name="profile"
+                label="Profile"
+                rules={[
+                  { required: true, message: "Please select the Profile" },
+                ]}
+              >
+                <Select placeholder="Please select a Profile">
+                  {allProfiles?.map((profile) => (
+                    <Option key={profile?._id} value={profile?._id}>
+                      {profile?.name}
+                    </Option>
+                  ))}
+                </Select>
+              </Form.Item>
+              <Form.Item name="initialConversion" label="Initial Conversation">
+                <Input.TextArea />
+              </Form.Item>
+              <Form.Item name="companyInformation" label="Company Information">
+                <Input.TextArea />
+              </Form.Item>
+            </div>
           </div>
-          <Form.Item
-            name="eventName"
-            label="Event Name"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="companyName"
-            label="Company Name"
-            rules={[{ required: true }]}
-          >
-            <Input />
-          </Form.Item>
-          <Form.Item
-            name="numOfGuests"
-            label="Number of Guests"
-            rules={[{ required: true }]}
-          >
-            <Input type="number" />
-          </Form.Item>
-          <Form.Item name="guests" label="Guest Names with Emails">
-            <Input.TextArea />
-          </Form.Item>
-          <Form.Item
-            name="callType"
-            label="Call Type"
-            rules={[{ required: true }]}
-          >
-            <Select>
-              <Option value="initialCall">Initial Call</Option>
-              <Option value="techCall">Tech Call</Option>
-            </Select>
-          </Form.Item>
-          <Form.Item
-            name="callPlatform"
-            label="Call Platform"
-            rules={[{ required: true }]}
-          >
-            <Select>
-              <Option value="zoom">Zoom</Option>
-              <Option value="zoom">Google Meet</Option>
-              <Option value="teams">Microsoft Teams</Option>
-            </Select>
-          </Form.Item>
-          <Form.Item name="initialConversation" label="Initial Conversation">
-            <Input.TextArea />
-          </Form.Item>
-          <Form.Item name="companyInformation" label="Company Information">
-            <Input.TextArea />
-          </Form.Item>
           <Form.Item className="d-flex justify-content-end">
             <Button type="primary" htmlType="submit">
               Add Event
@@ -120,7 +158,7 @@ const CreateEventDrawer = ({
         </Form>
       </Drawer>
 
-      <NotesDrawer isDrawerOpen={isNotesDrawer} handleDrawerClose={handleNotesDrawer} />
+     
     </>
   );
 };
