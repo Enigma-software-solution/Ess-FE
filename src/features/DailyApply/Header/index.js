@@ -1,10 +1,12 @@
 import AddButton from 'src/components/buttons/AddButton'
 import React, { useState } from 'react'
-import Drawer from '../Drawer'
+import DailyApplyDrawer from '../Drawers/CreateDrawer';
 import { Select, Button } from 'antd';
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllProfiles } from 'src/store/slices/profielSlice/selectors'
 import { getProfilesApi } from 'src/store/slices/profielSlice/apis';
+import { getdailyAppliesApi } from 'src/store/slices/dailyApplySlice/apis';
+import qs from 'qs'
 
 const { Option } = Select;
 
@@ -21,7 +23,13 @@ const Header = () => {
     }
 
     const handleChangeProfile = (value) => {
-        dispatch(getProfilesApi())
+
+        const params = {
+            profileId: value,
+          };
+      
+          const queryStringResult = qs.stringify(params);
+        dispatch(getdailyAppliesApi(queryStringResult))
         console.log(value, "profile")
     }
 
@@ -29,9 +37,9 @@ const Header = () => {
 
         <div className='d-flex justify-content-between mb-2'>
             <div className='d-flex gap-1'>
-                <Button>Today</Button>
+                {/* <Button>Today</Button>
                 <Button>Yesterday</Button>
-                <Button>Last Week</Button>
+                <Button>Last Week</Button> */}
                 <Select placeholder="Please select a Profile" onChange={handleChangeProfile}>
 
                     {allProfiles?.map((profile) => (
@@ -42,7 +50,7 @@ const Header = () => {
                 </Select>
             </div>
             <AddButton onClick={handleDrawer} text='New Apply' />
-            <Drawer isOpen={isOpen} handleDrawer={handleDrawer} />
+            <DailyApplyDrawer isOpen={isOpen} handleDrawer={handleDrawer} />
 
         </div>
     )
