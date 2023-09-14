@@ -1,7 +1,7 @@
 export const theme = {
     token: {
         colorPrimary: "#468B9F",
-        colorSecondary: "gray",
+        colorSecondary: "blue",
         borderRadius: 2,
         // text:'blue',
         

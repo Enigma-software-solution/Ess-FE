@@ -13,7 +13,7 @@ export const TopHeader = () => {
       <Row gutter={[16, 16]}>
         <Col span={6}>
           <Card
-            style={{ background: theme.colors.bgSecondary }}
+            style={{  }}
             cover={
               <ShoppingCartOutlined
                 style={{ fontSize: "64px", marginTop: "16px" }}
@@ -25,7 +25,7 @@ export const TopHeader = () => {
         </Col>
         <Col span={6}>
           <Card
-            style={{ background: theme.colors.bgSecondary }}
+            style={{  }}
             cover={
               <ShoppingCartOutlined
                 style={{ fontSize: "64px", marginTop: "16px" }}
@@ -37,7 +37,7 @@ export const TopHeader = () => {
         </Col>
         <Col span={6}>
           <Card
-            style={{ background: theme.colors.bgSecondary }}
+            style={{  }}
             cover={
               <ShoppingCartOutlined
                 style={{ fontSize: "64px", marginTop: "16px" }}
@@ -49,7 +49,7 @@ export const TopHeader = () => {
         </Col>
         <Col span={6}>
           <Card
-            style={{ background: theme.colors.bgSecondary }}
+            style={{  }}
             cover={
               <ShoppingCartOutlined
                 style={{ fontSize: "64px", marginTop: "16px" }}
