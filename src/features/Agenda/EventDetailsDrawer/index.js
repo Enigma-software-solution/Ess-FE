@@ -18,7 +18,7 @@ const EventValue = styled.span`
   margin-left: 5px;
 `;
 
-const EventDetailsDrawer = ({ isDrawerOpen, handleDrawerClose }) => {
+const EventDetailsDrawer = ({ isDrawerOpen, handleDrawerClose,showCreateEventDrawer }) => {
   const [isNotesDrawer, setIsNotesDrawer] = useState(false);
 
   const selectedEvent = useSelector(getSelectEvent);
@@ -42,7 +42,10 @@ const EventDetailsDrawer = ({ isDrawerOpen, handleDrawerClose }) => {
         visible={isDrawerOpen}
         width={selectedEvent.notes ? '70%' : '50%'}
       >
-        <div className="d-flex w-100 justify-content-end mb-2">
+        <div className="d-flex w-100 gap-1 justify-content-end mb-2">
+       
+          <Button type="primary" onClick={()=>showCreateEventDrawer(true)}>Update</Button>
+
           <Button
             type="primary"
             onClick={handleNotesDrawer}

@@ -16,11 +16,14 @@ export const StyledHeader = styled(Header)`
   position: sticky;
   top: 0;
   z-index: 2;
+  background: #f1f2f3 ;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+
 `;
 
 export const StyledContent = styled(Content)`
 padding: 20px;
-margin: 24px 16px 0;
+margin: 6px 16px 0;
  overflow: scroll;
  height: calc(100vh - 200px);
  &::-webkit-scrollbar {

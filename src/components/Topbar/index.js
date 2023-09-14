@@ -1,28 +1,16 @@
 import React from "react";
-import { HiMenu } from "react-icons/hi";
-import { IoIosNotificationsOutline } from "react-icons/io";
-import {
-  FaAngleRight,
-  FaAngleLeft,
-  FaArrowAltCircleDown,
-} from "react-icons/fa";
-import { IconBase } from "react-icons/lib";
-import { Avatar, Dropdown, Menu, Button, Divider } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
+import { Avatar, Dropdown, Menu } from "antd";
 import { useNavigate } from "react-router-dom";
 import { ToggleButton } from "./styled";
-
-
 
 const Topbar = ({ setCollapsed, collapsed }) => {
   const navigate = useNavigate();
 
-  const handleSidebarExpanded = () => {
-    setCollapsed((isExpanded) => !isExpanded);
-  };
-
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("refresh_token");
+
     navigate("/login");
   };
 
@@ -36,14 +24,17 @@ const Topbar = ({ setCollapsed, collapsed }) => {
   );
 
   return (
-
-    <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',width:'100%',height:'100%'}}>
-      <ToggleButton onClick={() => setCollapsed(prev => !prev)}>
-        {collapsed ? (
-          <FaAngleRight size="20px" />
-        ) : (
-          <FaAngleLeft size="20px" />
-        )}
+    <div
+      style={{
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+        width: "100%",
+        height: "100%",
+      }}
+    >
+      <ToggleButton onClick={() => setCollapsed((prev) => !prev)}>
+        {collapsed ? <FaAngleRight size="20px" /> : <FaAngleLeft size="20px" />}
       </ToggleButton>
       <Dropdown overlay={menu}>
         <Avatar

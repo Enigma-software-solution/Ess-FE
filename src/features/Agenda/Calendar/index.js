@@ -54,6 +54,7 @@ const CustomCalendar = () => {
         start: slot.start,
         end: slot.end,
       });
+    dispatch(setSelectedEvent({}))
       setSlotDrawer(true);
     }
   };
@@ -69,6 +70,7 @@ const CustomCalendar = () => {
 
   const handleEventDrawerClose = () => {
     setEventDrawer(false);
+    console.log('calledd')
   };
 
   const getEventStyle = (event) => {
@@ -125,6 +127,7 @@ const CustomCalendar = () => {
       <EventDetailsDrawer
         isDrawerOpen={eventDrawer}
         handleDrawerClose={handleEventDrawerClose}
+        showCreateEventDrawer={setSlotDrawer}
       />
     </div>
   );

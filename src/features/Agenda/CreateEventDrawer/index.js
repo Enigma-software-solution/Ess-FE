@@ -9,6 +9,7 @@ import { CallPlatform } from "src/constant/callplatform";
 import { getUserId } from "src/store/slices/authSlice/selectors";
 import { getProfilesApi } from "src/store/slices/profielSlice/apis";
 import { getAllProfiles } from "src/store/slices/profielSlice/selectors";
+import { getSelectEvent } from "src/store/slices/agenda/selector";
 const { Option } = Select;
 
 const CreateEventDrawer = ({
@@ -16,10 +17,13 @@ const CreateEventDrawer = ({
   isDrawerOpen,
   handleDrawerClose,
 }) => {
-
   const [form] = Form.useForm();
 
+  const initialFormValues = {
+  };
+
   const dispatch = useDispatch();
+  const selectedEvent = useSelector(getSelectEvent)
 
   const allProfiles = useSelector(getAllProfiles);
   const userId = useSelector(getUserId);
@@ -37,15 +41,46 @@ const CreateEventDrawer = ({
     dispatch(createEventsApi(preparedData));
     handleReset();
     handleDrawerClose();
-    console.log("Submitted values:", values);
   };
-
 
   useEffect(() => {
     if (!allProfiles?.length) {
       dispatch(getProfilesApi());
     }
   }, [dispatch, allProfiles]);
+
+
+  useEffect(() => {
+    if (selectedEvent) {
+      const {
+        companyName,
+        jobTitle,
+        callDuration,
+        numOfGuests,
+        callMode,
+        callType,
+        callPlatform,
+        profile,
+        initialConversion,
+        companyInformation,
+      } = selectedEvent;
+
+      form.setFieldsValue({
+        companyName,
+        jobTitle,
+        callDuration,
+        numOfGuests,
+        callMode,
+        callType,
+        callPlatform,
+        profile,
+        initialConversion,
+        companyInformation,
+      });
+    } else {
+      form.setFieldsValue(initialFormValues);
+    }
+  }, [selectedEvent, form]);
 
   return (
     <>
@@ -57,20 +92,14 @@ const CreateEventDrawer = ({
         open={isDrawerOpen}
         width={860}
       >
-
-<div className="d-flex justify-content-end align-items-end flex-column  mb-1">
-            <p>Date: {format(new Date(selectedDate?.start), "dd-MM-yyyy")}</p>
-            <p>
-              Time: {format(new Date(selectedDate.start), "p")} -{" "}
-              {format(new Date(selectedDate.end), "p")}
-            </p>
-          </div>
-        <Form
-          name="event-form"
-          onFinish={handleAddEvent}
-          form={form}
-        >
-
+        <div className="d-flex justify-content-end align-items-end flex-column  mb-1">
+          <p>Date: {format(new Date(selectedDate?.start), "dd-MM-yyyy")}</p>
+          <p>
+            Time: {format(new Date(selectedDate.start), "p")} -{" "}
+            {format(new Date(selectedDate.end), "p")}
+          </p>
+        </div>
+        <Form name="event-form" onFinish={handleAddEvent} form={form}>
           <div className="d-flex justify-content-between mb-1">
             <div style={{ flex: 1, marginRight: "20px" }}>
               {/* Left column of form fields */}
@@ -166,8 +195,6 @@ const CreateEventDrawer = ({
           </Form.Item>
         </Form>
       </Drawer>
-
-     
     </>
   );
 };
