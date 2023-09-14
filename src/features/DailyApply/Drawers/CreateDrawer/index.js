@@ -18,7 +18,7 @@ const initialFormValues = {
   positionToApply: undefined,
 };
 
-const DailyApplyDrawer = ({ isOpen, handleDrawer }) => {
+const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
   const dispatch = useDispatch();
   const userId = useSelector(getUserId);
   const allProfiles = useSelector(getAllProfiles);
@@ -188,4 +188,4 @@ const DailyApplyDrawer = ({ isOpen, handleDrawer }) => {
   );
 };
 
-export default DailyApplyDrawer;
+export default CreateDailyApplyDrawer;

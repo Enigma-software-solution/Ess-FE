@@ -1,32 +1,35 @@
 import React from 'react';
 import { Drawer, Button } from 'antd';
+import { StyledDetailsDiv } from './styled';
 
-const DetailsDailyApplyDrawer = ({ isOpen, handleDrawer, selectedRecord }) => {
+const DetailsDailyApplyDrawer = ({ isOpen, handleDetailsDrawer, selectedRecord }) => {
+
+    console.log(selectedRecord, "selected")
+
     return (
         <Drawer
-            title="Details"
+            title="Details Apply"
             placement="right"
             closable={false}
-            onClose={handleDrawer}
+            onClose={handleDetailsDrawer}
             visible={isOpen}
-            width={400}
+            width={500}
         >
             {selectedRecord && (
-                <div>
-                    <p>Name: {selectedRecord.clientName}</p>
-                    <p>Link: <a href={selectedRecord.link}>{selectedRecord.link}</a></p>
-                    <p>Position To Apply: {selectedRecord.positionToApply}</p>
-                    <p>Platform: {selectedRecord.platform}</p>
-                    <p>User Email: {selectedRecord.user.email}</p>
-                    <p>Company Name: {selectedRecord.companyName}</p>
-                    {/* Include other details from the selected record */}
-                </div>
+                <StyledDetailsDiv>
+                    <p><strong>Name:</strong> {selectedRecord.clientName}</p>
+                    <p><strong>Link:</strong> <a href={selectedRecord.link} style={{textDecoration:"none", color:"white"}}>{selectedRecord?.link}</a></p>
+                    <p><strong>Position To Apply:</strong> {selectedRecord?.positionToApply}</p>
+                    <p><strong>Platform:</strong> {selectedRecord?.platform}</p>
+                    <p><strong>Company Name:</strong> {selectedRecord?.companyName}</p>
+                    <p><strong>Profile Name:</strong> {selectedRecord?.profile?.name}</p>
+                    <p><strong>User Name:</strong> {selectedRecord?.user?.email}</p>
+                </StyledDetailsDiv>
             )}
-            <Button onClick={handleDrawer} style={{ marginTop: 16 }}>
+            <Button type="primary" onClick={handleDetailsDrawer} style={{ marginTop: 16 }}>
                 Close
             </Button>
         </Drawer>
     );
 };
-
 export default DetailsDailyApplyDrawer;
