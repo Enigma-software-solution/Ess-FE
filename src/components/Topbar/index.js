@@ -10,7 +10,6 @@ const Topbar = ({ setCollapsed, collapsed }) => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("refresh_token");
-
     navigate("/login");
   };
 
