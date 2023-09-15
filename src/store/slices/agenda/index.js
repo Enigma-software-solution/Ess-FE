@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { getAllEventsApi } from './apis';
+import { createEventsApi, getAllEventsApi } from './apis';
 
 
 const initialState = {
@@ -32,6 +32,11 @@ const agendaSlice = createSlice({
             state.error = action.error.message;
           });
     
+          // CREATE EVENTS
+          builder.addCase(createEventsApi.fulfilled, (state, action) => {
+            state.status = 'succeeded';
+            state.events=[...state.events,action.payload.event]
+          });
 
     },
 });
