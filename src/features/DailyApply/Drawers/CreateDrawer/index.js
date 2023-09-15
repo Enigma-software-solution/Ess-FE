@@ -18,7 +18,7 @@ const initialFormValues = {
   positionToApply: undefined,
 };
 
-const DailyApplyDrawer = ({ isOpen, handleDrawer }) => {
+const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
   const dispatch = useDispatch();
   const userId = useSelector(getUserId);
   const allProfiles = useSelector(getAllProfiles);
@@ -82,7 +82,7 @@ const DailyApplyDrawer = ({ isOpen, handleDrawer }) => {
       console.log(selectedApply, "sdfsdfafasfd")
 
       if (selectedApply) {
-        dispatch(updateDailyAppliesApi({ data, id: selectedApply._id }));
+        dispatch(updateDailyAppliesApi({ data, id: selectedApply?._id }));
       } else {
         dispatch(createDailyAppliesApi(data));
       }
@@ -188,4 +188,4 @@ const DailyApplyDrawer = ({ isOpen, handleDrawer }) => {
   );
 };
 
-export default DailyApplyDrawer;
+export default CreateDailyApplyDrawer;

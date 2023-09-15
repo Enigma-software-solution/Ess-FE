@@ -13,6 +13,10 @@ const GlobalStyles = createGlobalStyle`
     font-family:sans-serif, 'Helvetica Neue', Helvetica, Arial, ;
     font-size: 16px;
   }
+
+  .rbc-time-slot.rbc-selectable {
+  height: 340px !important; /* Change this value to your desired height */
+}
 `;
 
 export default GlobalStyles;

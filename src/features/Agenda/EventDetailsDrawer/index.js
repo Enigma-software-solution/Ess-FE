@@ -1,14 +1,10 @@
-import React from 'react'
-import { useSelector } from 'react-redux'
-import { Card, Drawer } from 'antd';
-import styled from 'styled-components';
-import { format } from 'date-fns'
-import { getSelectAgenda } from 'src/store/slices/agenda/selector';
-
-const EventCard = styled(Card)`
-  width: 600px;
-  margin: 20px auto;
-`;
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
+import { Button, Card, Drawer } from "antd";
+import styled from "styled-components";
+import { format } from "date-fns";
+import { getSelectEvent } from "src/store/slices/agenda/selector";
+import NotesDrawer from "../NotesDrawer";
 
 const EventDetails = styled.div`
   margin-bottom: 15px;
@@ -22,87 +18,140 @@ const EventValue = styled.span`
   margin-left: 5px;
 `;
 
+const EventDetailsDrawer = ({ isDrawerOpen, handleDrawerClose,showCreateEventDrawer }) => {
+  const [isNotesDrawer, setIsNotesDrawer] = useState(false);
 
+  const selectedEvent = useSelector(getSelectEvent);
 
-// const selectedEvent = {
-//     "start": "2023-08-10T04:00:00.000Z",
-//     "end": "2023-08-11T04:30:00.000Z",
-//     "eventName": "test",
-//     "companyName": "sdl",
-//     "numOfGuests": "3",
-//     "guests": "tess@gmal.com\ntessfdsds@gmal.com\ntess@gmal.com",
-//     "callType": "initialCall",
-//     "callPlatform": "zoom",
-//     "initialConversation": "In this code, I've defined TypeScript types for the Guest object, the form values CreateEventFormValues, and the CreateEventDrawerProps. You can replace the guests field type with an array of Guest if you decide to use Form.List for dynamically adding guests.",
-//     "companyInformation": "this is a startup \nhairing new members for "
-// }
+  // Function to format date
+  const formatDate = (dateString) => {
+    return format(new Date(dateString), "MMMM dd, yyyy HH:mm");
+  };
 
+  const handleNotesDrawer = () => {
+    setIsNotesDrawer(!isNotesDrawer);
+  };
 
-const EventDetailsDrawer= ({ isDrawerOpen, handleDrawerClose }) => {
-    const selectedEvent = useSelector(getSelectAgenda)
-    return (
-        <div>
+  return (
+    <div>
+      <Drawer
+        title="Call Details"
+        placement="right"
+        closable={true}
+        onClose={handleDrawerClose}
+        visible={isDrawerOpen}
+        width={selectedEvent.notes ? '70%' : '50%'}
+      >
+        <div className="d-flex w-100 gap-1 justify-content-end mb-2">
+       
+          <Button type="primary" onClick={()=>showCreateEventDrawer(true)}>Update</Button>
 
-            <Drawer
-                title="Call Details"
-                placement="right"
-                closable={true}
-                onClose={handleDrawerClose}
-                open={isDrawerOpen}
-                width={700}
-            >
-
-{
-    selectedEvent && selectedEvent.start && selectedEvent.end && 
-              <>
-              <div className="d-flex justify-content-end align-items-end flex-column  mb-1">
-                    <p>Date: {format(new Date(selectedEvent?.start), 'dd-MM-yyyy')}</p>
-                    <p>
-                        Time: {format(new Date(selectedEvent.start), 'p')} -{' '}
-                        {format(new Date(selectedEvent.end), 'p')}
-                    </p>
-                </div>
-                <EventCard title="Event Details">
-                    <EventDetails>
-                        <EventLabel>Event Name:</EventLabel>
-                        <EventValue>{selectedEvent.eventName}</EventValue>
-                    </EventDetails>
-                    <EventDetails>
-                        <EventLabel>Company Name:</EventLabel>
-                        <EventValue>{selectedEvent.companyName}</EventValue>
-                    </EventDetails>
-                    <EventDetails>
-                        <EventLabel>Number of Guests:</EventLabel>
-                        <EventValue>{selectedEvent.numOfGuests}</EventValue>
-                    </EventDetails>
-                    <EventDetails>
-                        <EventLabel>Guests:</EventLabel>
-                        <EventValue>{selectedEvent.guests}</EventValue>
-                    </EventDetails>
-                    <EventDetails>
-                        <EventLabel>Call Type:</EventLabel>
-                        <EventValue>{selectedEvent.callType}</EventValue>
-                    </EventDetails>
-                    <EventDetails>
-                        <EventLabel>Call Platform:</EventLabel>
-                        <EventValue>{selectedEvent.callPlatform}</EventValue>
-                    </EventDetails>
-                    <EventDetails>
-                        <EventLabel>Initial Conversation:</EventLabel>
-                        <EventValue>{selectedEvent.initialConversation}</EventValue>
-                    </EventDetails>
-                    <EventDetails>
-                        <EventLabel>Company Information:</EventLabel>
-                        <EventValue>{selectedEvent.companyInformation}</EventValue>
-                    </EventDetails>
-                </EventCard>
-              </>
-
-}
-
-            </Drawer>
+          <Button
+            type="primary"
+            onClick={handleNotesDrawer}
+          >
+            {selectedEvent?.notes ? "Update Notes" : "Add notes"}
+          </Button>
         </div>
-    )
-}
 
-export default EventDetailsDrawer
+        {selectedEvent && selectedEvent.start && selectedEvent.end && (
+          <div className="d-flex gap-2">
+            <Card className="w-100" title="Event information">
+              <EventDetails>
+                <EventLabel>Company Name:</EventLabel>
+                <EventValue>{selectedEvent.companyName}</EventValue>
+              </EventDetails>
+              <EventDetails>
+                <EventLabel>Job Title:</EventLabel>
+                <EventValue>{selectedEvent.jobTitle}</EventValue>
+              </EventDetails>
+              <EventDetails>
+                <EventLabel>Start Time:</EventLabel>
+                <EventValue>{formatDate(selectedEvent.start)}</EventValue>
+              </EventDetails>
+              <EventDetails>
+                <EventLabel>End Time:</EventLabel>
+                <EventValue>{formatDate(selectedEvent.end)}</EventValue>
+              </EventDetails>
+              <EventDetails>
+                <EventLabel>Call Duration:</EventLabel>
+                <EventValue>{selectedEvent.callDuration} seconds</EventValue>
+              </EventDetails>
+              <EventDetails>
+                <EventLabel>Number of Guests:</EventLabel>
+                <EventValue>{selectedEvent.numOfGuests}</EventValue>
+              </EventDetails>
+              <EventDetails>
+                <EventLabel>Call Type:</EventLabel>
+                <EventValue>{selectedEvent.callType}</EventValue>
+              </EventDetails>
+              <EventDetails>
+                <EventLabel>Call Mode:</EventLabel>
+                <EventValue>{selectedEvent.callMode}</EventValue>
+              </EventDetails>
+              <EventDetails>
+                <EventLabel>Call Platform:</EventLabel>
+                <EventValue>{selectedEvent.callPlatform}</EventValue>
+              </EventDetails>
+              <EventDetails>
+                <EventLabel>Initial Conversion:</EventLabel>
+                <EventValue>{selectedEvent.initialConversion}</EventValue>
+              </EventDetails>
+              {/* Additional EventDetails for created date, profile name, and user name */}
+              <EventDetails>
+                <EventLabel>Created Date:</EventLabel>
+                <EventValue>{formatDate(selectedEvent.createdAt)}</EventValue>
+              </EventDetails>
+              <EventDetails>
+                <EventLabel>Profile Name:</EventLabel>
+                <EventValue>{selectedEvent.profile.name}</EventValue>
+              </EventDetails>
+              <EventDetails>
+                <EventLabel>User Name:</EventLabel>
+                <EventValue>
+                  {selectedEvent.user.first_name} {selectedEvent.user.last_name}
+                </EventValue>
+              </EventDetails>
+            </Card>
+
+            {selectedEvent.notes &&
+              selectedEvent?.notes !== null &&
+              selectedEvent.notes !== "" && (
+                <Card className="w-100" title="Notes">
+                  <div
+                    dangerouslySetInnerHTML={{ __html: selectedEvent?.notes }}
+                  />
+                </Card>
+              )}
+          </div>
+        )}
+
+        {selectedEvent && selectedEvent.start && selectedEvent.end && (
+          <div className="w-100 d-flex flex-column align-items-end">
+            <div>
+              <EventLabel>Profile:</EventLabel>
+              <EventValue>{selectedEvent.profile.name}</EventValue>
+            </div>
+            <div>
+              <EventLabel>User:</EventLabel>
+              <EventValue>
+                {selectedEvent.user.first_name} {selectedEvent.user.last_name}
+              </EventValue>
+            </div>
+            <div>
+              <EventLabel>Created Date:</EventLabel>
+              <EventValue>{formatDate(selectedEvent.createdAt)}</EventValue>
+            </div>
+          </div>
+        )}
+      </Drawer>
+
+      <NotesDrawer
+        isDrawerOpen={isNotesDrawer}
+        handleDrawerClose={handleNotesDrawer}
+      />
+    </div>
+  );
+};
+
+export default EventDetailsDrawer;

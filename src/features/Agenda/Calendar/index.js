@@ -1,119 +1,139 @@
-"use client"
-import React, { useEffect, useState } from 'react';
-import { Calendar, dateFnsLocalizer } from 'react-big-calendar';
-import format from 'date-fns/format';
-import parse from 'date-fns/parse';
-import startOfWeek from 'date-fns/startOfWeek';
-import getDay from 'date-fns/getDay';
-import enUS from 'date-fns/locale/en-US';
-import CreateEventDrawer from '../CreateEventDrawer';
-import { useDispatch, useSelector } from 'react-redux';
-import 'react-big-calendar/lib/css/react-big-calendar.css';
-import EventDetailsDrawer from '../EventDetailsDrawer';
-import { setSelectedEvent } from 'src/store/slices/agenda';
-import { getAllEventsApi } from 'src/store/slices/agenda/apis';
-import { getAllEvents } from 'src/store/slices/agenda/selector';
+import React, { useEffect, useState } from "react";
+import { Calendar, dateFnsLocalizer } from "react-big-calendar";
+import format from "date-fns/format";
+import parse from "date-fns/parse";
+import startOfWeek from "date-fns/startOfWeek";
+import getDay from "date-fns/getDay";
+import enUS from "date-fns/locale/en-US";
+import { useDispatch, useSelector } from "react-redux";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+import CreateEventDrawer from "../CreateEventDrawer";
+import EventDetailsDrawer from "../EventDetailsDrawer";
+import { setSelectedEvent } from "src/store/slices/agenda";
+import { getAllEventsApi } from "src/store/slices/agenda/apis";
+import { getAllEvents } from "src/store/slices/agenda/selector";
+import { CallType } from "src/constant/callTypes";
 
 const locales = {
-    'en-US': enUS,
+  "en-US": enUS,
 };
 
 const localizer = dateFnsLocalizer({
-    format,
-    parse,
-    startOfWeek,
-    getDay,
-    locales,
+  format,
+  parse,
+  startOfWeek,
+  getDay,
+  locales,
 });
 
-
 const CustomCalendar = () => {
-    const [slotDrawer, setSlotDrawer] = useState(false);
-    const [eventDrawer, setEventDrawer] = useState(false);
-    const [selectedDate, setSelectedDate] = useState({
-        start: null,
-        end: null
-    });
+  const [slotDrawer, setSlotDrawer] = useState(false);
+  const [eventDrawer, setEventDrawer] = useState(false);
+  const [selectedDate, setSelectedDate] = useState({
+    start: null,
+    end: null,
+  });
 
-const [preparedEvents,setPreparedEvents]=useState([])
+  const dispatch = useDispatch();
+  const events = useSelector(getAllEvents);
+  const [preparedEvents, setPreparedEvents] = useState([]);
+  const [currentView, setCurrentView] = useState("month"); // Track the current view mode
 
+  useEffect(() => {
+    const newEvents = events.map((e) => ({
+      ...e,
+      start: new Date(e.start),
+      end: new Date(e.end),
+    }));
+    setPreparedEvents(newEvents);
+  }, [events]);
 
-    const dispatch = useDispatch()
-    const events = useSelector(getAllEvents)
-    
-    useEffect(() => {
-    const newEvents= events.map((e)=>{
-        return{
-            ...e,
-            start:new Date(e.start),
-            end:new Date(e.end)
-        }
-    })
-    setPreparedEvents(newEvents)
-    }, [events])
-    
+  console.log(events, "adasdasdasd")
 
-    const onSelectSlot = (slot) => {
-        setSelectedDate({
-            start: slot.start,
-            end: slot.end
-        });
-        setSlotDrawer(true);
-        console.log('selected slot', slot)
-    };
-
-    const handleSlotDrawerClose = () => {
-        setSlotDrawer(false);
-    };
-
-    const onEventClick = async (event) => {
-        dispatch(setSelectedEvent(event))
-        setEventDrawer(true)
+  const onSelectSlot = (slot) => {
+    if (currentView === "day" || currentView === "week") {
+      setSelectedDate({
+        start: slot.start,
+        end: slot.end,
+      });
+    dispatch(setSelectedEvent({}))
+      setSlotDrawer(true);
     }
+  };
 
-    const handleEventDrawerClose = () => {
-        setEventDrawer(false);
+  const handleSlotDrawerClose = () => {
+    setSlotDrawer(false);
+  };
+
+  const onEventClick = async (event) => {
+    dispatch(setSelectedEvent(event));
+    setEventDrawer(true);
+  };
+
+  const handleEventDrawerClose = () => {
+    setEventDrawer(false);
+    console.log('calledd')
+  };
+
+  const getEventStyle = (event) => {
+    const colorMap = {
+      [CallType.Initial]: "#7591e0",
+      [CallType.Final]: "blue",
+      [CallType.Technical]: "green",
+      [CallType.Reschedule]: "orange",
     };
+    const backgroundColor = colorMap[event.callType] || "gray";
 
-    const CustomEventComponent = ({ event }) => {
-        console.log(event, 'ss')
-        return (
-            <div>
-                <strong>{event.jobTitle}</strong>
-                <br />
-                {/* <p>{event?.clientName}</p> */}
-            </div>
-        );
+    return {
+      style: {
+        backgroundColor,
+      },
     };
+  };
 
-    useEffect(() => {
-   dispatch(getAllEventsApi())
-    }, [])
-    
+  useEffect(() => {
+    dispatch(getAllEventsApi());
+  }, []);
 
-    return (
-        <div>
+  const CustomEventComponent = ({ event }) => (
 
-            <Calendar
-                localizer={localizer}
-                events={preparedEvents}
-                startAccessor="start"
-                endAccessor="end"
-                style={{ height: 'calc(100vh - 100px)' }}
-                timeslots={1}
-                step={30}
-                selectable={true}
-                onSelectSlot={onSelectSlot}
-                onSelectEvent={onEventClick}
-                components={{
-                    event: CustomEventComponent
-                }}
-            />
+    <div>
+      <strong>{event.jobTitle}</strong>
+    </div>
+  );
 
-            <CreateEventDrawer selectedDate={selectedDate} isDrawerOpen={slotDrawer} handleDrawerClose={handleSlotDrawerClose} />
-            <EventDetailsDrawer isDrawerOpen={eventDrawer} handleDrawerClose={handleEventDrawerClose} />
-        </div>
-    );
+  return (
+    <div>
+      <Calendar
+        localizer={localizer}
+        events={preparedEvents}
+        startAccessor="start"
+        endAccessor="end"
+        style={{ height: "calc(100vh - 100px)" }}
+        timeslots={1}
+        step={15}
+        selectable={true}
+        onSelectSlot={onSelectSlot}
+        onSelectEvent={onEventClick}
+        components={{
+          event: CustomEventComponent,
+        }}
+        eventPropGetter={getEventStyle}
+        onView={(view) => setCurrentView(view)}
+      />
+
+      <CreateEventDrawer
+        selectedDate={selectedDate}
+        isDrawerOpen={slotDrawer}
+        handleDrawerClose={handleSlotDrawerClose}
+      />
+      <EventDetailsDrawer
+        isDrawerOpen={eventDrawer}
+        handleDrawerClose={handleEventDrawerClose}
+        showCreateEventDrawer={setSlotDrawer}
+      />
+    </div>
+  );
 };
 
 export default CustomCalendar;
