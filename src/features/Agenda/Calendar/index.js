@@ -48,6 +48,8 @@ const CustomCalendar = () => {
     setPreparedEvents(newEvents);
   }, [events]);
 
+  console.log(events, "adasdasdasd")
+
   const onSelectSlot = (slot) => {
     if (currentView === "day" || currentView === "week") {
       setSelectedDate({
@@ -94,6 +96,7 @@ const CustomCalendar = () => {
   }, []);
 
   const CustomEventComponent = ({ event }) => (
+
     <div>
       <strong>{event.jobTitle}</strong>
     </div>
