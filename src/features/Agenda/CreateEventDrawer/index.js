@@ -31,18 +31,6 @@ const CreateEventDrawer = ({
     form.resetFields();
   };
 
-  // const handleAddEvent = (values) => {
-  //   const preparedData = {
-  //     user: userId,
-  //     ...selectedDate,
-  //     ...values,
-  //   };
-  //   dispatch(createEventsApi(preparedData));
-  //   handleReset();
-  //   handleDrawerClose();
-  // };
-
-
   const handleCreateOrUpdateEvent = (values) => {
     const preparedData = {
       user: userId,
