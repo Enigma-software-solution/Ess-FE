@@ -3,7 +3,7 @@ import { Button, Form, Input, Select } from "antd";
 import { format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import { Drawer } from "antd";
-import { createEventsApi } from "src/store/slices/agenda/apis";
+import { UpdateEventsApi, createEventsApi } from "src/store/slices/agenda/apis";
 import { CallType } from "src/constant/callTypes";
 import { CallPlatform } from "src/constant/callplatform";
 import { getUserId } from "src/store/slices/authSlice/selectors";
@@ -19,8 +19,7 @@ const CreateEventDrawer = ({
 }) => {
   const [form] = Form.useForm();
 
-  const initialFormValues = {
-  };
+  const initialFormValues = {};
 
   const dispatch = useDispatch();
   const selectedEvent = useSelector(getSelectEvent)
@@ -32,14 +31,31 @@ const CreateEventDrawer = ({
     form.resetFields();
   };
 
-  const handleAddEvent = (values) => {
-    console.log(values,'vvvvvvvvvvvvv')
+  const handleCreateOrUpdateEvent = (values) => {
     const preparedData = {
       user: userId,
       ...selectedDate,
       ...values,
     };
-    dispatch(createEventsApi(preparedData));
+
+    const preparedDataForEdit = {
+      user: userId,
+      start:selectedEvent.start,
+      end:selectedEvent.end,
+      ...values,
+    };
+    if (selectedEvent) {
+      // If selectedEvent exists, update the event
+      dispatch(
+        UpdateEventsApi({
+          eventId: selectedEvent._id, // Use the correct property to get the event ID
+          ...preparedDataForEdit,
+        })
+      );
+    } else {
+      // Otherwise, create a new event
+      dispatch(createEventsApi(preparedData));
+    }
     handleReset();
     handleDrawerClose();
   };
@@ -49,6 +65,8 @@ const CreateEventDrawer = ({
       dispatch(getProfilesApi());
     }
   }, [dispatch, allProfiles]);
+
+  console.log(selectedEvent, "selectedEventselectedEvent")
 
 
   useEffect(() => {
@@ -99,7 +117,7 @@ const CreateEventDrawer = ({
             {format(new Date(selectedDate.end), "p")}
           </p>
         </div>
-        <Form name="event-form" onFinish={handleAddEvent} form={form}>
+        <Form name="event-form" onFinish={handleCreateOrUpdateEvent} form={form}>
           <div className="d-flex justify-content-between mb-1">
             <div style={{ flex: 1, marginRight: "20px" }}>
               {/* Left column of form fields */}
