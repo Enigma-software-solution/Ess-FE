@@ -22,9 +22,9 @@ export const SidebarMenu = styled(Menu)`
   .ant-menu-item{
     color:white !important
   }
-  .ant-menu-item:hover, /* Change hover color for menu items */
-  .ant-menu-item-selected { /* Change selected item color */
-    background-color: blue !important; /* Replace 'your-hover-color' with your desired color */
+  .ant-menu-item:hover,
+  .ant-menu-item-selected { 
+    background-color: #468B9F !important;
   }
 `
 

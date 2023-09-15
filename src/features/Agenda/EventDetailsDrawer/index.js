@@ -6,7 +6,7 @@ import { format } from "date-fns";
 import { getSelectEvent } from "src/store/slices/agenda/selector";
 import NotesDrawer from "../NotesDrawer";
 
-const EventDetails = styled.div`
+const Div = styled.div`
   margin-bottom: 15px;
 `;
 
@@ -41,8 +41,8 @@ const EventDetailsDrawer = ({ isDrawerOpen, handleDrawerClose,showCreateEventDra
         onClose={handleDrawerClose}
         visible={isDrawerOpen}
         width={selectedEvent.notes ? '70%' : '50%'}
-      >
-        <div className="d-flex w-100 gap-1 justify-content-end mb-2">
+        extra={
+          <div className="d-flex w-100 gap-1 justify-content-end mb-2">
        
           <Button type="primary" onClick={()=>showCreateEventDrawer(true)}>Update</Button>
 
@@ -54,64 +54,69 @@ const EventDetailsDrawer = ({ isDrawerOpen, handleDrawerClose,showCreateEventDra
           </Button>
         </div>
 
+        }
+      >
+     
+
+     {
+      selectedEvent?.start && selectedEvent.end && 
+      <div className="d-flex justify-content-end align-items-end flex-column  mb-1">
+      <p>Date: {format(new Date(selectedEvent?.start), "dd-MM-yyyy")}</p>
+      <p>
+        Time: {format(new Date(selectedEvent.start), "p")} -{" "}
+        {format(new Date(selectedEvent.end), "p")}
+      </p>
+    </div>
+     }
+
         {selectedEvent && selectedEvent.start && selectedEvent.end && (
           <div className="d-flex gap-2">
             <Card className="w-100" title="Event information">
-              <EventDetails>
+              <Div>
                 <EventLabel>Company Name:</EventLabel>
                 <EventValue>{selectedEvent.companyName}</EventValue>
-              </EventDetails>
-              <EventDetails>
+              </Div>
+              <Div>
                 <EventLabel>Job Title:</EventLabel>
                 <EventValue>{selectedEvent.jobTitle}</EventValue>
-              </EventDetails>
-              <EventDetails>
+              </Div>
+              <Div>
                 <EventLabel>Start Time:</EventLabel>
                 <EventValue>{formatDate(selectedEvent.start)}</EventValue>
-              </EventDetails>
-              <EventDetails>
+              </Div>
+              <Div>
                 <EventLabel>End Time:</EventLabel>
                 <EventValue>{formatDate(selectedEvent.end)}</EventValue>
-              </EventDetails>
-              <EventDetails>
+              </Div>
+              <Div>
                 <EventLabel>Call Duration:</EventLabel>
                 <EventValue>{selectedEvent.callDuration} seconds</EventValue>
-              </EventDetails>
-              <EventDetails>
+              </Div>
+              <Div>
                 <EventLabel>Number of Guests:</EventLabel>
                 <EventValue>{selectedEvent.numOfGuests}</EventValue>
-              </EventDetails>
-              <EventDetails>
+              </Div>
+              <Div>
                 <EventLabel>Call Type:</EventLabel>
                 <EventValue>{selectedEvent.callType}</EventValue>
-              </EventDetails>
-              <EventDetails>
+              </Div>
+              <Div>
                 <EventLabel>Call Mode:</EventLabel>
                 <EventValue>{selectedEvent.callMode}</EventValue>
-              </EventDetails>
-              <EventDetails>
+              </Div>
+              <Div>
                 <EventLabel>Call Platform:</EventLabel>
                 <EventValue>{selectedEvent.callPlatform}</EventValue>
-              </EventDetails>
-              <EventDetails>
-                <EventLabel>Initial Conversion:</EventLabel>
-                <EventValue>{selectedEvent.initialConversion}</EventValue>
-              </EventDetails>
-              {/* Additional EventDetails for created date, profile name, and user name */}
-              <EventDetails>
-                <EventLabel>Created Date:</EventLabel>
-                <EventValue>{formatDate(selectedEvent.createdAt)}</EventValue>
-              </EventDetails>
-              <EventDetails>
-                <EventLabel>Profile Name:</EventLabel>
-                <EventValue>{selectedEvent.profile.name}</EventValue>
-              </EventDetails>
-              <EventDetails>
-                <EventLabel>User Name:</EventLabel>
-                <EventValue>
-                  {selectedEvent.user.first_name} {selectedEvent.user.last_name}
-                </EventValue>
-              </EventDetails>
+              </Div>
+              <Div>
+                <EventLabel>Call Platform:</EventLabel>
+                <EventValue>{selectedEvent.callPlatform}</EventValue>
+              </Div>
+              <Div>
+                <EventLabel>Mail Link:</EventLabel>
+                <EventValue><a href={selectedEvent?.mailLink}>Mail</a></EventValue>
+              </Div>
+           
             </Card>
 
             {selectedEvent.notes &&

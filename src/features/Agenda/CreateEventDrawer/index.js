@@ -33,6 +33,7 @@ const CreateEventDrawer = ({
   };
 
   const handleAddEvent = (values) => {
+    console.log(values,'vvvvvvvvvvvvv')
     const preparedData = {
       user: userId,
       ...selectedDate,
@@ -61,7 +62,6 @@ const CreateEventDrawer = ({
         callType,
         callPlatform,
         profile,
-        initialConversion,
         companyInformation,
       } = selectedEvent;
 
@@ -74,7 +74,6 @@ const CreateEventDrawer = ({
         callType,
         callPlatform,
         profile,
-        initialConversion,
         companyInformation,
       });
     } else {
@@ -91,6 +90,7 @@ const CreateEventDrawer = ({
         onClose={handleDrawerClose}
         open={isDrawerOpen}
         width={860}
+     
       >
         <div className="d-flex justify-content-end align-items-end flex-column  mb-1">
           <p>Date: {format(new Date(selectedDate?.start), "dd-MM-yyyy")}</p>
@@ -118,7 +118,7 @@ const CreateEventDrawer = ({
                 <Input />
               </Form.Item>
               <Form.Item
-                name="callDurition"
+                name="callDuration"
                 label="Call duration"
                 rules={[{ required: true }]}
               >
@@ -127,16 +127,15 @@ const CreateEventDrawer = ({
               <Form.Item
                 name="numOfGuests"
                 label="Number of Guests"
-                rules={[{ required: true }]}
+            
               >
                 <Input type="number" />
               </Form.Item>
-              <Form.Item name="callMode" label="Call Mode">
-                <Select>
-                  <Option value="voice">Voice</Option>
-                  <Option value="video">Video</Option>
-                </Select>
+
+              <Form.Item name="mailLink" label="Mail Link">
+                <Input type="text" />
               </Form.Item>
+           
             </div>
             <div style={{ flex: 1 }}>
               {/* Right column of form fields */}
@@ -150,6 +149,12 @@ const CreateEventDrawer = ({
                   <Option value={CallType.Technical}>Technical </Option>
                   <Option value={CallType.Final}>Final</Option>
                   <Option value={CallType.Reschedule}>Reschedule</Option>
+                </Select>
+              </Form.Item>
+              <Form.Item name="callMode" label="Call Mode">
+                <Select>
+                  <Option value="voice">Voice</Option>
+                  <Option value="video">Video</Option>
                 </Select>
               </Form.Item>
               <Form.Item
@@ -180,12 +185,11 @@ const CreateEventDrawer = ({
                   ))}
                 </Select>
               </Form.Item>
-              <Form.Item name="initialConversion" label="Initial Conversation">
-                <Input.TextArea />
-              </Form.Item>
+             
               <Form.Item name="companyInformation" label="Company Information">
                 <Input.TextArea />
               </Form.Item>
+              
             </div>
           </div>
           <Form.Item className="d-flex justify-content-end">
