@@ -8,8 +8,8 @@ const GlobalStyles = createGlobalStyle`
 }
 
   body {
-    background-color: ${(props) => props.theme.colors.background};
-    color: ${(props) => props.theme.colors.text};
+    background-color: ${(props) => props.theme.token.background};
+    color: ${(props) => props.theme.token.text};
     font-family:sans-serif, 'Helvetica Neue', Helvetica, Arial, ;
     font-size: 16px;
   }

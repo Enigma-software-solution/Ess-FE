@@ -15,13 +15,7 @@ export const sidebarMenuItems = [
         icon: <DashboardOutlined />,
         path: routes.DAILY_APPLY,
     },
-    {
-        key: routes.SALES_EXECUTIVE,
-        title: 'Sales',
-        icon: <UsergroupAddOutlined />,
-        path: routes.SALES_EXECUTIVE,
-
-    },
+ 
     {
         key: routes.AGENDA,
         title: 'Agenda',
@@ -36,14 +30,14 @@ export const sidebarMenuItems = [
         path: routes.PROFILE,
 
     },
-    {
-        key: 'admin',
-        title: 'Admin',
-        icon: <UserOutlined />,
-        subMenu: [
-            { key: '/dashboard/sales', title: 'Admin 1', path: '/dashboard/sales' },
-            { key: '/dashboard/users', title: 'Admin 2', path: '/dashboard/users' },
-            { key: 'admin3', title: 'Admin 3', path: '/dashboard/test' },
-        ],
-    },
+    // {
+    //     key: 'admin',
+    //     title: 'Admin',
+    //     icon: <UserOutlined />,
+    //     subMenu: [
+    //         { key: '/dashboard/sales', title: 'Admin 1', path: '/dashboard/sales' },
+    //         { key: '/dashboard/users', title: 'Admin 2', path: '/dashboard/users' },
+    //         { key: 'admin3', title: 'Admin 3', path: '/dashboard/test' },
+    //     ],
+    // },
 ];
