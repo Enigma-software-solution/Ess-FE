@@ -1,4 +1,4 @@
-import Reac from "react";
+import React from "react";
 import { Form, Input, Button, Checkbox, Avatar, message } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,10 +21,9 @@ const LoginForm = () => {
 
       console.log(res, "after unwrapResult");
       navigate("/");
-    
+
       message.success("User successfully logged in");
     } catch (err) {
-      console.log(err, "ee");
       message.error(err.message);
     }
   };

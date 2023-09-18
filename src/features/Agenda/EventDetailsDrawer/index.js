@@ -1,10 +1,11 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
-import { Button, Card, Drawer } from "antd";
+import { useDispatch, useSelector } from "react-redux";
+import { Button, Card, Drawer, Popconfirm } from "antd";
 import styled from "styled-components";
 import { format } from "date-fns";
 import { getSelectEvent } from "src/store/slices/agenda/selector";
 import NotesDrawer from "../NotesDrawer";
+import { DeleteEventsApi } from "src/store/slices/agenda/apis";
 
 const Div = styled.div`
   margin-bottom: 15px;
@@ -18,12 +19,13 @@ const EventValue = styled.span`
   margin-left: 5px;
 `;
 
-const EventDetailsDrawer = ({ isDrawerOpen, handleDrawerClose,showCreateEventDrawer }) => {
+const EventDetailsDrawer = ({ isDrawerOpen, handleDrawerClose, showCreateEventDrawer }) => {
   const [isNotesDrawer, setIsNotesDrawer] = useState(false);
+
+  const dispatch = useDispatch()
 
   const selectedEvent = useSelector(getSelectEvent);
 
-  // Function to format date
   const formatDate = (dateString) => {
     return format(new Date(dateString), "MMMM dd, yyyy HH:mm");
   };
@@ -31,6 +33,11 @@ const EventDetailsDrawer = ({ isDrawerOpen, handleDrawerClose,showCreateEventDra
   const handleNotesDrawer = () => {
     setIsNotesDrawer(!isNotesDrawer);
   };
+
+  const handleConfirmDelete = (record) => {
+    console.log(record._id, "12345")
+    dispatch(DeleteEventsApi(record._id))
+  }
 
   return (
     <div>
@@ -43,31 +50,40 @@ const EventDetailsDrawer = ({ isDrawerOpen, handleDrawerClose,showCreateEventDra
         width={selectedEvent.notes ? '70%' : '50%'}
         extra={
           <div className="d-flex w-100 gap-1 justify-content-end mb-2">
-       
-          <Button type="primary" onClick={()=>showCreateEventDrawer(true)}>Update</Button>
 
-          <Button
-            type="primary"
-            onClick={handleNotesDrawer}
-          >
-            {selectedEvent?.notes ? "Update Notes" : "Add notes"}
-          </Button>
-        </div>
+            <Button type="primary" onClick={() => showCreateEventDrawer(true)}>Update</Button>
+
+            <Popconfirm
+              title="Are you sure to delete this task?"
+              onConfirm={() => handleConfirmDelete(selectedEvent)}
+              okText="Yes"
+              cancelText="No"
+            >
+              <Button>Delete</Button>
+            </Popconfirm>
+
+            <Button
+              type="primary"
+              onClick={handleNotesDrawer}
+            >
+              {selectedEvent?.notes ? "Update Notes" : "Add notes"}
+            </Button>
+          </div>
 
         }
       >
-     
 
-     {
-      selectedEvent?.start && selectedEvent.end && 
-      <div className="d-flex justify-content-end align-items-end flex-column  mb-1">
-      <p>Date: {format(new Date(selectedEvent?.start), "dd-MM-yyyy")}</p>
-      <p>
-        Time: {format(new Date(selectedEvent.start), "p")} -{" "}
-        {format(new Date(selectedEvent.end), "p")}
-      </p>
-    </div>
-     }
+
+        {
+          selectedEvent?.start && selectedEvent.end &&
+          <div className="d-flex justify-content-end align-items-end flex-column  mb-1">
+            <p>Date: {format(new Date(selectedEvent?.start), "dd-MM-yyyy")}</p>
+            <p>
+              Time: {format(new Date(selectedEvent.start), "p")} -{" "}
+              {format(new Date(selectedEvent.end), "p")}
+            </p>
+          </div>
+        }
 
         {selectedEvent && selectedEvent.start && selectedEvent.end && (
           <div className="d-flex gap-2">
@@ -116,7 +132,7 @@ const EventDetailsDrawer = ({ isDrawerOpen, handleDrawerClose,showCreateEventDra
                 <EventLabel>Mail Link:</EventLabel>
                 <EventValue><a href={selectedEvent?.mailLink}>Mail</a></EventValue>
               </Div>
-           
+
             </Card>
 
             {selectedEvent.notes &&

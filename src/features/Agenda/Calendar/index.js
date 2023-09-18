@@ -48,15 +48,13 @@ const CustomCalendar = () => {
     setPreparedEvents(newEvents);
   }, [events]);
 
-  console.log(events, "adasdasdasd")
-
   const onSelectSlot = (slot) => {
     if (currentView === "day" || currentView === "week") {
       setSelectedDate({
         start: slot.start,
         end: slot.end,
       });
-    dispatch(setSelectedEvent({}))
+      dispatch(setSelectedEvent({}))
       setSlotDrawer(true);
     }
   };
@@ -72,7 +70,6 @@ const CustomCalendar = () => {
 
   const handleEventDrawerClose = () => {
     setEventDrawer(false);
-    console.log('calledd')
   };
 
   const getEventStyle = (event) => {

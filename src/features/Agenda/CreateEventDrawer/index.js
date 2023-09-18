@@ -40,8 +40,8 @@ const CreateEventDrawer = ({
 
     const preparedDataForEdit = {
       user: userId,
-      start:selectedEvent.start,
-      end:selectedEvent.end,
+      start: selectedEvent.start,
+      end: selectedEvent.end,
       ...values,
     };
     if (selectedEvent) {
@@ -65,9 +65,6 @@ const CreateEventDrawer = ({
       dispatch(getProfilesApi());
     }
   }, [dispatch, allProfiles]);
-
-  console.log(selectedEvent, "selectedEventselectedEvent")
-
 
   useEffect(() => {
     if (selectedEvent) {
@@ -108,7 +105,7 @@ const CreateEventDrawer = ({
         onClose={handleDrawerClose}
         open={isDrawerOpen}
         width={860}
-     
+
       >
         <div className="d-flex justify-content-end align-items-end flex-column  mb-1">
           <p>Date: {format(new Date(selectedDate?.start), "dd-MM-yyyy")}</p>
@@ -145,7 +142,7 @@ const CreateEventDrawer = ({
               <Form.Item
                 name="numOfGuests"
                 label="Number of Guests"
-            
+
               >
                 <Input type="number" />
               </Form.Item>
@@ -153,7 +150,7 @@ const CreateEventDrawer = ({
               <Form.Item name="mailLink" label="Mail Link">
                 <Input type="text" />
               </Form.Item>
-           
+
             </div>
             <div style={{ flex: 1 }}>
               {/* Right column of form fields */}
@@ -203,11 +200,11 @@ const CreateEventDrawer = ({
                   ))}
                 </Select>
               </Form.Item>
-             
+
               <Form.Item name="companyInformation" label="Company Information">
                 <Input.TextArea />
               </Form.Item>
-              
+
             </div>
           </div>
           <Form.Item className="d-flex justify-content-end">
