@@ -26,11 +26,10 @@ const Header = () => {
 
         const params = {
             profileId: value,
-          };
-      
-          const queryStringResult = qs.stringify(params);
+        };
+
+        const queryStringResult = qs.stringify(params);
         dispatch(getdailyAppliesApi(queryStringResult))
-        console.log(value, "profile")
     }
 
     return (

@@ -11,7 +11,7 @@ const { Option } = Select;
 
 const initialFormValues = {
   clientName: '',
-  companyName:'',
+  companyName: '',
   link: '',
   profile: undefined,
   platform: undefined,
@@ -27,7 +27,7 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    if ( !allProfiles?.length) {
+    if (!allProfiles?.length) {
       dispatch(getProfilesApi());
     }
   }, [dispatch, allProfiles]);
@@ -50,7 +50,7 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
         platform,
         companyName,
         positionToApply,
-        
+
       });
     } else {
       form.setFieldsValue(initialFormValues);
@@ -76,10 +76,8 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
         companyName,
         user: userId,
         profile,
-        
-      };
 
-      console.log(selectedApply, "sdfsdfafasfd")
+      };
 
       if (selectedApply) {
         dispatch(updateDailyAppliesApi({ data, id: selectedApply?._id }));
@@ -96,9 +94,9 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
 
   return (
     <Drawer open={isOpen} onClose={handleDrawer} width={800}
-    title={selectedApply ? 'Update Daily Apply' : 'Create Daily Apply'}
+      title={selectedApply ? 'Update Daily Apply' : 'Create Daily Apply'}
     >
-       
+
       <Form form={form} layout="vertical" hideRequiredMark onFinish={handleSubmit}>
         <Row gutter={16}>
           <Col span={12}>
@@ -119,7 +117,7 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
               <Input placeholder="Please enter Link" />
             </Form.Item>
           </Col>
-          
+
         </Row>
         <Row gutter={16}>
           <Col span={12}>

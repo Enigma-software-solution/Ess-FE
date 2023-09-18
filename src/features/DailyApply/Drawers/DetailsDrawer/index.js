@@ -4,8 +4,6 @@ import { StyledDetailsDiv } from './styled';
 
 const DetailsDailyApplyDrawer = ({ isOpen, handleDetailsDrawer, selectedRecord }) => {
 
-    console.log(selectedRecord, "selected")
-
     return (
         <Drawer
             title="Details Apply"
@@ -18,7 +16,7 @@ const DetailsDailyApplyDrawer = ({ isOpen, handleDetailsDrawer, selectedRecord }
             {selectedRecord && (
                 <StyledDetailsDiv>
                     <p><strong>Name:</strong> {selectedRecord.clientName}</p>
-                    <p><strong>Link:</strong> <a href={selectedRecord.link} style={{textDecoration:"none", color:"white"}}>{selectedRecord?.link}</a></p>
+                    <p><strong>Link:</strong> <a href={selectedRecord.link} style={{ textDecoration: "none", color: "white" }}>{selectedRecord?.link}</a></p>
                     <p><strong>Position To Apply:</strong> {selectedRecord?.positionToApply}</p>
                     <p><strong>Platform:</strong> {selectedRecord?.platform}</p>
                     <p><strong>Company Name:</strong> {selectedRecord?.companyName}</p>
