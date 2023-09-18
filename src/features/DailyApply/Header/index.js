@@ -32,8 +32,6 @@ const Header = () => {
     }
 
     const search = (e) => {
-
-
         const params = {
             search: e.target.value,
         };
