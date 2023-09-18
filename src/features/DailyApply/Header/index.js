@@ -1,15 +1,14 @@
 import AddButton from 'src/components/buttons/AddButton'
 import React, { useState } from 'react'
 import DailyApplyDrawer from '../Drawers/CreateDrawer';
-import { Select, Button } from 'antd';
+import { Select } from 'antd';
 import { useDispatch, useSelector } from 'react-redux'
 import { getAllProfiles } from 'src/store/slices/profielSlice/selectors'
-import { getProfilesApi } from 'src/store/slices/profielSlice/apis';
 import { getdailyAppliesApi } from 'src/store/slices/dailyApplySlice/apis';
 import qs from 'qs'
+import CustomSearchField from 'src/components/SearchField';
 
 const { Option } = Select;
-
 
 const Header = () => {
 
@@ -32,15 +31,19 @@ const Header = () => {
         dispatch(getdailyAppliesApi(queryStringResult))
     }
 
+    const search = (e) => {
+        const params = {
+            search: e.target.value,
+        };
+        const queryStringResult = qs.stringify(params);
+        dispatch(getdailyAppliesApi(queryStringResult))
+    }
+
     return (
 
         <div className='d-flex justify-content-between mb-2'>
             <div className='d-flex gap-1'>
-                {/* <Button>Today</Button>
-                <Button>Yesterday</Button>
-                <Button>Last Week</Button> */}
                 <Select placeholder="Please select a Profile" onChange={handleChangeProfile}>
-
                     {allProfiles?.map((profile) => (
                         <Option key={profile?._id} value={profile?._id}>
                             {profile?.name}
@@ -48,9 +51,9 @@ const Header = () => {
                     ))}
                 </Select>
             </div>
+            <CustomSearchField onChange={search} />
             <AddButton onClick={handleDrawer} text='New Apply' />
             <DailyApplyDrawer isOpen={isOpen} handleDrawer={handleDrawer} />
-
         </div>
     )
 }
