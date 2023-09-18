@@ -40,15 +40,15 @@ const CreateEventDrawer = ({
 
     const preparedDataForEdit = {
       user: userId,
-      start: selectedEvent.start,
-      end: selectedEvent.end,
+      start: selectedEvent?.start,
+      end: selectedEvent?.end,
       ...values,
     };
-    if (selectedEvent) {
+    if (selectedEvent && selectedEvent !== null) {
       // If selectedEvent exists, update the event
       dispatch(
         UpdateEventsApi({
-          eventId: selectedEvent._id, // Use the correct property to get the event ID
+          eventId: selectedEvent?._id, // Use the correct property to get the event ID
           ...preparedDataForEdit,
         })
       );

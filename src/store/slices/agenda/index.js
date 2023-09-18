@@ -3,7 +3,7 @@ import { DeleteEventsApi, UpdateEventsApi, createEventsApi, getAllEventsApi } fr
 
 
 const initialState = {
-  selectedEvent: {},
+  selectedEvent: null,
   events: [],
   status: 'idle',
   error: ''
