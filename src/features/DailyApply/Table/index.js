@@ -50,14 +50,6 @@ const CreateDailyAppliesTable = () => {
             title: "Name",
             sorter: (a, b) => a.clientName.localeCompare(b.clientName),
             dataIndex: "clientName",
-            // render: (text, record) => (
-            //     <div
-            //         onClick={() => handleRowClick(record)}
-            //         style={{ cursor: "pointer"}}
-            //     >
-            //         {text}
-            //     </div>
-            // ),
         },
         {
             title: "Link",

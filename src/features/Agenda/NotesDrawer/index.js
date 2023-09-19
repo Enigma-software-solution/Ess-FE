@@ -4,41 +4,43 @@ import { FullscreenExitOutlined, FullscreenOutlined } from "@ant-design/icons";
 import ReactQuill from "react-quill";
 import { useDispatch, useSelector } from "react-redux";
 import { updateEventNotes } from "src/store/slices/agenda/apis";
-import { getSelectEvent } from "src/store/slices/agenda/selector";
+import {
+  checkNotesDrawer,
+  getSelectEvent,
+} from "src/store/slices/agenda/selector";
+import { closeNotesDrawer } from "src/store/slices/agenda";
 
-const NotesDrawer = ({ handleDrawerClose, isDrawerOpen }) => {
-
-
+const NotesDrawer = () => {
   const [isFullScreen, setIsFullScreen] = useState(false);
-  const [value, setValue] = useState('');
+  const [value, setValue] = useState("");
 
-  const selectedEvent=useSelector(getSelectEvent)
+  const selectedEvent = useSelector(getSelectEvent);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+  const isDrawer = useSelector(checkNotesDrawer);
 
-  const handleSave = async() => {
-    
-     const data={
-        eventId:selectedEvent._id,
-        notes:value
-      }
-    
-      try {
-       await dispatch(updateEventNotes(data))
-       setValue('')
-        handleDrawerClose()
-      }
-      catch(err){
-        console.log(err)
-      }
-  
+  const onClose = () => {
+    dispatch(closeNotesDrawer());
   };
 
+  const handleSave = async () => {
+    const data = {
+      eventId: selectedEvent._id,
+      notes: value,
+    };
+
+    try {
+      await dispatch(updateEventNotes(data));
+      setValue("");
+      onClose();
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   useEffect(() => {
-    setValue(selectedEvent?.notes)
-  }, [selectedEvent])
-  
+    setValue(selectedEvent?.notes);
+  }, [selectedEvent]);
 
   const toolbarOptions = [
     [{ header: "1" }, { header: "2" }, { font: [] }],
@@ -53,8 +55,8 @@ const NotesDrawer = ({ handleDrawerClose, isDrawerOpen }) => {
       <Drawer
         placement="right"
         closable={true}
-        onClose={handleDrawerClose}
-        open={isDrawerOpen}
+        onClose={onClose}
+        open={isDrawer}
         width={isFullScreen ? "85%" : "45%"}
         extra={
           <Space>

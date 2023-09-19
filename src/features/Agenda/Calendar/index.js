@@ -9,9 +9,19 @@ import { useDispatch, useSelector } from "react-redux";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import CreateEventDrawer from "../CreateEventDrawer";
 import EventDetailsDrawer from "../EventDetailsDrawer";
-import { setSelectedEvent } from "src/store/slices/agenda";
+import {
+  closeEventDrawer,
+  closeSlotDrawer,
+  setSelectedEvent,
+  showEventDrawer,
+  showSlotDrawer,
+} from "src/store/slices/agenda";
 import { getAllEventsApi } from "src/store/slices/agenda/apis";
-import { getAllEvents } from "src/store/slices/agenda/selector";
+import {
+  checkEventDrawer,
+  checkSlotDrawer,
+  getAllEvents,
+} from "src/store/slices/agenda/selector";
 import { CallType } from "src/constant/callTypes";
 
 const locales = {
@@ -27,17 +37,18 @@ const localizer = dateFnsLocalizer({
 });
 
 const CustomCalendar = () => {
-  const [slotDrawer, setSlotDrawer] = useState(false);
-  const [eventDrawer, setEventDrawer] = useState(false);
   const [selectedDate, setSelectedDate] = useState({
     start: null,
     end: null,
   });
 
+  console.log(selectedDate,'sss')
+
   const dispatch = useDispatch();
   const events = useSelector(getAllEvents);
+
   const [preparedEvents, setPreparedEvents] = useState([]);
-  const [currentView, setCurrentView] = useState("month"); // Track the current view mode
+  const [currentView, setCurrentView] = useState("month");
 
   useEffect(() => {
     const newEvents = events.map((e) => ({
@@ -54,22 +65,13 @@ const CustomCalendar = () => {
         start: slot.start,
         end: slot.end,
       });
-      dispatch(setSelectedEvent({}))
-      setSlotDrawer(true);
+      dispatch(showSlotDrawer());
     }
-  };
-
-  const handleSlotDrawerClose = () => {
-    setSlotDrawer(false);
   };
 
   const onEventClick = async (event) => {
     dispatch(setSelectedEvent(event));
-    setEventDrawer(true);
-  };
-
-  const handleEventDrawerClose = () => {
-    setEventDrawer(false);
+    dispatch(showEventDrawer());
   };
 
   const getEventStyle = (event) => {
@@ -93,14 +95,13 @@ const CustomCalendar = () => {
   }, []);
 
   const CustomEventComponent = ({ event }) => (
-
     <div>
       <strong>{event.jobTitle}</strong>
     </div>
   );
 
   return (
-    <div>
+    <>
       <Calendar
         localizer={localizer}
         events={preparedEvents}
@@ -119,17 +120,9 @@ const CustomCalendar = () => {
         onView={(view) => setCurrentView(view)}
       />
 
-      <CreateEventDrawer
-        selectedDate={selectedDate}
-        isDrawerOpen={slotDrawer}
-        handleDrawerClose={handleSlotDrawerClose}
-      />
-      <EventDetailsDrawer
-        isDrawerOpen={eventDrawer}
-        handleDrawerClose={handleEventDrawerClose}
-        showCreateEventDrawer={setSlotDrawer}
-      />
-    </div>
+      <CreateEventDrawer selectedDate={selectedDate} />
+      <EventDetailsDrawer />
+    </>
   );
 };
 
