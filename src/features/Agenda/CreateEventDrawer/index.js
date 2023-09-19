@@ -21,8 +21,7 @@ import {
 const { Option } = Select;
 
 const CreateEventDrawer = ({ selectedDate }) => {
-  // console.log(selectedDate, "event drawer");
-  // const [selectedTime, setSelectedTime] = useState();
+  
   const [form] = Form.useForm();
 
   const dispatch = useDispatch();
@@ -101,11 +100,12 @@ const CreateEventDrawer = ({ selectedDate }) => {
         profile: profile._id,
         companyInformation,
       });
- 
+
     } else {
       form.resetFields();
     }
   }, [selectedEvent, form]);
+  
 
   return (
     <Drawer
@@ -116,18 +116,15 @@ const CreateEventDrawer = ({ selectedDate }) => {
       open={isDrawer}
       width={860}
     >
-     
- {
- ( selectedDate || selectedEvent)  &&
-  <div className="d-flex justify-content-end align-items-end flex-column mb-1">
-  <p>Date: {format(new Date(selectedDate.start ), "dd-MM-yyyy")}</p>
-  <p>
-    Time: {format(new Date(selectedDate.start ), "p")} -{" "}
-    {format(new Date(selectedDate.end ), "p")}
-  </p>
-</div>
- }
-      
+
+        <div className="d-flex justify-content-end align-items-end flex-column mb-1">
+          <p>Date: {format(new Date(selectedDate.start), "dd-MM-yyyy")}</p>
+          <p>
+            Time: {format(new Date(selectedDate.start), "p")} -{" "}
+            {format(new Date(selectedDate.end), "p")}
+          </p>
+        </div>
+
 
       <Form name="event-form" onFinish={handleCreateOrUpdateEvent} form={form}>
         <div className="d-flex justify-content-between mb-1">
