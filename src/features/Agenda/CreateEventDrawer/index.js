@@ -21,7 +21,7 @@ import {
 const { Option } = Select;
 
 const CreateEventDrawer = ({ selectedDate }) => {
-  
+
   const [form] = Form.useForm();
 
   const dispatch = useDispatch();
@@ -75,37 +75,24 @@ const CreateEventDrawer = ({ selectedDate }) => {
 
   useEffect(() => {
     if (selectedEvent?.profile) {
-      const {
-        companyName,
-        jobTitle,
-        callDuration,
-        numOfGuests,
-        callMode,
-        callType,
-        callPlatform,
-        profile,
-        companyInformation,
-        mailLink,
-      } = selectedEvent;
-
       form.setFieldsValue({
-        companyName,
-        jobTitle,
-        callDuration,
-        numOfGuests,
-        callMode,
-        callType,
-        callPlatform,
-        mailLink,
-        profile: profile._id,
-        companyInformation,
+        companyName: selectedEvent?.companyName,
+        jobTitle: selectedEvent?.jobTitle,
+        callDuration: selectedEvent?.callDuration,
+        numOfGuests: selectedEvent?.numOfGuests,
+        callMode: selectedEvent?.callMode,
+        callType: selectedEvent?.callType,
+        callPlatform: selectedEvent?.callPlatform,
+        mailLink: selectedEvent?.profile,
+        profile: selectedEvent?.profile._id ,
+        companyInformation: selectedEvent?.mailLink,
       });
 
     } else {
       form.resetFields();
     }
   }, [selectedEvent, form]);
-  
+
 
   return (
     <Drawer
@@ -116,6 +103,7 @@ const CreateEventDrawer = ({ selectedDate }) => {
       open={isDrawer}
       width={860}
     >
+      <Form name="event-form" onFinish={handleCreateOrUpdateEvent} form={form}>
 
         <div className="d-flex justify-content-end align-items-end flex-column mb-1">
           <p>Date: {format(new Date(selectedDate.start), "dd-MM-yyyy")}</p>
@@ -126,7 +114,6 @@ const CreateEventDrawer = ({ selectedDate }) => {
         </div>
 
 
-      <Form name="event-form" onFinish={handleCreateOrUpdateEvent} form={form}>
         <div className="d-flex justify-content-between mb-1">
           <div style={{ flex: 1, marginRight: "20px" }}>
             <Form.Item
