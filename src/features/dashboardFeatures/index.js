@@ -1,11 +1,12 @@
 import React from 'react'
-import { TopHeader } from './TopHeader'
+import DashboardCard from './Card'
+import { ApplyHistory } from './ApplyHistory'
 
 const DashboardFeatures = () => {
   return (
-    <div>
-        <TopHeader/>
-    </div>
+    <>
+      <ApplyHistory />
+    </>
   )
 }
 

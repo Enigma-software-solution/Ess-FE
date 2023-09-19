@@ -31,16 +31,16 @@ const Header = () => {
 
   const handleDateRangeChange = (dates) => {
     if (dates && dates.length === 2) {
-        const params = {
-          startDate: dates[0].format('YYYY-MM-DD'),
-          endDate: dates[1].format('YYYY-MM-DD'),
-        };
+      const params = {
+        startDate: dates[0].format('YYYY-MM-DD'),
+        endDate: dates[1].format('YYYY-MM-DD'),
+      };
 
-        const queryStringResult = qs.stringify(params);
-        dispatch(getdailyAppliesApi(queryStringResult));
-    
+      const queryStringResult = qs.stringify(params);
+      dispatch(getdailyAppliesApi(queryStringResult));
+
     }
-     
+
   };
 
   const search = (e) => {
