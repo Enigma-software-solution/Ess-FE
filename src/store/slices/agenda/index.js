@@ -4,6 +4,9 @@ import { DeleteEventsApi, UpdateEventsApi, createEventsApi, getAllEventsApi } fr
 
 const initialState = {
   selectedEvent: null,
+  isEventDrawer:false,
+  isSlotDrawer:false,
+  isNotesDrawe:false,
   events: [],
   status: 'idle',
   error: ''
@@ -15,6 +18,26 @@ const agendaSlice = createSlice({
   reducers: {
     setSelectedEvent: (state, action) => {
       state.selectedEvent = action.payload;
+    },
+    showEventDrawer: (state, _) => {
+      state.isEventDrawer = true;
+    },
+    closeEventDrawer: (state, _) => {
+      state.isEventDrawer = false;
+    },
+
+    showSlotDrawer: (state, _) => {
+      state.isSlotDrawer = true;
+    },
+    closeSlotDrawer: (state, _) => {
+      state.isSlotDrawer = false;
+    },
+
+    showNotesDrawer: (state, _) => {
+      state.isNotesDrawer = true;
+    },
+    closeNotesDrawer: (state, _) => {
+      state.isNotesDrawer = false;
     },
   },
   extraReducers: (builder) => {
@@ -56,6 +79,14 @@ const agendaSlice = createSlice({
   },
 });
 
-export const { setSelectedEvent } = agendaSlice.actions;
+export const { 
+  setSelectedEvent,
+  showEventDrawer,
+  closeEventDrawer,
+  showSlotDrawer,
+  closeSlotDrawer,
+  showNotesDrawer,
+  closeNotesDrawer,
+} = agendaSlice.actions;
 
 export default agendaSlice.reducer;

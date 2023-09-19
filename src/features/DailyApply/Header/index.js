@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import DailyApplyDrawer from '../Drawers/CreateDrawer';
-import { Select } from 'antd';
+import { Select, Button, Card } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllProfiles } from 'src/store/slices/profielSlice/selectors';
 import { getdailyAppliesApi } from 'src/store/slices/dailyApplySlice/apis';
@@ -16,31 +16,42 @@ const Header = () => {
   const allProfiles = useSelector(getAllProfiles);
 
   const [isOpen, setIsOpen] = useState(false);
+  const [selectedProfile, setSelectedProfile] = useState(null);
+  const [selectedDateRange, setSelectedDateRange] = useState(null);
 
   const handleDrawer = () => {
     setIsOpen(!isOpen);
   };
 
-  const handleChangeProfile = (value) => {
-    const params = {
-      profileId: value,
-    };
+  const handleSubmit = () => {
+    const params = {};
+
+    if (selectedProfile) {
+      params.profileId = selectedProfile;
+    }
+
+    if (selectedDateRange) {
+      params.startDate = selectedDateRange[0]?.format('YYYY-MM-DD');
+      params.endDate = selectedDateRange[1]?.format('YYYY-MM-DD');
+    }
     const queryStringResult = qs.stringify(params);
+
     dispatch(getdailyAppliesApi(queryStringResult));
   };
 
+  const handleChangeProfile = (value) => {
+    setSelectedProfile(value);
+  };
+
   const handleDateRangeChange = (dates) => {
-    if (dates && dates.length === 2) {
-      const params = {
-        startDate: dates[0].format('YYYY-MM-DD'),
-        endDate: dates[1].format('YYYY-MM-DD'),
-      };
+    setSelectedDateRange(dates);
+  };
 
-      const queryStringResult = qs.stringify(params);
-      dispatch(getdailyAppliesApi(queryStringResult));
+  const handleReset = () => {
+    dispatch(getdailyAppliesApi());
 
-    }
-
+    setSelectedProfile(null);
+    setSelectedDateRange(null);
   };
 
   const search = (e) => {
@@ -51,21 +62,34 @@ const Header = () => {
     dispatch(getdailyAppliesApi(queryStringResult));
   };
 
+
   return (
-    <div className='d-flex justify-content-between mb-2'>
-      <div className='d-flex gap-1'>
+    <div>
+      <div className='d-flex justify-content-between mb-1'>
         <CustomSearchField onChange={search} />
-        <Select placeholder='Please select a Profile' onChange={handleChangeProfile}>
-          {allProfiles?.map((profile) => (
-            <Option key={profile?._id} value={profile?._id}>
-              {profile?.name}
-            </Option>
-          ))}
-        </Select>
-        {/* Include the DateRangePicker component */}
-        <DateRangePicker onChange={handleDateRangeChange} />
+        <AddButton onClick={handleDrawer} text='New Apply' />
       </div>
-      <AddButton onClick={handleDrawer} text='New Apply' />
+      <Card bodyStyle={{ display: "flex", justifyContent: "space-between" }} >
+
+        <div className='d-flex gap-5'>
+
+          <Select placeholder='Please select a Profile' onChange={handleChangeProfile} value={selectedProfile} style={{ width: "180px" }}>
+            {allProfiles?.map((profile) => (
+              <Option key={profile?._id} value={profile?._id}>
+                {profile?.name}
+              </Option>
+            ))}
+          </Select>
+
+          <DateRangePicker onChange={handleDateRangeChange} value={selectedDateRange} />
+        </div>
+        <div className='d-flex gap-2'>
+          <Button type="primary" onClick={handleSubmit}>Search</Button>
+          <Button type="primary" danger onClick={handleReset}>Reset</Button>
+        </div>
+
+      </Card>
+
       <DailyApplyDrawer isOpen={isOpen} handleDrawer={handleDrawer} />
     </div>
   );

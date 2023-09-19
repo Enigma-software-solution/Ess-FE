@@ -17,6 +17,7 @@ import { setSelectedApply } from "src/store/slices/dailyApplySlice";
 import qs from "qs";
 import DetailsDailyApplyDrawer from "../Drawers/DetailsDrawer";
 import { format } from "date-fns";
+import { StyledTable } from "./styled";
 
 const CreateDailyAppliesTable = () => {
     const dispatch = useDispatch();
@@ -46,23 +47,14 @@ const CreateDailyAppliesTable = () => {
     const columns = [
         {
             key: "name",
-            title: "Name",
+            title: "Client Name",
             sorter: (a, b) => a.clientName.localeCompare(b.clientName),
             dataIndex: "clientName",
-            render: (text, record) => (
-                <div
-                    onClick={() => handleRowClick(record)}
-                    style={{ cursor: "pointer"}}
-                >
-                    {text}
-                </div>
-            ),
         },
         {
-            title: "Link",
-            dataIndex: "link",
-            render: (text) => <a href={text} style={{ textDecoration:"none"}}>{text}</a>,
-            
+            title: "Company Name",
+            sorter: (a, b) => a.companyName.localeCompare(b.companyName),
+            dataIndex: "companyName",
         },
         {
             title: "Position To Apply",
@@ -73,21 +65,9 @@ const CreateDailyAppliesTable = () => {
             dataIndex: "platform",
         },
         {
-            title: "User Email",
-            dataIndex: ["user", "email"],
-        },
-        {
-            title: "Company Name",
-            sorter: (a, b) => a.companyName.localeCompare(b.companyName),
-            dataIndex: "companyName",
-        },
-
-        {
-            title: "Apply date",
-            dataIndex: "createdAt",
-            render: (text, record) => (
-                format(new Date(text),'dd-MM-yy hh:mm a')
-            )
+            title: "Link",
+            dataIndex: "link",
+            render: (text) => <a href={text} style={{ textDecoration: "none" }}>{text}</a>,
         },
         {
             key: "action",
@@ -110,11 +90,11 @@ const CreateDailyAppliesTable = () => {
     ];
 
     useEffect(() => {
-        if (!dailyAppliesData.length) {
+        if (!dailyAppliesData?.daily_applies) {
             const params = {
                 date: new Date(),
             };
-    
+
             const queryStringResult = qs.stringify(params);
             dispatch(getdailyAppliesApi(queryStringResult));
         }
@@ -128,7 +108,10 @@ const CreateDailyAppliesTable = () => {
     return (
         <>
             <Header />
-            <Table
+            <StyledTable
+                onRow={(record) => ({
+                    onClick: () => handleRowClick(record),
+                })}
                 pagination={false}
                 dataSource={dailyAppliesData.daily_applies}
                 size="small"

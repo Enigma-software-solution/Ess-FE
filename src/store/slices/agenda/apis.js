@@ -27,7 +27,7 @@ export const createEventsApi = createAsyncThunk("agenda/create-new-event", async
 
 export const UpdateEventsApi = createAsyncThunk("agenda/update-event", async (data) => {
   try {
-    const response = await api.patch(`/event/${data?.eventId}`, data);
+    const response = await api.patch(`/event/${data?.eventId}`, data.event);
     toast.success(response?.message)
     return response;
   } catch (error) {
