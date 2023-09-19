@@ -16,6 +16,7 @@ import CreateDailyApplyDrawer from "../Drawers/CreateDrawer";
 import { setSelectedApply } from "src/store/slices/dailyApplySlice";
 import qs from "qs";
 import DetailsDailyApplyDrawer from "../Drawers/DetailsDrawer";
+import { format } from "date-fns";
 
 const CreateDailyAppliesTable = () => {
     const dispatch = useDispatch();
@@ -46,6 +47,7 @@ const CreateDailyAppliesTable = () => {
         {
             key: "name",
             title: "Name",
+            sorter: (a, b) => a.clientName.localeCompare(b.clientName),
             dataIndex: "clientName",
             render: (text, record) => (
                 <div
@@ -76,7 +78,16 @@ const CreateDailyAppliesTable = () => {
         },
         {
             title: "Company Name",
+            sorter: (a, b) => a.companyName.localeCompare(b.companyName),
             dataIndex: "companyName",
+        },
+
+        {
+            title: "Apply date",
+            dataIndex: "createdAt",
+            render: (text, record) => (
+                format(new Date(text),'dd-MM-yy hh:mm a')
+            )
         },
         {
             key: "action",
@@ -100,7 +111,12 @@ const CreateDailyAppliesTable = () => {
 
     useEffect(() => {
         if (!dailyAppliesData.length) {
-            dispatch(getdailyAppliesApi());
+            const params = {
+                date: new Date(),
+            };
+    
+            const queryStringResult = qs.stringify(params);
+            dispatch(getdailyAppliesApi(queryStringResult));
         }
     }, []);
 
