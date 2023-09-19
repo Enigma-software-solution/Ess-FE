@@ -17,6 +17,7 @@ import { setSelectedApply } from "src/store/slices/dailyApplySlice";
 import qs from "qs";
 import DetailsDailyApplyDrawer from "../Drawers/DetailsDrawer";
 import { format } from "date-fns";
+import { StyledTable } from "./styled";
 
 const CreateDailyAppliesTable = () => {
     const dispatch = useDispatch();
@@ -49,14 +50,14 @@ const CreateDailyAppliesTable = () => {
             title: "Name",
             sorter: (a, b) => a.clientName.localeCompare(b.clientName),
             dataIndex: "clientName",
-            render: (text, record) => (
-                <div
-                    onClick={() => handleRowClick(record)}
-                    style={{ cursor: "pointer"}}
-                >
-                    {text}
-                </div>
-            ),
+            // render: (text, record) => (
+            //     <div
+            //         onClick={() => handleRowClick(record)}
+            //         style={{ cursor: "pointer"}}
+            //     >
+            //         {text}
+            //     </div>
+            // ),
         },
         {
             title: "Link",
@@ -110,7 +111,7 @@ const CreateDailyAppliesTable = () => {
     ];
 
     useEffect(() => {
-        if (!dailyAppliesData.length) {
+        if (!dailyAppliesData?.daily_applies) {
             const params = {
                 date: new Date(),
             };
@@ -128,7 +129,10 @@ const CreateDailyAppliesTable = () => {
     return (
         <>
             <Header />
-            <Table
+            <StyledTable
+            onRow={(record) => ({
+                onClick: () => handleRowClick(record),
+              })}
                 pagination={false}
                 dataSource={dailyAppliesData.daily_applies}
                 size="small"
