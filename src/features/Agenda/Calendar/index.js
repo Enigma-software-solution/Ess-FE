@@ -96,7 +96,7 @@ const CustomCalendar = () => {
 
   const CustomEventComponent = ({ event }) => (
     <div>
-      <strong>{event.jobTitle}</strong>
+      <strong>{event?.apply?.companyName}</strong>
     </div>
   );
 

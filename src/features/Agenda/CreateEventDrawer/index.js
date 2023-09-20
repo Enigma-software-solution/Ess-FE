@@ -133,20 +133,7 @@ const CreateEventDrawer = ({ selectedDate }) => {
 
         <div className="d-flex justify-content-between mb-1">
           <div style={{ flex: 1, marginRight: "20px" }}>
-            <Form.Item
-              name="companyName"
-              label="Company name"
-              rules={[{ required: true }]}
-            >
-              <Input />
-            </Form.Item>
-            <Form.Item
-              name="jobTitle"
-              label="Job title"
-              rules={[{ required: true }]}
-            >
-              <Input />
-            </Form.Item>
+        
             <Form.Item
               name="callDuration"
               label="Call duration"
@@ -159,6 +146,10 @@ const CreateEventDrawer = ({ selectedDate }) => {
             </Form.Item>
             <Form.Item name="mailLink" label="Mail Link">
               <Input type="text" />
+            </Form.Item>
+
+            <Form.Item name="companyInformation" label="Company Information">
+              <Input.TextArea />
             </Form.Item>
           </div>
           <div style={{ flex: 1 }}>
@@ -193,7 +184,7 @@ const CreateEventDrawer = ({ selectedDate }) => {
                 </Option>
               </Select>
             </Form.Item>
-            <Form.Item
+            {/* <Form.Item
               name="profile"
               label="Profile"
               rules={[{ required: true, message: "Please select the Profile" }]}
@@ -205,10 +196,8 @@ const CreateEventDrawer = ({ selectedDate }) => {
                   </Option>
                 ))}
               </Select>
-            </Form.Item>
-            <Form.Item name="companyInformation" label="Company Information">
-              <Input.TextArea />
-            </Form.Item>
+            </Form.Item> */}
+           
            <Form.Item name="apply" label="Apply">
           <Select
             style={{ width: "100%" }}

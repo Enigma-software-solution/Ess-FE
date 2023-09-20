@@ -14,8 +14,8 @@ const initialFormValues = {
   companyName: '',
   link: '',
   profile: undefined,
-  platform: undefined,
-  positionToApply: undefined,
+  platform: 'GlassDoor',
+  positionToApply: 'full_stack',
 };
 
 const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
@@ -141,9 +141,9 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
               label="Platform"
               rules={[{ required: true, message: 'Please select a Platform' }]}
             >
-              <Select placeholder="Please select a Platform">
+              <Select placeholder="Please select a Platform" >
                 <Option value="LinkedIn">LinkedIn</Option>
-                <Option value="GlassDoor">GlassDoor</Option>
+                <Option value="GlassDoor">Glass Door</Option>
               </Select>
             </Form.Item>
           </Col>
@@ -157,7 +157,7 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
                 { required: true, message: 'Please select the Position you are applying' },
               ]}
             >
-              <Select placeholder="Please select a Position">
+              <Select placeholder="Please select a Position" >
                 <Option value="front_end_eng">FrontEnd</Option>
                 <Option value="full_stack">FullStack</Option>
               </Select>

@@ -92,11 +92,11 @@ const EventDetailsDrawer = () => {
             <Card className="w-100" title="Event information">
               <div className="mb-3">
                 <span className="fw-bold">Company Name:</span>
-                <span className="m-3">{selectedEvent.companyName}</span>
+                <span className="m-3">{selectedEvent?.apply?.companyName}</span>
               </div>
               <div className="mb-3">
                 <span className="fw-bold">Job Title:</span>
-                <span className="m-3">{selectedEvent.jobTitle}</span>
+                <span className="m-3">{selectedEvent?.apply?.positionToApply}</span>
               </div>
               <div className="mb-3">
                 <span className="fw-bold">Call Duration:</span>
@@ -117,8 +117,8 @@ const EventDetailsDrawer = () => {
                 <span className="m-3">{selectedEvent.callMode}</span>
               </div>
               <div className="mb-3">
-                <span className="fw-bold">Call Platform:</span>
-                <span className="m-3">{selectedEvent.callPlatform}</span>
+                <span className="fw-bold">Apply Platform:</span>
+                <span className="m-3">{selectedEvent?.apply?.platform}</span>
               </div>
               <div className="mb-3">
                 <span className="fw-bold">Call Platform:</span>
@@ -129,6 +129,11 @@ const EventDetailsDrawer = () => {
                 <span className="m-3">
                   <a href={selectedEvent?.mailLink}>Mail</a>
                 </span>
+              </div>
+
+              <div className="mb-3">
+                <span className="fw-bold">Company Information:</span>
+                <span className="m-3">{selectedEvent?.companyInformation}</span>
               </div>
             </Card>
 
@@ -148,17 +153,17 @@ const EventDetailsDrawer = () => {
           <div className="w-100 d-flex flex-column align-items-end">
             <div className="mb-3">
               <span className="fw-bold">Profile:</span>
-              <span className="m-3">{selectedEvent.profile.name}</span>
+              <span className="m-3">{selectedEvent?.apply?.profile?.name}</span>
             </div>
             <div className="mb-3">
               <span className="fw-bold">User:</span>
               <span className="m-3">
-                {selectedEvent.user.first_name} {selectedEvent.user.last_name}
+                {selectedEvent.user?.first_name} {selectedEvent.user?.last_name}
               </span>
             </div>
             <div className="mb-3">
               <span className="fw-bold">Created Date:</span>
-              <span className="m-3">{formatDate(selectedEvent.createdAt)}</span>
+              <span className="m-3">{formatDate(selectedEvent?.createdAt)}</span>
             </div>
           </div>
         )}

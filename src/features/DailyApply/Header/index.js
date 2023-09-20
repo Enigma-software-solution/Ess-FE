@@ -8,12 +8,14 @@ import qs from 'qs';
 import CustomSearchField from 'src/components/SearchField';
 import DateRangePicker from 'src/components/DateRangePicker';
 import AddButton from 'src/components/buttons/AddButton';
+import { getLogedInUser } from 'src/store/slices/authSlice/selectors';
 
 const { Option } = Select;
 
 const Header = () => {
   const dispatch = useDispatch();
   const allProfiles = useSelector(getAllProfiles);
+  const logedInUser = useSelector(getLogedInUser);
 
   const [isOpen, setIsOpen] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState(null);
@@ -48,8 +50,12 @@ const Header = () => {
   };
 
   const handleReset = () => {
-    dispatch(getdailyAppliesApi());
+    const params = {
+      date: new Date(),
+  };
 
+  const queryStringResult = qs.stringify(params);
+    dispatch(getdailyAppliesApi(queryStringResult));
     setSelectedProfile(null);
     setSelectedDateRange(null);
   };
@@ -69,26 +75,30 @@ const Header = () => {
         <CustomSearchField onChange={search} />
         <AddButton onClick={handleDrawer} text='New Apply' />
       </div>
-      <Card bodyStyle={{ display: "flex", justifyContent: "space-between" }} >
+      <div style={{ display: "flex", justifyContent: "space-between", padding:'12px' ,background:'#fff', margin:'8px 0 5px 0 ' }} >
 
-        <div className='d-flex gap-5'>
 
-          <Select placeholder='Please select a Profile' onChange={handleChangeProfile} value={selectedProfile} style={{ width: "180px" }}>
-            {allProfiles?.map((profile) => (
-              <Option key={profile?._id} value={profile?._id}>
-                {profile?.name}
-              </Option>
-            ))}
-          </Select>
 
-          <DateRangePicker onChange={handleDateRangeChange} value={selectedDateRange} />
-        </div>
+    <div className='d-flex gap-5'>
+    {logedInUser &&  logedInUser?.role === 'admin' &&
+    <Select placeholder='Please select a Profile' onChange={handleChangeProfile} value={selectedProfile} style={{ width: "180px" }}>
+      {allProfiles?.map((profile) => (
+        <Option key={profile?._id} value={profile?._id}>
+          {profile?.name}
+        </Option>
+      ))}
+    </Select>
+}
+
+    <DateRangePicker onChange={handleDateRangeChange} value={selectedDateRange} />
+  </div>
+       
         <div className='d-flex gap-2'>
           <Button type="primary" onClick={handleSubmit}>Search</Button>
           <Button type="primary" danger onClick={handleReset}>Reset</Button>
         </div>
 
-      </Card>
+      </div>
 
       <DailyApplyDrawer isOpen={isOpen} handleDrawer={handleDrawer} />
     </div>
