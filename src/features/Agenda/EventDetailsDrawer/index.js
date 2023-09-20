@@ -34,6 +34,7 @@ const EventDetailsDrawer = () => {
 
   const handleConfirmDelete = (record) => {
     dispatch(DeleteEventsApi(record._id));
+    dispatch(closeEventDrawer())
   };
 
   const onClose = () => {

@@ -18,6 +18,7 @@ import {
   closeSlotDrawer,
   setSelectedEvent,
 } from "src/store/slices/agenda";
+import CustomSelect from "../CustomSelect";
 const { Option } = Select;
 
 const CreateEventDrawer = ({ selectedDate }) => {
@@ -83,9 +84,9 @@ const CreateEventDrawer = ({ selectedDate }) => {
         callMode: selectedEvent?.callMode,
         callType: selectedEvent?.callType,
         callPlatform: selectedEvent?.callPlatform,
-        mailLink: selectedEvent?.profile,
+        mailLink: selectedEvent?.mailLink,
         profile: selectedEvent?.profile._id ,
-        companyInformation: selectedEvent?.mailLink,
+        companyInformation: selectedEvent?.companyInformation,
       });
 
     } else {
@@ -192,6 +193,7 @@ const CreateEventDrawer = ({ selectedDate }) => {
             <Form.Item name="companyInformation" label="Company Information">
               <Input.TextArea />
             </Form.Item>
+
           </div>
         </div>
         <Form.Item className="d-flex justify-content-end">

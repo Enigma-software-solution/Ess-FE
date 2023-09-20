@@ -31,7 +31,6 @@ const NotesDrawer = () => {
 
     try {
       await dispatch(updateEventNotes(data));
-      setValue("");
       onClose();
     } catch (err) {
       console.log(err);
@@ -58,6 +57,7 @@ const NotesDrawer = () => {
         onClose={onClose}
         open={isDrawer}
         width={isFullScreen ? "85%" : "45%"}
+        destroyOnClose
         extra={
           <Space>
             <Button onClick={handleSave} type="primary">

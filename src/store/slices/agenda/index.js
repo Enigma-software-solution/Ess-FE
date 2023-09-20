@@ -1,12 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { DeleteEventsApi, UpdateEventsApi, createEventsApi, getAllEventsApi } from './apis';
+import { DeleteEventsApi, UpdateEventsApi, createEventsApi, getAllEventsApi, updateEventNotes } from './apis';
+import { update } from 'lodash';
 
 
 const initialState = {
   selectedEvent: null,
   isEventDrawer:false,
   isSlotDrawer:false,
-  isNotesDrawe:false,
+  isNotesDrawer:false,
   events: [],
   status: 'idle',
   error: ''
@@ -75,6 +76,22 @@ const agendaSlice = createSlice({
     builder.addCase(DeleteEventsApi.fulfilled, (state, action) => {
       state.events = state?.events?.filter((event) => event?._id !== action?.payload?.eventId)
     });
+
+      // add notes
+      builder.addCase(updateEventNotes.fulfilled, (state, action) => {
+        console.log(action.payload,'action.pa')
+        state.events = state?.events.map(event => {
+          if (event?._id === action?.payload?.event?._id) {
+            return action?.payload?.event
+          }
+          return event
+        })
+
+        state.selectedEvent= {
+          ...state.selectedEvent,
+          notes:action?.payload?.event?.notes
+        }
+      });
 
   },
 });

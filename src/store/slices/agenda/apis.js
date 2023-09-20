@@ -11,9 +11,6 @@ export const getAllEventsApi = createAsyncThunk("agenda/get-all-events", async (
   }
 });
 
-
-
-
 export const createEventsApi = createAsyncThunk("agenda/create-new-event", async (data) => {
   try {
     const response = await api.post("/event", data);
@@ -49,11 +46,10 @@ export const DeleteEventsApi = createAsyncThunk(
     }
   });
 
-
-
 export const updateEventNotes = createAsyncThunk("agenda/update-event-notes", async (data) => {
   try {
     const response = await api.put(`/event/notes/${data?.eventId}`, { notes: data?.notes });
+    console.log(response,'rrr')
     toast.success(response?.message)
     return response;
   } catch (error) {
@@ -63,4 +59,13 @@ export const updateEventNotes = createAsyncThunk("agenda/update-event-notes", as
 });
 
 
+
+export const getEventsBySearchApi = createAsyncThunk("agenda/get-events-by-search", async (query) => {
+  try {
+    const response = await api.get(`/event?${query}`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+});
 
