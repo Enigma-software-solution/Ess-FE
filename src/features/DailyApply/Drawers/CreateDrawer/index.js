@@ -34,22 +34,13 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
 
   useEffect(() => {
     if (selectedApply) {
-      const {
-        clientName,
-        link,
-        profile: selectedProfile,
-        platform,
-        companyName,
-        positionToApply,
-      } = selectedApply;
-
       form.setFieldsValue({
-        clientName,
-        link,
-        profile: selectedProfile?._id,
-        platform,
-        companyName,
-        positionToApply,
+        clientName:selectedApply?.clientName,
+        link:selectedApply?.link,
+        profile: selectedApply?.profile?._id,
+        platform:selectedApply?.platform,
+        companyName:selectedApply?.companyName,
+        positionToApply:selectedApply?.positionToApply,
 
       });
     } else {
@@ -59,23 +50,15 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
 
   const handleSubmit = async (values) => {
     try {
-      const {
-        clientName,
-        platform,
-        positionToApply,
-        link,
-        companyName,
-        profile,
-      } = values;
 
       const data = {
-        clientName,
-        platform,
-        positionToApply,
-        link,
-        companyName,
+        clientName : values?.clientName,
+        platform : values?.platform,
+        positionToApply : values?.positionToApply,
+        link : values?.link,
+        companyName : values?.companyName,
         user: userId,
-        profile,
+        profile : values?.profile,
 
       };
 
