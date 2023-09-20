@@ -47,7 +47,7 @@ const EventDetailsDrawer = () => {
   };
 
   return (
-    <div className="mb-3">
+    <div className="mb-1">
       <Drawer
         title="Call Details"
         placement="right"
@@ -70,7 +70,7 @@ const EventDetailsDrawer = () => {
         }
       >
         {selectedEvent?.start && selectedEvent.end && (
-          <div className="mb-3">
+          <div className="mb-1">
             <Button type="primary" onClick={handleNotesDrawer}>
               {selectedEvent?.notes ? "Update Notes" : "Add Notes"}
             </Button>
@@ -128,6 +128,12 @@ const EventDetailsDrawer = () => {
                 <span className="fw-bold">Mail Link:</span>
                 <span className="m-3">
                   <a href={selectedEvent?.mailLink}>Mail</a>
+                </span>
+              </div>
+              <div className="mb-3">
+                <span className="fw-bold">Call Link:</span>
+                <span className="m-3">
+                  <a href={selectedEvent?.callLikn}>Mail</a>
                 </span>
               </div>
 

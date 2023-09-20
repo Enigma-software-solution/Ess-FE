@@ -71,7 +71,7 @@ const CreateEventDrawer = ({ selectedDate }) => {
   };
 
   useEffect(() => {
-    if (selectedEvent) {
+    if (selectedEvent?._id) {
       form.setFieldsValue({
         companyName: selectedEvent?.companyName,
         jobTitle: selectedEvent?.jobTitle,
@@ -81,6 +81,7 @@ const CreateEventDrawer = ({ selectedDate }) => {
         callType: selectedEvent?.callType,
         callPlatform: selectedEvent?.callPlatform,
         mailLink: selectedEvent?.mailLink,
+        callLink: selectedEvent?.callLink,
         apply: selectedEvent?.apply?._id,
         companyInformation: selectedEvent?.companyInformation,
       });
@@ -89,7 +90,7 @@ const CreateEventDrawer = ({ selectedDate }) => {
     }
   }, [selectedEvent, form]);
 
-  const [applies, setApplies] = useState([])
+  const [applies, setApplies] = useState([]);
 
   async function fetchApplyData(searchText) {
     const d = {
@@ -125,7 +126,6 @@ const CreateEventDrawer = ({ selectedDate }) => {
 
         <div className="d-flex justify-content-between mb-1">
           <div style={{ flex: 1, marginRight: "20px" }}>
-
             <Form.Item
               name="callDuration"
               label="Call duration"
@@ -137,6 +137,10 @@ const CreateEventDrawer = ({ selectedDate }) => {
               <Input type="number" />
             </Form.Item>
             <Form.Item name="mailLink" label="Mail Link">
+              <Input type="text" />
+            </Form.Item>
+
+            <Form.Item name="callLink" label="Call Link">
               <Input type="text" />
             </Form.Item>
 
@@ -186,9 +190,16 @@ const CreateEventDrawer = ({ selectedDate }) => {
                 optionFilterProp="children"
               >
                 {applies?.map((apply) => (
-                  <Option key={apply._id} value={apply._id}  >
+                  <Option key={apply._id} value={apply._id}>
                     {`${apply?.clientName} - ${apply?.companyName} `}
-                    <span style={{ fontSize: '80%', opacity: 0.7, display: 'flex', justifyContent: 'flex-end' }} >
+                    <span
+                      style={{
+                        fontSize: "80%",
+                        opacity: 0.7,
+                        display: "flex",
+                        justifyContent: "flex-end",
+                      }}
+                    >
                       {format(new Date(apply.createdAt), "dd-MM-yyyy")}
                     </span>
                   </Option>
@@ -203,7 +214,7 @@ const CreateEventDrawer = ({ selectedDate }) => {
           </Button>
         </Form.Item>
       </Form>
-    </Drawer >
+    </Drawer>
   );
 };
 
