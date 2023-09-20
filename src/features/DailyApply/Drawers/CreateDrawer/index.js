@@ -15,7 +15,7 @@ const initialFormValues = {
   link: '',
   profile: undefined,
   platform: 'GlassDoor',
-  positionToApply: 'full_stack',
+  positionToApply: 'Full Stack',
 };
 
 const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
@@ -144,6 +144,7 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
               <Select placeholder="Please select a Platform" >
                 <Option value="LinkedIn">LinkedIn</Option>
                 <Option value="GlassDoor">Glass Door</Option>
+                <Option value="Indeed">Indeed</Option>
               </Select>
             </Form.Item>
           </Col>
@@ -158,8 +159,12 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
               ]}
             >
               <Select placeholder="Please select a Position" >
-                <Option value="front_end_eng">FrontEnd</Option>
-                <Option value="full_stack">FullStack</Option>
+                <Option value="Front End Engineer">FrontEnd Dev</Option>
+                <Option value="Full Stack">FullStack Dev</Option>
+                <Option value="Back End">BackEnd Dev</Option>
+                <Option value="JavaScript Developer">JavaScript Dev</Option>
+                <Option value="React Js Developer">ReactJs Dev</Option>
+                <Option value="Angular Developer">Angular Dev</Option>
               </Select>
             </Form.Item>
           </Col>
