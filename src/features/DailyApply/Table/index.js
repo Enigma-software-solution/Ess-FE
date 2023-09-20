@@ -30,14 +30,14 @@ const CreateDailyAppliesTable = () => {
     const { totalItems, pageSize, totalPages, page } =
         dailyAppliesData?.paginator ?? {};
 
-    const handleEdit = (record,e) => {
-        e.stopPropagation();    
+    const handleEdit = (record, e) => {
+        e.stopPropagation();
         dispatch(setSelectedApply(record));
         setIsEditDrawerOpen(true);
     };
 
-    const handleConfirmDelete = (recordToDelete,e) => {
-        e.stopPropagation();    
+    const handleConfirmDelete = (recordToDelete, e) => {
+        e.stopPropagation();
         dispatch(deteleDailyAppliesApi(recordToDelete._id));
     };
 
@@ -77,14 +77,15 @@ const CreateDailyAppliesTable = () => {
             dataIndex: "action",
             render: (text, record) => (
                 <div className="d-flex gap-1">
-                    <EditButton onClick={(e) => handleEdit(record,e)} />
+                    <EditButton onClick={(e) => handleEdit(record, e)} />
                     <Popconfirm
                         title="Are you sure to delete this task?"
-                        onConfirm={(e) => handleConfirmDelete(record,e)}
+                        onConfirm={(e) => handleConfirmDelete(record, e)}
+                        onCancel={(e) => e.stopPropagation()}
                         okText="Yes"
                         cancelText="No"
                     >
-                        <DeleteButton>Delete</DeleteButton>
+                        <DeleteButton onClick={(e) => e.stopPropagation()}>Delete</DeleteButton>
                     </Popconfirm>
                 </div>
             ),

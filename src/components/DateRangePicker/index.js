@@ -7,8 +7,8 @@ const StyledRangePicker = styled(DatePicker.RangePicker)`
   width: 250px; 
 `;
 
-const DateRangePicker = ({ onChange }) => {
-  return <StyledRangePicker onChange={onChange} />;
+const DateRangePicker = ({ onChange, ...props }) => {
+  return <StyledRangePicker onChange={onChange} {...props} />;
 };
 
 export default DateRangePicker;
