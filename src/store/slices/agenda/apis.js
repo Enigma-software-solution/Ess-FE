@@ -60,9 +60,9 @@ export const updateEventNotes = createAsyncThunk("agenda/update-event-notes", as
 
 
 
-export const getEventsBySearchApi = createAsyncThunk("agenda/get-events-by-search", async (query) => {
+export const getApplyBySearchApi = createAsyncThunk("agenda/get-apply-by-search", async (query) => {
   try {
-    const response = await api.get(`/event?${query}`);
+    const response = await api.get(`/apply?${query}`);
     return response;
   } catch (error) {
     throw error;

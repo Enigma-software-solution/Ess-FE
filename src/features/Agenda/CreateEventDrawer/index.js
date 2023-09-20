@@ -3,12 +3,17 @@ import { Button, Form, Input, Select } from "antd";
 import { format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import { Drawer } from "antd";
-import { UpdateEventsApi, createEventsApi } from "src/store/slices/agenda/apis";
+import {
+  UpdateEventsApi,
+  createEventsApi,
+  getApplyBySearchApi,
+} from "src/store/slices/agenda/apis";
 import { CallType } from "src/constant/callTypes";
 import { CallPlatform } from "src/constant/callplatform";
 import { getUserId } from "src/store/slices/authSlice/selectors";
 import { getProfilesApi } from "src/store/slices/profielSlice/apis";
 import { getAllProfiles } from "src/store/slices/profielSlice/selectors";
+import qs from "qs";
 import {
   checkSlotDrawer,
   getSelectEvent,
@@ -18,11 +23,10 @@ import {
   closeSlotDrawer,
   setSelectedEvent,
 } from "src/store/slices/agenda";
-import CustomSelect from "../CustomSelect";
+import DebounceSelectDropdown from "src/components/DebounceSelectDropdown";
 const { Option } = Select;
 
 const CreateEventDrawer = ({ selectedDate }) => {
-
   const [form] = Form.useForm();
 
   const dispatch = useDispatch();
@@ -85,15 +89,29 @@ const CreateEventDrawer = ({ selectedDate }) => {
         callType: selectedEvent?.callType,
         callPlatform: selectedEvent?.callPlatform,
         mailLink: selectedEvent?.mailLink,
-        profile: selectedEvent?.profile._id ,
+        profile: selectedEvent?.profile._id,
         companyInformation: selectedEvent?.companyInformation,
       });
-
     } else {
       form.resetFields();
     }
   }, [selectedEvent, form]);
 
+  const [applies, setApplies] = useState([])
+
+  async function fetchApplyData(searchText) {
+    const d = {
+      search: searchText,
+    };
+    const params = qs.stringify(d);
+
+    try {
+      const res = await dispatch(getApplyBySearchApi(params)).unwrap();
+      setApplies(res.data?.daily_applies || []); 
+    } catch (error) {
+      console.error("Error fetching applies:", error);
+    }
+  }
 
   return (
     <Drawer
@@ -105,7 +123,6 @@ const CreateEventDrawer = ({ selectedDate }) => {
       width={860}
     >
       <Form name="event-form" onFinish={handleCreateOrUpdateEvent} form={form}>
-
         <div className="d-flex justify-content-end align-items-end flex-column mb-1">
           <p>Date: {format(new Date(selectedDate.start), "dd-MM-yyyy")}</p>
           <p>
@@ -113,7 +130,6 @@ const CreateEventDrawer = ({ selectedDate }) => {
             {format(new Date(selectedDate.end), "p")}
           </p>
         </div>
-
 
         <div className="d-flex justify-content-between mb-1">
           <div style={{ flex: 1, marginRight: "20px" }}>
@@ -193,7 +209,24 @@ const CreateEventDrawer = ({ selectedDate }) => {
             <Form.Item name="companyInformation" label="Company Information">
               <Input.TextArea />
             </Form.Item>
-
+           <Form.Item name="apply" label="Apply">
+          <Select
+            style={{ width: "100%" }}
+            showSearch
+            onSearch={fetchApplyData}
+            placeholder="Select an applies"
+            optionFilterProp="children"
+          >
+            {applies?.map((apply) => (
+              <Option key={apply._id} value={apply._id} >
+              {`${apply.clientName} - ${apply.companyName} `}
+              <span style={{ fontSize: '80%', opacity: 0.7,display:'flex',justifyContent:'flex-end' }} >
+                {format(new Date(apply.createdAt), "dd-MM-yyyy")}
+              </span>
+            </Option>
+            ))}
+          </Select>
+        </Form.Item>
           </div>
         </div>
         <Form.Item className="d-flex justify-content-end">
