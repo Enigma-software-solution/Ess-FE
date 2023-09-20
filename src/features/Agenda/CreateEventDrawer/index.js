@@ -11,8 +11,7 @@ import {
 import { CallType } from "src/constant/callTypes";
 import { CallPlatform } from "src/constant/callplatform";
 import { getUserId } from "src/store/slices/authSlice/selectors";
-import { getProfilesApi } from "src/store/slices/profielSlice/apis";
-import { getAllProfiles } from "src/store/slices/profielSlice/selectors";
+
 import qs from "qs";
 import {
   checkSlotDrawer,
@@ -33,7 +32,6 @@ const CreateEventDrawer = ({ selectedDate }) => {
 
   const isDrawer = useSelector(checkSlotDrawer);
   const selectedEvent = useSelector(getSelectEvent);
-  const allProfiles = useSelector(getAllProfiles);
   const userId = useSelector(getUserId);
 
   const onClose = () => {
@@ -73,13 +71,7 @@ const CreateEventDrawer = ({ selectedDate }) => {
   };
 
   useEffect(() => {
-    if (!allProfiles?.length) {
-      dispatch(getProfilesApi());
-    }
-  }, [dispatch, allProfiles]);
-
-  useEffect(() => {
-    if (selectedEvent?.profile) {
+    if (selectedEvent) {
       form.setFieldsValue({
         companyName: selectedEvent?.companyName,
         jobTitle: selectedEvent?.jobTitle,
@@ -89,7 +81,7 @@ const CreateEventDrawer = ({ selectedDate }) => {
         callType: selectedEvent?.callType,
         callPlatform: selectedEvent?.callPlatform,
         mailLink: selectedEvent?.mailLink,
-        profile: selectedEvent?.profile._id,
+        apply: selectedEvent?.apply?._id,
         companyInformation: selectedEvent?.companyInformation,
       });
     } else {
@@ -107,7 +99,7 @@ const CreateEventDrawer = ({ selectedDate }) => {
 
     try {
       const res = await dispatch(getApplyBySearchApi(params)).unwrap();
-      setApplies(res.data?.daily_applies || []); 
+      setApplies(res.data?.daily_applies || []);
     } catch (error) {
       console.error("Error fetching applies:", error);
     }
@@ -133,7 +125,7 @@ const CreateEventDrawer = ({ selectedDate }) => {
 
         <div className="d-flex justify-content-between mb-1">
           <div style={{ flex: 1, marginRight: "20px" }}>
-        
+
             <Form.Item
               name="callDuration"
               label="Call duration"
@@ -184,38 +176,25 @@ const CreateEventDrawer = ({ selectedDate }) => {
                 </Option>
               </Select>
             </Form.Item>
-            {/* <Form.Item
-              name="profile"
-              label="Profile"
-              rules={[{ required: true, message: "Please select the Profile" }]}
-            >
-              <Select placeholder="Please select a Profile">
-                {allProfiles?.map((profile) => (
-                  <Option key={profile?._id} value={profile?._id}>
-                    {profile?.name}
+
+            <Form.Item name="apply" label="Apply">
+              <Select
+                style={{ width: "100%" }}
+                showSearch
+                onSearch={fetchApplyData}
+                placeholder="Select an applies"
+                optionFilterProp="children"
+              >
+                {applies?.map((apply) => (
+                  <Option key={apply._id} value={apply._id}  >
+                    {`${apply?.clientName} - ${apply?.companyName} `}
+                    <span style={{ fontSize: '80%', opacity: 0.7, display: 'flex', justifyContent: 'flex-end' }} >
+                      {format(new Date(apply.createdAt), "dd-MM-yyyy")}
+                    </span>
                   </Option>
                 ))}
               </Select>
-            </Form.Item> */}
-           
-           <Form.Item name="apply" label="Apply">
-          <Select
-            style={{ width: "100%" }}
-            showSearch
-            onSearch={fetchApplyData}
-            placeholder="Select an applies"
-            optionFilterProp="children"
-          >
-            {applies?.map((apply) => (
-              <Option key={apply._id} value={apply._id} >
-              {`${apply.clientName} - ${apply.companyName} `}
-              <span style={{ fontSize: '80%', opacity: 0.7,display:'flex',justifyContent:'flex-end' }} >
-                {format(new Date(apply.createdAt), "dd-MM-yyyy")}
-              </span>
-            </Option>
-            ))}
-          </Select>
-        </Form.Item>
+            </Form.Item>
           </div>
         </div>
         <Form.Item className="d-flex justify-content-end">
@@ -224,7 +203,7 @@ const CreateEventDrawer = ({ selectedDate }) => {
           </Button>
         </Form.Item>
       </Form>
-    </Drawer>
+    </Drawer >
   );
 };
 
