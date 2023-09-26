@@ -12,7 +12,7 @@ import { closeNotesDrawer } from "src/store/slices/agenda";
 
 const NotesDrawer = () => {
   const [isFullScreen, setIsFullScreen] = useState(false);
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(null);
 
   const selectedEvent = useSelector(getSelectEvent);
 
@@ -39,7 +39,8 @@ const NotesDrawer = () => {
 
   useEffect(() => {
     setValue(selectedEvent?.notes);
-  }, [selectedEvent]);
+  }, [selectedEvent, value]);
+
 
   const toolbarOptions = [
     [{ header: "1" }, { header: "2" }, { font: [] }],
@@ -48,6 +49,7 @@ const NotesDrawer = () => {
     ["link", "image", "code", "color"],
     ["clean"],
   ];
+
 
   return (
     <div>
