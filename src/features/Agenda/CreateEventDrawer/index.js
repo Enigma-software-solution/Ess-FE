@@ -23,6 +23,7 @@ import {
 } from "src/store/slices/agenda";
 import { getAllUsersApi } from "src/store/slices/userSlice/apis";
 import { getAllUsers } from "src/store/slices/userSlice/selectors";
+import UserList from "../UserList";
 const { Option } = Select;
 
 const CreateEventDrawer = ({ selectedDate }) => {
@@ -155,7 +156,8 @@ const CreateEventDrawer = ({ selectedDate }) => {
             </Form.Item>
 
             <Form.Item name="assignTo" label="Assign To">
-              <Select
+              <UserList />
+              {/* <Select
                 style={{ width: "100%" }}
                 placeholder="Select User"
                 optionFilterProp="children"
@@ -165,7 +167,7 @@ const CreateEventDrawer = ({ selectedDate }) => {
                     {`${user?.first_name} - ${user?.email} `}
                   </Option>
                 ))}
-              </Select>
+              </Select> */}
             </Form.Item>
           </div>
           <div style={{ flex: 1 }}>
