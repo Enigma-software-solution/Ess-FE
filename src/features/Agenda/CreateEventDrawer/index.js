@@ -162,7 +162,10 @@ const CreateEventDrawer = ({ selectedDate }) => {
               >
                 {users?.map((user) => (
                   <Option key={user._id} value={user._id}>
-                    {`${user?.first_name} - ${user?.email} `}
+                    <div className="d-flex justify-content-between">
+                      <span>{user?.first_name +" "+ user?.last_name}</span>
+                      <span style={{fontSize:'12px', color:'gray'}}>{user?.email}</span>
+                    </div>
                   </Option>
                 ))}
               </Select>
