@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Card, Drawer, Popconfirm } from "antd";
+import { Button, Card, Drawer, Popconfirm, Select } from "antd";
 import { format } from "date-fns";
 import {
   checkEventDrawer,
@@ -32,6 +32,8 @@ const EventDetailsDrawer = () => {
   const handleNotesDrawer = () => {
     dispatch(showNotesDrawer());
   };
+
+  console.log(selectedEvent, "selected")
 
   const handleConfirmDelete = (record) => {
     try {
@@ -76,10 +78,25 @@ const EventDetailsDrawer = () => {
         }
       >
         {selectedEvent?.start && selectedEvent.end && (
-          <div className="mb-1">
-            <Button type="primary" onClick={handleNotesDrawer}>
-              {selectedEvent?.notes ? "Update Notes" : "Add Notes"}
-            </Button>
+          <div className="mb-1"  >
+
+            <div style={{ display: "flex", gap: "20px" }}>
+              <Button type="primary" onClick={handleNotesDrawer}>
+                {selectedEvent?.notes ? "Update Notes" : "Add Notes"}
+              </Button>
+
+              <Select
+                showSearch
+                placeholder="Assigned To"
+                optionFilterProp="children"
+                options={[
+                  {
+                    value: selectedEvent?.assignTo?._id,
+                    label: selectedEvent?.assignTo?.first_name,
+                  },
+                ]}
+              />
+            </div>
 
             <div className="d-flex justify-content-end align-items-end flex-column  mb-1">
               <p>
@@ -100,6 +117,10 @@ const EventDetailsDrawer = () => {
                 <span className="fw-bold">Company Name:</span>
                 <span className="m-3">{selectedEvent?.apply?.companyName}</span>
               </div>
+
+
+
+
               <div className="mb-3">
                 <span className="fw-bold">Job Title:</span>
                 <span className="m-3">
