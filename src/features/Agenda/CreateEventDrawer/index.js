@@ -11,7 +11,6 @@ import {
 import { CallType } from "src/constant/callTypes";
 import { CallPlatform } from "src/constant/callplatform";
 import { getUserId } from "src/store/slices/authSlice/selectors";
-
 import qs from "qs";
 import {
   checkSlotDrawer,
@@ -35,8 +34,6 @@ const CreateEventDrawer = ({ selectedDate }) => {
   const selectedEvent = useSelector(getSelectEvent);
   const userId = useSelector(getUserId);
   const users = useSelector(getAllUsers);
-
-  console.log(users, "useerss")
 
   const onClose = () => {
     form.resetFields();
@@ -87,7 +84,7 @@ const CreateEventDrawer = ({ selectedDate }) => {
         mailLink: selectedEvent?.mailLink,
         callLink: selectedEvent?.callLink,
         apply: selectedEvent?.apply?._id,
-        // assignTo: selectedEvent?.assignTo,
+        assignTo: selectedEvent?.users?.data?._id,
         companyInformation: selectedEvent?.companyInformation,
       });
     } else {
@@ -116,8 +113,6 @@ const CreateEventDrawer = ({ selectedDate }) => {
     }
   }
 
-
-
   return (
     <Drawer
       title="Add Event"
@@ -139,20 +134,7 @@ const CreateEventDrawer = ({ selectedDate }) => {
         <div className="d-flex justify-content-between mb-1">
           <div style={{ flex: 1, marginRight: "20px" }}>
 
-            {/* assign to */}
-            {/* <Form.Item
-              name="assignTo"
-              label="Assign To"
-              rules={[{ required: true }]}
-            >
-              <Select>
-                {users.map((user) => (
-                  <Select.Option key={user.id} value={user.id}>
-                    {user.name}
-                  </Select.Option>
-                ))}
-              </Select>
-            </Form.Item> */}
+
 
             <Form.Item
               name="callDuration"

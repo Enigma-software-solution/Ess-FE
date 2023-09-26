@@ -4,14 +4,17 @@ import dailyApplyReducer from "./slices/dailyApplySlice";
 import profileReducer from "./slices/profielSlice"
 import agendaReducer from "./slices/agenda"
 import globalReducer from "./slices/globalSlice";
+import userReducer from "./slices/userSlice"
 
 const store = configureStore({
   reducer: {
     auth: authReducer,
+    users: userReducer,
     dailyApply: dailyApplyReducer,
     profile: profileReducer,
     agenda: agendaReducer,
     theme: globalReducer,
+
 
   },
   middleware: [
