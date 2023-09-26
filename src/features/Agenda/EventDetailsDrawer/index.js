@@ -86,19 +86,8 @@ const EventDetailsDrawer = () => {
                 {selectedEvent?.notes ? "Update Notes" : "Add Notes"}
               </Button>
 
-              <UserList />
+              <UserList user={selectedEvent?.assignTo} />
 
-              {/* <Select
-                showSearch
-                placeholder="Assigned To"
-                optionFilterProp="children"
-                options={[
-                  {
-                    value: selectedEvent?.assignTo?._id,
-                    label: selectedEvent?.assignTo?.first_name,
-                  },
-                ]}
-              /> */}
             </div>
 
             <div className="d-flex justify-content-end align-items-end flex-column  mb-1">
