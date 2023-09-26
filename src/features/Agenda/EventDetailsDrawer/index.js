@@ -17,6 +17,7 @@ import {
   showNotesDrawer,
   showSlotDrawer,
 } from "src/store/slices/agenda";
+import { toast } from "react-toastify";
 
 const EventDetailsDrawer = () => {
   const dispatch = useDispatch();
@@ -33,13 +34,18 @@ const EventDetailsDrawer = () => {
   };
 
   const handleConfirmDelete = (record) => {
-    dispatch(DeleteEventsApi(record._id));
-    dispatch(closeEventDrawer())
+    try {
+      dispatch(DeleteEventsApi(record._id));
+      dispatch(closeEventDrawer());
+      toast.success("Record Deleted Successfully");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const onClose = () => {
     dispatch(closeEventDrawer());
-    dispatch(setSelectedEvent(null))
+    dispatch(setSelectedEvent(null));
   };
 
   const handleUpdate = () => {
@@ -96,7 +102,9 @@ const EventDetailsDrawer = () => {
               </div>
               <div className="mb-3">
                 <span className="fw-bold">Job Title:</span>
-                <span className="m-3">{selectedEvent?.apply?.positionToApply}</span>
+                <span className="m-3">
+                  {selectedEvent?.apply?.positionToApply}
+                </span>
               </div>
               <div className="mb-3">
                 <span className="fw-bold">Call Duration:</span>
@@ -169,7 +177,9 @@ const EventDetailsDrawer = () => {
             </div>
             <div className="mb-3">
               <span className="fw-bold">Created Date:</span>
-              <span className="m-3">{formatDate(selectedEvent?.createdAt)}</span>
+              <span className="m-3">
+                {formatDate(selectedEvent?.createdAt)}
+              </span>
             </div>
           </div>
         )}
