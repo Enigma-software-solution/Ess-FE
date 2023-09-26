@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Card, Drawer, Popconfirm } from "antd";
+import { Button, Card, Drawer, Popconfirm, Select } from "antd";
 import { format } from "date-fns";
 import {
   checkEventDrawer,
@@ -17,6 +17,7 @@ import {
   showNotesDrawer,
   showSlotDrawer,
 } from "src/store/slices/agenda";
+import { toast } from "react-toastify";
 
 const EventDetailsDrawer = () => {
   const dispatch = useDispatch();
@@ -32,14 +33,21 @@ const EventDetailsDrawer = () => {
     dispatch(showNotesDrawer());
   };
 
+  console.log(selectedEvent, "selected")
+
   const handleConfirmDelete = (record) => {
-    dispatch(DeleteEventsApi(record._id));
-    dispatch(closeEventDrawer())
+    try {
+      dispatch(DeleteEventsApi(record._id));
+      dispatch(closeEventDrawer());
+      toast.success("Record Deleted Successfully");
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const onClose = () => {
     dispatch(closeEventDrawer());
-    dispatch(setSelectedEvent(null))
+    dispatch(setSelectedEvent(null));
   };
 
   const handleUpdate = () => {
@@ -70,10 +78,25 @@ const EventDetailsDrawer = () => {
         }
       >
         {selectedEvent?.start && selectedEvent.end && (
-          <div className="mb-1">
-            <Button type="primary" onClick={handleNotesDrawer}>
-              {selectedEvent?.notes ? "Update Notes" : "Add Notes"}
-            </Button>
+          <div className="mb-1"  >
+
+            <div style={{ display: "flex", gap: "20px" }}>
+              <Button type="primary" onClick={handleNotesDrawer}>
+                {selectedEvent?.notes ? "Update Notes" : "Add Notes"}
+              </Button>
+
+              <Select
+                showSearch
+                placeholder="Assigned To"
+                optionFilterProp="children"
+                options={[
+                  {
+                    value: selectedEvent?.assignTo?._id,
+                    label: selectedEvent?.assignTo?.first_name,
+                  },
+                ]}
+              />
+            </div>
 
             <div className="d-flex justify-content-end align-items-end flex-column  mb-1">
               <p>
@@ -94,9 +117,15 @@ const EventDetailsDrawer = () => {
                 <span className="fw-bold">Company Name:</span>
                 <span className="m-3">{selectedEvent?.apply?.companyName}</span>
               </div>
+
+
+
+
               <div className="mb-3">
                 <span className="fw-bold">Job Title:</span>
-                <span className="m-3">{selectedEvent?.apply?.positionToApply}</span>
+                <span className="m-3">
+                  {selectedEvent?.apply?.positionToApply}
+                </span>
               </div>
               <div className="mb-3">
                 <span className="fw-bold">Call Duration:</span>
@@ -169,7 +198,9 @@ const EventDetailsDrawer = () => {
             </div>
             <div className="mb-3">
               <span className="fw-bold">Created Date:</span>
-              <span className="m-3">{formatDate(selectedEvent?.createdAt)}</span>
+              <span className="m-3">
+                {formatDate(selectedEvent?.createdAt)}
+              </span>
             </div>
           </div>
         )}

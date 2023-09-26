@@ -18,6 +18,7 @@ import qs from "qs";
 import DetailsDailyApplyDrawer from "../Drawers/DetailsDrawer";
 import { format } from "date-fns";
 import { StyledTable } from "./styled";
+import { toast } from "react-toastify";
 
 const CreateDailyAppliesTable = () => {
     const dispatch = useDispatch();
@@ -39,6 +40,7 @@ const CreateDailyAppliesTable = () => {
     const handleConfirmDelete = (recordToDelete, e) => {
         e.stopPropagation();
         dispatch(deteleDailyAppliesApi(recordToDelete._id));
+        toast.success("Record Deleted Successfully")
     };
 
     const handleRowClick = (record) => {

@@ -6,8 +6,6 @@ import { format } from "date-fns";
 
 const DetailsDailyApplyDrawer = ({ isOpen, handleDetailsDrawer, selectedRecord }) => {
 
-    console.log(selectedRecord, "selected")
-
     return (
         <Drawer
             title="Details Apply"

@@ -1,1 +1,1 @@
-export const getAllUsers = (state) => state?.users
+export const getAllUsers = (state) => state?.users?.data 

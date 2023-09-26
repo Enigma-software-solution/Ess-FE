@@ -5,9 +5,9 @@ import { update } from 'lodash';
 
 const initialState = {
   selectedEvent: null,
-  isEventDrawer:false,
-  isSlotDrawer:false,
-  isNotesDrawer:false,
+  isEventDrawer: false,
+  isSlotDrawer: false,
+  isNotesDrawer: false,
   events: [],
   status: 'idle',
   error: ''
@@ -77,26 +77,25 @@ const agendaSlice = createSlice({
       state.events = state?.events?.filter((event) => event?._id !== action?.payload?.eventId)
     });
 
-      // add notes
-      builder.addCase(updateEventNotes.fulfilled, (state, action) => {
-        console.log(action.payload,'action.pa')
-        state.events = state?.events.map(event => {
-          if (event?._id === action?.payload?.event?._id) {
-            return action?.payload?.event
-          }
-          return event
-        })
-
-        state.selectedEvent= {
-          ...state.selectedEvent,
-          notes:action?.payload?.event?.notes
+    // add notes
+    builder.addCase(updateEventNotes.fulfilled, (state, action) => {
+      state.events = state?.events.map(event => {
+        if (event?._id === action?.payload?.event?._id) {
+          return action?.payload?.event
         }
-      });
+        return event
+      })
+
+      state.selectedEvent = {
+        ...state.selectedEvent,
+        notes: action?.payload?.event?.notes
+      }
+    });
 
   },
 });
 
-export const { 
+export const {
   setSelectedEvent,
   showEventDrawer,
   closeEventDrawer,

@@ -42,8 +42,6 @@ const CustomCalendar = () => {
     end: null,
   });
 
-  console.log(selectedDate, "sss");
-
   const dispatch = useDispatch();
   const events = useSelector(getAllEvents);
 
@@ -102,23 +100,23 @@ const CustomCalendar = () => {
 
   return (
     <>
-        <Calendar
-          localizer={localizer}
-          events={preparedEvents}
-          startAccessor="start"
-          endAccessor="end"
-          style={{ height: "calc(100vh - 146px)" }}
-          timeslots={1}
-          step={15}
-          selectable={true}
-          onSelectSlot={onSelectSlot}
-          onSelectEvent={onEventClick}
-          components={{
-            event: CustomEventComponent,
-          }}
-          eventPropGetter={getEventStyle}
-          onView={(view) => setCurrentView(view)}
-        />
+      <Calendar
+        localizer={localizer}
+        events={preparedEvents}
+        startAccessor="start"
+        endAccessor="end"
+        style={{ height: "calc(100vh - 146px)" }}
+        timeslots={1}
+        step={15}
+        selectable={true}
+        onSelectSlot={onSelectSlot}
+        onSelectEvent={onEventClick}
+        components={{
+          event: CustomEventComponent,
+        }}
+        eventPropGetter={getEventStyle}
+        onView={(view) => setCurrentView(view)}
+      />
 
       <CreateEventDrawer selectedDate={selectedDate} />
       <EventDetailsDrawer />

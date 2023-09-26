@@ -11,7 +11,6 @@ import {
 import { CallType } from "src/constant/callTypes";
 import { CallPlatform } from "src/constant/callplatform";
 import { getUserId } from "src/store/slices/authSlice/selectors";
-
 import qs from "qs";
 import {
   checkSlotDrawer,
@@ -22,7 +21,6 @@ import {
   closeSlotDrawer,
   setSelectedEvent,
 } from "src/store/slices/agenda";
-// import DebounceSelectDropdown from "src/components/DebounceSelectDropdown";
 import { getAllUsersApi } from "src/store/slices/userSlice/apis";
 import { getAllUsers } from "src/store/slices/userSlice/selectors";
 const { Option } = Select;
@@ -37,8 +35,6 @@ const CreateEventDrawer = ({ selectedDate }) => {
   const userId = useSelector(getUserId);
   const users = useSelector(getAllUsers);
 
-  console.log(users, "useerss")
-
   const onClose = () => {
     form.resetFields();
     dispatch(closeSlotDrawer());
@@ -46,13 +42,13 @@ const CreateEventDrawer = ({ selectedDate }) => {
 
   const handleCreateOrUpdateEvent = (values) => {
     const CreateData = {
-      user: userId,
+      createdBy: userId,
       ...selectedDate,
       ...values,
     };
 
     const updateData = {
-      user: userId,
+      createdBy: userId,
       start: selectedEvent?.start,
       end: selectedEvent?.end,
       ...values,
@@ -88,6 +84,7 @@ const CreateEventDrawer = ({ selectedDate }) => {
         mailLink: selectedEvent?.mailLink,
         callLink: selectedEvent?.callLink,
         apply: selectedEvent?.apply?._id,
+        assignTo: selectedEvent?.users?.data?._id,
         companyInformation: selectedEvent?.companyInformation,
       });
     } else {
@@ -136,6 +133,9 @@ const CreateEventDrawer = ({ selectedDate }) => {
 
         <div className="d-flex justify-content-between mb-1">
           <div style={{ flex: 1, marginRight: "20px" }}>
+
+
+
             <Form.Item
               name="callDuration"
               label="Call duration"
@@ -154,7 +154,7 @@ const CreateEventDrawer = ({ selectedDate }) => {
               <Input type="text" />
             </Form.Item>
 
-            <Form.Item name="Users" label="Assign To">
+            <Form.Item name="assignTo" label="Assign To">
               <Select
                 style={{ width: "100%" }}
                 placeholder="Select User"
