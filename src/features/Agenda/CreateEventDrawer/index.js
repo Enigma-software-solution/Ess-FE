@@ -22,7 +22,8 @@ import {
   closeSlotDrawer,
   setSelectedEvent,
 } from "src/store/slices/agenda";
-// import DebounceSelectDropdown from "src/components/DebounceSelectDropdown";
+import { getAllUsersApi } from "src/store/slices/userSlice/apis";
+import { getAllUsers } from "src/store/slices/userSlice/selectors";
 const { Option } = Select;
 
 const CreateEventDrawer = ({ selectedDate }) => {
@@ -33,6 +34,9 @@ const CreateEventDrawer = ({ selectedDate }) => {
   const isDrawer = useSelector(checkSlotDrawer);
   const selectedEvent = useSelector(getSelectEvent);
   const userId = useSelector(getUserId);
+  const users = useSelector(getAllUsers);
+
+  console.log(users, "useerss")
 
   const onClose = () => {
     form.resetFields();
@@ -91,6 +95,11 @@ const CreateEventDrawer = ({ selectedDate }) => {
     }
   }, [selectedEvent, form]);
 
+  useEffect(() => {
+    dispatch(getAllUsersApi())
+  }, [])
+
+
   const [applies, setApplies] = useState([]);
 
   async function fetchApplyData(searchText) {
@@ -107,11 +116,7 @@ const CreateEventDrawer = ({ selectedDate }) => {
     }
   }
 
-  const users = [
-    { id: 1, name: 'User 1' },
-    { id: 2, name: 'User 2' },
-    // Add more users as needed
-  ];
+
 
   return (
     <Drawer
@@ -167,8 +172,18 @@ const CreateEventDrawer = ({ selectedDate }) => {
               <Input type="text" />
             </Form.Item>
 
-            <Form.Item name="companyInformation" label="Company Information">
-              <Input.TextArea />
+            <Form.Item name="Users" label="Assign To">
+              <Select
+                style={{ width: "100%" }}
+                placeholder="Select User"
+                optionFilterProp="children"
+              >
+                {users?.map((user) => (
+                  <Option key={user._id} value={user._id}>
+                    {`${user?.first_name} - ${user?.email} `}
+                  </Option>
+                ))}
+              </Select>
             </Form.Item>
           </div>
           <div style={{ flex: 1 }}>
@@ -228,6 +243,10 @@ const CreateEventDrawer = ({ selectedDate }) => {
                   </Option>
                 ))}
               </Select>
+            </Form.Item>
+
+            <Form.Item name="companyInformation" label="Company Information">
+              <Input.TextArea />
             </Form.Item>
           </div>
         </div>
