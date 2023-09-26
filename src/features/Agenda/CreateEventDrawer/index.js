@@ -154,7 +154,7 @@ const CreateEventDrawer = ({ selectedDate }) => {
               <Input type="text" />
             </Form.Item>
 
-            <Form.Item name="Users" label="Assign To">
+            <Form.Item name="assignTo" label="Assign To">
               <Select
                 style={{ width: "100%" }}
                 placeholder="Select User"
