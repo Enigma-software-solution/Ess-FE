@@ -10,8 +10,8 @@ import { getSelectedApply } from 'src/store/slices/dailyApplySlice/selectors';
 const { Option } = Select;
 
 const initialFormValues = {
+  clientJobPosition: '',
   clientName: '',
-  companyName: '',
   link: '',
   profile: undefined,
   platform: 'GlassDoor',
@@ -35,12 +35,12 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
   useEffect(() => {
     if (selectedApply) {
       form.setFieldsValue({
-        clientName:selectedApply?.clientName,
-        link:selectedApply?.link,
+        clientJobPosition: selectedApply?.clientJobPosition,
+        clientName: selectedApply?.clientName,
+        link: selectedApply?.link,
         profile: selectedApply?.profile?._id,
-        platform:selectedApply?.platform,
-        companyName:selectedApply?.companyName,
-        positionToApply:selectedApply?.positionToApply,
+        platform: selectedApply?.platform,
+        positionToApply: selectedApply?.positionToApply,
 
       });
     } else {
@@ -52,13 +52,13 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
     try {
 
       const data = {
-        clientName : values?.clientName,
-        platform : values?.platform,
-        positionToApply : values?.positionToApply,
-        link : values?.link,
-        companyName : values?.companyName,
-        user: userId,
-        profile : values?.profile,
+        clientJobPosition: values?.clientJobPosition,
+        clientName: values?.clientName,
+        platform: values?.platform,
+        positionToApply: values?.positionToApply,
+        link: values?.link,
+        createdBy: userId,
+        profile: values?.profile,
 
       };
 
@@ -153,14 +153,15 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
           </Col>
           <Col span={12}>
             <Form.Item
-              name="companyName"
-              label="Company Name"
-              rules={[{ message: 'Please enter Company Name' }]}
+              name="clientJobPosition"
+              label="Client Job Position"
+              rules={[{ message: 'Please enter Client Job' }]}
             >
-              <Input placeholder="Please enter company Name" />
+              <Input placeholder="Please enter Client Job" />
             </Form.Item>
           </Col>
         </Row>
+
         <Form.Item>
           <Space>
             <Button onClick={handleDrawer}>Cancel</Button>

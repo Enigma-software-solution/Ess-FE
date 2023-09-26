@@ -22,7 +22,7 @@ import {
   closeSlotDrawer,
   setSelectedEvent,
 } from "src/store/slices/agenda";
-import DebounceSelectDropdown from "src/components/DebounceSelectDropdown";
+// import DebounceSelectDropdown from "src/components/DebounceSelectDropdown";
 const { Option } = Select;
 
 const CreateEventDrawer = ({ selectedDate }) => {
@@ -41,13 +41,13 @@ const CreateEventDrawer = ({ selectedDate }) => {
 
   const handleCreateOrUpdateEvent = (values) => {
     const CreateData = {
-      user: userId,
+      createdBy: userId,
       ...selectedDate,
       ...values,
     };
 
     const updateData = {
-      user: userId,
+      createdBy: userId,
       start: selectedEvent?.start,
       end: selectedEvent?.end,
       ...values,
@@ -83,6 +83,7 @@ const CreateEventDrawer = ({ selectedDate }) => {
         mailLink: selectedEvent?.mailLink,
         callLink: selectedEvent?.callLink,
         apply: selectedEvent?.apply?._id,
+        // assignTo: selectedEvent?.assignTo,
         companyInformation: selectedEvent?.companyInformation,
       });
     } else {
@@ -106,6 +107,12 @@ const CreateEventDrawer = ({ selectedDate }) => {
     }
   }
 
+  const users = [
+    { id: 1, name: 'User 1' },
+    { id: 2, name: 'User 2' },
+    // Add more users as needed
+  ];
+
   return (
     <Drawer
       title="Add Event"
@@ -126,6 +133,22 @@ const CreateEventDrawer = ({ selectedDate }) => {
 
         <div className="d-flex justify-content-between mb-1">
           <div style={{ flex: 1, marginRight: "20px" }}>
+
+            {/* assign to */}
+            {/* <Form.Item
+              name="assignTo"
+              label="Assign To"
+              rules={[{ required: true }]}
+            >
+              <Select>
+                {users.map((user) => (
+                  <Select.Option key={user.id} value={user.id}>
+                    {user.name}
+                  </Select.Option>
+                ))}
+              </Select>
+            </Form.Item> */}
+
             <Form.Item
               name="callDuration"
               label="Call duration"
