@@ -92,9 +92,8 @@ const CreateEventDrawer = ({ selectedDate }) => {
   }, [selectedEvent, form]);
 
   useEffect(() => {
-    dispatch(getAllUsersApi())
-  }, [])
-
+    dispatch(getAllUsersApi());
+  }, []);
 
   const [applies, setApplies] = useState([]);
 
@@ -111,8 +110,6 @@ const CreateEventDrawer = ({ selectedDate }) => {
       console.error("Error fetching applies:", error);
     }
   }
-
-  console.log(applies,'------------')
 
   return (
     <Drawer
@@ -134,9 +131,6 @@ const CreateEventDrawer = ({ selectedDate }) => {
 
         <div className="d-flex justify-content-between mb-1">
           <div style={{ flex: 1, marginRight: "20px" }}>
-
-
-
             <Form.Item
               name="callDuration"
               label="Call duration"
@@ -147,14 +141,14 @@ const CreateEventDrawer = ({ selectedDate }) => {
             <Form.Item name="numOfGuests" label="Number of Guests">
               <Input type="number" />
             </Form.Item>
-            <Form.Item name="mailLink" label="Mail Link">
+            <Form.Item name="mailLink" label="Mail Link"  rules={[{ required: true }]}          >
               <Input type="text" />
             </Form.Item>
 
-            <Form.Item name="callLink" label="Call Link">
+            <Form.Item name="callLink" label="Call Link" rules={[{ required: true }]}>
               <Input type="text" />
             </Form.Item>
-{/* 
+            {/* 
             <Form.Item name="assignTo" label="Assign To">
               <UserList  />
             </Form.Item> */}
@@ -192,7 +186,7 @@ const CreateEventDrawer = ({ selectedDate }) => {
               </Select>
             </Form.Item>
 
-            <Form.Item name="apply" label="Apply">
+            <Form.Item name="apply" label="Apply"  rules={[{ required: true }]}>
               <Select
                 style={{ width: "100%" }}
                 showSearch
@@ -202,7 +196,9 @@ const CreateEventDrawer = ({ selectedDate }) => {
               >
                 {applies?.map((apply) => (
                   <Option key={apply._id} value={apply._id}>
-                    {apply?.clientName} { apply?.clientJobPosition &&` -  ${apply?.clientJobPosition} `}
+                    {apply?.clientName}{" "}
+                    {apply?.clientJobPosition &&
+                      ` -  ${apply?.clientJobPosition} `}
                     <span
                       style={{
                         fontSize: "80%",
