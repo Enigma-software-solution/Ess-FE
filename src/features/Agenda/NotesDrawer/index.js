@@ -39,7 +39,7 @@ const NotesDrawer = () => {
 
   useEffect(() => {
     setValue(selectedEvent?.notes);
-  }, [selectedEvent, value]);
+  }, [selectedEvent,isDrawer]);
 
 
   const toolbarOptions = [
@@ -49,7 +49,6 @@ const NotesDrawer = () => {
     ["link", "image", "code", "color"],
     ["clean"],
   ];
-
 
   return (
     <div>

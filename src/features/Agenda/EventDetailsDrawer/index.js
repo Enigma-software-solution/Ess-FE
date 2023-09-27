@@ -86,7 +86,7 @@ const EventDetailsDrawer = () => {
                 {selectedEvent?.notes ? "Update Notes" : "Add Notes"}
               </Button>
 
-              <UserList user={selectedEvent?.assignTo} />
+              <UserList  selectedEvent={selectedEvent} />
 
             </div>
 

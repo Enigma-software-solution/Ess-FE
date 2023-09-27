@@ -48,7 +48,7 @@ export const DeleteEventsApi = createAsyncThunk(
 
 export const updateEventNotes = createAsyncThunk("agenda/update-event-notes", async (data) => {
   try {
-    const response = await api.put(`/event/notes/${data?.eventId}`, { notes: data?.notes });
+    const response = await api.put(`/event/${data?.eventId}/notes`, { notes: data?.notes });
     toast.success(response?.message)
     return response;
   } catch (error) {
@@ -67,4 +67,18 @@ export const getApplyBySearchApi = createAsyncThunk("agenda/get-apply-by-search"
     throw error;
   }
 });
+
+
+export const updateAssignee = createAsyncThunk("agenda/update-assignee", async (data) => {
+  try {
+    const response = await api.put(`/event/${data?.eventId}/assignTo`, { assignTo: data?.assignTo });
+    toast.success(response?.message)
+    return response;
+  } catch (error) {
+    toast.warn(error?.message)
+    throw error;
+  }
+});
+
+
 

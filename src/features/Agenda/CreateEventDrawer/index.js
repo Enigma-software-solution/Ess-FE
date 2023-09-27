@@ -152,11 +152,10 @@ const CreateEventDrawer = ({ selectedDate }) => {
             <Form.Item name="callLink" label="Call Link">
               <Input type="text" />
             </Form.Item>
-
+{/* 
             <Form.Item name="assignTo" label="Assign To">
-              <UserList />
-
-            </Form.Item>
+              <UserList  />
+            </Form.Item> */}
           </div>
           <div style={{ flex: 1 }}>
             <Form.Item
