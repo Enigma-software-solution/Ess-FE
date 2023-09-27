@@ -39,9 +39,9 @@ const DetailsDailyApplyDrawer = ({ isOpen, handleDetailsDrawer, selectedRecord }
                         <EventValue>{selectedRecord?.profile?.name}</EventValue>
                     </div>
                     <div>
-                        <EventLabel>User:</EventLabel>
+                        <EventLabel>Created by:</EventLabel>
                         <EventValue>
-                            {selectedRecord?.user?.first_name} {selectedRecord?.user?.last_name}
+                            {selectedRecord?.createdBy?.first_name} {selectedRecord?.createdBy?.last_name}
                         </EventValue>
                     </div>
                 </div>

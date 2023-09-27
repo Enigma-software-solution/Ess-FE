@@ -105,7 +105,7 @@ const EventDetailsDrawer = () => {
         {selectedEvent && selectedEvent.start && selectedEvent.end && (
           <div className="d-flex gap-2">
             <Card className="w-100" title="Event information">
-              <div className="mb-3">
+              <div className="mb-2">
                 <span className="fw-bold">Company Name:</span>
                 <span className="m-3">{selectedEvent?.apply?.companyName}</span>
               </div>
@@ -113,52 +113,52 @@ const EventDetailsDrawer = () => {
 
 
 
-              <div className="mb-3">
+              <div className="mb-2">
                 <span className="fw-bold">Job Title:</span>
                 <span className="m-3">
                   {selectedEvent?.apply?.positionToApply}
                 </span>
               </div>
-              <div className="mb-3">
+              <div className="mb-2">
                 <span className="fw-bold">Call Duration:</span>
                 <span className="m-3">
                   {selectedEvent.callDuration} seconds
                 </span>
               </div>
-              <div className="mb-3">
+              <div className="mb-2">
                 <span className="fw-bold">Number of Guests:</span>
                 <span className="m-3">{selectedEvent.numOfGuests}</span>
               </div>
-              <div className="mb-3">
+              <div className="mb-2">
                 <span className="fw-bold">Call Type:</span>
                 <span className="m-3">{selectedEvent.callType}</span>
               </div>
-              <div className="mb-3">
+              <div className="mb-2">
                 <span className="fw-bold">Call Mode:</span>
                 <span className="m-3">{selectedEvent.callMode}</span>
               </div>
-              <div className="mb-3">
+              <div className="mb-2">
                 <span className="fw-bold">Apply Platform:</span>
                 <span className="m-3">{selectedEvent?.apply?.platform}</span>
               </div>
-              <div className="mb-3">
+              <div className="mb-2">
                 <span className="fw-bold">Call Platform:</span>
                 <span className="m-3">{selectedEvent.callPlatform}</span>
               </div>
-              <div className="mb-3">
+              <div className="mb-2">
                 <span className="fw-bold">Mail Link:</span>
                 <span className="m-3">
                   <a href={selectedEvent?.mailLink}>Mail</a>
                 </span>
               </div>
-              <div className="mb-3">
+              <div className="mb-2">
                 <span className="fw-bold">Call Link:</span>
                 <span className="m-3">
                   <a href={selectedEvent?.callLikn}>Mail</a>
                 </span>
               </div>
 
-              <div className="mb-3">
+              <div className="mb-2">
                 <span className="fw-bold">Company Information:</span>
                 <span className="m-3">{selectedEvent?.companyInformation}</span>
               </div>
@@ -178,17 +178,17 @@ const EventDetailsDrawer = () => {
 
         {selectedEvent && selectedEvent.start && selectedEvent.end && (
           <div className="w-100 d-flex flex-column align-items-end">
-            <div className="mb-3">
+            <div className="mb-2">
               <span className="fw-bold">Profile:</span>
               <span className="m-3">{selectedEvent?.apply?.profile?.name}</span>
             </div>
-            <div className="mb-3">
-              <span className="fw-bold">User:</span>
+            <div className="mb-2">
+              <span className="fw-bold">Created by:</span>
               <span className="m-3">
-                {selectedEvent.user?.first_name} {selectedEvent.user?.last_name}
+                {selectedEvent?.createdBy?.first_name} {selectedEvent?.createdBy?.last_name}
               </span>
             </div>
-            <div className="mb-3">
+            <div className="mb-2">
               <span className="fw-bold">Created Date:</span>
               <span className="m-3">
                 {formatDate(selectedEvent?.createdAt)}
