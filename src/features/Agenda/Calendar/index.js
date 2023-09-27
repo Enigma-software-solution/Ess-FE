@@ -23,6 +23,7 @@ import {
   getAllEvents,
 } from "src/store/slices/agenda/selector";
 import { CallType } from "src/constant/callTypes";
+import { toast } from "react-toastify";
 
 const locales = {
   "en-US": enUS,
@@ -59,11 +60,18 @@ const CustomCalendar = () => {
 
   const onSelectSlot = (slot) => {
     if (currentView === "day" || currentView === "week") {
-      setSelectedDate({
-        start: slot.start,
-        end: slot.end,
-      });
-      dispatch(showSlotDrawer());
+      const currentDate = new Date();
+      const isPastDate = slot.start < currentDate;
+
+      if (!isPastDate) {
+        setSelectedDate({
+          start: slot.start,
+          end: slot.end,
+        });
+        dispatch(showSlotDrawer());
+      } else {
+        toast.warn('Cannot create events on past dates.e')
+      }
     }
   };
 
