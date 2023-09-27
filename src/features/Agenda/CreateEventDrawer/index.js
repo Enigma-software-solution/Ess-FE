@@ -22,7 +22,7 @@ import {
   setSelectedEvent,
 } from "src/store/slices/agenda";
 import { getAllUsersApi } from "src/store/slices/userSlice/apis";
-import { getAllUsers } from "src/store/slices/userSlice/selectors";
+import UserList from "../UserList";
 const { Option } = Select;
 
 const CreateEventDrawer = ({ selectedDate }) => {
@@ -33,7 +33,6 @@ const CreateEventDrawer = ({ selectedDate }) => {
   const isDrawer = useSelector(checkSlotDrawer);
   const selectedEvent = useSelector(getSelectEvent);
   const userId = useSelector(getUserId);
-  const users = useSelector(getAllUsers);
 
   const onClose = () => {
     form.resetFields();
@@ -155,20 +154,8 @@ const CreateEventDrawer = ({ selectedDate }) => {
             </Form.Item>
 
             <Form.Item name="assignTo" label="Assign To">
-              <Select
-                style={{ width: "100%" }}
-                placeholder="Select User"
-                optionFilterProp="children"
-              >
-                {users?.map((user) => (
-                  <Option key={user._id} value={user._id}>
-                    <div className="d-flex justify-content-between">
-                      <span>{user?.first_name +" "+ user?.last_name}</span>
-                      <span style={{fontSize:'12px', color:'gray'}}>{user?.email}</span>
-                    </div>
-                  </Option>
-                ))}
-              </Select>
+              <UserList />
+
             </Form.Item>
           </div>
           <div style={{ flex: 1 }}>

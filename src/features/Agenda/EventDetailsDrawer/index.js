@@ -18,6 +18,7 @@ import {
   showSlotDrawer,
 } from "src/store/slices/agenda";
 import { toast } from "react-toastify";
+import UserList from "../UserList";
 
 const EventDetailsDrawer = () => {
   const dispatch = useDispatch();
@@ -85,17 +86,8 @@ const EventDetailsDrawer = () => {
                 {selectedEvent?.notes ? "Update Notes" : "Add Notes"}
               </Button>
 
-              <Select
-                showSearch
-                placeholder="Assigned To"
-                optionFilterProp="children"
-                options={[
-                  {
-                    value: selectedEvent?.assignTo?._id,
-                    label: selectedEvent?.assignTo?.first_name,
-                  },
-                ]}
-              />
+              <UserList user={selectedEvent?.assignTo} />
+
             </div>
 
             <div className="d-flex justify-content-end align-items-end flex-column  mb-1">
