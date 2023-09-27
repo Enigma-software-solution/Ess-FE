@@ -19,6 +19,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 
 import Agenda from "./pages/Agenda";
 import { ConfigProvider } from "antd";
+import ClientPage from "./pages/Clients";
 
 function App() {
   const dispatch = useDispatch();
@@ -39,6 +40,8 @@ function App() {
                 <Route path={routes.DAILY_APPLY} element={<DailyApply />} />
                 <Route path={routes.PROFILE} element={<Profile />} />
                 <Route path={routes.AGENDA} element={<Agenda />} />
+                <Route path={routes.CLIENT} element={<ClientPage />} />
+
               </Route>
             </Route>
             <Route path="/login" element={<Login />} />

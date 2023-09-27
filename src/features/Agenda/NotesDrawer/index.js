@@ -3,12 +3,12 @@ import { Button, Drawer, Space } from "antd";
 import { FullscreenExitOutlined, FullscreenOutlined } from "@ant-design/icons";
 import ReactQuill from "react-quill";
 import { useDispatch, useSelector } from "react-redux";
-import { updateEventNotes } from "src/store/slices/agenda/apis";
+import { updateEventNotes } from "src/store/slices/agendaSlice/apis";
 import {
   checkNotesDrawer,
   getSelectEvent,
-} from "src/store/slices/agenda/selector";
-import { closeNotesDrawer } from "src/store/slices/agenda";
+} from "src/store/slices/agendaSlice/selector";
+import { closeNotesDrawer } from "src/store/slices/agendaSlice";
 
 const NotesDrawer = () => {
   const [isFullScreen, setIsFullScreen] = useState(false);
