@@ -112,6 +112,8 @@ const CreateEventDrawer = ({ selectedDate }) => {
     }
   }
 
+  console.log(applies,'------------')
+
   return (
     <Drawer
       title="Add Event"
@@ -200,7 +202,7 @@ const CreateEventDrawer = ({ selectedDate }) => {
               >
                 {applies?.map((apply) => (
                   <Option key={apply._id} value={apply._id}>
-                    {`${apply?.clientName} - ${apply?.companyName} `}
+                    {apply?.clientName} { apply?.clientJobPosition &&` -  ${apply?.clientJobPosition} `}
                     <span
                       style={{
                         fontSize: "80%",
