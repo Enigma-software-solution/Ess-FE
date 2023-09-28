@@ -24,3 +24,18 @@ export const createClientApi = createAsyncThunk(
         }
     }
 );
+
+
+export const deleteClientApi = createAsyncThunk(
+    "client/delete-client",
+    async (clientId, { rejectWithValue }) => {
+        try {
+            const response = await api.delete(`/client/${clientId}`);
+            toast.success("Client deleted Successfully")
+
+            return { clientId };
+        } catch (error) {
+            return rejectWithValue(error?.response?.data || "An error occurred");
+        }
+    }
+);
