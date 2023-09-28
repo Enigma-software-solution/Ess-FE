@@ -13,7 +13,6 @@ const ProfileTable = () => {
     const profileData = useSelector(getAllProfiles)
 
     const handleEdit = (record) => {
-        // Implement your edit logic here
         console.log("Edit clicked for:", record);
     };
 
@@ -34,9 +33,14 @@ const ProfileTable = () => {
             dataIndex: "email",
         },
         {
-            key: "age",
-            title: "Age",
-            dataIndex: "age",
+            key: "phoneNumber",
+            title: "Phone Number",
+            dataIndex: "phoneNumber",
+        },
+        {
+            key: "status",
+            title: "Status",
+            dataIndex: "status",
         },
         {
             key: "action",

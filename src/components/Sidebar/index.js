@@ -18,12 +18,12 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
         <>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <Logo>
-                    logo
+                    <h4>Enigma</h4>
                 </Logo>
               
             </div>
             <SidebarMenu defaultSelectedKeys={['1']}>
-                {sidebarMenuItems.map((menuItem) => {
+                {sidebarMenuItems?.map((menuItem) => {
                     if (menuItem.subMenu) {
                         return (
                             <Menu.SubMenu
