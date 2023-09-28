@@ -22,6 +22,10 @@ h1,h2,h3,h4,h5,p {
   .rbc-time-slot.rbc-selectable {
   height: 340px !important; /* Change this value to your desired height */
 }
+
+.ql-editor{
+    min-height:calc(100vh - 200px);
+}
 `;
 
 export default GlobalStyles;

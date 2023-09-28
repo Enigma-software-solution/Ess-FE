@@ -38,15 +38,27 @@ const NotesDrawer = () => {
   };
 
   useEffect(() => {
-    setValue(selectedEvent?.notes);
-  }, [selectedEvent,isDrawer]);
-
+    if (selectedEvent) {
+      setValue(selectedEvent?.notes);
+    }
+  }, [selectedEvent]);
 
   const toolbarOptions = [
-    [{ header: "1" }, { header: "2" }, { font: [] }],
+    ["bold", "italic", "underline", "strike"],
+    ["blockquote", "code-block"],
+
+    [{ header: 1 }, { header: 2 }],
     [{ list: "ordered" }, { list: "bullet" }],
+    [{ script: "sub" }, { script: "super" }],
     [{ indent: "-1" }, { indent: "+1" }],
-    ["link", "image", "code", "color"],
+    [{ direction: "rtl" }],
+
+    [{ size: ["small", false, "large", "huge"] }],
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+
+    [{ color: [] }, { background: [] }],
+    [{ align: [] }],
+
     ["clean"],
   ];
 

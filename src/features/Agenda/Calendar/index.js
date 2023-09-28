@@ -10,18 +10,12 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import CreateEventDrawer from "../CreateEventDrawer";
 import EventDetailsDrawer from "../EventDetailsDrawer";
 import {
-  closeEventDrawer,
-  closeSlotDrawer,
   setSelectedEvent,
   showEventDrawer,
   showSlotDrawer,
 } from "src/store/slices/agenda";
 import { getAllEventsApi } from "src/store/slices/agenda/apis";
-import {
-  checkEventDrawer,
-  checkSlotDrawer,
-  getAllEvents,
-} from "src/store/slices/agenda/selector";
+import {  getAllEvents} from "src/store/slices/agenda/selector";
 import { CallType } from "src/constant/callTypes";
 import { toast } from "react-toastify";
 
@@ -70,7 +64,7 @@ const CustomCalendar = () => {
         });
         dispatch(showSlotDrawer());
       } else {
-        toast.warn('Cannot create events on past dates.e')
+        toast.warn('Cannot create events on past dates.')
       }
     }
   };

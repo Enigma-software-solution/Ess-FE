@@ -73,8 +73,6 @@ const CreateEventDrawer = ({ selectedDate }) => {
   useEffect(() => {
     if (selectedEvent?._id) {
       form.setFieldsValue({
-        companyName: selectedEvent?.companyName,
-        jobTitle: selectedEvent?.jobTitle,
         callDuration: selectedEvent?.callDuration,
         numOfGuests: selectedEvent?.numOfGuests,
         callMode: selectedEvent?.callMode,
@@ -148,10 +146,6 @@ const CreateEventDrawer = ({ selectedDate }) => {
             <Form.Item name="callLink" label="Call Link" rules={[{ required: true }]}>
               <Input type="text" />
             </Form.Item>
-            {/* 
-            <Form.Item name="assignTo" label="Assign To">
-              <UserList  />
-            </Form.Item> */}
           </div>
           <div style={{ flex: 1 }}>
             <Form.Item
@@ -221,7 +215,9 @@ const CreateEventDrawer = ({ selectedDate }) => {
         </div>
         <Form.Item className="d-flex justify-content-end">
           <Button type="primary" htmlType="submit">
-            Add Event
+          {
+            selectedEvent ? "Update Event" : 'Add Event'
+          }
           </Button>
         </Form.Item>
       </Form>
