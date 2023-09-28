@@ -13,9 +13,13 @@ import {
   setSelectedEvent,
   showEventDrawer,
   showSlotDrawer,
-} from "src/store/slices/agenda";
-import { getAllEventsApi } from "src/store/slices/agenda/apis";
-import {  getAllEvents} from "src/store/slices/agenda/selector";
+} from "src/store/slices/agendaSlice";
+import { getAllEventsApi } from "src/store/slices/agendaSlice/apis";
+import {
+  checkEventDrawer,
+  checkSlotDrawer,
+  getAllEvents,
+} from "src/store/slices/agendaSlice/selector";
 import { CallType } from "src/constant/callTypes";
 import { toast } from "react-toastify";
 
@@ -99,11 +103,11 @@ const CustomCalendar = () => {
       <strong>{event?.apply?.clientName}</strong>
       <br />
       {event?.assignTo && (
-       
-       <>
-       <strong>  Assign To : </strong>
+
+        <>
+          <strong>  Assign To : </strong>
           {` ${event?.assignTo?.first_name} ${event?.assignTo?.last_name}`}
-       </>
+        </>
       )}
     </div>
   );

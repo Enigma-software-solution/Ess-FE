@@ -6,9 +6,9 @@ import {
   checkEventDrawer,
   checkNotesDrawer,
   getSelectEvent,
-} from "src/store/slices/agenda/selector";
+} from "src/store/slices/agendaSlice/selector";
 import NotesDrawer from "../NotesDrawer";
-import { DeleteEventsApi } from "src/store/slices/agenda/apis";
+import { DeleteEventsApi } from "src/store/slices/agendaSlice/apis";
 import DeleteButton from "src/components/buttons/DeleteButton";
 import EditButton from "src/components/buttons/EditButton";
 import {
@@ -16,7 +16,7 @@ import {
   setSelectedEvent,
   showNotesDrawer,
   showSlotDrawer,
-} from "src/store/slices/agenda";
+} from "src/store/slices/agendaSlice";
 import { toast } from "react-toastify";
 import UserList from "../UserList";
 

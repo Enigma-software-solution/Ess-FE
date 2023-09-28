@@ -2,9 +2,10 @@ import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import authReducer from "./slices/authSlice";
 import dailyApplyReducer from "./slices/dailyApplySlice";
 import profileReducer from "./slices/profielSlice"
-import agendaReducer from "./slices/agenda"
+import agendaReducer from "./slices/agendaSlice"
 import globalReducer from "./slices/globalSlice";
-import userReducer from "./slices/userSlice"
+import userReducer from "./slices/userSlice";
+import clientReducer from "./slices/clientSlice";
 
 const store = configureStore({
   reducer: {
@@ -13,6 +14,7 @@ const store = configureStore({
     dailyApply: dailyApplyReducer,
     profile: profileReducer,
     agenda: agendaReducer,
+    client: clientReducer,
     theme: globalReducer,
 
 

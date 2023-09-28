@@ -15,7 +15,7 @@ export const sidebarMenuItems = [
         icon: <DashboardOutlined />,
         path: routes.DAILY_APPLY,
     },
- 
+
     {
         key: routes.AGENDA,
         title: 'Agenda',
@@ -28,6 +28,13 @@ export const sidebarMenuItems = [
         title: 'Profile',
         icon: <UsergroupAddOutlined />,
         path: routes.PROFILE,
+
+    },
+    {
+        key: routes.CLIENT,
+        title: 'Client',
+        icon: <UserOutlined />,
+        path: routes.CLIENT,
 
     },
     // {

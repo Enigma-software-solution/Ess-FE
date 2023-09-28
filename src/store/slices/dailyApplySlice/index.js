@@ -2,7 +2,7 @@ import {
   createSlice,
 } from "@reduxjs/toolkit";
 import { createDailyAppliesApi, deteleDailyAppliesApi, getdailyAppliesApi, updateDailyAppliesApi } from "./apis";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 
 
 const initialState = {

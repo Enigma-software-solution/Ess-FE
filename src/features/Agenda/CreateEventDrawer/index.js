@@ -7,7 +7,7 @@ import {
   UpdateEventsApi,
   createEventsApi,
   getApplyBySearchApi,
-} from "src/store/slices/agenda/apis";
+} from "src/store/slices/agendaSlice/apis";
 import { CallType } from "src/constant/callTypes";
 import { CallPlatform } from "src/constant/callplatform";
 import { getUserId } from "src/store/slices/authSlice/selectors";
@@ -15,12 +15,12 @@ import qs from "qs";
 import {
   checkSlotDrawer,
   getSelectEvent,
-} from "src/store/slices/agenda/selector";
+} from "src/store/slices/agendaSlice/selector";
 import {
   closeEventDrawer,
   closeSlotDrawer,
   setSelectedEvent,
-} from "src/store/slices/agenda";
+} from "src/store/slices/agendaSlice";
 import { getAllUsersApi } from "src/store/slices/userSlice/apis";
 import UserList from "../UserList";
 const { Option } = Select;

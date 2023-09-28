@@ -1,7 +1,7 @@
 import { Select } from "antd";
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { updateAssignee } from "src/store/slices/agenda/apis";
+import { updateAssignee } from "src/store/slices/agendaSlice/apis";
 import { getAllUsersApi } from "src/store/slices/userSlice/apis";
 import { getAllUsers } from "src/store/slices/userSlice/selectors";
 
