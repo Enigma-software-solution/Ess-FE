@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllClientsApi } from "src/store/slices/clientSlice/apis";
 import { getAllClientsSelector } from "src/store/slices/clientSlice/selectors";
 import { Table } from "antd";
+import Header from "../Header";
 
 const ClientTable = () => {
     const dispatch = useDispatch();
@@ -22,28 +23,31 @@ const ClientTable = () => {
     const columns = [
         {
             title: "Client Name",
-            dataIndex: "clientName",
+            dataIndex: "apply.clientName",
             key: "clientName",
+            render: (text, record) => record.apply?.clientName,
         },
         {
-            title: "Client Email",
-            dataIndex: "clientEmail",
-            key: "clientEmail",
+            title: "Status",
+            dataIndex: "active",
         },
         {
             title: "Platform",
-            dataIndex: "platform",
-            key: "platform",
+            dataIndex: "apply?.platform",
+            render: (text, record) => record.apply?.platform,
+
         },
         {
             title: "Position",
-            dataIndex: "position",
-            key: "position",
+            dataIndex: "apply?.positionToApply",
+            render: (text, record) => record.apply?.positionToApply,
+
         },
     ];
 
     return (
         <div>
+            <Header />
             <Table dataSource={clients} columns={columns} />
         </div>
     );

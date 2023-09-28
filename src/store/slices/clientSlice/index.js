@@ -1,7 +1,7 @@
 import {
     createSlice,
 } from "@reduxjs/toolkit";
-import { getAllClientsApi } from "./apis";
+import { createClientApi, getAllClientsApi } from "./apis";
 
 const initialState = {
     status: "idle",
@@ -25,6 +25,12 @@ const clientSlice = createSlice({
         builder.addCase(getAllClientsApi.rejected, (state, action) => {
             state.status = "error";
             state.error = action.error.message;
+        });
+
+        builder.addCase(createClientApi.fulfilled, (state, action) => {
+            state.status = "succeeded";
+            console.log(action, "actions")
+            state.data.client = [action?.payload?.data, ...state?.data?.client];
         });
     },
 

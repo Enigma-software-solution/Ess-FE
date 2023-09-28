@@ -22,7 +22,6 @@ import {
   setSelectedEvent,
 } from "src/store/slices/agendaSlice";
 import { getAllUsersApi } from "src/store/slices/userSlice/apis";
-import UserList from "../UserList";
 const { Option } = Select;
 
 const CreateEventDrawer = ({ selectedDate }) => {
@@ -139,7 +138,7 @@ const CreateEventDrawer = ({ selectedDate }) => {
             <Form.Item name="numOfGuests" label="Number of Guests">
               <Input type="number" />
             </Form.Item>
-            <Form.Item name="mailLink" label="Mail Link"  rules={[{ required: true }]}          >
+            <Form.Item name="mailLink" label="Mail Link" rules={[{ required: true }]}          >
               <Input type="text" />
             </Form.Item>
 
@@ -180,7 +179,7 @@ const CreateEventDrawer = ({ selectedDate }) => {
               </Select>
             </Form.Item>
 
-            <Form.Item name="apply" label="Apply"  rules={[{ required: true }]}>
+            <Form.Item name="apply" label="Apply" rules={[{ required: true }]}>
               <Select
                 style={{ width: "100%" }}
                 showSearch
@@ -215,9 +214,9 @@ const CreateEventDrawer = ({ selectedDate }) => {
         </div>
         <Form.Item className="d-flex justify-content-end">
           <Button type="primary" htmlType="submit">
-          {
-            selectedEvent ? "Update Event" : 'Add Event'
-          }
+            {
+              selectedEvent ? "Update Event" : 'Add Event'
+            }
           </Button>
         </Form.Item>
       </Form>
