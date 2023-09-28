@@ -79,7 +79,7 @@ const agendaSlice = createSlice({
 
     // add notes
     builder.addCase(updateEventNotes.fulfilled, (state, action) => {
-      state.events = state?.events.map(event => {
+      state.events = state?.events?.map(event => {
         if (event?._id === action?.payload?.event?._id) {
           return action?.payload?.event
         }

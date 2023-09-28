@@ -18,7 +18,7 @@ const DetailsDailyApplyDrawer = ({ isOpen, handleDetailsDrawer, selectedRecord }
             {selectedRecord && (
                 <StyledDetailsDiv>
                     <Card className="w-100" title="Apply Information">
-                        <p><strong>Company Name:</strong> {selectedRecord?.companyName}</p>
+                        <p><strong>Client Job Position:</strong> {selectedRecord?.clientJobPosition}</p>
                         <p><strong>Client Name:</strong> {selectedRecord?.clientName}</p>
                         <p><strong>Platform:</strong> {selectedRecord?.platform}</p>
                         <p><strong>Position To Apply:</strong> {selectedRecord?.positionToApply}</p>
@@ -39,9 +39,9 @@ const DetailsDailyApplyDrawer = ({ isOpen, handleDetailsDrawer, selectedRecord }
                         <EventValue>{selectedRecord?.profile?.name}</EventValue>
                     </div>
                     <div>
-                        <EventLabel>User:</EventLabel>
+                        <EventLabel>Created by:</EventLabel>
                         <EventValue>
-                            {selectedRecord?.user?.first_name} {selectedRecord?.user?.last_name}
+                            {selectedRecord?.createdBy?.first_name} {selectedRecord?.createdBy?.last_name}
                         </EventValue>
                     </div>
                 </div>

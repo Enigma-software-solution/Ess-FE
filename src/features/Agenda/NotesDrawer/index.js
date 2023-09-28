@@ -15,7 +15,7 @@ const NotesDrawer = () => {
   const [value, setValue] = useState(null);
 
   const selectedEvent = useSelector(getSelectEvent);
-
+console.log(value,'notes value')
   const dispatch = useDispatch();
   const isDrawer = useSelector(checkNotesDrawer);
 
@@ -26,7 +26,7 @@ const NotesDrawer = () => {
   const handleSave = async () => {
     const data = {
       eventId: selectedEvent._id,
-      notes: value,
+      notes: value === '<p><br></p>' ? null : value,
     };
 
     try {
@@ -38,18 +38,29 @@ const NotesDrawer = () => {
   };
 
   useEffect(() => {
-    setValue(selectedEvent?.notes);
-  }, [selectedEvent, value]);
-
+    if (selectedEvent) {
+      setValue(selectedEvent?.notes);
+    }
+  }, [selectedEvent]);
 
   const toolbarOptions = [
-    [{ header: "1" }, { header: "2" }, { font: [] }],
+    ["bold", "italic", "underline", "strike"],
+    ["blockquote", "code-block"],
+
+    [{ header: 1 }, { header: 2 }],
     [{ list: "ordered" }, { list: "bullet" }],
+    [{ script: "sub" }, { script: "super" }],
     [{ indent: "-1" }, { indent: "+1" }],
-    ["link", "image", "code", "color"],
+    [{ direction: "rtl" }],
+
+    [{ size: ["small", false, "large", "huge"] }],
+    [{ header: [1, 2, 3, 4, 5, 6, false] }],
+
+    [{ color: [] }, { background: [] }],
+    [{ align: [] }],
+
     ["clean"],
   ];
-
 
   return (
     <div>

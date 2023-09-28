@@ -155,7 +155,7 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
             <Form.Item
               name="clientJobPosition"
               label="Client Job Position"
-              rules={[{ message: 'Please enter Client Job' }]}
+              rules={[{required: true, message: 'Please enter Client Job' }]}
             >
               <Input placeholder="Please enter Client Job" />
             </Form.Item>

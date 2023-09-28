@@ -73,8 +73,6 @@ const CreateEventDrawer = ({ selectedDate }) => {
   useEffect(() => {
     if (selectedEvent?._id) {
       form.setFieldsValue({
-        companyName: selectedEvent?.companyName,
-        jobTitle: selectedEvent?.jobTitle,
         callDuration: selectedEvent?.callDuration,
         numOfGuests: selectedEvent?.numOfGuests,
         callMode: selectedEvent?.callMode,
@@ -92,9 +90,8 @@ const CreateEventDrawer = ({ selectedDate }) => {
   }, [selectedEvent, form]);
 
   useEffect(() => {
-    dispatch(getAllUsersApi())
-  }, [])
-
+    dispatch(getAllUsersApi());
+  }, []);
 
   const [applies, setApplies] = useState([]);
 
@@ -132,9 +129,6 @@ const CreateEventDrawer = ({ selectedDate }) => {
 
         <div className="d-flex justify-content-between mb-1">
           <div style={{ flex: 1, marginRight: "20px" }}>
-
-
-
             <Form.Item
               name="callDuration"
               label="Call duration"
@@ -145,17 +139,12 @@ const CreateEventDrawer = ({ selectedDate }) => {
             <Form.Item name="numOfGuests" label="Number of Guests">
               <Input type="number" />
             </Form.Item>
-            <Form.Item name="mailLink" label="Mail Link">
+            <Form.Item name="mailLink" label="Mail Link"  rules={[{ required: true }]}          >
               <Input type="text" />
             </Form.Item>
 
-            <Form.Item name="callLink" label="Call Link">
+            <Form.Item name="callLink" label="Call Link" rules={[{ required: true }]}>
               <Input type="text" />
-            </Form.Item>
-
-            <Form.Item name="assignTo" label="Assign To">
-              <UserList />
-
             </Form.Item>
           </div>
           <div style={{ flex: 1 }}>
@@ -191,7 +180,7 @@ const CreateEventDrawer = ({ selectedDate }) => {
               </Select>
             </Form.Item>
 
-            <Form.Item name="apply" label="Apply">
+            <Form.Item name="apply" label="Apply"  rules={[{ required: true }]}>
               <Select
                 style={{ width: "100%" }}
                 showSearch
@@ -201,7 +190,9 @@ const CreateEventDrawer = ({ selectedDate }) => {
               >
                 {applies?.map((apply) => (
                   <Option key={apply._id} value={apply._id}>
-                    {`${apply?.clientName} - ${apply?.companyName} `}
+                    {apply?.clientName}{" "}
+                    {apply?.clientJobPosition &&
+                      ` -  ${apply?.clientJobPosition} `}
                     <span
                       style={{
                         fontSize: "80%",
@@ -224,7 +215,9 @@ const CreateEventDrawer = ({ selectedDate }) => {
         </div>
         <Form.Item className="d-flex justify-content-end">
           <Button type="primary" htmlType="submit">
-            Add Event
+          {
+            selectedEvent ? "Update Event" : 'Add Event'
+          }
           </Button>
         </Form.Item>
       </Form>

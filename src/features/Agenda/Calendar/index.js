@@ -10,8 +10,6 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import CreateEventDrawer from "../CreateEventDrawer";
 import EventDetailsDrawer from "../EventDetailsDrawer";
 import {
-  closeEventDrawer,
-  closeSlotDrawer,
   setSelectedEvent,
   showEventDrawer,
   showSlotDrawer,
@@ -23,6 +21,7 @@ import {
   getAllEvents,
 } from "src/store/slices/agendaSlice/selector";
 import { CallType } from "src/constant/callTypes";
+import { toast } from "react-toastify";
 
 const locales = {
   "en-US": enUS,
@@ -59,11 +58,18 @@ const CustomCalendar = () => {
 
   const onSelectSlot = (slot) => {
     if (currentView === "day" || currentView === "week") {
-      setSelectedDate({
-        start: slot.start,
-        end: slot.end,
-      });
-      dispatch(showSlotDrawer());
+      const currentDate = new Date();
+      const isPastDate = slot.start < currentDate;
+
+      if (!isPastDate) {
+        setSelectedDate({
+          start: slot.start,
+          end: slot.end,
+        });
+        dispatch(showSlotDrawer());
+      } else {
+        toast.warn('Cannot create events on past dates.')
+      }
     }
   };
 
@@ -95,6 +101,14 @@ const CustomCalendar = () => {
   const CustomEventComponent = ({ event }) => (
     <div>
       <strong>{event?.apply?.clientName}</strong>
+      <br />
+      {event?.assignTo && (
+
+        <>
+          <strong>  Assign To : </strong>
+          {` ${event?.assignTo?.first_name} ${event?.assignTo?.last_name}`}
+        </>
+      )}
     </div>
   );
 

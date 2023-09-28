@@ -40,7 +40,6 @@ const CreateDailyAppliesTable = () => {
     const handleConfirmDelete = (recordToDelete, e) => {
         e.stopPropagation();
         dispatch(deteleDailyAppliesApi(recordToDelete._id));
-        toast.success("Record Deleted Successfully")
     };
 
     const handleRowClick = (record) => {
@@ -50,15 +49,20 @@ const CreateDailyAppliesTable = () => {
 
     const columns = [
         {
+            title: "No",
+            dataIndex: "serialNo",
+            render: (text, record, index) => index + 1,
+        },
+        {
             key: "name",
             title: "Client Name",
             sorter: (a, b) => a.clientName.localeCompare(b.clientName),
             dataIndex: "clientName",
         },
         {
-            title: "Company Name",
-            sorter: (a, b) => a.companyName.localeCompare(b.companyName),
-            dataIndex: "companyName",
+            title: "Client Job Position ",
+            sorter: (a, b) => a.clientJobPosition.localeCompare(b.clientJobPosition),
+            dataIndex: "clientJobPosition",
         },
         {
             title: "Position To Apply",
@@ -125,16 +129,17 @@ const CreateDailyAppliesTable = () => {
             />
             {dailyAppliesData?.paginator && dailyAppliesData.daily_applies.length ? (
                 <Pagination
+                style={{padding:'10px',display:'flex',justifyContent:'flex-end'}}
                     total={totalItems}
                     showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
                     defaultPageSize={pageSize}
                     defaultCurrent={page}
+                    
                     onChange={(page, pageSize) => {
-                        console.log(`Page: ${page}, PageSize: ${pageSize}`);
-                        // Call your API here with the new page and page size
                         const queryStringResult = qs.stringify({ page, pageSize });
                         dispatch(getdailyAppliesApi(queryStringResult));
                     }}
+                    showSizeChanger
                     onShowSizeChange={(current, size) => {
                         // Handle page size change event here
                         console.log(`Current: ${current}, PageSize: ${size}`);
