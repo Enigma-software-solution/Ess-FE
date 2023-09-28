@@ -156,7 +156,14 @@ const EventDetailsDrawer = () => {
               <div className="mb-2">
                 <span className="fw-bold">Call Link:</span>
                 <span className="m-3">
-                  <a href={selectedEvent?.callLikn}>Mail</a>
+                  <a href={selectedEvent?.callLink}>Call</a>
+                </span>
+              </div>
+
+              <div className="mb-2">
+                <span className="fw-bold">Apply Link:</span>
+                <span className="m-3">
+                  <a href={selectedEvent?.apply?.link}>Apply Link</a>
                 </span>
               </div>
 
