@@ -81,13 +81,15 @@ const EventDetailsDrawer = () => {
         {selectedEvent?.start && selectedEvent.end && (
           <div className="mb-1"  >
 
-            <div style={{ display: "flex", gap: "20px" }}>
+            <div style={{ display: "flex", justifyContent:'space-between', gap: "20px", marginBottom:'20px' }}>
               <Button type="primary" onClick={handleNotesDrawer}>
                 {selectedEvent?.notes ? "Update Notes" : "Add Notes"}
               </Button>
 
-              <UserList  selectedEvent={selectedEvent} />
-
+              <div className="d-flex justify-content-center align-items-center gap-2">
+              <span>Assign To</span>
+             <UserList  selectedEvent={selectedEvent} />
+             </div>
             </div>
 
             <div className="d-flex justify-content-end align-items-end flex-column  mb-1">

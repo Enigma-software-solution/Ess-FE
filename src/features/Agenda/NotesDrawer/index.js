@@ -15,7 +15,7 @@ const NotesDrawer = () => {
   const [value, setValue] = useState(null);
 
   const selectedEvent = useSelector(getSelectEvent);
-
+console.log(value,'notes value')
   const dispatch = useDispatch();
   const isDrawer = useSelector(checkNotesDrawer);
 
@@ -26,7 +26,7 @@ const NotesDrawer = () => {
   const handleSave = async () => {
     const data = {
       eventId: selectedEvent._id,
-      notes: value,
+      notes: value === '<p><br></p>' ? null : value,
     };
 
     try {
