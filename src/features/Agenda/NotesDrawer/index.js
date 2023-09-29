@@ -15,7 +15,6 @@ const NotesDrawer = () => {
   const [value, setValue] = useState(null);
 
   const selectedEvent = useSelector(getSelectEvent);
-console.log(value,'notes value')
   const dispatch = useDispatch();
   const isDrawer = useSelector(checkNotesDrawer);
 

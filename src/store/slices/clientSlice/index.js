@@ -29,12 +29,11 @@ const clientSlice = createSlice({
 
         builder.addCase(createClientApi.fulfilled, (state, action) => {
             state.status = "succeeded";
-            console.log(action.payload.data, "actions")
             state.data = [action?.payload?.data, ...state.data];
         });
 
         builder.addCase(deleteClientApi.fulfilled, (state, action) => {
-            state.data = state.data?.filter((client) => client?._id !== action?.payload?.data)
+            state.data = state?.data?.filter((client) => client?._id !== action?.payload?.clientId)
         });
     },
 

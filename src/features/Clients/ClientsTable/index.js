@@ -12,8 +12,6 @@ const ClientTable = () => {
 
     const clients = useSelector(getAllClientsSelector);
 
-    console.log(clients, "clients");
-
     useEffect(() => {
         try {
             dispatch(getAllClientsApi());
