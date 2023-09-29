@@ -10,7 +10,6 @@ export const getdailyAppliesApi = createAsyncThunk("dailyApply/get-dailyApply", 
     throw error;
   }
 });
-
 export const createDailyAppliesApi = createAsyncThunk(
   "dailyApply/post-dailyApply",
   async (applyData, { rejectWithValue }) => {
