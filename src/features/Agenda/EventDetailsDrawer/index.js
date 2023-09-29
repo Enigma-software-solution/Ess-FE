@@ -34,8 +34,6 @@ const EventDetailsDrawer = () => {
     dispatch(showNotesDrawer());
   };
 
-  console.log(selectedEvent, "selected")
-
   const handleConfirmDelete = (record) => {
     try {
       dispatch(DeleteEventsApi(record._id));
@@ -81,15 +79,15 @@ const EventDetailsDrawer = () => {
         {selectedEvent?.start && selectedEvent.end && (
           <div className="mb-1"  >
 
-            <div style={{ display: "flex", justifyContent:'space-between', gap: "20px", marginBottom:'20px' }}>
+            <div style={{ display: "flex", justifyContent: 'space-between', gap: "20px", marginBottom: '20px' }}>
               <Button type="primary" onClick={handleNotesDrawer}>
                 {selectedEvent?.notes ? "Update Notes" : "Add Notes"}
               </Button>
 
               <div className="d-flex justify-content-center align-items-center gap-2">
-              <span>Assign To</span>
-             <UserList  selectedEvent={selectedEvent} />
-             </div>
+                <span>Assign To</span>
+                <UserList selectedEvent={selectedEvent} />
+              </div>
             </div>
 
             <div className="d-flex justify-content-end align-items-end flex-column  mb-1">
