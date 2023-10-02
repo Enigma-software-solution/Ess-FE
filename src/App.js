@@ -20,6 +20,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import Agenda from "./pages/Agenda";
 import { ConfigProvider } from "antd";
 import ClientPage from "./pages/Clients";
+import SignUpPage from "./pages/SignUp";
 
 function App() {
   const dispatch = useDispatch();
@@ -45,6 +46,7 @@ function App() {
               </Route>
             </Route>
             <Route path="/login" element={<Login />} />
+            <Route path="/Signup" element={<SignUpPage />} />
           </Routes>
         </ConfigProvider>
         <ToastContainer />
