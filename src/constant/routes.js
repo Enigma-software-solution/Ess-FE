@@ -1,5 +1,6 @@
 export const routes = {
     LOGIN: '/login',
+    SIGNUP: '/signup',
     DASHBOARD: '/',
     DAILY_APPLY: '/daily-apply',
     AGENDA: '/agenda',
