@@ -21,6 +21,7 @@ import Agenda from "./pages/Agenda";
 import { ConfigProvider } from "antd";
 import ClientPage from "./pages/Clients";
 import SignUpPage from "./pages/SignUp";
+import AttendencePage from "./pages/Attendence";
 
 function App() {
   const dispatch = useDispatch();
@@ -42,6 +43,7 @@ function App() {
                 <Route path={routes.PROFILE} element={<Profile />} />
                 <Route path={routes.AGENDA} element={<Agenda />} />
                 <Route path={routes.CLIENT} element={<ClientPage />} />
+                <Route path={routes.ATTENDENCE} element={<AttendencePage />} />
 
               </Route>
             </Route>
