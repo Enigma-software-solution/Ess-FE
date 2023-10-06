@@ -15,6 +15,6 @@ const items = [
 ];
 const AttendenceHistory = () => {
 
-    return <Collapse items={items} style={{ width: "400px" }} />;
+    return <Collapse items={items} style={{ width: "400px", height: "47px" }} />;
 };
 export default AttendenceHistory;
