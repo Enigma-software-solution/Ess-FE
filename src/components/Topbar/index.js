@@ -25,7 +25,7 @@ const Topbar = ({ setCollapsed, collapsed }) => {
   const menu = (
     <Menu>
       <Menu.Item disabled key="welcome">
-        Welcome {user.first_name} {user.last_name}
+        Welcome {user?.first_name} {user?.last_name}
       </Menu.Item>
       <Menu.Item key="settings">Settings</Menu.Item>
       <Menu.Item key="logout" onClick={() => handleLogout()}>
