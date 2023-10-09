@@ -1,10 +1,11 @@
-import Reac from "react";
-import { Form, Input, Button, Checkbox, Avatar, message } from "antd";
+import React from "react";
+import { Form, Input, Button, Avatar, message } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { FormContainer, Title, Wrapper } from "./styled";
 import { loginUser } from "src/store/slices/authSlice/apis";
+import { toast } from "react-toastify";
 
 
 const LoginForm = () => {
@@ -21,12 +22,15 @@ const LoginForm = () => {
 
       console.log(res, "after unwrapResult");
       navigate("/");
-    
-      message.success("User successfully logged in");
+
+      toast.success("User successfully logged in");
     } catch (err) {
-      console.log(err, "ee");
-      message.error(err.message);
+     console.log(err.message)
     }
+  };
+
+  const handleSignUpClick = () => {
+    navigate("/signup");
   };
 
   return (
@@ -70,6 +74,9 @@ const LoginForm = () => {
             </Button>
           </Form.Item>
         </Form>
+        <Button type="default" block onClick={handleSignUpClick}>
+          Don't have account? Signup
+        </Button>
       </FormContainer>
     </Wrapper>
   );

@@ -66,25 +66,25 @@ const App = () => {
 
     // Compare the detected faces with the reference image
     if (detections.length > 0) {
-        const match = faceapi.euclideanDistance(
-            meFaceDescriptor.descriptor,
-            detections[0].descriptor
-          );
-          
-          if (match < 0.6) {
-            // Face detected and matched with the reference image, mark attendance
-            setIsErrorModal(true);
-          } else {
-            // Face detected but not matched with the reference image
-            setIsModalVisible(true);
+      const match = faceapi.euclideanDistance(
+        meFaceDescriptor.descriptor,
+        detections[0].descriptor
+      );
 
-            console.log('Face detected, but not matched.');
-          }
-        }
+      if (match < 0.3) {
+        // Face detected and matched with the reference image, mark attendance
+        setIsModalVisible(true);
+      } else {
+        setIsErrorModal(true)
+        // Face detected but not matched with the reference image
+      }
+    }
   };
 
   const handleCloseModal = () => {
     setIsModalVisible(false);
+    setIsErrorModal(false)
+
   };
 
   const webcamRef = React.useRef(null);
@@ -107,16 +107,15 @@ const App = () => {
       >
         Attendance recorded successfully!
       </Modal>
-
       <Modal
         title="Attendance Captured"
         open={isErrorModal}
-        onOk={()=>setIsErrorModal(false)}
-        onCancel={()=>setIsErrorModal(false)}
+        onOk={handleCloseModal}
+        onCancel={handleCloseModal}
       >
-Face detected, but not matched.
+        Face detected, but not matched.
       </Modal>
-    </Layout>
+    </Layout >
   );
 };
 

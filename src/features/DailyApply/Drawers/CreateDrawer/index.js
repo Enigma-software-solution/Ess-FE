@@ -10,12 +10,12 @@ import { getSelectedApply } from 'src/store/slices/dailyApplySlice/selectors';
 const { Option } = Select;
 
 const initialFormValues = {
+  clientJobPosition: '',
   clientName: '',
-  companyName:'',
   link: '',
   profile: undefined,
-  platform: undefined,
-  positionToApply: undefined,
+  platform: 'GlassDoor',
+  positionToApply: 'Full Stack',
 };
 
 const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
@@ -27,30 +27,21 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    if ( !allProfiles?.length) {
+    if (!allProfiles?.length) {
       dispatch(getProfilesApi());
     }
   }, [dispatch, allProfiles]);
 
   useEffect(() => {
     if (selectedApply) {
-      const {
-        clientName,
-        link,
-        profile: selectedProfile,
-        platform,
-        companyName,
-        positionToApply,
-      } = selectedApply;
-
       form.setFieldsValue({
-        clientName,
-        link,
-        profile: selectedProfile?._id,
-        platform,
-        companyName,
-        positionToApply,
-        
+        clientJobPosition: selectedApply?.clientJobPosition,
+        clientName: selectedApply?.clientName,
+        link: selectedApply?.link,
+        profile: selectedApply?.profile?._id,
+        platform: selectedApply?.platform,
+        positionToApply: selectedApply?.positionToApply,
+
       });
     } else {
       form.setFieldsValue(initialFormValues);
@@ -59,27 +50,17 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
 
   const handleSubmit = async (values) => {
     try {
-      const {
-        clientName,
-        platform,
-        positionToApply,
-        link,
-        companyName,
-        profile,
-      } = values;
 
       const data = {
-        clientName,
-        platform,
-        positionToApply,
-        link,
-        companyName,
-        user: userId,
-        profile,
-        
-      };
+        clientJobPosition: values?.clientJobPosition,
+        clientName: values?.clientName,
+        platform: values?.platform,
+        positionToApply: values?.positionToApply,
+        link: values?.link,
+        createdBy: userId,
+        profile: values?.profile,
 
-      console.log(selectedApply, "sdfsdfafasfd")
+      };
 
       if (selectedApply) {
         dispatch(updateDailyAppliesApi({ data, id: selectedApply?._id }));
@@ -96,9 +77,9 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
 
   return (
     <Drawer open={isOpen} onClose={handleDrawer} width={800}
-    title={selectedApply ? 'Update Daily Apply' : 'Create Daily Apply'}
+      title={selectedApply ? 'Update Daily Apply' : 'Create Daily Apply'}
     >
-       
+
       <Form form={form} layout="vertical" hideRequiredMark onFinish={handleSubmit}>
         <Row gutter={16}>
           <Col span={12}>
@@ -119,7 +100,7 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
               <Input placeholder="Please enter Link" />
             </Form.Item>
           </Col>
-          
+
         </Row>
         <Row gutter={16}>
           <Col span={12}>
@@ -143,9 +124,10 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
               label="Platform"
               rules={[{ required: true, message: 'Please select a Platform' }]}
             >
-              <Select placeholder="Please select a Platform">
+              <Select placeholder="Please select a Platform" >
                 <Option value="LinkedIn">LinkedIn</Option>
-                <Option value="GlassDoor">GlassDoor</Option>
+                <Option value="GlassDoor">Glass Door</Option>
+                <Option value="Indeed">Indeed</Option>
               </Select>
             </Form.Item>
           </Col>
@@ -159,22 +141,27 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
                 { required: true, message: 'Please select the Position you are applying' },
               ]}
             >
-              <Select placeholder="Please select a Position">
-                <Option value="front_end_eng">FrontEnd</Option>
-                <Option value="full_stack">FullStack</Option>
+              <Select placeholder="Please select a Position" >
+                <Option value="Front End Engineer">FrontEnd Dev</Option>
+                <Option value="Full Stack">FullStack Dev</Option>
+                <Option value="Back End">BackEnd Dev</Option>
+                <Option value="JavaScript Developer">JavaScript Dev</Option>
+                <Option value="React Js Developer">ReactJs Dev</Option>
+                <Option value="Angular Developer">Angular Dev</Option>
               </Select>
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
-              name="companyName"
-              label="Company Name"
-              rules={[{ message: 'Please enter Company Name' }]}
+              name="clientJobPosition"
+              label="Client Job Position"
+              rules={[{required: true, message: 'Please enter Client Job' }]}
             >
-              <Input placeholder="Please enter company Name" />
+              <Input placeholder="Please enter Client Job" />
             </Form.Item>
           </Col>
         </Row>
+
         <Form.Item>
           <Space>
             <Button onClick={handleDrawer}>Cancel</Button>

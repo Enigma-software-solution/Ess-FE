@@ -1,34 +1,52 @@
 import React from 'react';
-import { Drawer, Button } from 'antd';
-import { StyledDetailsDiv } from './styled';
+import { Drawer, Button, Card } from 'antd';
+import { EventLabel, EventValue, StyledDetailsDiv } from './styled';
+import { format } from "date-fns";
+
 
 const DetailsDailyApplyDrawer = ({ isOpen, handleDetailsDrawer, selectedRecord }) => {
-
-    console.log(selectedRecord, "selected")
 
     return (
         <Drawer
             title="Details Apply"
             placement="right"
-            closable={false}
+            closable={true}
             onClose={handleDetailsDrawer}
             visible={isOpen}
             width={500}
         >
             {selectedRecord && (
                 <StyledDetailsDiv>
-                    <p><strong>Name:</strong> {selectedRecord.clientName}</p>
-                    <p><strong>Link:</strong> <a href={selectedRecord.link} style={{textDecoration:"none", color:"white"}}>{selectedRecord?.link}</a></p>
-                    <p><strong>Position To Apply:</strong> {selectedRecord?.positionToApply}</p>
-                    <p><strong>Platform:</strong> {selectedRecord?.platform}</p>
-                    <p><strong>Company Name:</strong> {selectedRecord?.companyName}</p>
-                    <p><strong>Profile Name:</strong> {selectedRecord?.profile?.name}</p>
-                    <p><strong>User Name:</strong> {selectedRecord?.user?.email}</p>
+                    <Card className="w-100" title="Apply Information">
+                        <p><strong>Client Job Position:</strong> {selectedRecord?.clientJobPosition}</p>
+                        <p><strong>Client Name:</strong> {selectedRecord?.clientName}</p>
+                        <p><strong>Platform:</strong> {selectedRecord?.platform}</p>
+                        <p><strong>Position To Apply:</strong> {selectedRecord?.positionToApply}</p>
+                        <p><strong>Link:</strong> <a href={selectedRecord?.link} style={{ textDecoration: "none" }}>{selectedRecord?.link}</a></p>
+                        <p><strong>Profile Name:</strong> {selectedRecord?.profile?.name}</p>
+                    </Card>
                 </StyledDetailsDiv>
             )}
-            <Button type="primary" onClick={handleDetailsDrawer} style={{ marginTop: 16 }}>
-                Close
-            </Button>
+
+            {selectedRecord && selectedRecord.createdAt && (
+                <div className="w-100 d-flex flex-column align-items-end">
+                    <div>
+                        <EventLabel>Date:</EventLabel>
+                        <EventValue> {format(new Date(selectedRecord?.createdAt), "dd-MM-yyyy")}</EventValue>
+                    </div>
+                    <div>
+                        <EventLabel>Profile:</EventLabel>
+                        <EventValue>{selectedRecord?.profile?.name}</EventValue>
+                    </div>
+                    <div>
+                        <EventLabel>Created by:</EventLabel>
+                        <EventValue>
+                            {selectedRecord?.createdBy?.first_name} {selectedRecord?.createdBy?.last_name}
+                        </EventValue>
+                    </div>
+                </div>
+            )}
+
         </Drawer>
     );
 };

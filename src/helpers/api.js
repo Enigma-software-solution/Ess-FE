@@ -4,9 +4,53 @@ const api = axios.create({
   baseURL: process.env.REACT_APP_API_BASE_URL,
 });
 
+let isRefreshing = false;
+let refreshQueue = [];
+
+// Function to refresh the token
+const refreshApi = async () => {
+  if (!isRefreshing) {
+    isRefreshing = true;
+
+    try {
+      const refreshToken = localStorage.getItem('refresh_token');
+      if (refreshToken) {
+        const response = await api.post('/refresh_token', { refreshToken });
+        const token = response.data.token;
+
+        localStorage.setItem('token', token);
+
+        // Retry all the queued requests with the new token
+        refreshQueue.forEach((resolve) => {
+          resolve(token);
+        });
+
+        refreshQueue = [];
+      } else {
+        // Handle the case where there is no refresh token (user is not logged in)
+        // For example, you can redirect the user to the login page.
+        // You can also throw an error or take other appropriate actions.
+        // In this example, we just clear the queue and set isRefreshing to false.
+        refreshQueue = [];
+      }
+
+      isRefreshing = false;
+    } catch (error) {
+      isRefreshing = false;
+      // Handle refresh token error or redirect to login
+      throw error;
+    }
+  }
+
+  // If isRefreshing is true, we will return a Promise that resolves when the token is refreshed.
+  return new Promise((resolve) => {
+    refreshQueue.push(resolve);
+  });
+};
+
 // Add a request interceptor
 api.interceptors.request.use(
-  (config) => {
+  async (config) => {
     const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -15,8 +59,6 @@ api.interceptors.request.use(
   },
   (error) => Promise.reject(error)
 );
-
-export default api
 
 // Add a response interceptor
 api.interceptors.response.use(
@@ -27,22 +69,19 @@ api.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const refreshToken = localStorage.getItem('refresh_token');
-        const response = await api.post('/refresh_token', { refreshToken });
-        const  token  = response.token;
-
-        localStorage.setItem('token', token);
+        const token = await refreshApi();
 
         // Retry the original request with the new token
         originalRequest.headers.Authorization = `Bearer ${token}`;
-        return axios(originalRequest);
+        return api(originalRequest);
       } catch (error) {
-        throw new Error(error)
         // Handle refresh token error or redirect to login
+        throw error;
       }
     }
 
-    return Promise.reject(error);
+    return Promise.reject(error.response.data);
   }
 );
 
+export default api;

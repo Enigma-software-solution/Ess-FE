@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Calendar, dateFnsLocalizer } from "react-big-calendar";
+import React, { useCallback, useEffect, useState } from "react";
+import { Calendar, Views, dateFnsLocalizer } from "react-big-calendar";
 import format from "date-fns/format";
 import parse from "date-fns/parse";
 import startOfWeek from "date-fns/startOfWeek";
@@ -7,16 +7,22 @@ import getDay from "date-fns/getDay";
 import enUS from "date-fns/locale/en-US";
 import { useDispatch, useSelector } from "react-redux";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import { getAllEventsApi } from "src/store/slices/agendaSlice/apis";
+import {
+  setSelectedEvent,
+  showEventDrawer,
+  showSlotDrawer,
+} from "src/store/slices/agendaSlice";
+import { getAllEvents } from "src/store/slices/agendaSlice/selector";
+import { CallType } from "src/constant/callTypes";
+import { toast } from "react-toastify";
 import CreateEventDrawer from "../CreateEventDrawer";
 import EventDetailsDrawer from "../EventDetailsDrawer";
-import { setSelectedEvent } from "src/store/slices/agenda";
-import { getAllEventsApi } from "src/store/slices/agenda/apis";
-import { getAllEvents } from "src/store/slices/agenda/selector";
-import { CallType } from "src/constant/callTypes";
+import CustomEvent from "./CustomEvent";
 
 const locales = {
-  "en-US": enUS,
-};
+  'en-US': enUS,
+}
 
 const localizer = dateFnsLocalizer({
   format,
@@ -24,20 +30,15 @@ const localizer = dateFnsLocalizer({
   startOfWeek,
   getDay,
   locales,
-});
+})
 
 const CustomCalendar = () => {
-  const [slotDrawer, setSlotDrawer] = useState(false);
-  const [eventDrawer, setEventDrawer] = useState(false);
-  const [selectedDate, setSelectedDate] = useState({
-    start: null,
-    end: null,
-  });
-
   const dispatch = useDispatch();
   const events = useSelector(getAllEvents);
+
   const [preparedEvents, setPreparedEvents] = useState([]);
-  const [currentView, setCurrentView] = useState("month"); // Track the current view mode
+  const [selectedDate, setSelectedDate] = useState({ start: null, end: null });
+  const [currentView, setCurrentView] = useState("month");
 
   useEffect(() => {
     const newEvents = events.map((e) => ({
@@ -48,31 +49,23 @@ const CustomCalendar = () => {
     setPreparedEvents(newEvents);
   }, [events]);
 
-  console.log(events, "adasdasdasd")
-
   const onSelectSlot = (slot) => {
     if (currentView === "day" || currentView === "week") {
-      setSelectedDate({
-        start: slot.start,
-        end: slot.end,
-      });
-    dispatch(setSelectedEvent({}))
-      setSlotDrawer(true);
-    }
-  };
+      const currentDate = new Date();
+      const isPastDate = slot.start < currentDate;
 
-  const handleSlotDrawerClose = () => {
-    setSlotDrawer(false);
+      if (!isPastDate) {
+        setSelectedDate({ start: slot.start, end: slot.end });
+        dispatch(showSlotDrawer());
+      } else {
+        toast.warn("Cannot create events on past dates.");
+      }
+    }
   };
 
   const onEventClick = async (event) => {
     dispatch(setSelectedEvent(event));
-    setEventDrawer(true);
-  };
-
-  const handleEventDrawerClose = () => {
-    setEventDrawer(false);
-    console.log('calledd')
+    dispatch(showEventDrawer());
   };
 
   const getEventStyle = (event) => {
@@ -82,6 +75,7 @@ const CustomCalendar = () => {
       [CallType.Technical]: "green",
       [CallType.Reschedule]: "orange",
     };
+
     const backgroundColor = colorMap[event.callType] || "gray";
 
     return {
@@ -93,46 +87,32 @@ const CustomCalendar = () => {
 
   useEffect(() => {
     dispatch(getAllEventsApi());
-  }, []);
+  }, [dispatch]);
 
-  const CustomEventComponent = ({ event }) => (
-
-    <div>
-      <strong>{event.jobTitle}</strong>
-    </div>
-  );
+ 
+  const onView = useCallback((newView) => setCurrentView(newView), [setCurrentView])
 
   return (
-    <div>
+    <>
       <Calendar
+      style={{ height: 700,minHeight:'100vh' }}
         localizer={localizer}
         events={preparedEvents}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: "calc(100vh - 100px)" }}
         timeslots={1}
         step={15}
         selectable={true}
         onSelectSlot={onSelectSlot}
         onSelectEvent={onEventClick}
-        components={{
-          event: CustomEventComponent,
-        }}
+        components={{ event: CustomEvent }}
         eventPropGetter={getEventStyle}
-        onView={(view) => setCurrentView(view)}
+        onView={onView}
       />
 
-      <CreateEventDrawer
-        selectedDate={selectedDate}
-        isDrawerOpen={slotDrawer}
-        handleDrawerClose={handleSlotDrawerClose}
-      />
-      <EventDetailsDrawer
-        isDrawerOpen={eventDrawer}
-        handleDrawerClose={handleEventDrawerClose}
-        showCreateEventDrawer={setSlotDrawer}
-      />
-    </div>
+      <CreateEventDrawer selectedDate={selectedDate} />
+      <EventDetailsDrawer />
+    </>
   );
 };
 
