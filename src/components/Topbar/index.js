@@ -45,15 +45,13 @@ const Topbar = ({ setCollapsed, collapsed }) => {
 
       <div className="d-flex justify-content-center align-items-center gap-2">
         <Dropdown overlay={menu}>
-         <>
          <Avatar
             size={"large"}
             src="https://joesch.moe/api/v1/random"
             style={{ border: "1px solid lightgray" }}
-          />{loggedInUser && loggedInUser?.first_name}
-         </>
+          />
         </Dropdown>
-     
+        {loggedInUser && loggedInUser?.first_name}
       </div>
     </div>
   );
