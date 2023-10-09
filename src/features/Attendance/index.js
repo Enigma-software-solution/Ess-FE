@@ -74,14 +74,16 @@ const App = () => {
         // Face detected and matched with the reference image, mark attendance
         setIsModalVisible(true);
       } else {
+        setIsErrorModal(true)
         // Face detected but not matched with the reference image
-        console.log('Face detected, but not matched.');
       }
     }
   };
 
   const handleCloseModal = () => {
     setIsModalVisible(false);
+    setIsErrorModal(false)
+
   };
 
   const webcamRef = React.useRef(null);
@@ -103,6 +105,14 @@ const App = () => {
         onCancel={handleCloseModal}
       >
         Attendance recorded successfully!
+      </Modal>
+      <Modal
+        title="Attendance Captured"
+        open={isErrorModal}
+        onOk={handleCloseModal}
+        onCancel={handleCloseModal}
+      >
+        Face detected, but not matched.
       </Modal>
     </Layout >
   );
