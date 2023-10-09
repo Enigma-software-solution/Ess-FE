@@ -50,7 +50,7 @@ const refreshApi = async () => {
 
 // Add a request interceptor
 api.interceptors.request.use(
-  (config) => {
+  async (config) => {
     const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -73,7 +73,7 @@ api.interceptors.response.use(
 
         // Retry the original request with the new token
         originalRequest.headers.Authorization = `Bearer ${token}`;
-        return axios(originalRequest);
+        return api(originalRequest);
       } catch (error) {
         // Handle refresh token error or redirect to login
         throw error;
