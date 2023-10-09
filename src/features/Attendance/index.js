@@ -3,8 +3,7 @@ import { Layout, Button, Modal } from 'antd';
 import Webcam from 'react-webcam';
 import styled from 'styled-components';
 import * as faceapi from 'face-api.js';
-import meImage from 'src/assets/test.jpg';
-// import meImage from 'src/assets/ik.png';Z
+import meImage from 'src/assets/myPicture.jpg';
 
 const { Content } = Layout;
 
@@ -16,10 +15,7 @@ const StyledContent = styled(Content)`
 
 const App = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
-<<<<<<< HEAD
   const [isErrorModal, setIsErrorModal] = useState(false);
-=======
->>>>>>> 2f48be984d5ed5a747f4d05c9e508e44a39bbdfc
   const [faceApiLoaded, setFaceApiLoaded] = useState(false);
 
   useEffect(() => {
@@ -69,29 +65,19 @@ const App = () => {
 
     // Compare the detected faces with the reference image
     if (detections.length > 0) {
-        const match = faceapi.euclideanDistance(
-            meFaceDescriptor.descriptor,
-            detections[0].descriptor
-          );
-          
-<<<<<<< HEAD
-          if (match < 0.6) {
-            // Face detected and matched with the reference image, mark attendance
-            setIsErrorModal(true);
-          } else {
-            // Face detected but not matched with the reference image
-            setIsModalVisible(true);
+      const match = faceapi.euclideanDistance(
+        meFaceDescriptor.descriptor,
+        detections[0].descriptor
+      );
 
-=======
-          if (match < 0.4) {
-            // Face detected and matched with the reference image, mark attendance
-            setIsModalVisible(true);
-          } else {
-            // Face detected but not matched with the reference image
->>>>>>> 2f48be984d5ed5a747f4d05c9e508e44a39bbdfc
-            console.log('Face detected, but not matched.');
-          }
-        }
+      if (match < 0.3) {
+        // Face detected and matched with the reference image, mark attendance
+        setIsModalVisible(true);
+      } else {
+        // Face detected but not matched with the reference image
+        console.log('Face detected, but not matched.');
+      }
+    }
   };
 
   const handleCloseModal = () => {
@@ -118,19 +104,7 @@ const App = () => {
       >
         Attendance recorded successfully!
       </Modal>
-<<<<<<< HEAD
-
-      <Modal
-        title="Attendance Captured"
-        open={isErrorModal}
-        onOk={()=>setIsErrorModal(false)}
-        onCancel={()=>setIsErrorModal(false)}
-      >
-Face detected, but not matched.
-      </Modal>
-=======
->>>>>>> 2f48be984d5ed5a747f4d05c9e508e44a39bbdfc
-    </Layout>
+    </Layout >
   );
 };
 
