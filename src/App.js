@@ -8,6 +8,7 @@ import ProtectedRoutes from "./components/ProtectedRoutes";
 import Dashobard from "./pages/Dashobard";
 import { routes } from "./constant/routes";
 import DailyApply from "./pages/DailyApply";
+import Attendance from "./pages/Attendance";
 import Profile from "./pages/Profile";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
@@ -21,6 +22,7 @@ import Agenda from "./pages/Agenda";
 import { ConfigProvider } from "antd";
 import ClientPage from "./pages/Clients";
 import SignUpPage from "./pages/SignUp";
+import ProfileSettings from "./pages/profileSettings";
 
 function App() {
   const dispatch = useDispatch();
@@ -42,6 +44,8 @@ function App() {
                 <Route path={routes.PROFILE} element={<Profile />} />
                 <Route path={routes.AGENDA} element={<Agenda />} />
                 <Route path={routes.CLIENT} element={<ClientPage />} />
+                <Route path={routes.ATTENDANCE} element={<Attendance />} />
+                <Route path={routes.PROFILE_SETTINGS} element={<ProfileSettings />} />
 
               </Route>
             </Route>

@@ -37,6 +37,13 @@ export const sidebarMenuItems = [
         path: routes.CLIENT,
 
     },
+    {
+        key: routes.ATTENDANCE,
+        title: 'Attendance',
+        icon: <UserOutlined />,
+        path: routes.ATTENDANCE,
+
+    },
     // {
     //     key: 'admin',
     //     title: 'Admin',

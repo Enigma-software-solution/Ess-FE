@@ -16,7 +16,10 @@ const StyledContent = styled(Content)`
 
 const App = () => {
   const [isModalVisible, setIsModalVisible] = useState(false);
+<<<<<<< HEAD
   const [isErrorModal, setIsErrorModal] = useState(false);
+=======
+>>>>>>> 2f48be984d5ed5a747f4d05c9e508e44a39bbdfc
   const [faceApiLoaded, setFaceApiLoaded] = useState(false);
 
   useEffect(() => {
@@ -71,6 +74,7 @@ const App = () => {
             detections[0].descriptor
           );
           
+<<<<<<< HEAD
           if (match < 0.6) {
             // Face detected and matched with the reference image, mark attendance
             setIsErrorModal(true);
@@ -78,6 +82,13 @@ const App = () => {
             // Face detected but not matched with the reference image
             setIsModalVisible(true);
 
+=======
+          if (match < 0.4) {
+            // Face detected and matched with the reference image, mark attendance
+            setIsModalVisible(true);
+          } else {
+            // Face detected but not matched with the reference image
+>>>>>>> 2f48be984d5ed5a747f4d05c9e508e44a39bbdfc
             console.log('Face detected, but not matched.');
           }
         }
@@ -107,6 +118,7 @@ const App = () => {
       >
         Attendance recorded successfully!
       </Modal>
+<<<<<<< HEAD
 
       <Modal
         title="Attendance Captured"
@@ -116,6 +128,8 @@ const App = () => {
       >
 Face detected, but not matched.
       </Modal>
+=======
+>>>>>>> 2f48be984d5ed5a747f4d05c9e508e44a39bbdfc
     </Layout>
   );
 };

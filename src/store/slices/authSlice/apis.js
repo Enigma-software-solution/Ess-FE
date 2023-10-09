@@ -28,3 +28,13 @@ export const refresh = createAsyncThunk("auth/refresh", async (refreshToken) => 
     throw error;
   }
 });
+
+
+export const updateUser = createAsyncThunk("auth/update-user", async (data) => {
+  try {
+    const response = await api.put(`/user/${data?.userId}`, data?.user);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+});
