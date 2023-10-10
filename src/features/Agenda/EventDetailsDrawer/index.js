@@ -174,12 +174,13 @@ const EventDetailsDrawer = () => {
             {selectedEvent?.notes &&
               selectedEvent?.notes !== null &&
               selectedEvent?.notes !== "" && (
-                <Card className="w-100" title="Notes">
+                <Card className="w-100" title="Notes" style={{ maxHeight: "500px", overflow: "auto" }}>
                   <div
                     dangerouslySetInnerHTML={{ __html: selectedEvent?.notes }}
                   />
                 </Card>
               )}
+
           </div>
         )}
 

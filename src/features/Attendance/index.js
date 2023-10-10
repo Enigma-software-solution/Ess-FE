@@ -95,7 +95,7 @@ const App = () => {
         <Webcam audio={false} ref={webcamRef} screenshotFormat="image/jpeg" />
       </StyledContent>
       <StyledContent>
-        <Button type="primary" onClick={handleCapture}>
+        <Button type="primary" onClick={handleCapture} style={{ marginTop: "20px" }}>
           Capture Attendance
         </Button>
       </StyledContent>
