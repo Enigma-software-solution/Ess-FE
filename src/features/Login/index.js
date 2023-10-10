@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FormContainer, Title, Wrapper } from "./styled";
 import { loginUser } from "src/store/slices/authSlice/apis";
+import { toast } from "react-toastify";
 
 
 const LoginForm = () => {
@@ -22,9 +23,9 @@ const LoginForm = () => {
       console.log(res, "after unwrapResult");
       navigate("/");
 
-      message.success("User successfully logged in");
+      toast.success("User successfully logged in");
     } catch (err) {
-      message.error(err.message);
+     console.log(err.message)
     }
   };
 

@@ -8,7 +8,7 @@ const CustomSearchField = ({ onChange = () => { }, debounceTime = 1000 }) => {
 
     return (
         <div>
-            <Search size='large' placeholder="input search text" onChange={debouncedOnChange} enterButton />
+            <Search size='large' placeholder="input search text" onChange={debouncedOnChange}  enterButton />
         </div>
     )
 }

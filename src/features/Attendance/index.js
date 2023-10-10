@@ -3,7 +3,8 @@ import { Layout, Button, Modal } from 'antd';
 import Webcam from 'react-webcam';
 import styled from 'styled-components';
 import * as faceapi from 'face-api.js';
-import meImage from 'src/assets/myPicture.jpg';
+import meImage from 'src/assets/test.jpg';
+// import meImage from 'src/assets/ik.png';Z
 
 const { Content } = Layout;
 
