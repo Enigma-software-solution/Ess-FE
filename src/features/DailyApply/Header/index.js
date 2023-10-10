@@ -12,7 +12,7 @@ import { getLogedInUser } from "src/store/slices/authSlice/selectors";
 
 const { Option } = Select;
 
-const Header = () => {
+const Header = ({pageSize}) => {
   const dispatch = useDispatch();
   const allProfiles = useSelector(getAllProfiles);
   const logedInUser = useSelector(getLogedInUser);
@@ -63,6 +63,7 @@ const Header = () => {
   const search = (e) => {
     const params = {
       search: e.target.value,
+      pageSize:pageSize
     };
     const queryStringResult = qs.stringify(params);
     dispatch(getdailyAppliesApi(queryStringResult));
@@ -71,7 +72,7 @@ const Header = () => {
   return (
     <div>
       <div className="d-flex justify-content-between mb-1">
-        <CustomSearchField onChange={search} />
+        <CustomSearchField onChange={search}/>
         <AddButton onClick={handleDrawer} text="New Apply" />
       </div>
       <div

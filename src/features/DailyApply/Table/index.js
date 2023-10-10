@@ -116,7 +116,7 @@ const CreateDailyAppliesTable = () => {
 
     return (
         <>
-            <Header />
+            <Header pageSize={pageSize} />
             <StyledTable
                 onRow={(record) => ({
                     onClick: () => handleRowClick(record),
@@ -136,7 +136,7 @@ const CreateDailyAppliesTable = () => {
                     defaultCurrent={page}
                     
                     onChange={(page, pageSize) => {
-                        const queryStringResult = qs.stringify({ page, pageSize });
+                        const queryStringResult = qs.stringify({ page, pageSize,date:new Date() });
                         dispatch(getdailyAppliesApi(queryStringResult));
                     }}
                     showSizeChanger
