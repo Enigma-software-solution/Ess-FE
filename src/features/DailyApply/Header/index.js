@@ -12,7 +12,7 @@ import { getLogedInUser } from "src/store/slices/authSlice/selectors";
 
 const { Option } = Select;
 
-const Header = ({pageSize}) => {
+const Header = ({ pageSize }) => {
   const dispatch = useDispatch();
   const allProfiles = useSelector(getAllProfiles);
   const logedInUser = useSelector(getLogedInUser);
@@ -49,6 +49,7 @@ const Header = ({pageSize}) => {
     setSelectedDateRange(dates);
   };
 
+
   const handleReset = () => {
     const params = {
       date: new Date(),
@@ -63,7 +64,7 @@ const Header = ({pageSize}) => {
   const search = (e) => {
     const params = {
       search: e.target.value,
-      pageSize:pageSize
+      pageSize: pageSize
     };
     const queryStringResult = qs.stringify(params);
     dispatch(getdailyAppliesApi(queryStringResult));
@@ -72,7 +73,7 @@ const Header = ({pageSize}) => {
   return (
     <div>
       <div className="d-flex justify-content-between mb-1">
-        <CustomSearchField onChange={search}/>
+        <CustomSearchField onChange={search} />
         <AddButton onClick={handleDrawer} text="New Apply" />
       </div>
       <div
@@ -99,8 +100,7 @@ const Header = ({pageSize}) => {
               ))}
             </Select>
           )}
-
-          <DateRangePicker
+   <DateRangePicker
             onChange={handleDateRangeChange}
             value={selectedDateRange}
             
