@@ -85,7 +85,7 @@ const Header = ({ pageSize }) => {
           margin: "8px 0 5px 0 ",
         }}
       >
-        <div className="d-flex gap-5">
+        <div className="d-flex gap-3">
           {logedInUser && logedInUser?.role === "admin" && (
             <Select
               placeholder="Please select a Profile"

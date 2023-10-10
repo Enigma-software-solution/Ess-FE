@@ -52,37 +52,45 @@ const CreateDailyAppliesTable = () => {
             title: "No",
             dataIndex: "serialNo",
             render: (text, record, index) => index + 1,
+            width:'40px'
         },
         {
             key: "name",
             title: "Client Name",
             sorter: (a, b) => a.clientName.localeCompare(b.clientName),
             dataIndex: "clientName",
+
         },
         {
             title: "Client Job Position ",
             sorter: (a, b) => a.clientJobPosition.localeCompare(b.clientJobPosition),
             dataIndex: "clientJobPosition",
+
         },
         {
             title: "Position To Apply",
             dataIndex: "positionToApply",
+            width:'14%'
         },
         {
             title: "Platform",
             dataIndex: "platform",
+            width:'10%'
+
         },
         {
             title: "Link",
             dataIndex: "link",
+            ellipsis:true,
             render: (text) => <a href={text} style={{ textDecoration: "none" }}>{text}</a>,
         },
         {
             key: "action",
             title: "Action",
             dataIndex: "action",
+            width:'8%',
             render: (text, record) => (
-                <div className="d-flex gap-1">
+                <div className="d-flex gap-1 justify-content-end">
                     <EditButton onClick={(e) => handleEdit(record, e)} />
                     <Popconfirm
                         title="Are you sure to delete this task?"
