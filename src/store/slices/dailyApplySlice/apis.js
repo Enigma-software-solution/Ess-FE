@@ -10,6 +10,8 @@ export const getdailyAppliesApi = createAsyncThunk("dailyApply/get-dailyApply", 
     throw error;
   }
 });
+
+
 export const createDailyAppliesApi = createAsyncThunk(
   "dailyApply/post-dailyApply",
   async (applyData, { rejectWithValue }) => {
@@ -52,3 +54,12 @@ export const deteleDailyAppliesApi = createAsyncThunk(
   }
 );
 
+
+export const getDailyApplyStats = createAsyncThunk("dailyApply/get-dailyApply-stats", async (q) => {
+  try {
+    const response = await api.get(`/apply/stats`);
+    return response;
+  } catch (error) {
+    throw error;
+  }
+});

@@ -1,7 +1,7 @@
 import {
   createSlice,
 } from "@reduxjs/toolkit";
-import { createDailyAppliesApi, deteleDailyAppliesApi, getdailyAppliesApi, updateDailyAppliesApi } from "./apis";
+import { createDailyAppliesApi, deteleDailyAppliesApi, getdailyAppliesApi, updateDailyAppliesApi,getDailyApplyStats } from "./apis";
 // import { toast } from "react-toastify";
 
 
@@ -9,7 +9,8 @@ const initialState = {
   status: "idle",
   error: null,
   data: [],
-  selectedApply: undefined
+  selectedApply: undefined,
+  stats:null
 };
 
 
@@ -56,7 +57,12 @@ const dailyApplySlice = createSlice({
         return apply
       })
     });
-  },
+
+    builder.addCase(getDailyApplyStats.fulfilled, (state, action) => {
+      state.stats = action.payload.data
+  })
+    
+  }
 
 });
 export const { setSelectedApply } = dailyApplySlice.actions;
