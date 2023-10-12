@@ -1,27 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { Button, Form, Input, Select } from "antd";
-import { format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import { Drawer } from "antd";
-import {
-  UpdateEventsApi,
-  createEventsApi,
-  getApplyBySearchApi,
-} from "src/store/slices/agendaSlice/apis";
-import { CallType } from "src/constant/callTypes";
-import { CallPlatform } from "src/constant/callplatform";
-import { getUserId } from "src/store/slices/authSlice/selectors";
-import qs from "qs";
-import {
-  checkSlotDrawer,
-  getSelectEvent,
-} from "src/store/slices/agendaSlice/selector";
-import {
-  closeEventDrawer,
-  closeSlotDrawer,
-  setSelectedEvent,
-} from "src/store/slices/agendaSlice";
+import { UpdateEventsApi, createEventsApi } from "src/store/slices/agendaSlice/apis";
+import { CallTypeDropdown } from "src/constant/callTypes";
+import { CallPlatformDropdown } from "src/constant/callplatform";
+import { getLogedInUser } from "src/store/slices/authSlice/selectors";
+import { checkSlotDrawer, getSelectEvent, } from "src/store/slices/agendaSlice/selector";
+import { closeEventDrawer, closeSlotDrawer, setSelectedEvent } from "src/store/slices/agendaSlice";
 import { getAllUsersApi } from "src/store/slices/userSlice/apis";
+import ApplySelect from "./applySelect";
+import CustomSelect from "src/components/formElements/CustomSelect";
+import CustomInput from "src/components/formElements/CustomInput";
+import { formatDate, formatTime } from "src/utils/formatsOfDate";
+
 const { Option } = Select;
 
 const CreateEventDrawer = ({ selectedDate }) => {
@@ -31,7 +23,7 @@ const CreateEventDrawer = ({ selectedDate }) => {
 
   const isDrawer = useSelector(checkSlotDrawer);
   const selectedEvent = useSelector(getSelectEvent);
-  const userId = useSelector(getUserId);
+  const loggedInUser = useSelector(getLogedInUser);
 
   const onClose = () => {
     form.resetFields();
@@ -40,13 +32,13 @@ const CreateEventDrawer = ({ selectedDate }) => {
 
   const handleCreateOrUpdateEvent = (values) => {
     const CreateData = {
-      createdBy: userId,
+      createdBy: loggedInUser.id,
       ...selectedDate,
       ...values,
     };
 
     const updateData = {
-      createdBy: userId,
+      createdBy: loggedInUser.id,
       start: selectedEvent?.start,
       end: selectedEvent?.end,
       ...values,
@@ -92,22 +84,6 @@ const CreateEventDrawer = ({ selectedDate }) => {
     dispatch(getAllUsersApi());
   }, []);
 
-  const [applies, setApplies] = useState([]);
-
-  async function fetchApplyData(searchText) {
-    const d = {
-      search: searchText,
-    };
-    const params = qs.stringify(d);
-
-    try {
-      const res = await dispatch(getApplyBySearchApi(params)).unwrap();
-      setApplies(res.data?.daily_applies || []);
-    } catch (error) {
-      console.error("Error fetching applies:", error);
-    }
-  }
-
   return (
     <Drawer
       title="Add Event"
@@ -119,109 +95,84 @@ const CreateEventDrawer = ({ selectedDate }) => {
     >
       <Form name="event-form" onFinish={handleCreateOrUpdateEvent} form={form}>
         <div className="d-flex justify-content-end align-items-end flex-column mb-1">
-          <p>Date: {format(new Date(selectedDate.start), "dd-MM-yyyy")}</p>
-          <p>
-            Time: {format(new Date(selectedDate.start), "p")} -{" "}
-            {format(new Date(selectedDate.end), "p")}
-          </p>
+          <p>Date: {formatDate(selectedDate?.start)}</p>
+          <p>Time: {formatTime(selectedDate.start)} - {formatTime(selectedDate.end)}</p>
         </div>
 
         <div className="d-flex justify-content-between mb-1">
           <div style={{ flex: 1, marginRight: "20px" }}>
-            <Form.Item
-              name="callDuration"
+            <CustomInput
               label="Call duration"
+              name="callDuration"
               rules={[{ required: true }]}
-            >
-              <Input type="text" />
-            </Form.Item>
-            <Form.Item name="numOfGuests" label="Number of Guests">
-              <Input type="number" />
-            </Form.Item>
-            <Form.Item name="mailLink" label="Mail Link" rules={[{ required: true }]}          >
-              <Input type="text" />
-            </Form.Item>
-
-            <Form.Item name="callLink" label="Call Link" rules={[{ required: true }]}>
-              <Input type="text" />
-            </Form.Item>
+              type="text"
+            />
+            <CustomInput
+              label="Number of Guests"
+              name="numOfGuests"
+              type="number"
+            />
+            <CustomInput
+              label="Mail Link"
+              name="mailLink"
+              rules={[{ required: true }]}
+              type="text"
+            />
+            <CustomInput
+              label="Call Link"
+              name="callLink"
+              rules={[{ required: true }]}
+              type="text"
+            />
           </div>
           <div style={{ flex: 1 }}>
-            <Form.Item
-              name="callType"
+            <CustomInput
               label="Call Type"
+              name="callType"
               rules={[{ required: true }]}
+              component={CustomSelect}
+              options={CallTypeDropdown}
+              placeholder="Select Call type"
+            />
+            <CustomInput
+              label="Call Mode"
+              name="callMode"
+              component={Select}
             >
-              <Select>
-                <Option value={CallType.Initial}>Initial</Option>
-                <Option value={CallType.Technical}>Technical </Option>
-                <Option value={CallType.Final}>Final</Option>
-                <Option value={CallType.Reschedule}>Reschedule</Option>
-              </Select>
-            </Form.Item>
-            <Form.Item name="callMode" label="Call Mode">
-              <Select>
-                <Option value="voice">Voice</Option>
-                <Option value="video">Video</Option>
-              </Select>
-            </Form.Item>
-            <Form.Item
-              name="callPlatform"
+              <Option value="voice">Voice</Option>
+              <Option value="video">Video</Option>
+            </CustomInput>
+            <CustomInput
               label="Call Platform"
+              name="callPlatform"
               rules={[{ required: true }]}
-            >
-              <Select>
-                <Option value={CallPlatform.Zoom}>Zoom</Option>
-                <Option value={CallPlatform.GoogleMeet}>Google Meet</Option>
-                <Option value={CallPlatform.MicrosoftTeams}>
-                  Microsoft Teams
-                </Option>
-              </Select>
-            </Form.Item>
-
-            <Form.Item name="apply" label="Apply" rules={[{ required: true }]}>
-              <Select
-                style={{ width: "100%" }}
-                showSearch
-                onSearch={fetchApplyData}
-                placeholder="Select an applies"
-                optionFilterProp="children"
-              >
-                {applies?.map((apply) => (
-                  <Option key={apply._id} value={apply._id}>
-                    {apply?.clientName}{" "}
-                    {apply?.clientJobPosition &&
-                      ` -  ${apply?.clientJobPosition} `}
-                    <span
-                      style={{
-                        fontSize: "80%",
-                        opacity: 0.7,
-                        display: "flex",
-                        justifyContent: "flex-end",
-                      }}
-                    >
-                      {format(new Date(apply.createdAt), "dd-MM-yyyy")}
-                    </span>
-                  </Option>
-                ))}
-              </Select>
-            </Form.Item>
-
-            <Form.Item name="companyInformation" label="Company Information">
-              <Input.TextArea />
-            </Form.Item>
+              component={CustomSelect}
+              options={CallPlatformDropdown}
+              placeholder="Select call platform"
+            />
+            <CustomInput
+              label="Apply"
+              name="apply"
+              rules={[{ required: true }]}
+              component={ApplySelect}
+              onSelect={(value) => form.setFieldsValue({ apply: value })}
+            />
+            <CustomInput
+              label="Company Information"
+              name="companyInformation"
+              component={Input.TextArea}
+            />
           </div>
         </div>
         <Form.Item className="d-flex justify-content-end">
           <Button type="primary" htmlType="submit">
-            {
-              selectedEvent ? "Update Event" : 'Add Event'
-            }
+            {selectedEvent ? "Update Event" : "Add Event"}
           </Button>
         </Form.Item>
       </Form>
     </Drawer>
   );
 };
+
 
 export default CreateEventDrawer;

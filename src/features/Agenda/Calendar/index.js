@@ -8,11 +8,7 @@ import enUS from "date-fns/locale/en-US";
 import { useDispatch, useSelector } from "react-redux";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { getAllEventsApi } from "src/store/slices/agendaSlice/apis";
-import {
-  setSelectedEvent,
-  showEventDrawer,
-  showSlotDrawer,
-} from "src/store/slices/agendaSlice";
+import { setSelectedEvent, showEventDrawer, showSlotDrawer } from "src/store/slices/agendaSlice";
 import { getAllEvents } from "src/store/slices/agendaSlice/selector";
 import { CallType } from "src/constant/callTypes";
 import { toast } from "react-toastify";
@@ -20,9 +16,7 @@ import CreateEventDrawer from "../CreateEventDrawer";
 import EventDetailsDrawer from "../EventDetailsDrawer";
 import CustomEvent from "./CustomEvent";
 
-const locales = {
-  'en-US': enUS,
-}
+const locales = { 'en-US': enUS }
 
 const localizer = dateFnsLocalizer({
   format,
@@ -30,7 +24,9 @@ const localizer = dateFnsLocalizer({
   startOfWeek,
   getDay,
   locales,
-})
+  timeZone: 'America/New_York',
+});
+
 
 const CustomCalendar = () => {
   const dispatch = useDispatch();
@@ -41,7 +37,7 @@ const CustomCalendar = () => {
   const [currentView, setCurrentView] = useState("month");
 
   useEffect(() => {
-    const newEvents = events.map((e) => ({
+    const newEvents = events?.map((e) => ({
       ...e,
       start: new Date(e.start),
       end: new Date(e.end),
@@ -50,16 +46,21 @@ const CustomCalendar = () => {
   }, [events]);
 
   const onSelectSlot = (slot) => {
-    if (currentView === "day" || currentView === "week") {
-      const currentDate = new Date();
-      const isPastDate = slot.start < currentDate;
+    const currentDate = new Date();
+    const isPastDate = slot.start < currentDate;
 
-      if (!isPastDate) {
-        setSelectedDate({ start: slot.start, end: slot.end });
-        dispatch(showSlotDrawer());
-      } else {
-        toast.warn("Cannot create events on past dates.");
-      }
+    if (currentView === 'month') {
+      return
+    }
+
+    if (isPastDate) {
+      toast.warn("Cannot create events on past dates.");
+      return;
+    }
+
+    if (currentView === "day" || currentView === "week") {
+      setSelectedDate({ start: slot.start, end: slot.end });
+      dispatch(showSlotDrawer());
     }
   };
 
@@ -89,13 +90,15 @@ const CustomCalendar = () => {
     dispatch(getAllEventsApi());
   }, [dispatch]);
 
- 
-  const onView = useCallback((newView) => setCurrentView(newView), [setCurrentView])
+  const workDayStartHour = 9;
+  const workDayEndHour = 17;
+
+  const onView = useCallback((newView) => setCurrentView(newView), [setCurrentView]);
 
   return (
     <>
       <Calendar
-      style={{ minHeight:'calc(100vh - 150px)' }}
+        style={{ minHeight: 'calc(100vh - 150px)' }}
         localizer={localizer}
         events={preparedEvents}
         startAccessor="start"
@@ -108,7 +111,10 @@ const CustomCalendar = () => {
         components={{ event: CustomEvent }}
         eventPropGetter={getEventStyle}
         onView={onView}
+        min={new Date(0, 0, 0, workDayStartHour)}
+        max={new Date(0, 0, 0, workDayEndHour)}
       />
+
 
       <CreateEventDrawer selectedDate={selectedDate} />
       <EventDetailsDrawer />
