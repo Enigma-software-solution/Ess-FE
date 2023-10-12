@@ -22,6 +22,8 @@ import {
   setSelectedEvent,
 } from "src/store/slices/agendaSlice";
 import { getAllUsersApi } from "src/store/slices/userSlice/apis";
+import CustomSelect from "src/components/formElements/CustomSelect";
+import { CallModes } from "src/constant/callModes";
 const { Option } = Select;
 
 const CreateEventDrawer = ({ selectedDate }) => {
@@ -138,11 +140,19 @@ const CreateEventDrawer = ({ selectedDate }) => {
             <Form.Item name="numOfGuests" label="Number of Guests">
               <Input type="number" />
             </Form.Item>
-            <Form.Item name="mailLink" label="Mail Link" rules={[{ required: true }]}          >
+            <Form.Item
+              name="mailLink"
+              label="Mail Link"
+              rules={[{ required: true }]}
+            >
               <Input type="text" />
             </Form.Item>
 
-            <Form.Item name="callLink" label="Call Link" rules={[{ required: true }]}>
+            <Form.Item
+              name="callLink"
+              label="Call Link"
+              rules={[{ required: true }]}
+            >
               <Input type="text" />
             </Form.Item>
           </div>
@@ -152,31 +162,23 @@ const CreateEventDrawer = ({ selectedDate }) => {
               label="Call Type"
               rules={[{ required: true }]}
             >
-              <Select>
-                <Option value={CallType.Initial}>Initial</Option>
-                <Option value={CallType.Technical}>Technical </Option>
-                <Option value={CallType.Final}>Final</Option>
-                <Option value={CallType.Reschedule}>Reschedule</Option>
-              </Select>
+              <CustomSelect
+                options={CallType}
+                placeholder="Select Call Types"
+              />
             </Form.Item>
             <Form.Item name="callMode" label="Call Mode">
-              <Select>
-                <Option value="voice">Voice</Option>
-                <Option value="video">Video</Option>
-              </Select>
+              <CustomSelect options={CallModes} placeholder="Add Call Mode" />
             </Form.Item>
             <Form.Item
               name="callPlatform"
               label="Call Platform"
               rules={[{ required: true }]}
             >
-              <Select>
-                <Option value={CallPlatform.Zoom}>Zoom</Option>
-                <Option value={CallPlatform.GoogleMeet}>Google Meet</Option>
-                <Option value={CallPlatform.MicrosoftTeams}>
-                  Microsoft Teams
-                </Option>
-              </Select>
+              <CustomSelect
+                options={CallPlatform}
+                placeholder="Enter Call Platform"
+              />
             </Form.Item>
 
             <Form.Item name="apply" label="Apply" rules={[{ required: true }]}>
@@ -214,9 +216,7 @@ const CreateEventDrawer = ({ selectedDate }) => {
         </div>
         <Form.Item className="d-flex justify-content-end">
           <Button type="primary" htmlType="submit">
-            {
-              selectedEvent ? "Update Event" : 'Add Event'
-            }
+            {selectedEvent ? "Update Event" : "Add Event"}
           </Button>
         </Form.Item>
       </Form>

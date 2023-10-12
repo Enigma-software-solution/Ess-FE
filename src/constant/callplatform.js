@@ -1,5 +1,16 @@
-export const CallPlatform = {
-  Zoom: "zoom",
-  MicrosoftTeams: "microsoft teams",
-  GoogleMeet: "google meet",
-};
+
+
+export const CallPlatform = [
+  {
+    label: "Zoom",
+    value: 'zoom'
+  },
+  {
+    label: "Microsoft Teams",
+    value: 'microsoft teams'
+  },
+  {
+    label: "Google Meet",
+    value: 'google meet'
+  }
+]

@@ -24,8 +24,6 @@ const CreateDailyAppliesTable = () => {
 
     const { totalItems, pageSize, totalPages, page } = dailyAppliesData?.paginator ?? {};
 
-    console.log(totalItems, pageSize, totalPages, page, 'aaaaaaaaaaaa')
-
     const handleEdit = (record, e) => {
         e.stopPropagation();
         dispatch(setSelectedApply(record));
