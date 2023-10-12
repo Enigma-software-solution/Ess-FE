@@ -32,7 +32,7 @@ export const StyledCard = styled(Card)`
     margin-left: 50px;
     
     span {
-      font-size: 25px;
+      font-size: 20px;
       font-weight: 700;
       color: #071952;
     }

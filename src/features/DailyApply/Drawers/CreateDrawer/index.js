@@ -1,20 +1,22 @@
 import React, { useEffect } from 'react';
-import { Form, Row, Col, Input, Select, Space, Drawer, Button } from 'antd';
+import { Form, Row, Col, Input,  Space, Drawer, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { createDailyAppliesApi, updateDailyAppliesApi } from 'src/store/slices/dailyApplySlice/apis';
 import { getProfilesApi } from 'src/store/slices/profielSlice/apis';
 import { getAllProfiles } from 'src/store/slices/profielSlice/selectors';
 import { getUserId } from 'src/store/slices/authSlice/selectors';
 import { getSelectedApply } from 'src/store/slices/dailyApplySlice/selectors';
+import CustomSelect from 'src/components/formElements/CustomSelect';
+import { platformOptions } from 'src/constant/platformOptions';
+import { applyPosition } from 'src/constant/applyPosition';
 
-const { Option } = Select;
 
 const initialFormValues = {
   clientJobPosition: '',
   clientName: '',
-  link: '',
-  profile: undefined,
-  platform: 'GlassDoor',
+  link: localStorage.getItem('link') || '',
+  profile: localStorage.getItem('profile') || undefined,
+  platform: localStorage.getItem('platform') || 'GlassDoor',
   positionToApply: 'Full Stack',
 };
 
@@ -44,12 +46,22 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
 
       });
     } else {
-      form.setFieldsValue(initialFormValues);
+      form.setFieldsValue({
+        clientJobPosition: initialFormValues.clientJobPosition,
+        clientName: initialFormValues.clientName,
+        link: initialFormValues.link,
+        profile: initialFormValues.profile,
+        platform: initialFormValues.platform,
+        positionToApply: initialFormValues.positionToApply,
+      });
     }
   }, [selectedApply, form]);
 
   const handleSubmit = async (values) => {
     try {
+      localStorage.setItem('link', values?.link || '');
+      localStorage.setItem('profile', values?.profile || '');
+      localStorage.setItem('platform', values?.platform || 'GlassDoor');
 
       const data = {
         clientJobPosition: values?.clientJobPosition,
@@ -74,6 +86,7 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
       console.error('Form submission error:', error);
     }
   };
+
 
   return (
     <Drawer open={isOpen} onClose={handleDrawer} width={800}
@@ -109,13 +122,7 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
               label="Profile"
               rules={[{ required: true, message: 'Please select the Profile' }]}
             >
-              <Select placeholder="Please select a Profile">
-                {allProfiles?.map((profile) => (
-                  <Option key={profile?._id} value={profile?._id}>
-                    {profile?.name}
-                  </Option>
-                ))}
-              </Select>
+              <CustomSelect options={allProfiles} valueField='_id' labelField='name' placeholder='Select profile' />
             </Form.Item>
           </Col>
           <Col span={12}>
@@ -124,11 +131,7 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
               label="Platform"
               rules={[{ required: true, message: 'Please select a Platform' }]}
             >
-              <Select placeholder="Please select a Platform" >
-                <Option value="LinkedIn">LinkedIn</Option>
-                <Option value="GlassDoor">Glass Door</Option>
-                <Option value="Indeed">Indeed</Option>
-              </Select>
+              <CustomSelect options={platformOptions} placeholder='Select platform' />
             </Form.Item>
           </Col>
         </Row>
@@ -136,26 +139,22 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
           <Col span={12}>
             <Form.Item
               name="positionToApply"
-              label="Position Applying For"
+              label="Position"
               rules={[
-                { required: true, message: 'Please select the Position you are applying' },
+                { required: true, message: 'Please select the Position for applying' },
               ]}
             >
-              <Select placeholder="Please select a Position" >
-                <Option value="Front End Engineer">FrontEnd Dev</Option>
-                <Option value="Full Stack">FullStack Dev</Option>
-                <Option value="Back End">BackEnd Dev</Option>
-                <Option value="JavaScript Developer">JavaScript Dev</Option>
-                <Option value="React Js Developer">ReactJs Dev</Option>
-                <Option value="Angular Developer">Angular Dev</Option>
-              </Select>
+              <CustomSelect
+                options={applyPosition}
+                placeholder='Position for apply '
+              />
             </Form.Item>
           </Col>
           <Col span={12}>
             <Form.Item
               name="clientJobPosition"
               label="Client Job Position"
-              rules={[{required: true, message: 'Please enter Client Job' }]}
+              rules={[{ required: true, message: 'Please enter Client Job' }]}
             >
               <Input placeholder="Please enter Client Job" />
             </Form.Item>
@@ -166,7 +165,7 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
           <Space>
             <Button onClick={handleDrawer}>Cancel</Button>
             <Button type="primary" htmlType="submit">
-              Submit
+              {selectedApply ? 'Update' : 'Save'}
             </Button>
           </Space>
         </Form.Item>

@@ -1,18 +1,17 @@
 import React, { useState } from "react";
 import DailyApplyDrawer from "../Drawers/CreateDrawer";
-import { Select, Button, Card } from "antd";
+import { Button } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProfiles } from "src/store/slices/profielSlice/selectors";
-import { getdailyAppliesApi } from "src/store/slices/dailyApplySlice/apis";
-import qs from "qs";
 import CustomSearchField from "src/components/SearchField";
 import DateRangePicker from "src/components/DateRangePicker";
 import AddButton from "src/components/buttons/AddButton";
 import { getLogedInUser } from "src/store/slices/authSlice/selectors";
+import CustomSelect from "src/components/formElements/CustomSelect";
+import { Wrapper } from "./styled";
+import qs from "qs";
 
-const { Option } = Select;
-
-const Header = ({ pageSize }) => {
+const Header = ({ pageSize, onSearch }) => {
   const dispatch = useDispatch();
   const allProfiles = useSelector(getAllProfiles);
   const logedInUser = useSelector(getLogedInUser);
@@ -36,9 +35,7 @@ const Header = ({ pageSize }) => {
       params.startDate = selectedDateRange[0]?.format("YYYY-MM-DD");
       params.endDate = selectedDateRange[1]?.format("YYYY-MM-DD");
     }
-    const queryStringResult = qs.stringify(params);
-
-    dispatch(getdailyAppliesApi(queryStringResult));
+    onSearch(params);
   };
 
   const handleChangeProfile = (value) => {
@@ -49,14 +46,12 @@ const Header = ({ pageSize }) => {
     setSelectedDateRange(dates);
   };
 
-
   const handleReset = () => {
     const params = {
       date: new Date(),
     };
 
-    const queryStringResult = qs.stringify(params);
-    dispatch(getdailyAppliesApi(queryStringResult));
+    onSearch(params);
     setSelectedProfile(null);
     setSelectedDateRange(null);
   };
@@ -64,46 +59,33 @@ const Header = ({ pageSize }) => {
   const search = (e) => {
     const params = {
       search: e.target.value,
-      pageSize: pageSize
+      pageSize: pageSize,
     };
-    const queryStringResult = qs.stringify(params);
-    dispatch(getdailyAppliesApi(queryStringResult));
+    onSearch(params);
   };
 
   return (
-    <div>
+    <>
       <div className="d-flex justify-content-between mb-1">
         <CustomSearchField onChange={search} />
         <AddButton onClick={handleDrawer} text="New Apply" />
       </div>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          padding: "12px",
-          background: "#fff",
-          margin: "8px 0 5px 0 ",
-        }}
-      >
-        <div className="d-flex gap-5">
+      <Wrapper>
+        <div className="d-flex gap-3">
           {logedInUser && logedInUser?.role === "admin" && (
-            <Select
-              placeholder="Please select a Profile"
-              onChange={handleChangeProfile}
-              value={selectedProfile}
+            <CustomSelect
               style={{ width: "180px" }}
-            >
-              {allProfiles?.map((profile) => (
-                <Option key={profile?._id} value={profile?._id}>
-                  {profile?.name}
-                </Option>
-              ))}
-            </Select>
+              placeholder="Select profile"
+              value={selectedProfile}
+              valueField="_id"
+              labelField="name"
+              options={allProfiles}
+              onChange={handleChangeProfile}
+            />
           )}
-   <DateRangePicker
+          <DateRangePicker
             onChange={handleDateRangeChange}
             value={selectedDateRange}
-            
           />
         </div>
 
@@ -115,10 +97,10 @@ const Header = ({ pageSize }) => {
             Reset
           </Button>
         </div>
-      </div>
+      </Wrapper>
 
       <DailyApplyDrawer isOpen={isOpen} handleDrawer={handleDrawer} />
-    </div>
+    </>
   );
 };
 

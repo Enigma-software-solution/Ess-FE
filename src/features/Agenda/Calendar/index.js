@@ -95,7 +95,7 @@ const CustomCalendar = () => {
   return (
     <>
       <Calendar
-      style={{ height: 700,minHeight:'100vh' }}
+      style={{ minHeight:'calc(100vh - 150px)' }}
         localizer={localizer}
         events={preparedEvents}
         startAccessor="start"
