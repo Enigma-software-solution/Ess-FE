@@ -13,7 +13,7 @@ const ApplyCard = ({ data }) => {
         <div className="user_info">
           <span>{data?.profileName}</span>
           <p>
-            <strong>No of Applies: </strong>
+            <strong>Today Applies: </strong>
             {data?.count}
           </p>
         </div>

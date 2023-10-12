@@ -1,24 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { Table, Popconfirm, Button, Pagination } from "antd";
+import { Popconfirm, Pagination } from "antd";
 import EditButton from "src/components/buttons/EditButton";
 import DeleteButton from "src/components/buttons/DeleteButton";
 import Header from "../Header";
 import { useDispatch, useSelector } from "react-redux";
-import {
-    getdailyAppliesApi,
-    deteleDailyAppliesApi,
-} from "src/store/slices/dailyApplySlice/apis";
-import {
-    getAllDailyApplies,
-    getLoadingStatus,
-} from "src/store/slices/dailyApplySlice/selectors";
+import { getdailyAppliesApi, deteleDailyAppliesApi } from "src/store/slices/dailyApplySlice/apis";
+import { getAllDailyApplies, getLoadingStatus, } from "src/store/slices/dailyApplySlice/selectors";
 import CreateDailyApplyDrawer from "../Drawers/CreateDrawer";
 import { setSelectedApply } from "src/store/slices/dailyApplySlice";
 import qs from "qs";
 import DetailsDailyApplyDrawer from "../Drawers/DetailsDrawer";
-import { format } from "date-fns";
 import { StyledTable } from "./styled";
-import { toast } from "react-toastify";
 
 const CreateDailyAppliesTable = () => {
     const dispatch = useDispatch();
@@ -26,10 +18,13 @@ const CreateDailyAppliesTable = () => {
     const loadingStatus = useSelector(getLoadingStatus);
     const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
     const [isDetailsDrawerOpen, setIsDetailsDrawerOpen] = useState(false);
-    const [selectedRecord, setSelectedRecord] = useState(null); // Store the selected record here
+    const [selectedRecord, setSelectedRecord] = useState(null);
+    const [selectPagination, setSelectedPagination] = useState(null)
+    const [selectedFilters, setSelectedFilters] = useState(null)
 
-    const { totalItems, pageSize, totalPages, page } =
-        dailyAppliesData?.paginator ?? {};
+    const { totalItems, pageSize, totalPages, page } = dailyAppliesData?.paginator ?? {};
+
+    console.log(totalItems, pageSize, totalPages, page, 'aaaaaaaaaaaa')
 
     const handleEdit = (record, e) => {
         e.stopPropagation();
@@ -52,7 +47,7 @@ const CreateDailyAppliesTable = () => {
             title: "No",
             dataIndex: "serialNo",
             render: (text, record, index) => index + 1,
-            width:'40px'
+            width: '40px'
         },
         {
             key: "name",
@@ -70,25 +65,25 @@ const CreateDailyAppliesTable = () => {
         {
             title: "Position To Apply",
             dataIndex: "positionToApply",
-            width:'14%'
+            width: '14%'
         },
         {
             title: "Platform",
             dataIndex: "platform",
-            width:'10%'
+            width: '10%'
 
         },
         {
             title: "Link",
             dataIndex: "link",
-            ellipsis:true,
+            ellipsis: true,
             render: (text) => <a href={text} style={{ textDecoration: "none" }}>{text}</a>,
         },
         {
             key: "action",
             title: "Action",
             dataIndex: "action",
-            width:'8%',
+            width: '8%',
             render: (text, record) => (
                 <div className="d-flex gap-1 justify-content-end">
                     <EditButton onClick={(e) => handleEdit(record, e)} />
@@ -122,9 +117,39 @@ const CreateDailyAppliesTable = () => {
         dispatch(setSelectedApply(null));
     };
 
+
+    const handleSearch = (params) => {
+        const additionalParams = {
+            ...params,
+            pageSize: selectPagination?.pageSize
+        };
+
+        const queryParams = qs.stringify(additionalParams)
+        dispatch(getdailyAppliesApi(queryParams));
+        setSelectedFilters(params)
+    };
+
+    const onPaginationChange = (page, pageSize) => {
+        console.log(page, pageSize, 'ssssssssssssdata')
+        setSelectedPagination({
+            page: page,
+            pageSize: pageSize
+        })
+
+        const params = {
+            ...(selectedFilters ? { selectedFilters } : { date: new Date() }),
+            page: page,
+            pageSize: pageSize
+        };
+
+        const queryStringResult = qs.stringify(params);
+        dispatch(getdailyAppliesApi(queryStringResult));
+    }
+
+
     return (
         <>
-            <Header pageSize={pageSize} />
+            <Header pageSize={pageSize} onSearch={handleSearch} />
             <StyledTable
                 onRow={(record) => ({
                     onClick: () => handleRowClick(record),
@@ -137,15 +162,14 @@ const CreateDailyAppliesTable = () => {
             />
             {dailyAppliesData?.paginator && dailyAppliesData.daily_applies.length ? (
                 <Pagination
-                style={{padding:'10px',display:'flex',justifyContent:'flex-end'}}
+                    style={{ padding: '10px', display: 'flex', justifyContent: 'flex-end' }}
                     total={totalItems}
                     showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
                     defaultPageSize={pageSize}
                     defaultCurrent={page}
-                    
+
                     onChange={(page, pageSize) => {
-                        const queryStringResult = qs.stringify({ page, pageSize,date:new Date() });
-                        dispatch(getdailyAppliesApi(queryStringResult));
+                        onPaginationChange(page, pageSize)
                     }}
                     showSizeChanger
                     onShowSizeChange={(current, size) => {
