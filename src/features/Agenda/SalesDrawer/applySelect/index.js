@@ -22,10 +22,6 @@ const ApplySelect = ({ onSelect }) => {
         }
     };
 
-    useEffect(() => {
-        fetchApplyData('');
-    }, []);
-
     return (
         <Select
             style={{ width: '100%' }}

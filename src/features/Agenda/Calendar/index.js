@@ -8,13 +8,16 @@ import enUS from "date-fns/locale/en-US";
 import { useDispatch, useSelector } from "react-redux";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { getAllEventsApi } from "src/store/slices/agendaSlice/apis";
-import { setSelectedEvent, showEventDrawer, showSlotDrawer } from "src/store/slices/agendaSlice";
+import { setSelectedEvent, showEventDrawer } from "src/store/slices/agendaSlice";
 import { getAllEvents } from "src/store/slices/agendaSlice/selector";
 import { CallType } from "src/constant/callTypes";
 import { toast } from "react-toastify";
-import CreateEventDrawer from "../CreateEventDrawer";
+import SalesDrawer from "../SalesDrawer";
 import EventDetailsDrawer from "../EventDetailsDrawer";
 import CustomEvent from "./CustomEvent";
+import { Button, Modal } from "antd";
+import ClientEventDrawer from "../ClientEventDrawer";
+import SelectEventTypeModal from "../SelectEventTypeModal";
 
 const locales = { 'en-US': enUS }
 
@@ -35,6 +38,7 @@ const CustomCalendar = () => {
   const [preparedEvents, setPreparedEvents] = useState([]);
   const [selectedDate, setSelectedDate] = useState({ start: null, end: null });
   const [currentView, setCurrentView] = useState("month");
+  const [isSelectEventTypeModal, setIsSelectEventTypeModal] = useState(false)
 
   useEffect(() => {
     const newEvents = events?.map((e) => ({
@@ -59,8 +63,10 @@ const CustomCalendar = () => {
     }
 
     if (currentView === "day" || currentView === "week") {
+      setIsSelectEventTypeModal(true)
       setSelectedDate({ start: slot.start, end: slot.end });
-      dispatch(showSlotDrawer());
+      // dispatch(showSlotDrawer());
+
     }
   };
 
@@ -95,6 +101,7 @@ const CustomCalendar = () => {
 
   const onView = useCallback((newView) => setCurrentView(newView), [setCurrentView]);
 
+
   return (
     <>
       <Calendar
@@ -115,8 +122,14 @@ const CustomCalendar = () => {
         max={new Date(0, 0, 0, workDayEndHour)}
       />
 
+      <SelectEventTypeModal isOpen={isSelectEventTypeModal} handleClose={() => setIsSelectEventTypeModal(false)} />
 
-      <CreateEventDrawer selectedDate={selectedDate} />
+
+      <SalesDrawer selectedDate={selectedDate} />
+      <ClientEventDrawer selectedDate={selectedDate} />
+
+
+
       <EventDetailsDrawer />
     </>
   );

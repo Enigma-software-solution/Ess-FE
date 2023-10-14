@@ -1,13 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { DeleteEventsApi, UpdateEventsApi, createEventsApi, getAllEventsApi, updateEventNotes } from './apis';
-import { update } from 'lodash';
 
 
 const initialState = {
   selectedEvent: null,
   isEventDrawer: false,
-  isSlotDrawer: false,
+  isSalesDrawer: false,
   isNotesDrawer: false,
+  isClientEventDrawer: false,
   events: [],
   status: 'idle',
   error: ''
@@ -27,12 +27,7 @@ const agendaSlice = createSlice({
       state.isEventDrawer = false;
     },
 
-    showSlotDrawer: (state, _) => {
-      state.isSlotDrawer = true;
-    },
-    closeSlotDrawer: (state, _) => {
-      state.isSlotDrawer = false;
-    },
+
 
     showNotesDrawer: (state, _) => {
       state.isNotesDrawer = true;
@@ -40,7 +35,22 @@ const agendaSlice = createSlice({
     closeNotesDrawer: (state, _) => {
       state.isNotesDrawer = false;
     },
+
+    showSalesDrawer: (state, _) => {
+      state.isSalesDrawer = true;
+    },
+    closeSalesDrawer: (state, _) => {
+      state.isSalesDrawer = false;
+    },
+
+    showClientEventDrawer: (state, _) => {
+      state.isClientEventDrawer = true;
+    },
+    closeClientEventDrawer: (state, _) => {
+      state.isClientEventDrawer = false;
+    },
   },
+
   extraReducers: (builder) => {
     builder.addCase(getAllEventsApi.pending, (state, action) => {
       state.status = 'loading';
@@ -99,10 +109,12 @@ export const {
   setSelectedEvent,
   showEventDrawer,
   closeEventDrawer,
-  showSlotDrawer,
-  closeSlotDrawer,
   showNotesDrawer,
   closeNotesDrawer,
+  showClientEventDrawer,
+  closeClientEventDrawer,
+  showSalesDrawer,
+  closeSalesDrawer
 } = agendaSlice.actions;
 
 export default agendaSlice.reducer;

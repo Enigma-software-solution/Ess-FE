@@ -5,7 +5,7 @@ import { format } from "date-fns";
 import {
   checkEventDrawer,
   checkNotesDrawer,
-  getSelectEvent,
+  getSelectedEvent,
 } from "src/store/slices/agendaSlice/selector";
 import NotesDrawer from "../NotesDrawer";
 import { DeleteEventsApi } from "src/store/slices/agendaSlice/apis";
@@ -15,7 +15,7 @@ import {
   closeEventDrawer,
   setSelectedEvent,
   showNotesDrawer,
-  showSlotDrawer,
+  showSalesDrawer,
 } from "src/store/slices/agendaSlice";
 import { toast } from "react-toastify";
 import UserList from "../UserList";
@@ -24,7 +24,7 @@ const EventDetailsDrawer = () => {
   const dispatch = useDispatch();
   const isEventDrawer = useSelector(checkEventDrawer);
   const isNotesDrawer = useSelector(checkNotesDrawer);
-  const selectedEvent = useSelector(getSelectEvent);
+  const selectedEvent = useSelector(getSelectedEvent);
 
   const formatDate = (dateString) => {
     return format(new Date(dateString), "MMMM dd, yyyy HH:mm");
@@ -50,7 +50,7 @@ const EventDetailsDrawer = () => {
   };
 
   const handleUpdate = () => {
-    dispatch(showSlotDrawer());
+    dispatch(showSalesDrawer());
   };
 
   return (

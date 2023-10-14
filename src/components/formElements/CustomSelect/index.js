@@ -1,7 +1,7 @@
 import React from "react";
 import { Select } from "antd";
 import styled from "styled-components";
-
+import _get from 'lodash/get';
 const { Option } = Select;
 
 const StyledSelect = styled(Select)`
@@ -36,7 +36,7 @@ const CustomSelect = ({
     >
       {options?.map((item, index) => (
         <Option key={index} value={item?.[valueField]}>
-          {item?.[labelField]}
+          {_get(item, labelField)}
         </Option>
       ))}
     </StyledSelect>
