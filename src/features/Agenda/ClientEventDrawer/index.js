@@ -106,7 +106,7 @@ const ClientEventDrawer = ({ selectedDate }) => {
 
                 <CustomInput
                     label="Client"
-                    name="clientName"
+                    name="client"
                     rules={[{ required: true }]}
                     component={CustomSelect}
                     placeholder="Select client "
@@ -116,7 +116,7 @@ const ClientEventDrawer = ({ selectedDate }) => {
                 />
 
                 <CustomInput
-                    label="User"
+                    label="Assign To"
                     name="assignTo"
                     rules={[{ required: true }]}
                     component={CustomSelect}

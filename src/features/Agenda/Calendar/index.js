@@ -18,6 +18,7 @@ import CustomEvent from "./CustomEvent";
 import { Button, Modal } from "antd";
 import ClientEventDrawer from "../ClientEventDrawer";
 import SelectEventTypeModal from "../SelectEventTypeModal";
+import ClientCallDetailsModal from "../ClientCallDetailsModal";
 
 const locales = { 'en-US': enUS }
 
@@ -39,6 +40,7 @@ const CustomCalendar = () => {
   const [selectedDate, setSelectedDate] = useState({ start: null, end: null });
   const [currentView, setCurrentView] = useState("month");
   const [isSelectEventTypeModal, setIsSelectEventTypeModal] = useState(false)
+  const [isClientCallDetailsModal, setIsClientCallDetailsModal] = useState(false)
 
   useEffect(() => {
     const newEvents = events?.map((e) => ({
@@ -71,6 +73,11 @@ const CustomCalendar = () => {
   };
 
   const onEventClick = async (event) => {
+    if (event?.eventType === 'clientCall') {
+      setIsClientCallDetailsModal(true)
+      return
+    }
+
     dispatch(setSelectedEvent(event));
     dispatch(showEventDrawer());
   };
@@ -105,7 +112,7 @@ const CustomCalendar = () => {
   return (
     <>
       <Calendar
-        style={{ minHeight: 'calc(100vh - 150px)' }}
+        style={{ height: 'calc(100vh - 120px)', border: '1px solid red' }}
         localizer={localizer}
         events={preparedEvents}
         startAccessor="start"
@@ -123,7 +130,7 @@ const CustomCalendar = () => {
       />
 
       <SelectEventTypeModal isOpen={isSelectEventTypeModal} handleClose={() => setIsSelectEventTypeModal(false)} />
-
+      <ClientCallDetailsModal isOpen={isClientCallDetailsModal} handleClose={() => setIsClientCallDetailsModal(false)} />
 
       <SalesDrawer selectedDate={selectedDate} />
       <ClientEventDrawer selectedDate={selectedDate} />

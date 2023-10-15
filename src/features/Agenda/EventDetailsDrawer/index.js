@@ -106,12 +106,9 @@ const EventDetailsDrawer = () => {
           <div className="d-flex gap-2">
             <Card className="w-100" title="Event information">
               <div className="mb-2">
-                <span className="fw-bold">Company Name:</span>
-                <span className="m-3">{selectedEvent?.apply?.companyName}</span>
+                <span className="fw-bold">Client Name:</span>
+                <span className="m-3">{selectedEvent?.apply?.clientName}</span>
               </div>
-
-
-
 
               <div className="mb-2">
                 <span className="fw-bold">Job Title:</span>
