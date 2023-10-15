@@ -9,7 +9,7 @@ const StyledSelect = styled(Select)`
 `;
 
 const CustomSelect = ({
-  placeholder,
+  placeholder = 'select',
   options = [],
   onChange,
   value,

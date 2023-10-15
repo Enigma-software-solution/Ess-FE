@@ -19,6 +19,7 @@ import { Button, Modal } from "antd";
 import ClientEventDrawer from "../ClientEventDrawer";
 import SelectEventTypeModal from "../SelectEventTypeModal";
 import ClientCallDetailsModal from "../ClientCallDetailsModal";
+import CustomToolbar from "./CustomToolbar";
 
 const locales = { 'en-US': enUS }
 
@@ -112,7 +113,7 @@ const CustomCalendar = () => {
   return (
     <>
       <Calendar
-        style={{ height: 'calc(100vh - 120px)', border: '1px solid red' }}
+        style={{ height: 'calc(100vh - 110px)' }}
         localizer={localizer}
         events={preparedEvents}
         startAccessor="start"
@@ -122,7 +123,10 @@ const CustomCalendar = () => {
         selectable={true}
         onSelectSlot={onSelectSlot}
         onSelectEvent={onEventClick}
-        components={{ event: CustomEvent }}
+        components={{
+          event: CustomEvent,
+          // toolbar: CustomToolbar
+        }}
         eventPropGetter={getEventStyle}
         onView={onView}
         min={new Date(0, 0, 0, workDayStartHour)}
