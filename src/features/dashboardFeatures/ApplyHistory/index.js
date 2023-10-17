@@ -13,15 +13,16 @@ export const ApplyHistory = () => {
     dispatch(getDailyApplyStats());
   }, []);
 
-  if(!stats){
+  if (!stats) {
     return <h5>Loading...</h5>
   }
 
+  
   return (
     <>
       <h5 className="mb-3">Daily Applies History</h5>
       <h5>
-        <b>Today Total Applies</b> : 
+        <b>Today Total Applies</b> :
         {stats?.todayTotalApplies}
       </h5>
       <br />
@@ -29,7 +30,7 @@ export const ApplyHistory = () => {
         {stats?.profileCounts?.map((stats) => {
           return (
             <Col xs={24} sm={24} md={12} lg={6}>
-              <ApplyCard data={stats}  />
+              <ApplyCard data={stats} />
             </Col>
           );
         })}
