@@ -14,7 +14,7 @@ import { CallTypeDropdown } from "src/constant/callTypes";
 import { CallPlatformDropdown } from "src/constant/callplatform";
 import ApplySelect from "./applySelect";
 import { getSelectedEvent, isSalesDrawer } from "src/store/slices/agendaSlice/selector";
-import { closeEventDrawer, closeSalesDrawer } from "src/store/slices/agendaSlice";
+import { closeSalesDrawer } from "src/store/slices/agendaSlice";
 import { differenceInMinutes } from "date-fns";
 
 
@@ -75,6 +75,23 @@ const ClientEventDrawer = ({ selectedDate }) => {
     }
   };
 
+  // useEffect(() => {
+  //   if (selectedEvent) {
+  //     form.setFieldsValue({
+  //       callDuration: selectedEvent.callDuration,
+  //       numOfGuests: selectedEvent.numOfGuests,
+  //       mailLink: selectedEvent.mailLink,
+  //       callLink: selectedEvent.callLink,
+  //       callType: selectedEvent.callType,
+  //       callMode: selectedEvent.callMode,
+  //       callPlatform: selectedEvent.callPlatform,
+  //       apply: selectedEvent.apply,
+  //       companyInformation: selectedEvent.companyInformation,
+  //     });
+  //   }
+  // }, [form, selectedEvent]);
+
+
   const initialValues = {
     callDuration: "",
     numOfGuests: "1",
@@ -83,7 +100,7 @@ const ClientEventDrawer = ({ selectedDate }) => {
     callType: "",
     callMode: "",
     callPlatform: "",
-    apply: "",
+    // apply: "",
     companyInformation: ""
   }
 
@@ -105,6 +122,7 @@ const ClientEventDrawer = ({ selectedDate }) => {
     }
   }, [form, selectedEvent, selectedDate]);
 
+
   useEffect(() => {
     if (!users?.length) {
       dispatch(getAllUsersApi());
@@ -119,8 +137,8 @@ const ClientEventDrawer = ({ selectedDate }) => {
 
   return (
     <Drawer
-      zIndex={10000}
-      title="New sales call"
+      zIndex={1001}
+      title="Details Apply"
       placement="right"
       closable={true}
       onClose={handleClose}
@@ -208,6 +226,8 @@ const ClientEventDrawer = ({ selectedDate }) => {
           component={ApplySelect}
           onSelect={(value) => form.setFieldsValue({ apply: value })}
         />
+
+
 
         <CustomInput
           label="Company Information"
