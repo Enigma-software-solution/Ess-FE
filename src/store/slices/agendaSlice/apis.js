@@ -1,6 +1,7 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import api from "src/helpers/api";
+import { closeClientEventDrawer } from ".";
 
 export const getAllEventsApi = createAsyncThunk("agenda/get-all-events", async () => {
   try {
@@ -11,12 +12,15 @@ export const getAllEventsApi = createAsyncThunk("agenda/get-all-events", async (
   }
 });
 
-export const createEventsApi = createAsyncThunk("agenda/create-new-event", async (data) => {
+export const createEventsApi = createAsyncThunk("agenda/create-new-event", async (data, { dispatch }) => {
   try {
     const response = await api.post("/event", data);
     toast.success(response?.message)
+    dispatch(closeClientEventDrawer())
     return response;
   } catch (error) {
+    console.log(error, 'sssssssssssss')
+
     toast.warn(error?.message)
     throw error;
   }
@@ -28,7 +32,7 @@ export const UpdateEventsApi = createAsyncThunk("agenda/update-event", async (da
     toast.success(response?.message)
     return response;
   } catch (error) {
-    toast.warn(error?.message)
+    toast.warn(error?.error?.message || 'error')
     throw error;
   }
 });

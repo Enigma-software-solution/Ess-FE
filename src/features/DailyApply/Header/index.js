@@ -75,7 +75,6 @@ const Header = ({ pageSize, onSearch }) => {
           {logedInUser && logedInUser?.role === "admin" && (
             <CustomSelect
               style={{ width: "180px" }}
-              placeholder="Select profile"
               value={selectedProfile}
               valueField="_id"
               labelField="name"

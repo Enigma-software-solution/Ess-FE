@@ -33,7 +33,7 @@ const DetailsDailyApplyDrawer = ({ isOpen, handleDetailsDrawer, selectedRecord }
             placement="right"
             closable={true}
             onClose={handleDetailsDrawer}
-            visible={isOpen}
+            open={isOpen}
             width={500}
         >
             {selectedRecord && (

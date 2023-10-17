@@ -1,17 +1,18 @@
 import React from 'react'
 
-const CustomEvent = ({event}) => {
+const CustomEvent = ({ event }) => {
   return (
-    <div className='p-1'>
-    <strong>{event?.apply?.clientName}</strong>
-    <br />
-    {event?.assignTo && (
-      <>
-        <strong>Assign To :</strong>
-        {` ${event?.assignTo?.first_name} ${event?.assignTo?.last_name}`}
-      </>
-    )}
-  </div>
+    <div className='d-flex justify-content-center align-center flex-column'>
+      <p style={{ fontSize: '12px', fontWeight: 'bold' }}>
+        {event?.client?.apply?.clientName || event?.apply?.clientName}</p>
+      {event?.assignTo && (
+        <>
+          <p style={{ fontSize: '12px' }}><b>Assign To :</b>
+            {` ${event?.assignTo?.first_name}`}
+          </p>
+        </>
+      )}
+    </div>
   )
 }
 

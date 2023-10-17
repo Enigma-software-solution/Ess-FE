@@ -21,7 +21,7 @@ const ProfileSettings = () => {
   const [profilePic, setProfilePic] = useState('');
   const dispatch = useDispatch();
 
-  const loggedInUser =useSelector(getLogedInUser)
+  const loggedInUser = useSelector(getLogedInUser)
 
   useEffect(() => {
     const initialValuesData = {
@@ -30,7 +30,7 @@ const ProfileSettings = () => {
       email: loggedInUser?.email,
       role: loggedInUser?.role,
     };
-    form.setFieldsValue(initialValuesData); 
+    form.setFieldsValue(initialValuesData);
   }, [loggedInUser, form]);
 
   const fileToBase64 = (file) => {
@@ -71,15 +71,15 @@ const ProfileSettings = () => {
     const data = {
       userId: loggedInUser?.id,
       user: {
-        first_name:values.firstName,
-        last_name:values.lastName,
+        first_name: values.firstName,
+        last_name: values.lastName,
         profile_pic: profilePic,
       },
     };
     dispatch(updateUser(data));
   };
 
-if(!loggedInUser?.id) return <h1>Loading...</h1>
+  if (!loggedInUser?.id) return <h1>Loading...</h1>
 
   return (
     <Wrapper>
@@ -114,7 +114,7 @@ if(!loggedInUser?.id) return <h1>Loading...</h1>
           <Input prefix={<MailOutlined />} type="email" placeholder="Email" readOnly disabled />
         </Form.Item>
         <Form.Item name="role">
-          <Input prefix={<IdcardOutlined />} placeholder="Role"  readOnly disabled/>
+          <Input prefix={<IdcardOutlined />} placeholder="Role" readOnly disabled />
         </Form.Item>
 
         <Form.Item>

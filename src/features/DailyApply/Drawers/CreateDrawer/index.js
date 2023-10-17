@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Form, Row, Col, Input,  Space, Drawer, Button } from 'antd';
+import { Form, Row, Col, Input, Space, Drawer, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { createDailyAppliesApi, updateDailyAppliesApi } from 'src/store/slices/dailyApplySlice/apis';
 import { getProfilesApi } from 'src/store/slices/profielSlice/apis';
@@ -9,13 +9,14 @@ import { getSelectedApply } from 'src/store/slices/dailyApplySlice/selectors';
 import CustomSelect from 'src/components/formElements/CustomSelect';
 import { platformOptions } from 'src/constant/platformOptions';
 import { applyPosition } from 'src/constant/applyPosition';
+import CustomInput from 'src/components/formElements/CustomInput';
 
 
 const initialFormValues = {
   clientJobPosition: '',
   clientName: '',
   link: localStorage.getItem('link') || '',
-  profile: localStorage.getItem('profile') || undefined,
+  profile: '',
   platform: localStorage.getItem('platform') || 'GlassDoor',
   positionToApply: 'Full Stack',
 };
@@ -60,7 +61,6 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
   const handleSubmit = async (values) => {
     try {
       localStorage.setItem('link', values?.link || '');
-      localStorage.setItem('profile', values?.profile || '');
       localStorage.setItem('platform', values?.platform || 'GlassDoor');
 
       const data = {
@@ -93,71 +93,76 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
       title={selectedApply ? 'Update Daily Apply' : 'Create Daily Apply'}
     >
 
-      <Form form={form} layout="vertical" hideRequiredMark onFinish={handleSubmit}>
+      <Form form={form}
+        layout="vertical"
+        onFinish={handleSubmit}
+      >
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item
-              name="clientName"
+            <CustomInput
               label="Client Name"
+              name="clientName"
+              placeholder="Please enter Client name"
               rules={[{ required: true, message: 'Please enter Client name' }]}
-            >
-              <Input placeholder="Please enter Client name" />
-            </Form.Item>
+              type="text"
+            />
           </Col>
           <Col span={12}>
-            <Form.Item
-              name="link"
+            <CustomInput
               label="Link"
-              rules={[{ required: true, message: 'Please enter Link' }]}
-            >
-              <Input placeholder="Please enter Link" />
-            </Form.Item>
+              name="link"
+              placeholder="Please enter link"
+              rules={[{ required: true, message: 'Please enter link' }]}
+              type="text"
+            />
           </Col>
 
         </Row>
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item
-              name="profile"
+            <CustomInput
               label="Profile"
-              rules={[{ required: true, message: 'Please select the Profile' }]}
-            >
-              <CustomSelect options={allProfiles} valueField='_id' labelField='name' placeholder='Select profile' />
-            </Form.Item>
+              name="profile"
+              placeholder="Please select profile "
+              rules={[{ required: true, message: 'Please enter link' }]}
+              component={CustomSelect}
+              options={allProfiles}
+              valueField='_id'
+              labelField='name'
+            />
           </Col>
+
           <Col span={12}>
-            <Form.Item
+            <CustomInput
               name="platform"
               label="Platform"
               rules={[{ required: true, message: 'Please select a Platform' }]}
-            >
-              <CustomSelect options={platformOptions} placeholder='Select platform' />
-            </Form.Item>
+              component={CustomSelect}
+              options={platformOptions}
+            />
           </Col>
         </Row>
         <Row gutter={16}>
           <Col span={12}>
-            <Form.Item
+            <CustomInput
               name="positionToApply"
               label="Position"
               rules={[
                 { required: true, message: 'Please select the Position for applying' },
               ]}
-            >
-              <CustomSelect
-                options={applyPosition}
-                placeholder='Position for apply '
-              />
-            </Form.Item>
+              component={CustomSelect}
+              options={applyPosition}
+            />
           </Col>
           <Col span={12}>
-            <Form.Item
+
+            <CustomInput
               name="clientJobPosition"
               label="Client Job Position"
-              rules={[{ required: true, message: 'Please enter Client Job' }]}
-            >
-              <Input placeholder="Please enter Client Job" />
-            </Form.Item>
+              placeholder="Please enter Client Job"
+              rules={[{ required: true, message: 'Please enter link' }]}
+              type="text"
+            />
           </Col>
         </Row>
 

@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { updateEventNotes } from "src/store/slices/agendaSlice/apis";
 import {
   checkNotesDrawer,
-  getSelectEvent,
+  getSelectedEvent,
 } from "src/store/slices/agendaSlice/selector";
 import { closeNotesDrawer } from "src/store/slices/agendaSlice";
 
@@ -14,7 +14,7 @@ const NotesDrawer = () => {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [value, setValue] = useState(null);
 
-  const selectedEvent = useSelector(getSelectEvent);
+  const selectedEvent = useSelector(getSelectedEvent);
   const dispatch = useDispatch();
   const isDrawer = useSelector(checkNotesDrawer);
 
