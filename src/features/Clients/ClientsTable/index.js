@@ -28,9 +28,9 @@ const ClientTable = () => {
     const columns = [
         {
             title: "Client Name",
-            dataIndex: "apply.clientName",
+            dataIndex: "clientName",
             key: "clientName",
-            render: (text, record) => record.apply?.clientName,
+            render: (text, record) => record.apply?.clientName || record.clientName,
         },
         {
             title: "Status",

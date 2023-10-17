@@ -30,10 +30,10 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
   const [form] = Form.useForm();
 
   useEffect(() => {
-    if (!allProfiles?.length) {
+    if (!allProfiles) {
       dispatch(getProfilesApi());
     }
-  }, [dispatch, allProfiles]);
+  }, []);
 
   useEffect(() => {
     if (selectedApply) {

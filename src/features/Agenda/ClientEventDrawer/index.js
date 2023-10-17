@@ -53,13 +53,14 @@ const ClientEventDrawer = ({ selectedDate }) => {
         if (!users?.length) {
             !users?.length && dispatch(getAllUsersApi());
         }
-    }, [dispatch, users]);
+
+    }, []);
 
     useEffect(() => {
         if (!clients?.length) {
             dispatch(getAllClientsApi());
         }
-    }, [dispatch, clients]);
+    }, []);
 
     return (
         <Drawer

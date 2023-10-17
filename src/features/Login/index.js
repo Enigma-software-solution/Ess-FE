@@ -20,12 +20,14 @@ const LoginForm = () => {
         loginUser({ email: values.email, password: values.password })
       ).unwrap()
 
-      console.log(res, "after unwrapResult");
-      navigate("/");
+      if (res) {
+        navigate("/");
 
+      }
       toast.success("User successfully logged in");
     } catch (err) {
-     console.log(err.message)
+      toast.error(err?.message)
+      console.log(err.message)
     }
   };
 

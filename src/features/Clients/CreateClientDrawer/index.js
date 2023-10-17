@@ -7,6 +7,7 @@ import { createClientApi } from 'src/store/slices/clientSlice/apis';
 import qs from "qs";
 import { format } from "date-fns";
 import { getApplyBySearchApi } from 'src/store/slices/agendaSlice/apis';
+import { toast } from 'react-toastify';
 
 
 const { Option } = Select;
@@ -14,6 +15,7 @@ const { Option } = Select;
 const initialFormValues = {
     email: '',
     phoneNumber: '',
+    clientName: '',
     apply: ""
 };
 
@@ -23,17 +25,16 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
     const [applyId, setApplyId] = useState("");
 
 
-
     const dispatch = useDispatch();
     const allProfiles = useSelector(getAllProfiles);
 
     const [form] = Form.useForm();
 
     useEffect(() => {
-        if (!allProfiles?.length) {
+        if (!allProfiles) {
             dispatch(getProfilesApi());
         }
-    }, [dispatch, allProfiles]);
+    }, []);
 
     const fetchApplyData = async (searchText) => {
         const d = {
@@ -53,9 +54,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
     const handleSubmit = async (values) => {
         try {
             const data = {
-                email: values?.email,
-                phoneNumber: values?.pPhoneNumber,
-                apply: applyId,
+                ...values
             };
 
             dispatch(createClientApi(data));
@@ -63,7 +62,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
             form.setFieldsValue(initialFormValues);
             handleDrawer();
         } catch (error) {
-            console.error('Form submission error:', error);
+            toast.error(error.message)
         }
     };
 
@@ -98,7 +97,17 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
 
                 <Row gutter={16}>
                     <Col span={12}>
-                        <Form.Item name="apply" label="Apply" rules={[{ required: true }]}>
+                        <Form.Item
+                            name="clientName"
+                            label="Client Name"
+                            rules={[{ required: true, message: 'Please enter Client Name' }]}
+                        >
+                            <Input placeholder="Please enter Client Name" />
+                        </Form.Item>
+                    </Col>
+
+                    <Col span={12}>
+                        <Form.Item name="apply" label="Apply" >
                             <Select
                                 style={{ width: "100%" }}
                                 showSearch
