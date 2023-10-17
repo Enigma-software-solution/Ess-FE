@@ -100,7 +100,7 @@ const ClientEventDrawer = ({ selectedDate }) => {
     callType: "",
     callMode: "",
     callPlatform: "",
-    // apply: "",
+    apply: "",
     companyInformation: ""
   }
 
@@ -152,7 +152,7 @@ const ClientEventDrawer = ({ selectedDate }) => {
             onClick={() => form.submit()}
             loading={loading}
           >
-            Save
+            {selectedEvent ? "Update" : "Save"}
           </Button>
         </div>
       }
@@ -167,8 +167,8 @@ const ClientEventDrawer = ({ selectedDate }) => {
         <div className="d-flex justify-content-end align-items-end flex-column mb-4">
           <p>Date: {formatDate(selectedDate?.start)}</p>
           <p>
-            Time: {formatTime(selectedDate.start)} -{" "}
-            {formatTime(selectedDate.end)}
+            Time: {formatTime(selectedDate?.start)} -{" "}
+            {formatTime(selectedDate?.end)}
           </p>
         </div>
 
