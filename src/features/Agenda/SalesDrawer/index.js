@@ -138,7 +138,7 @@ const ClientEventDrawer = ({ selectedDate }) => {
   return (
     <Drawer
       zIndex={1001}
-      title="Details Apply"
+      title="Sales Call"
       placement="right"
       closable={true}
       onClose={handleClose}
@@ -211,14 +211,15 @@ const ClientEventDrawer = ({ selectedDate }) => {
           <Option value="voice">Voice</Option>
           <Option value="video">Video</Option>
         </CustomInput>
-        <CustomInput
+        {/* <CustomInput
           label="Call Platform"
           name="callPlatform"
           rules={[{ required: true }]}
           component={CustomSelect}
           options={CallPlatformDropdown}
           placeholder="Select call platform"
-        />
+        /> */}
+
         <CustomInput
           label="Apply"
           name="apply"
