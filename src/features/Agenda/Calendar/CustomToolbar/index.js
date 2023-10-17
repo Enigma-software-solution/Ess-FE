@@ -1,34 +1,53 @@
 import React from 'react';
-import { Button, DatePicker } from 'antd';
-import { CalendarOutlined } from '@ant-design/icons';
+import { Calendar, momentLocalizer } from 'react-big-calendar';
+import moment from 'moment';
+import { format, addMonths, subMonths } from 'date-fns';
 import styled from 'styled-components';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
 
-const ToolbarWrapper = styled.div`
+const localizer = momentLocalizer(moment);
+
+// Styled components for the custom toolbar
+const ToolbarContainer = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 16px;
-  background-color: #f0f2f5;
+  margin-bottom: 10px;
 `;
 
-const CustomToolbar = ({ onNavigate, label }) => {
-  const handleTodayClick = () => {
-    // Implement your logic to navigate to today's date
-    console.log('Navigate to today');
+const Button = styled.button`
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #0056b3;
+  }
+`;
+
+const CustomToolbar = ({ label, onNavigate }) => {
+  const goToToday = () => {
+    onNavigate('TODAY');
+  };
+
+  const goToNext = () => {
+    onNavigate('NEXT');
+  };
+
+  const goToPrev = () => {
+    onNavigate('PREV');
   };
 
   return (
-    <ToolbarWrapper>
-      <div>
-        <Button icon={<CalendarOutlined />} onClick={handleTodayClick}>
-          Today
-        </Button>
-      </div>
-      <div>
-        <DatePicker onChange={(date) => console.log(date)} />
-      </div>
-    </ToolbarWrapper>
+    <ToolbarContainer>
+      <Button onClick={goToPrev}>Back</Button>
+      <div>{label}</div>
+      <Button onClick={goToNext}>Next</Button>
+      <Button onClick={goToToday}>Today</Button>
+    </ToolbarContainer>
   );
 };
 
-export default CustomToolbar;
+export default CustomToolbar

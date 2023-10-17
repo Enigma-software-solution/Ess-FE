@@ -14,7 +14,8 @@ import { CallTypeDropdown } from "src/constant/callTypes";
 import { CallPlatformDropdown } from "src/constant/callplatform";
 import ApplySelect from "./applySelect";
 import { getSelectedEvent, isSalesDrawer } from "src/store/slices/agendaSlice/selector";
-import { closeSalesDrawer } from "src/store/slices/agendaSlice";
+import { closeEventDrawer, closeSalesDrawer } from "src/store/slices/agendaSlice";
+import { differenceInMinutes } from "date-fns";
 
 
 const { Option } = Select;
@@ -74,21 +75,35 @@ const ClientEventDrawer = ({ selectedDate }) => {
     }
   };
 
+  const initialValues = {
+    callDuration: "",
+    numOfGuests: "1",
+    mailLink: "",
+    callLink: "",
+    callType: "",
+    callMode: "",
+    callPlatform: "",
+    apply: "",
+    companyInformation: ""
+  }
+
   useEffect(() => {
-    if (selectedEvent) {
+    if (selectedEvent?._id) {
+      form.setFieldsValue(selectedEvent);
+    }
+
+    if (!selectedEvent?._id && selectedDate?.start && selectedDate?.end) {
+      const durationInMinutes = differenceInMinutes(
+        new Date(selectedDate.end),
+        new Date(selectedDate.start)
+      );
+
       form.setFieldsValue({
-        callDuration: selectedEvent.callDuration,
-        numOfGuests: selectedEvent.numOfGuests,
-        mailLink: selectedEvent.mailLink,
-        callLink: selectedEvent.callLink,
-        callType: selectedEvent.callType,
-        callMode: selectedEvent.callMode,
-        callPlatform: selectedEvent.callPlatform,
-        apply: selectedEvent.apply,
-        companyInformation: selectedEvent.companyInformation,
+        ...initialValues,
+        callDuration: durationInMinutes.toString() + 'min',
       });
     }
-  }, [form, selectedEvent]);
+  }, [form, selectedEvent, selectedDate]);
 
   useEffect(() => {
     if (!users?.length) {
@@ -104,7 +119,8 @@ const ClientEventDrawer = ({ selectedDate }) => {
 
   return (
     <Drawer
-      title="Details Apply"
+      zIndex={10000}
+      title="New sales call"
       placement="right"
       closable={true}
       onClose={handleClose}
@@ -192,8 +208,6 @@ const ClientEventDrawer = ({ selectedDate }) => {
           component={ApplySelect}
           onSelect={(value) => form.setFieldsValue({ apply: value })}
         />
-
-
 
         <CustomInput
           label="Company Information"

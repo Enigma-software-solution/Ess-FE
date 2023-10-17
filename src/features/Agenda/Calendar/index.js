@@ -66,16 +66,18 @@ const CustomCalendar = () => {
     }
 
     if (currentView === "day" || currentView === "week") {
+      dispatch(setSelectedEvent(null))
+
       setIsSelectEventTypeModal(true)
       setSelectedDate({ start: slot.start, end: slot.end });
-      // dispatch(showSlotDrawer());
-
     }
   };
 
   const onEventClick = async (event) => {
     if (event?.eventType === 'clientCall') {
       setIsClientCallDetailsModal(true)
+      dispatch(setSelectedEvent(event));
+
       return
     }
 

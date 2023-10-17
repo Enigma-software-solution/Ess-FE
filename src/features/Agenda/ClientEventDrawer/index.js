@@ -12,6 +12,7 @@ import { getAllUsers } from "src/store/slices/userSlice/selectors";
 import { createEventsApi } from "src/store/slices/agendaSlice/apis";
 import { getAllClientsSelector } from "src/store/slices/clientSlice/selectors";
 import { getAllClientsApi } from "src/store/slices/clientSlice/apis";
+import { CallType, CallTypeDropdown, ClientCallTypeDropdown } from "src/constant/callTypes";
 
 const ClientEventDrawer = ({ selectedDate }) => {
     const dispatch = useDispatch();
@@ -124,6 +125,15 @@ const ClientEventDrawer = ({ selectedDate }) => {
                     options={users}
                     labelField="first_name"
                     valueField="_id"
+                />
+
+                <CustomInput
+                    label="Call Type"
+                    name="callType"
+                    rules={[{ required: true }]}
+                    component={CustomSelect}
+                    placeholder="Select call type "
+                    options={ClientCallTypeDropdown}
                 />
             </Form>
         </Drawer>

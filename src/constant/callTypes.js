@@ -23,3 +23,47 @@ export const CallTypeDropdown = [
         value: "reschedule"
     }
 ];
+
+
+export const ClientCallTypeDropdown = [
+    {
+        label: "Daily Standup",
+        value: "DailyStandup",
+    },
+    {
+        label: "Sprint Planning",
+        value: "SprintPlanning",
+    },
+    {
+        label: "Sprint Review",
+        value: "SprintReview",
+    },
+    {
+        label: "Sprint Retrospective",
+        value: "SprintRetrospective",
+    },
+    {
+        label: "Backlog Refinement",
+        value: "BacklogRefinement",
+    },
+    {
+        label: "One-on-One",
+        value: "OneOnOne",
+    },
+    {
+        label: "Product Demo",
+        value: "ProductDemo",
+    },
+    {
+        label: "Release Planning",
+        value: "ReleasePlanning",
+    },
+    {
+        label: "Emergency Meeting",
+        value: "EmergencyMeeting",
+    },
+    {
+        label: "Other",
+        value: "Other",
+    },
+];
