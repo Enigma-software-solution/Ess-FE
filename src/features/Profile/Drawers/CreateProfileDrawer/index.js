@@ -20,11 +20,8 @@ const CreateProfileDrawer = ({ isOpen, handleDrawer }) => {
     const handleSubmit = async (values) => {
         try {
             const data = {
-                email: values?.email,
-                name: values?.name,
-                phoneNumber: values?.phoneNumber,
-                status: values?.status,
-            };
+                ...values
+            }
 
             dispatch(createProfileApi(data));
 
