@@ -87,7 +87,6 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
     }
   };
 
-
   return (
     <Drawer open={isOpen} onClose={handleDrawer} width={800}
       title={selectedApply ? 'Update Daily Apply' : 'Create Daily Apply'}
