@@ -20,7 +20,7 @@ import {
 import { toast } from "react-toastify";
 import UserList from "../UserList";
 
-const EventDetailsDrawer = () => {
+const SalesCallDetailsDrawer = () => {
   const dispatch = useDispatch();
   const isEventDrawer = useSelector(checkEventDrawer);
   const isNotesDrawer = useSelector(checkNotesDrawer);
@@ -211,4 +211,4 @@ const EventDetailsDrawer = () => {
   );
 };
 
-export default EventDetailsDrawer;
+export default SalesCallDetailsDrawer;

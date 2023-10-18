@@ -64,7 +64,7 @@ const ClientEventDrawer = ({ selectedDate }) => {
 
     return (
         <Drawer
-            title="Details Apply"
+            title="Client Call"
             placement="right"
             closable={true}
             onClose={handleClose}
@@ -113,8 +113,8 @@ const ClientEventDrawer = ({ selectedDate }) => {
                     component={CustomSelect}
                     placeholder="Select client "
                     options={clients}
-                    labelField="apply.clientName"
-                    valueField="_id"
+                    labelField="clientName"
+                    valueField="clientName"
                 />
 
                 <CustomInput
