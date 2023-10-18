@@ -12,8 +12,7 @@ const Header = () => {
 
     return (
         <>
-            <div className="d-flex justify-content-between mb-2">
-                <CustomSearchField />
+            <div className="d-flex flex-row-reverse  mb-2">
                 <AddButton onClick={handleDrawer} text="Profile" />
             </div>
 

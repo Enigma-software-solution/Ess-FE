@@ -1,7 +1,7 @@
 import {
   createSlice,
 } from "@reduxjs/toolkit";
-import { createProfileApi, getProfilesApi, updateProfileApi } from "./apis";
+import { createProfileApi, deteleProfileApi, getProfilesApi, updateProfileApi } from "./apis";
 
 const initialState = {
   status: "idle",
@@ -50,6 +50,10 @@ const profileSlice = createSlice({
         }
         return profile
       })
+    });
+
+    builder.addCase(deteleProfileApi.fulfilled, (state, action) => {
+      state.data = state?.data?.filter((profile) => profile?._id !== action?.payload?.profileId)
     });
   },
 

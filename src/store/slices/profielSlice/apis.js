@@ -41,3 +41,18 @@ export const updateProfileApi = createAsyncThunk(
 );
 
 
+export const deteleProfileApi = createAsyncThunk(
+  "profile/delete-profile",
+  async (profileId, { rejectWithValue }) => {
+    try {
+      const response = await api.delete(`/profile/${profileId}`);
+      toast.success("Profile deleted Successfully")
+
+      return { profileId };
+    } catch (error) {
+      return rejectWithValue(error?.response?.data || "An error occurred");
+    }
+  }
+);
+
+
