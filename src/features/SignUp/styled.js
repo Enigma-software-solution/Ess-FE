@@ -13,7 +13,7 @@ export const FormContainer = styled.div`
   border-radius: 8px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   padding: 40px;
-  max-width: 400px;
+  max-width: 35%;
   width: 100%;
   display: flex;
   flex-direction: column;

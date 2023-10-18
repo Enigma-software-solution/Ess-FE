@@ -21,9 +21,7 @@ const SignUpForm = () => {
                 })
             ).unwrap();
 
-            console.log(res, "after unwrapResult");
             navigate("/login");
-
             message.success("User registered successfully");
         } catch (err) {
             message.error(err.message);
@@ -66,14 +64,6 @@ const SignUpForm = () => {
                             rules={[{ required: true, message: "Please input your password!" }]}
                         >
                             <Input.Password placeholder="Password" />
-                        </Form.Item>
-                    </FieldGroup>
-                    <FieldGroup>
-                        <Form.Item
-                            name="role"
-                            rules={[{ required: true, message: "Please input your role!" }]}
-                        >
-                            <Input placeholder="Role" />
                         </Form.Item>
                     </FieldGroup>
                     <Form.Item>
