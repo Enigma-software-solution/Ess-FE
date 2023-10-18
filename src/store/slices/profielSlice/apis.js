@@ -26,4 +26,18 @@ export const createProfileApi = createAsyncThunk(
   }
 );
 
+export const updateProfileApi = createAsyncThunk(
+  "profile/patch-profile",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await api.patch(`/profile/${data.id}`, data.data);
+      toast.success("Profile Updated Successfully")
+
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "An error occurred");
+    }
+  }
+);
+
 

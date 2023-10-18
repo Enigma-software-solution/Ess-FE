@@ -2,7 +2,8 @@ import React, { useEffect } from 'react';
 import { Form, Row, Col, Space, Drawer, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import CustomInput from 'src/components/formElements/CustomInput';
-import { createProfileApi } from 'src/store/slices/profielSlice/apis';
+import { createProfileApi, updateProfileApi } from 'src/store/slices/profielSlice/apis';
+import { getSelectedProfile } from 'src/store/slices/profielSlice/selectors';
 
 
 const initialFormValues = {
@@ -14,8 +15,27 @@ const initialFormValues = {
 
 const CreateProfileDrawer = ({ isOpen, handleDrawer }) => {
     const dispatch = useDispatch();
+    const selectedProfile = useSelector(getSelectedProfile)
 
     const [form] = Form.useForm();
+
+    useEffect(() => {
+        if (selectedProfile) {
+            form.setFieldsValue({
+                email: selectedProfile?.email,
+                name: selectedProfile?.name,
+                phoneNumber: selectedProfile?.phoneNumber,
+                status: selectedProfile?.status,
+            });
+        } else {
+            form.setFieldsValue({
+                email: initialFormValues.email,
+                name: initialFormValues.name,
+                phoneNumber: initialFormValues.phoneNumber,
+                status: initialFormValues.status,
+            });
+        }
+    }, [selectedProfile, form]);
 
     const handleSubmit = async (values) => {
         try {
@@ -23,7 +43,11 @@ const CreateProfileDrawer = ({ isOpen, handleDrawer }) => {
                 ...values
             }
 
-            dispatch(createProfileApi(data));
+            if (selectedProfile) {
+                dispatch(updateProfileApi({ data, id: selectedProfile?._id }))
+            } else {
+                dispatch(createProfileApi(data));
+            }
 
             form.setFieldsValue(initialFormValues);
             handleDrawer();
