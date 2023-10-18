@@ -6,7 +6,6 @@ import startOfWeek from "date-fns/startOfWeek";
 import getDay from "date-fns/getDay";
 import enUS from "date-fns/locale/en-US";
 import { useDispatch, useSelector } from "react-redux";
-import "react-big-calendar/lib/css/react-big-calendar.css";
 import { getAllEventsApi } from "src/store/slices/agendaSlice/apis";
 import { setSelectedEvent, showEventDrawer } from "src/store/slices/agendaSlice";
 import { getAllEvents } from "src/store/slices/agendaSlice/selector";
@@ -15,11 +14,12 @@ import { toast } from "react-toastify";
 import SalesDrawer from "../SalesDrawer";
 import EventDetailsDrawer from "../SalesCallDetailsDrawer";
 import CustomEvent from "./CustomEvent";
-import { Button, Modal } from "antd";
 import ClientEventDrawer from "../ClientEventDrawer";
 import SelectEventTypeModal from "../SelectEventTypeModal";
 import ClientCallDetailsModal from "../ClientCallDetailsModal";
 import CustomToolbar from "./CustomToolbar";
+import "react-big-calendar/lib/css/react-big-calendar.css";
+
 
 const locales = { 'en-US': enUS }
 
@@ -63,7 +63,7 @@ const CustomCalendar = () => {
       toast.warn("Cannot create events on past dates.");
       return;
     }
-    if (currentView === "day" || currentView === "week") {
+    if (currentView !== "month") {
       dispatch(setSelectedEvent(null))
 
       setIsSelectEventTypeModal(true)
@@ -84,12 +84,11 @@ const CustomCalendar = () => {
 
   const getEventStyle = (event) => {
     const colorMap = {
-      [CallType.Initial]: "#7591e0",
-      [CallType.Final]: "blue",
-      [CallType.Technical]: "green",
-      [CallType.Reschedule]: "orange",
+      [CallType.Initial]: "#3498db",
+      [CallType.Technical]: "#00FF00",
+      [CallType.Final]: "#000fff",
+      [CallType.Reschedule]: "#FFD700",
     };
-
     const backgroundColor = colorMap[event.callType] || "gray";
 
     return {
@@ -104,14 +103,14 @@ const CustomCalendar = () => {
   }, []);
 
   const workDayStartHour = 9;
-  const workDayEndHour = 17;
+  const workDayEndHour = 18;
 
   const onView = useCallback((newView) => setCurrentView(newView), [setCurrentView]);
 
   return (
-    <>
+    <div style={{ height: 'calc(100vh - 110px)', backgroundColor: '#fff' }}>
       <Calendar
-        style={{ height: 'calc(100vh - 110px)' }}
+
         localizer={localizer}
         events={preparedEvents}
         startAccessor="start"
@@ -123,12 +122,21 @@ const CustomCalendar = () => {
         onSelectEvent={onEventClick}
         components={{
           event: CustomEvent,
-          // toolbar: CustomToolbar
+          toolbar: CustomToolbar
         }}
+        popup
         eventPropGetter={getEventStyle}
         onView={onView}
+        defaultView={Views.MONTH}
+        views={["day", "week", "work_week", "month", "agenda"]}
         min={new Date(0, 0, 0, workDayStartHour)}
         max={new Date(0, 0, 0, workDayEndHour)}
+        formats={
+          {
+            monthHeaderFormat: (date) => format(date, 'MMMM d, yyyy'),
+            dayHeaderFormat: (date) => format(date, 'MMMM d, yyyy'),
+          }
+        }
       />
 
       <SelectEventTypeModal isOpen={isSelectEventTypeModal} handleClose={() => setIsSelectEventTypeModal(false)} />
@@ -138,7 +146,7 @@ const CustomCalendar = () => {
       <ClientEventDrawer selectedDate={selectedDate} />
 
       <EventDetailsDrawer />
-    </>
+    </div>
   );
 };
 

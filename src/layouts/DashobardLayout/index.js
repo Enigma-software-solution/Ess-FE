@@ -13,11 +13,11 @@ const DashboardLayout = () => {
   return (
     <Layout>
       <StyledSider collapsed={collapsed}>
-        <Sidebar setCollapsed={setCollapsed}  collapsed={collapsed}/>
+        <Sidebar setCollapsed={setCollapsed} collapsed={collapsed} />
       </StyledSider>
-      <Layout style={{marginLeft:'12px'}}>
+      <Layout style={{ marginLeft: '12px', background: '#fff' }}>
         <StyledHeader>
-          <Topbar  setCollapsed={setCollapsed}  collapsed={collapsed}/>
+          <Topbar setCollapsed={setCollapsed} collapsed={collapsed} />
         </StyledHeader>
         <StyledContent>
           <Outlet />

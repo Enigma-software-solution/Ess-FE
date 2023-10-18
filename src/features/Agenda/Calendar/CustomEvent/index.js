@@ -4,13 +4,13 @@ const CustomEvent = ({ event }) => {
   return (
     <div className='d-flex justify-content-center align-center flex-column'>
       <p style={{ fontSize: '12px', fontWeight: 'bold' }}>
-        {event?.client?.apply?.clientName || event?.apply?.clientName}</p>
+        {event?.client || event?.apply?.clientName}
+      </p>
+
       {event?.assignTo && (
-        <>
-          <p style={{ fontSize: '12px' }}><b>Assign To :</b>
-            {` ${event?.assignTo?.first_name}`}
-          </p>
-        </>
+        <p style={{ fontSize: '12px' }}><b>Assign To :</b>
+          {event?.assignTo?.first_name}
+        </p>
       )}
     </div>
   )
