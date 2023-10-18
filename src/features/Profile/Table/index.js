@@ -61,7 +61,7 @@ const ProfileTable = () => {
                 <div className='d-flex gap-1'>
                     <EditButton onClick={(e) => handleEdit(record, e)} />
                     <Popconfirm
-                        title="Are you sure to delete this task?"
+                        title="Are you sure to delete this Profile?"
                         onConfirm={(e) => handleConfirmDelete(record, e)}
                         onCancel={(e) => e.stopPropagation()}
                         okText="Yes"

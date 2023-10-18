@@ -128,7 +128,6 @@ const CreateDailyAppliesTable = () => {
     };
 
     const onPaginationChange = (page, pageSize) => {
-        console.log(page, pageSize, 'ssssssssssssdata')
         setSelectedPagination({
             page: page,
             pageSize: pageSize
@@ -171,7 +170,6 @@ const CreateDailyAppliesTable = () => {
                     }}
                     showSizeChanger
                     onShowSizeChange={(current, size) => {
-                        // Handle page size change event here
                         console.log(`Current: ${current}, PageSize: ${size}`);
                     }}
                 />

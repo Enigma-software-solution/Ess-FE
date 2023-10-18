@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import CustomSearchField from "src/components/SearchField";
 import AddButton from "src/components/buttons/AddButton";
 import CreateProfileDrawer from "../Drawers/CreateProfileDrawer";
 

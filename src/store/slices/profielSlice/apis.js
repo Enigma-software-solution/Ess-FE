@@ -50,6 +50,7 @@ export const deteleProfileApi = createAsyncThunk(
 
       return { profileId };
     } catch (error) {
+      toast.error(error.message)
       return rejectWithValue(error?.response?.data || "An error occurred");
     }
   }

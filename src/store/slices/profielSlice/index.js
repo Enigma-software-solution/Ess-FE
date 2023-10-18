@@ -37,13 +37,11 @@ const profileSlice = createSlice({
     });
 
     builder.addCase(createProfileApi.fulfilled, (state, action) => {
-      console.log(action.payload, "actionssssss")
       state.status = "succeeded";
       state.data = [action?.payload?.data, ...state?.data];
     });
 
     builder.addCase(updateProfileApi.fulfilled, (state, action) => {
-      console.log(action.payload, "actionssssss")
       state.data = state?.data?.map(profile => {
         if (profile?._id === action?.payload?.data?._id) {
           return action?.payload?.data
