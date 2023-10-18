@@ -51,7 +51,7 @@ const ClientEventDrawer = ({ selectedDate }) => {
 
     useEffect(() => {
         if (!users?.length) {
-            !users?.length && dispatch(getAllUsersApi());
+            dispatch(getAllUsersApi());
         }
 
     }, []);
