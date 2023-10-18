@@ -110,7 +110,6 @@ const CustomCalendar = () => {
   return (
     <div style={{ height: 'calc(100vh - 110px)', backgroundColor: '#fff' }}>
       <Calendar
-
         localizer={localizer}
         events={preparedEvents}
         startAccessor="start"
