@@ -3,20 +3,21 @@ import { Drawer, Form, Button, Select } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import CustomInput from "src/components/formElements/CustomInput";
 import CustomSelect from "src/components/formElements/CustomSelect";
-import { getAllUsersApi } from "src/store/slices/userSlice/apis";
 import { formatDate, formatTime } from "src/utils/formatsOfDate";
 import { getLogedInUser } from "src/store/slices/authSlice/selectors";
-import { getAllUsers } from "src/store/slices/userSlice/selectors";
-import { UpdateEventsApi, createEventsApi } from "src/store/slices/agendaSlice/apis";
-import { getAllClientsSelector } from "src/store/slices/clientSlice/selectors";
-import { getAllClientsApi } from "src/store/slices/clientSlice/apis";
+import {
+  UpdateEventsApi,
+  createEventsApi,
+} from "src/store/slices/agendaSlice/apis";
 import { CallTypeDropdown } from "src/constant/callTypes";
 import { CallPlatformDropdown } from "src/constant/callplatform";
 import ApplySelect from "./applySelect";
-import { getSelectedEvent, isSalesDrawer } from "src/store/slices/agendaSlice/selector";
+import {
+  getSelectedEvent,
+  isSalesDrawer,
+} from "src/store/slices/agendaSlice/selector";
 import { closeSalesDrawer } from "src/store/slices/agendaSlice";
 import { differenceInMinutes } from "date-fns";
-
 
 const { Option } = Select;
 
@@ -24,8 +25,6 @@ const ClientEventDrawer = ({ selectedDate }) => {
   const dispatch = useDispatch();
   const isDrawer = useSelector(isSalesDrawer);
   const loggedInUser = useSelector(getLogedInUser);
-  const users = useSelector(getAllUsers);
-  const clients = useSelector(getAllClientsSelector);
 
   const selectedEvent = useSelector(getSelectedEvent);
 
@@ -43,19 +42,18 @@ const ClientEventDrawer = ({ selectedDate }) => {
       createdBy: loggedInUser.id,
       ...selectedDate,
       ...values,
-      eventType: 'salesCall'
+      eventType: "salesCall",
     };
 
     const updateData = {
       createdBy: loggedInUser.id,
       start: selectedEvent?.start,
       end: selectedEvent?.end,
-      eventType: 'salesCall',
+      eventType: "salesCall",
       ...values,
     };
 
     try {
-
       if (selectedEvent?._id) {
         dispatch(
           UpdateEventsApi({
@@ -71,26 +69,9 @@ const ClientEventDrawer = ({ selectedDate }) => {
     } catch (error) {
     } finally {
       setLoading(false);
-      dispatch(closeSalesDrawer())
+      dispatch(closeSalesDrawer());
     }
   };
-
-  // useEffect(() => {
-  //   if (selectedEvent) {
-  //     form.setFieldsValue({
-  //       callDuration: selectedEvent.callDuration,
-  //       numOfGuests: selectedEvent.numOfGuests,
-  //       mailLink: selectedEvent.mailLink,
-  //       callLink: selectedEvent.callLink,
-  //       callType: selectedEvent.callType,
-  //       callMode: selectedEvent.callMode,
-  //       callPlatform: selectedEvent.callPlatform,
-  //       apply: selectedEvent.apply,
-  //       companyInformation: selectedEvent.companyInformation,
-  //     });
-  //   }
-  // }, [form, selectedEvent]);
-
 
   const initialValues = {
     callDuration: "",
@@ -101,8 +82,8 @@ const ClientEventDrawer = ({ selectedDate }) => {
     callMode: "",
     callPlatform: "",
     apply: "",
-    companyInformation: ""
-  }
+    companyInformation: "",
+  };
 
   useEffect(() => {
     if (selectedEvent?._id) {
@@ -117,23 +98,10 @@ const ClientEventDrawer = ({ selectedDate }) => {
 
       form.setFieldsValue({
         ...initialValues,
-        callDuration: durationInMinutes.toString() + 'min',
+        callDuration: durationInMinutes.toString() + "min",
       });
     }
   }, [form, selectedEvent, selectedDate]);
-
-
-  useEffect(() => {
-    if (!users?.length) {
-      dispatch(getAllUsersApi());
-    }
-  }, [dispatch, users]);
-
-  useEffect(() => {
-    if (!clients?.length) {
-      dispatch(getAllClientsApi());
-    }
-  }, [dispatch, clients]);
 
   return (
     <Drawer
@@ -203,22 +171,18 @@ const ClientEventDrawer = ({ selectedDate }) => {
           options={CallTypeDropdown}
           placeholder="Select Call type"
         />
-        <CustomInput
-          label="Call Mode"
-          name="callMode"
-          component={Select}
-        >
+        <CustomInput label="Call Mode" name="callMode" component={Select}>
           <Option value="voice">Voice</Option>
           <Option value="video">Video</Option>
         </CustomInput>
-        {/* <CustomInput
+        <CustomInput
           label="Call Platform"
           name="callPlatform"
           rules={[{ required: true }]}
           component={CustomSelect}
           options={CallPlatformDropdown}
           placeholder="Select call platform"
-        /> */}
+        />
 
         <CustomInput
           label="Apply"
@@ -227,8 +191,6 @@ const ClientEventDrawer = ({ selectedDate }) => {
           component={ApplySelect}
           onSelect={(value) => form.setFieldsValue({ apply: value })}
         />
-
-
 
         <CustomInput
           label="Company Information"

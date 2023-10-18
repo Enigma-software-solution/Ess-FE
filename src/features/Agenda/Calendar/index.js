@@ -13,7 +13,7 @@ import { getAllEvents } from "src/store/slices/agendaSlice/selector";
 import { CallType } from "src/constant/callTypes";
 import { toast } from "react-toastify";
 import SalesDrawer from "../SalesDrawer";
-import EventDetailsDrawer from "../EventDetailsDrawer";
+import EventDetailsDrawer from "../SalesCallDetailsDrawer";
 import CustomEvent from "./CustomEvent";
 import { Button, Modal } from "antd";
 import ClientEventDrawer from "../ClientEventDrawer";
@@ -59,12 +59,10 @@ const CustomCalendar = () => {
     if (currentView === 'month') {
       return
     }
-
     if (isPastDate) {
       toast.warn("Cannot create events on past dates.");
       return;
     }
-
     if (currentView === "day" || currentView === "week") {
       dispatch(setSelectedEvent(null))
 
@@ -77,7 +75,6 @@ const CustomCalendar = () => {
     if (event?.eventType === 'clientCall') {
       setIsClientCallDetailsModal(true)
       dispatch(setSelectedEvent(event));
-
       return
     }
 
@@ -104,13 +101,12 @@ const CustomCalendar = () => {
 
   useEffect(() => {
     dispatch(getAllEventsApi());
-  }, [dispatch]);
+  }, []);
 
   const workDayStartHour = 9;
   const workDayEndHour = 17;
 
   const onView = useCallback((newView) => setCurrentView(newView), [setCurrentView]);
-
 
   return (
     <>
@@ -140,8 +136,6 @@ const CustomCalendar = () => {
 
       <SalesDrawer selectedDate={selectedDate} />
       <ClientEventDrawer selectedDate={selectedDate} />
-
-
 
       <EventDetailsDrawer />
     </>
