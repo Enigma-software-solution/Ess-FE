@@ -1,7 +1,7 @@
 import {
   createSlice,
 } from "@reduxjs/toolkit";
-import { getProfilesApi } from "./apis";
+import { createProfileApi, getProfilesApi } from "./apis";
 
 const initialState = {
   status: "idle",
@@ -25,6 +25,12 @@ const profileSlice = createSlice({
     builder.addCase(getProfilesApi.rejected, (state, action) => {
       state.status = "error";
       state.error = action.error.message;
+    });
+
+    builder.addCase(createProfileApi.fulfilled, (state, action) => {
+      console.log(action.payload, "actionssssss")
+      state.status = "succeeded";
+      state.data = [action?.payload?.data, ...state?.data];
     });
   },
 

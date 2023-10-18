@@ -1,10 +1,11 @@
-import React,{ useEffect } from "react";
+import React, { useEffect } from "react";
 import { Table } from 'antd';
 import EditButton from 'src/components/buttons/EditButton';
 import DeleteButton from 'src/components/buttons/DeleteButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProfilesApi } from "src/store/slices/profielSlice/apis";
 import { getAllProfiles } from "src/store/slices/profielSlice/selectors";
+import Header from "../Header";
 
 const ProfileTable = () => {
 
@@ -56,12 +57,13 @@ const ProfileTable = () => {
     ];
 
     useEffect(() => {
-      dispatch(getProfilesApi())
+        dispatch(getProfilesApi())
     }, [])
 
     return (
         <>
             <div>
+                <Header />
                 <Table dataSource={profileData} columns={columns} />
             </div>
         </>

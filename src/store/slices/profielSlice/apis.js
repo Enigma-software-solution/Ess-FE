@@ -1,12 +1,29 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
 import api from "src/helpers/api";
 
 export const getProfilesApi = createAsyncThunk("profile/get-profile", async () => {
+  try {
+    const response = await api.get("/profile");
+    return response;
+  } catch (error) {
+    throw error;
+  }
+});
+
+
+export const createProfileApi = createAsyncThunk(
+  "profile/post-profile",
+  async (profileData, { rejectWithValue }) => {
     try {
-      const response = await api.get("/profile");
+      const response = await api.post("/profile", profileData);
+      toast.success(response?.message)
       return response;
     } catch (error) {
-      throw error;
+      toast.warn(error.response.data.message || error?.message)
+      return rejectWithValue(error.response?.data || "An error occurred");
     }
-  });
+  }
+);
+
 
