@@ -77,6 +77,7 @@ const ClientEventDrawer = ({ selectedDate }) => {
     callDuration: "",
     numOfGuests: "1",
     mailLink: "",
+    callWith: "",
     callLink: "",
     callType: "",
     callMode: "",
@@ -146,6 +147,14 @@ const ClientEventDrawer = ({ selectedDate }) => {
           rules={[{ required: true }]}
           type="text"
         />
+
+        <CustomInput
+          label="Call With"
+          name="callWith"
+          rules={[{ required: true }]}
+          type="text"
+        />
+
         <CustomInput
           label="Number of Guests"
           name="numOfGuests"
@@ -174,6 +183,7 @@ const ClientEventDrawer = ({ selectedDate }) => {
         <CustomInput label="Call Mode" name="callMode" component={Select}>
           <Option value="voice">Voice</Option>
           <Option value="video">Video</Option>
+          <Option value="other">Other</Option>
         </CustomInput>
         <CustomInput
           label="Call Platform"

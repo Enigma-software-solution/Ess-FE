@@ -107,7 +107,12 @@ const SalesCallDetailsDrawer = () => {
             <Card className="w-100" title="Event information">
               <div className="mb-2">
                 <span className="fw-bold">Client Name:</span>
-                <span className="m-3">{selectedEvent?.apply?.clientName}</span>
+                <span className="m-3">{selectedEvent?.apply?.companyName}</span>
+              </div>
+
+              <div className="mb-2">
+                <span className="fw-bold">Call With:</span>
+                <span className="m-3">{selectedEvent?.callWith}</span>
               </div>
 
               <div className="mb-2">

@@ -3,6 +3,7 @@ export const CallType = {
     Final: 'final',
     Technical: 'technical',
     Reschedule: 'reschedule',
+    Other: 'other',
 };
 
 export const CallTypeDropdown = [
@@ -21,6 +22,10 @@ export const CallTypeDropdown = [
     {
         label: "Reschedule",
         value: "reschedule"
+    },
+    {
+        label: "Other",
+        value: "other"
     }
 ];
 
