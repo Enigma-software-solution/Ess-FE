@@ -1,7 +1,7 @@
 import {
   createSlice,
 } from "@reduxjs/toolkit";
-import { createProfileApi, getProfilesApi, updateProfileApi } from "./apis";
+import { createProfileApi, deteleProfileApi, getProfilesApi, updateProfileApi } from "./apis";
 
 const initialState = {
   status: "idle",
@@ -37,19 +37,21 @@ const profileSlice = createSlice({
     });
 
     builder.addCase(createProfileApi.fulfilled, (state, action) => {
-      console.log(action.payload, "actionssssss")
       state.status = "succeeded";
       state.data = [action?.payload?.data, ...state?.data];
     });
 
     builder.addCase(updateProfileApi.fulfilled, (state, action) => {
-      console.log(action.payload, "actionssssss")
       state.data = state?.data?.map(profile => {
         if (profile?._id === action?.payload?.data?._id) {
           return action?.payload?.data
         }
         return profile
       })
+    });
+
+    builder.addCase(deteleProfileApi.fulfilled, (state, action) => {
+      state.data = state?.data?.filter((profile) => profile?._id !== action?.payload?.profileId)
     });
   },
 

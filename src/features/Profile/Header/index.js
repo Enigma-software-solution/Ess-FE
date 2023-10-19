@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import CustomSearchField from "src/components/SearchField";
 import AddButton from "src/components/buttons/AddButton";
 import CreateProfileDrawer from "../Drawers/CreateProfileDrawer";
 
@@ -12,8 +11,7 @@ const Header = () => {
 
     return (
         <>
-            <div className="d-flex justify-content-between mb-2">
-                <CustomSearchField />
+            <div className="d-flex flex-row-reverse  mb-2">
                 <AddButton onClick={handleDrawer} text="Profile" />
             </div>
 

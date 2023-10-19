@@ -19,7 +19,6 @@ export const createEventsApi = createAsyncThunk("agenda/create-new-event", async
     dispatch(closeClientEventDrawer())
     return response;
   } catch (error) {
-    console.log(error, 'sssssssssssss')
 
     toast.warn(error?.message)
     throw error;
