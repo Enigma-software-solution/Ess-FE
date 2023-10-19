@@ -1,7 +1,8 @@
 export const CallPlatform = {
   Zoom: "zoom",
-  MicrosoftTeams: "microsoft teams",
-  GoogleMeet: "google meet",
+  MicrosoftTeams: "microsoft_teams",
+  GoogleMeet: "google_meet",
+  Other: "other",
 };
 
 
@@ -17,5 +18,9 @@ export const CallPlatformDropdown = [
   {
     label: "Microsoft Teams",
     value: CallPlatform.MicrosoftTeams
+  },
+  {
+    label: "Other",
+    value: CallPlatform.Other
   }
 ];

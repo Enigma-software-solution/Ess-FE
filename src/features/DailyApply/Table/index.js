@@ -48,15 +48,15 @@ const CreateDailyAppliesTable = () => {
             width: '40px'
         },
         {
-            key: "name",
-            title: "Client Name",
-            sorter: (a, b) => a.clientName.localeCompare(b.clientName),
-            dataIndex: "clientName",
+            key: "companyName",
+            title: "Company Name",
+            sorter: (a, b) => a?.companyName.localeCompare(b?.companyName),
+            dataIndex: "companyName",
 
         },
         {
             title: "Client Job Position ",
-            sorter: (a, b) => a.clientJobPosition.localeCompare(b.clientJobPosition),
+            sorter: (a, b) => a?.clientJobPosition.localeCompare(b?.clientJobPosition),
             dataIndex: "clientJobPosition",
 
         },
