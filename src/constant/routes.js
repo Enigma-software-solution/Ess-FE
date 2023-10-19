@@ -2,6 +2,7 @@ export const routes = {
     LOGIN: '/login',
     SIGNUP: '/signup',
     DASHBOARD: '/',
+    USERS: '/users',
     DAILY_APPLY: '/daily-apply',
     AGENDA: '/agenda',
     CLIENT: '/clients',

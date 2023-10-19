@@ -1,4 +1,4 @@
-import { UserOutlined,ContainerOutlined,CalendarOutlined,  DashboardOutlined, UsergroupAddOutlined } from '@ant-design/icons';
+import { UserOutlined, ContainerOutlined, CalendarOutlined, DashboardOutlined, UsergroupAddOutlined } from '@ant-design/icons';
 import { routes } from 'src/constant/routes';
 
 
@@ -9,6 +9,7 @@ export const sidebarMenuItems = [
         icon: <DashboardOutlined />,
         path: routes.DASHBOARD,
     },
+
     {
         key: routes.DAILY_APPLY,
         title: 'Daily Apply',
@@ -43,6 +44,12 @@ export const sidebarMenuItems = [
         icon: <UserOutlined />,
         path: routes.ATTENDANCE,
 
+    },
+    {
+        key: routes.USERS,
+        title: 'Users',
+        icon: <DashboardOutlined />,
+        path: routes.USERS,
     },
     // {
     //     key: 'admin',
