@@ -1,8 +1,6 @@
 import React, { useState } from "react";
-import { Select } from "antd";
-import CustomSearchField from "src/components/SearchField";
+import CreateUserDrawer from "../CreateUserDrawer";
 import AddButton from "src/components/buttons/AddButton";
-import CreateClientDrawer from "../CreateClientDrawer";
 
 const Header = () => {
 
@@ -15,9 +13,9 @@ const Header = () => {
     return (
         <div>
             <div className="d-flex flex-row-reverse mb-3">
-                <AddButton onClick={handleDrawer} text="New Client" />
+                <AddButton onClick={handleDrawer} text="New User" />
             </div>
-            <CreateClientDrawer isOpen={isOpen} handleDrawer={handleDrawer} />
+            <CreateUserDrawer isOpen={isOpen} handleDrawer={handleDrawer} />
         </div>
     );
 };

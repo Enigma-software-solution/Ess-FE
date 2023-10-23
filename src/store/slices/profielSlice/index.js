@@ -37,7 +37,6 @@ const profileSlice = createSlice({
     });
 
     builder.addCase(createProfileApi.fulfilled, (state, action) => {
-      console.log(action.payload, "actionssssss")
       state.status = "succeeded";
       state.data = [action?.payload?.data, ...state?.data];
     });

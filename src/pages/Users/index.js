@@ -1,10 +1,10 @@
 import React from 'react'
-import UsersTable from 'src/features/Users/UsersTable'
+import Users from 'src/features/Users'
 
 const UsersPage = () => {
     return (
         <>
-            <UsersTable />
+            <Users />
         </>
     )
 }
