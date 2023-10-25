@@ -9,7 +9,8 @@ const initialState = {
   isNotesDrawer: false,
   isClientEventDrawer: false,
   events: [],
-  status: 'idle',
+  isLoading: false,
+
   error: ''
 };
 
@@ -53,22 +54,22 @@ const agendaSlice = createSlice({
 
   extraReducers: (builder) => {
     builder.addCase(getAllEventsApi.pending, (state, action) => {
-      state.status = 'loading';
+      state.isLoading = true;
     });
 
     builder.addCase(getAllEventsApi.fulfilled, (state, action) => {
-      state.status = 'succeeded';
+      state.isLoading = false;
       state.events = action.payload.data
     });
 
     builder.addCase(getAllEventsApi.rejected, (state, action) => {
-      state.status = 'error';
+      state.isLoading = 'error';
       state.error = action.error.message;
     });
 
     // CREATE EVENTS
+
     builder.addCase(createEventsApi.fulfilled, (state, action) => {
-      state.status = 'succeeded';
       state.events = [...state.events, action.payload.event]
     });
 

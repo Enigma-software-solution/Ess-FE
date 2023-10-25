@@ -113,6 +113,7 @@ const ClientEventDrawer = ({ selectedDate }) => {
       onClose={handleClose}
       open={isDrawer}
       width={500}
+      destroyOnClose
       extra={
         <div className="align-righ">
           <Button

@@ -8,7 +8,7 @@ import enUS from "date-fns/locale/en-US";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllEventsApi } from "src/store/slices/agendaSlice/apis";
 import { setSelectedEvent, showEventDrawer } from "src/store/slices/agendaSlice";
-import { getAllEvents } from "src/store/slices/agendaSlice/selector";
+import { getAllEvents, isEventLaoding } from "src/store/slices/agendaSlice/selector";
 import { CallType } from "src/constant/callTypes";
 import { toast } from "react-toastify";
 import SalesDrawer from "../SalesDrawer";
@@ -19,6 +19,8 @@ import SelectEventTypeModal from "../SelectEventTypeModal";
 import ClientCallDetailsModal from "../ClientCallDetailsModal";
 import CustomToolbar from "./CustomToolbar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import { Spin } from "antd";
+import Loader from "src/components/Loader";
 
 
 const locales = { 'en-US': enUS }
@@ -36,12 +38,15 @@ const localizer = dateFnsLocalizer({
 const CustomCalendar = () => {
   const dispatch = useDispatch();
   const events = useSelector(getAllEvents);
+  const isLoading = useSelector(isEventLaoding);
 
   const [preparedEvents, setPreparedEvents] = useState([]);
   const [selectedDate, setSelectedDate] = useState({ start: null, end: null });
   const [currentView, setCurrentView] = useState("month");
   const [isSelectEventTypeModal, setIsSelectEventTypeModal] = useState(false)
   const [isClientCallDetailsModal, setIsClientCallDetailsModal] = useState(false)
+
+
 
   useEffect(() => {
     const newEvents = events?.map((e) => ({
@@ -106,6 +111,10 @@ const CustomCalendar = () => {
   const workDayEndHour = 18;
 
   const onView = useCallback((newView) => setCurrentView(newView), [setCurrentView]);
+
+  if (isLoading) {
+    return <Loader />
+  }
 
   return (
     <div style={{ height: 'calc(100vh - 110px)', backgroundColor: '#fff' }}>
