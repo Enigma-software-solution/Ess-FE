@@ -4,6 +4,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getSelectedUser } from 'src/store/slices/userSlice/selectors';
 import { updateUserApi } from 'src/store/slices/userSlice/apis';
 import { registerUser } from 'src/store/slices/authSlice/apis';
+import CustomInput from 'src/components/formElements/CustomInput';
+import { roles } from 'src/constant/roles';
+import CustomSelect from 'src/components/formElements/CustomSelect';
 
 
 const { Option } = Select;
@@ -29,7 +32,7 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
                 email: selectedUser?.email,
                 first_name: selectedUser?.first_name,
                 last_name: selectedUser?.last_name,
-                password: selectedUser?.password,
+                roles: selectedUser?.role
             });
         } else {
             form.setFieldsValue({
@@ -37,6 +40,7 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
                 first_name: initialFormValues.first_name,
                 last_name: initialFormValues.last_name,
                 password: initialFormValues.password,
+                roles: initialFormValues.role
             });
         }
     }, [selectedUser, form]);
@@ -105,12 +109,24 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
                         <Form.Item
                             name="password"
                             label="Password"
-                            rules={[{ required: true, message: 'Please enter Password' }]}
+                            rules={[{ message: 'Please enter Password' }]}
                         >
                             <Input.Password placeholder="Please enter Password" />
 
                         </Form.Item>
-
+                    </Col>
+                    <Col>
+                        <Form.Item>
+                            <CustomInput
+                                label="Roles"
+                                name="role"
+                                rules={[{ required: true }]}
+                                component={CustomSelect}
+                                placeholder="Select Role "
+                                options={roles}
+                                style={{ width: "200px" }}
+                            />
+                        </Form.Item>
                     </Col>
 
                 </Row>
