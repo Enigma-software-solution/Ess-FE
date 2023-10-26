@@ -111,7 +111,7 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
               label="Link"
               name="link"
               placeholder="Please enter link"
-              rules={[{ required: true, message: 'Please enter link' }]}
+              rules={[{ message: 'Please enter link' }]}
               type="text"
             />
           </Col>
