@@ -47,7 +47,7 @@ const UserTable = () => {
             title: "Name",
             dataIndex: "firstname",
             key: "firstname",
-            render: (text, record) => `${record.first_name} ${record.last_name}`
+            render: (text, record) => `${record?.first_name} ${record?.last_name}`
         },
         {
             title: "Email",

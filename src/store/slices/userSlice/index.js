@@ -43,10 +43,10 @@ const userSlice = createSlice({
         });
 
         builder.addCase(updateUserApi.fulfilled, (state, action) => {
-            console.log(action.payload, "actionssssss")
+
             state.data = state?.data?.map(user => {
-                if (user?._id === action?.payload?.user?._id) {
-                    return action?.payload?.data
+                if (user?._id === action?.payload?._id) {
+                    return action?.payload
                 }
                 return user
             })

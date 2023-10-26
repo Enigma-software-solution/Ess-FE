@@ -42,7 +42,6 @@ const profileSlice = createSlice({
     });
 
     builder.addCase(updateProfileApi.fulfilled, (state, action) => {
-      console.log(action.payload, "actionssssss")
       state.data = state?.data?.map(profile => {
         if (profile?._id === action?.payload?.data?._id) {
           return action?.payload?.data
