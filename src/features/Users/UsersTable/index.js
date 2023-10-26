@@ -42,6 +42,10 @@ const UserTable = () => {
         dispatch(deleteUserApi(recordToDelete._id));
     };
 
+    const handleChangeStatus = (recordChange, e) => {
+        console.log("hi")
+    }
+
     const columns = [
         {
             title: "Name",
@@ -57,6 +61,27 @@ const UserTable = () => {
         {
             title: "Role",
             dataIndex: "role",
+        },
+        {
+            title: "Status",
+            dataIndex: "status",
+            render: (text, record) => (
+                <div className="d-flex gap-1">
+                    <Popconfirm
+                        title="Are you sure to deactivate this User?"
+                        onConfirm={() => handleChangeStatus(record)}
+                        okText="Yes"
+                        cancelText="No"
+                    >
+                        <span
+                            style={{ cursor: "pointer" }}
+                            onClick={(e) => e.stopPropagation()}
+                        >
+                            {text}
+                        </span>
+                    </Popconfirm>
+                </div>
+            )
         },
         {
             key: "action",
