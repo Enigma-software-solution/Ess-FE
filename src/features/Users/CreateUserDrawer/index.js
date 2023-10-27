@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Form, Row, Col, Input, Select, Space, Drawer, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { getSelectedUser } from 'src/store/slices/userSlice/selectors';
@@ -80,47 +80,48 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
                         >
                             <Input placeholder="Please enter Last Name" />
                         </Form.Item>
+
                     </Col>
+
                 </Row>
 
-                <Row gutter={16}>
-                    <Col span={12}>
-                        <Form.Item
-                            name="email"
-                            label="Email"
-                            rules={[{ required: true, message: 'Please enter Email' }]}
-                        >
-                            <Input
-                                placeholder="Please enter Email"
-                                disabled={isEditMode}
-                            />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item
-                            name="password"
-                            label="Password"
-                            rules={[{ message: 'Please enter Password' }]}
-                        >
-                            <Input.Password
-                                placeholder="Please enter Password"
-                                disabled={isEditMode}
-                            />
-                        </Form.Item>
-                    </Col>
-                </Row>
-                <Form.Item>
-                    <CustomInput
-                        label="Roles"
-                        name="role"
-                        rules={[{ required: true }]}
-                        component={CustomSelect}
-                        placeholder="Select Role"
-                        options={roles}
-                        style={{ width: "200px" }}
-                        disabled={isEditMode}
-                    />
-                </Form.Item>
+                {!isEditMode && (
+                    <>
+                        <Row gutter={16}>
+                            <Col span={12}>
+                                <Form.Item
+                                    name="email"
+                                    label="Email"
+                                    rules={[{ required: true, message: 'Please enter Email' }]}
+                                >
+                                    <Input placeholder="Please enter Email" />
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item
+                                    name="password"
+                                    label="Password"
+                                    rules={[{ message: 'Please enter Password' }]}
+                                >
+                                    <Input.Password placeholder="Please enter Password" />
+                                </Form.Item>
+                            </Col>
+                        </Row>
+                    </>
+                )}
+                <Col>
+                    <Form.Item>
+                        <CustomInput
+                            label="Roles"
+                            name="role"
+                            rules={[{ required: true }]}
+                            component={CustomSelect}
+                            placeholder="Select Role"
+                            options={roles}
+                            style={{ width: "200px" }}
+                        />
+                    </Form.Item>
+                </Col>
                 <Form.Item>
                     <Space>
                         <Button onClick={handleDrawer}>Cancel</Button>
