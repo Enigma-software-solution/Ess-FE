@@ -23,6 +23,7 @@ import { ConfigProvider } from "antd";
 import ClientPage from "./pages/Clients";
 import SignUpPage from "./pages/SignUp";
 import ProfileSettings from "./pages/profileSettings";
+import UsersPage from "./pages/Users";
 
 function App() {
   const dispatch = useDispatch();
@@ -40,6 +41,7 @@ function App() {
             <Route element={<ProtectedRoutes />}>
               <Route path="/" element={<DashobardLayout />}>
                 <Route index element={<Dashobard />} />
+                <Route path={routes.USERS} element={<UsersPage />} />
                 <Route path={routes.DAILY_APPLY} element={<DailyApply />} />
                 <Route path={routes.PROFILE} element={<Profile />} />
                 <Route path={routes.AGENDA} element={<Agenda />} />
