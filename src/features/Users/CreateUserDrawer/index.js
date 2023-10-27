@@ -8,7 +8,6 @@ import CustomInput from 'src/components/formElements/CustomInput';
 import { roles } from 'src/constant/roles';
 import CustomSelect from 'src/components/formElements/CustomSelect';
 
-
 const { Option } = Select;
 
 const initialFormValues = {
@@ -20,9 +19,8 @@ const initialFormValues = {
 };
 
 const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
-
     const dispatch = useDispatch();
-    const selectedUser = useSelector(getSelectedUser)
+    const selectedUser = useSelector(getSelectedUser);
 
     const [form] = Form.useForm();
 
@@ -32,32 +30,23 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
                 email: selectedUser?.email,
                 first_name: selectedUser?.first_name,
                 last_name: selectedUser?.last_name,
-                roles: selectedUser?.role
+                role: selectedUser?.role
             });
         } else {
-            form.setFieldsValue({
-                email: initialFormValues.email,
-                first_name: initialFormValues.first_name,
-                last_name: initialFormValues.last_name,
-                password: initialFormValues.password,
-                roles: initialFormValues.role
-            });
+            form.setFieldsValue(initialFormValues);
         }
     }, [selectedUser, form]);
 
+    const isEditMode = !!selectedUser;
 
     const handleSubmit = async (values) => {
         try {
-            const data = {
-                ...values
-            }
-
-            if (selectedUser) {
-                dispatch(updateUserApi({ data, id: selectedUser?._id }))
+            const data = { ...values };
+            if (isEditMode) {
+                dispatch(updateUserApi({ data, id: selectedUser?._id }));
             } else {
                 dispatch(registerUser(data));
             }
-
             form.setFieldsValue(initialFormValues);
             handleDrawer();
         } catch (error) {
@@ -65,13 +54,14 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
         }
     };
 
-
     return (
-        <Drawer open={isOpen} onClose={handleDrawer} width={800}
-            title={"Create User"}
+        <Drawer
+            open={isOpen}
+            onClose={handleDrawer}
+            width={800}
+            title={isEditMode ? "Update User" : "Create User"}
         >
-
-            <Form form={form} layout="vertical" hideRequiredMark onFinish={handleSubmit} >
+            <Form form={form} layout="vertical" hideRequiredMark onFinish={handleSubmit}>
                 <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item
@@ -91,7 +81,6 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
                             <Input placeholder="Please enter Last Name" />
                         </Form.Item>
                     </Col>
-
                 </Row>
 
                 <Row gutter={16}>
@@ -101,46 +90,47 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
                             label="Email"
                             rules={[{ required: true, message: 'Please enter Email' }]}
                         >
-                            <Input placeholder="Please enter Email" />
+                            <Input
+                                placeholder="Please enter Email"
+                                disabled={isEditMode}
+                            />
                         </Form.Item>
                     </Col>
-
                     <Col span={12}>
                         <Form.Item
                             name="password"
                             label="Password"
                             rules={[{ message: 'Please enter Password' }]}
                         >
-                            <Input.Password placeholder="Please enter Password" />
-
-                        </Form.Item>
-                    </Col>
-                    <Col>
-                        <Form.Item>
-                            <CustomInput
-                                label="Roles"
-                                name="role"
-                                rules={[{ required: true }]}
-                                component={CustomSelect}
-                                placeholder="Select Role "
-                                options={roles}
-                                style={{ width: "200px" }}
+                            <Input.Password
+                                placeholder="Please enter Password"
+                                disabled={isEditMode}
                             />
                         </Form.Item>
                     </Col>
-
                 </Row>
-
+                <Form.Item>
+                    <CustomInput
+                        label="Roles"
+                        name="role"
+                        rules={[{ required: true }]}
+                        component={CustomSelect}
+                        placeholder="Select Role"
+                        options={roles}
+                        style={{ width: "200px" }}
+                        disabled={isEditMode}
+                    />
+                </Form.Item>
                 <Form.Item>
                     <Space>
-                        <Button onClick={handleDrawer} >Cancel</Button>
+                        <Button onClick={handleDrawer}>Cancel</Button>
                         <Button type="primary" htmlType="submit">
                             Submit
                         </Button>
                     </Space>
                 </Form.Item>
             </Form>
-        </Drawer >
+        </Drawer>
     );
 };
 

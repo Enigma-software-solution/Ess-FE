@@ -8,6 +8,7 @@ import { deleteUserApi, getAllUsersApi } from "src/store/slices/userSlice/apis";
 import Header from "../Header";
 import { setSelectedUser } from "src/store/slices/userSlice";
 import CreateUserDrawer from "../CreateUserDrawer";
+import { activeBadgeStyle, inactiveBadgeStyle } from "./styled";
 
 const UserTable = () => {
 
@@ -65,23 +66,28 @@ const UserTable = () => {
         {
             title: "Status",
             dataIndex: "status",
-            render: (text, record) => (
-                <div className="d-flex gap-1">
-                    <Popconfirm
-                        title="Are you sure to deactivate this User?"
-                        onConfirm={() => handleChangeStatus(record)}
-                        okText="Yes"
-                        cancelText="No"
-                    >
-                        <span
-                            style={{ cursor: "pointer" }}
-                            onClick={(e) => e.stopPropagation()}
+            render: (text, record) => {
+                const isActive = text === "active";
+                const badgeStyle = isActive ? activeBadgeStyle : inactiveBadgeStyle;
+
+                return (
+                    <div className="d-flex gap-1">
+                        <Popconfirm
+                            title={`Are you sure to ${isActive ? "deactivate" : "activate"} this User?`}
+                            onConfirm={() => handleChangeStatus(record)}
+                            okText="Yes"
+                            cancelText="No"
                         >
-                            {text}
-                        </span>
-                    </Popconfirm>
-                </div>
-            )
+                            <span
+                                style={{ cursor: "pointer", ...badgeStyle }}
+                                onClick={(e) => e.stopPropagation()}
+                            >
+                                {text}
+                            </span>
+                        </Popconfirm>
+                    </div>
+                );
+            }
         },
         {
             key: "action",
