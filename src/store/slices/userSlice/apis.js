@@ -27,9 +27,9 @@ export const deleteUserApi = createAsyncThunk(
 
 export const updateUserApi = createAsyncThunk(
     "user/patch-user",
-    async (user, { rejectWithValue }) => {
+    async (data, { rejectWithValue }) => {
         try {
-            const response = await api.patch(`/user/${user?.id}`, user.data);
+            const response = await api.patch(`/user/${data?.userId}`, data.user);
             toast.success("User Updated Successfully")
 
             return response;

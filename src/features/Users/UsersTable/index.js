@@ -4,7 +4,7 @@ import { Popconfirm, Table } from "antd";
 import EditButton from "src/components/buttons/EditButton";
 import DeleteButton from "src/components/buttons/DeleteButton";
 import { getAllUsers } from "src/store/slices/userSlice/selectors";
-import { deleteUserApi, getAllUsersApi } from "src/store/slices/userSlice/apis";
+import { deleteUserApi, getAllUsersApi, updateUserApi } from "src/store/slices/userSlice/apis";
 import Header from "../Header";
 import { setSelectedUser } from "src/store/slices/userSlice";
 import CreateUserDrawer from "../CreateUserDrawer";
@@ -27,7 +27,7 @@ const UserTable = () => {
         }
     }, []);
 
-    const handleEdit = (record, e) => {
+    const handleEdit = (e, record) => {
         e.stopPropagation();
         dispatch(setSelectedUser(record));
         setIsEditDrawerOpen(true);
@@ -43,9 +43,24 @@ const UserTable = () => {
         dispatch(deleteUserApi(recordToDelete._id));
     };
 
-    const handleChangeStatus = (recordChange, e) => {
-        console.log("hi")
-    }
+    const handleChangeStatus = (e, record) => {
+        e.stopPropagation();
+        if (record._id) {
+            const data = {
+                userId: record._id,
+                user: {
+                    ...record,
+                    status: "inactive"
+                }
+
+            };
+            dispatch(updateUserApi(data));
+        } else {
+            console.error("User record does not have a valid _id");
+        }
+    };
+
+
 
     const columns = [
         {
@@ -74,7 +89,7 @@ const UserTable = () => {
                     <div className="d-flex gap-1">
                         <Popconfirm
                             title={`Are you sure to ${isActive ? "deactivate" : "activate"} this User?`}
-                            onConfirm={() => handleChangeStatus(record)}
+                            onConfirm={(e) => handleChangeStatus(e, record)}
                             okText="Yes"
                             cancelText="No"
                         >
@@ -95,7 +110,7 @@ const UserTable = () => {
             dataIndex: "action",
             render: (text, record) => (
                 <div className="d-flex gap-1">
-                    <EditButton onClick={(e) => handleEdit(record, e)} />
+                    <EditButton onClick={(e) => handleEdit(e, record)} />
                     <Popconfirm
                         title="Are you sure to delete this User?"
                         onConfirm={(e) => handleConfirmDelete(record, e)}

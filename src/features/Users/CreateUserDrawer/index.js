@@ -41,11 +41,11 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
 
     const handleSubmit = async (values) => {
         try {
-            const data = { ...values };
+            const user = { ...values };
             if (isEditMode) {
-                dispatch(updateUserApi({ data, id: selectedUser?._id }));
+                dispatch(updateUserApi({ user, userId: selectedUser?._id }));
             } else {
-                dispatch(registerUser(data));
+                dispatch(registerUser(user));
             }
             form.setFieldsValue(initialFormValues);
             handleDrawer();
