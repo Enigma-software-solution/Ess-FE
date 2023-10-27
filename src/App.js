@@ -24,6 +24,7 @@ import ClientPage from "./pages/Clients";
 import SignUpPage from "./pages/SignUp";
 import ProfileSettings from "./pages/profileSettings";
 import UsersPage from "./pages/Users";
+import RoleRoute from "./components/RoleRoute";
 
 function App() {
   const dispatch = useDispatch();
@@ -40,14 +41,27 @@ function App() {
           <Routes>
             <Route element={<ProtectedRoutes />}>
               <Route path="/" element={<DashobardLayout />}>
-                <Route index element={<Dashobard />} />
-                <Route path={routes.USERS} element={<UsersPage />} />
-                <Route path={routes.DAILY_APPLY} element={<DailyApply />} />
-                <Route path={routes.PROFILE} element={<Profile />} />
-                <Route path={routes.AGENDA} element={<Agenda />} />
-                <Route path={routes.CLIENT} element={<ClientPage />} />
+
                 <Route path={routes.ATTENDANCE} element={<Attendance />} />
                 <Route path={routes.PROFILE_SETTINGS} element={<ProfileSettings />} />
+
+
+                <Route element={<RoleRoute allowedRoles={['admin', 'sales-execitive', 'user']} />}>
+                  <Route index element={<Dashobard />} />
+                  <Route path={routes.USERS} element={<UsersPage />} />
+                </Route>
+
+                <Route element={<RoleRoute allowedRoles={['admin', 'sales-execitive', 'user']} />}>
+                  <Route index element={<Dashobard />} />
+                  <Route path={routes.USERS} element={<UsersPage />} />
+                </Route>
+
+                <Route element={<RoleRoute allowedRoles={['admin', 'sales-execitive']} />}>
+                  <Route path={routes.DAILY_APPLY} element={<DailyApply />} />
+                  <Route path={routes.PROFILE} element={<Profile />} />
+                  <Route path={routes.AGENDA} element={<Agenda />} />
+                  <Route path={routes.CLIENT} element={<ClientPage />} />
+                </Route>
 
               </Route>
             </Route>
