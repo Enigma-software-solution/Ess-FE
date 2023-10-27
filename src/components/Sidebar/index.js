@@ -4,6 +4,8 @@ import { Link, useLocation } from "react-router-dom"; // Importing Link and useL
 import { SidebarMenu, StyledMenuItem, StyledSider } from "./styled";
 import { sidebarMenuItems } from "./sidebarMenuItems";
 import { styled } from "styled-components";
+import { useSelector } from "react-redux";
+import { getLogedInUser } from "src/store/slices/authSlice/selectors";
 
 const Logo = styled.div`
   height: 32px;
@@ -21,6 +23,17 @@ const Logo = styled.div`
 `;
 
 const Sidebar = ({ collapsed, setCollapsed }) => {
+
+  const loggedInUserRole = useSelector(getLogedInUser)?.role
+
+  const filteredMenuItems = sidebarMenuItems.filter((menuItem) =>
+    menuItem.roles.includes(loggedInUserRole)
+  );
+
+  // console.log(filteredMenuItems, 'ssss')
+  // console.log(loggedInUserRole, 'loggedInUserRole')
+
+
   return (
     <>
       <div
@@ -37,7 +50,7 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
         </Logo>
       </div>
       <SidebarMenu defaultSelectedKeys={["1"]}>
-        {sidebarMenuItems?.map((menuItem) => {
+        {filteredMenuItems?.map((menuItem) => {
           if (menuItem.subMenu) {
             return (
               <Menu.SubMenu
