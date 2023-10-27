@@ -50,7 +50,7 @@ const UserTable = () => {
                 userId: record._id,
                 user: {
                     ...record,
-                    status: "inactive"
+                    status: record?.status === "active" ? 'inactive' : 'active'
                 }
 
             };
