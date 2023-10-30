@@ -4,13 +4,16 @@ import EditButton from 'src/components/buttons/EditButton';
 import DeleteButton from 'src/components/buttons/DeleteButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { deteleProfileApi, getProfilesApi } from "src/store/slices/profielSlice/apis";
-import { getAllProfiles } from "src/store/slices/profielSlice/selectors";
+import { getAllProfiles, isProfileLaoding } from "src/store/slices/profielSlice/selectors";
 import Header from "../Header";
 import { setSelectedProfile } from "src/store/slices/profielSlice";
 import CreateProfileDrawer from "../Drawers/CreateProfileDrawer";
+import Loader from "src/components/Loader";
 
 const ProfileTable = () => {
     const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
+
+    const isLoading = useSelector(isProfileLaoding);
 
     const dispatch = useDispatch()
 
@@ -77,6 +80,10 @@ const ProfileTable = () => {
     useEffect(() => {
         dispatch(getProfilesApi())
     }, [])
+
+    if (isLoading) {
+        return <Loader />
+    }
 
     return (
         <>
