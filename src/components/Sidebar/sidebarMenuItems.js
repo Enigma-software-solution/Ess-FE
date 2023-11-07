@@ -1,4 +1,4 @@
-import { UserOutlined, ContainerOutlined, CalendarOutlined, DashboardOutlined, UsergroupAddOutlined } from '@ant-design/icons';
+import { UserOutlined, ContainerOutlined, CalendarOutlined, DashboardOutlined, CheckSquareOutlined, ProfileOutlined, UserSwitchOutlined, UsergroupAddOutlined } from '@ant-design/icons';
 import { routes } from 'src/constant/routes';
 
 
@@ -89,28 +89,28 @@ export const sidebarMenuItems = [
     {
         key: routes.PROFILE,
         title: 'Profile',
-        icon: <UsergroupAddOutlined />,
+        icon: <ProfileOutlined />,
         path: routes.PROFILE,
         roles: ['admin', 'sales-executive'],
     },
     {
         key: routes.CLIENT,
         title: 'Client',
-        icon: <UserOutlined />,
+        icon: <UsergroupAddOutlined />,
         path: routes.CLIENT,
         roles: ['admin', 'sales-executive'],
     },
     {
         key: routes.ATTENDANCE,
         title: 'Attendance',
-        icon: <UserOutlined />,
+        icon: <CheckSquareOutlined />,
         path: routes.ATTENDANCE,
         roles: ['admin', 'sales-executive', 'user'],
     },
     {
         key: routes.USERS,
         title: 'Users',
-        icon: <DashboardOutlined />,
+        icon: <UserSwitchOutlined />,
         path: routes.USERS,
         roles: ['admin'],
     },
