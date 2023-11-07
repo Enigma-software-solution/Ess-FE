@@ -3,12 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { Popconfirm, Table } from "antd";
 import EditButton from "src/components/buttons/EditButton";
 import DeleteButton from "src/components/buttons/DeleteButton";
-import { getAllUsers } from "src/store/slices/userSlice/selectors";
+import { getAllUsers, isUserLoading } from "src/store/slices/userSlice/selectors";
 import { deleteUserApi, getAllUsersApi, updateUserApi } from "src/store/slices/userSlice/apis";
 import Header from "../Header";
 import { setSelectedUser } from "src/store/slices/userSlice";
 import CreateUserDrawer from "../CreateUserDrawer";
 import { activeBadgeStyle, inactiveBadgeStyle } from "./styled";
+import Loader from "src/components/Loader";
 
 const UserTable = () => {
 
@@ -17,6 +18,7 @@ const UserTable = () => {
 
     const dispatch = useDispatch();
 
+    const isLoading = useSelector(isUserLoading)
     const clients = useSelector(getAllUsers);
 
     useEffect(() => {
@@ -124,6 +126,10 @@ const UserTable = () => {
             ),
         },
     ];
+
+    if (isLoading) {
+        return <Loader />
+    }
 
     return (
         <>

@@ -1,122 +1,166 @@
-import React, { useState, useEffect } from 'react';
-import { Layout, Button, Modal } from 'antd';
-import Webcam from 'react-webcam';
-import styled from 'styled-components';
-import * as faceapi from 'face-api.js';
-import meImage from 'src/assets/test.jpg';
-// import meImage from 'src/assets/ik.png';Z
+import React, { useState } from 'react';
+import { Card, CardContent, CardMedia, Button, Box } from '@mui/material';
+import Slider from 'react-slick'; // Import the Slider component from react-slick
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+import { CarouselContainer, CarouselSlide, CarouselCenterSlide } from './styled'; // Import your styled components
 
-const { Content } = Layout;
 
-const StyledContent = styled(Content)`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-`;
 
-const App = () => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-  const [isErrorModal, setIsErrorModal] = useState(false);
-  const [faceApiLoaded, setFaceApiLoaded] = useState(false);
+const Attendence = () => {
+    const [persons, setPersons] = useState([
+        {
+            id: 1,
+            name: 'Kashif',
+            image: 'https://via.placeholder.com/150',
+            attended: false,
+        },
+        {
+            id: 2,
+            name: 'Talha Satti',
+            image: 'https://via.placeholder.com/150',
+            attended: false,
+        },
+        {
+            id: 3,
+            name: 'Anas Khan',
+            image: 'https://via.placeholder.com/150',
+            attended: false,
+        },
+        {
+            id: 4,
+            name: 'Saad',
+            image: 'https://via.placeholder.com/150',
+            attended: false,
+        },
+        {
+            id: 5,
+            name: 'Saad',
+            image: 'https://via.placeholder.com/150',
+            attended: false,
+        },
+        {
+            id: 6,
+            name: 'Saad',
+            image: 'https://via.placeholder.com/150',
+            attended: false,
+        },
+        {
+            id: 7,
+            name: 'Saad',
+            image: 'https://via.placeholder.com/150',
+            attended: false,
+        },
+        {
+            id: 8,
+            name: 'Saad',
+            image: 'https://via.placeholder.com/150',
+            attended: false,
+        },
+        {
+            id: 9,
+            name: 'Saad',
+            image: 'https://via.placeholder.com/150',
+            attended: false,
+        },
+        {
+            id: 10,
+            name: 'Saad',
+            image: 'https://via.placeholder.com/150',
+            attended: false,
+        },
+    ]);
 
-  useEffect(() => {
-    // Load face-api.js models
-    const loadModels = async () => {
-      await Promise.all([
-        faceapi.nets.tinyFaceDetector.loadFromUri('/models'),
-        faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
-        faceapi.nets.faceRecognitionNet.loadFromUri('/models'),
-        faceapi.nets.ssdMobilenetv1.loadFromUri('/models'), // Load SsdMobilenetv1 model
-      ]);
-      setFaceApiLoaded(true);
+    const [presentEmployees, setPresentEmployees] = useState([]);
+
+    const handleAttendClick = (personId) => {
+        setPersons((prevPersons) =>
+            prevPersons.map((person) => {
+                if (person?.id === personId) {
+                    const updatedPerson = { ...person, attended: !person.attended };
+                    if (updatedPerson.attended) {
+                        setPresentEmployees((prevEmployees) => [...prevEmployees, updatedPerson]);
+                    } else {
+                        setPresentEmployees((prevEmployees) =>
+                            prevEmployees.filter((employee) => employee?.id !== updatedPerson?.id)
+                        );
+                    }
+                    return updatedPerson;
+                }
+                return person;
+            })
+        );
     };
 
-    loadModels();
-  }, []);
+    const slickSettings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 5,
+        slidesToScroll: 1,
+        centerMode: true,
+        centerPadding: '10px',
+        focusOnSelect: true,
+        draggable: true,
+        autoplay: true,
+        autoplaySpeed: 5000,
+        cssEase: 'linear',
+    };
 
-  const handleCapture = async () => {
-    if (
-      !faceapi.nets.tinyFaceDetector.isLoaded ||
-      !faceapi.nets.faceLandmark68Net.isLoaded ||
-      !faceapi.nets.faceRecognitionNet.isLoaded ||
-      !faceapi.nets.ssdMobilenetv1.isLoaded ||
-      !faceApiLoaded
-    ) {
-      console.error('Face-api.js models not loaded yet.');
-      return;
-    }
-
-    const imageSrc = webcamRef.current.getScreenshot();
-    const inputImage = await faceapi.fetchImage(imageSrc);
-
-    // Perform face detection
-    const detections = await faceapi
-      .detectAllFaces(inputImage, new faceapi.TinyFaceDetectorOptions())
-      .withFaceLandmarks()
-      .withFaceDescriptors();
-
-    // Load reference image
-    const meImageEl = await faceapi.fetchImage(meImage);
-
-    // Find face descriptor for the reference image
-    const meFaceDescriptor = await faceapi
-      .detectSingleFace(meImageEl)
-      .withFaceLandmarks()
-      .withFaceDescriptor();
-
-    // Compare the detected faces with the reference image
-    if (detections.length > 0) {
-      const match = faceapi.euclideanDistance(
-        meFaceDescriptor.descriptor,
-        detections[0].descriptor
-      );
-
-      if (match < 0.3) {
-        // Face detected and matched with the reference image, mark attendance
-        setIsModalVisible(true);
-      } else {
-        setIsErrorModal(true)
-        // Face detected but not matched with the reference image
-      }
-    }
-  };
-
-  const handleCloseModal = () => {
-    setIsModalVisible(false);
-    setIsErrorModal(false)
-
-  };
-
-  const webcamRef = React.useRef(null);
-
-  return (
-    <Layout>
-      <StyledContent>
-        <Webcam audio={false} ref={webcamRef} screenshotFormat="image/jpeg" />
-      </StyledContent>
-      <StyledContent>
-        <Button type="primary" onClick={handleCapture} style={{ marginTop: "20px" }}>
-          Capture Attendance
-        </Button>
-      </StyledContent>
-      <Modal
-        title="Attendance Captured"
-        open={isModalVisible}
-        onOk={handleCloseModal}
-        onCancel={handleCloseModal}
-      >
-        Attendance recorded successfully!
-      </Modal>
-      <Modal
-        title="Attendance Captured"
-        open={isErrorModal}
-        onOk={handleCloseModal}
-        onCancel={handleCloseModal}
-      >
-        Face detected, but not matched.
-      </Modal>
-    </Layout >
-  );
+    return (
+        <CarouselContainer>
+            <Slider {...slickSettings}>
+                {persons.map((person) => (
+                    <div key={person.id}>
+                        {person.attended ? (
+                            <CarouselCenterSlide>
+                                {/* Selected (center) card */}
+                                <Card>
+                                    <CardMedia
+                                        component="img"
+                                        alt={person.name}
+                                        height="150"
+                                        image={person.image}
+                                    />
+                                    <CardContent>
+                                        <div>{person.name}</div>
+                                        <Button
+                                            variant="contained"
+                                            color="secondary"
+                                            onClick={() => handleAttendClick(person.id)}
+                                        >
+                                            Mark Absent
+                                        </Button>
+                                    </CardContent>
+                                </Card>
+                            </CarouselCenterSlide>
+                        ) : (
+                            <CarouselSlide>
+                                {/* Surrounding cards */}
+                                <Card>
+                                    <CardMedia
+                                        component="img"
+                                        alt={person.name}
+                                        height="150"
+                                        image={person.image}
+                                    />
+                                    <CardContent>
+                                        <div>{person.name}</div>
+                                        <Button
+                                            variant="contained"
+                                            color="primary"
+                                            onClick={() => handleAttendClick(person.id)}
+                                        >
+                                            Mark Present
+                                        </Button>
+                                    </CardContent>
+                                </Card>
+                            </CarouselSlide>
+                        )}
+                    </div>
+                ))}
+            </Slider>
+        </CarouselContainer>
+    );
 };
-
-export default App;
+export default Attendence;

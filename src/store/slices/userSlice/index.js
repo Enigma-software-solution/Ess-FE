@@ -8,7 +8,8 @@ const initialState = {
     status: "idle",
     error: null,
     selectedUser: undefined,
-    data: []
+    data: [],
+    loading: false,
 };
 
 const userSlice = createSlice({
@@ -25,15 +26,18 @@ const userSlice = createSlice({
     extraReducers(builder) {
         builder.addCase(getAllUsersApi.pending, (state, action) => {
             state.status = "loading";
+            state.loading = true;
         });
 
         builder.addCase(getAllUsersApi.fulfilled, (state, action) => {
             state.status = "succeeded";
+            state.loading = false;
             state.data = action.payload.users;
         });
 
         builder.addCase(getAllUsersApi.rejected, (state, action) => {
             state.status = "error";
+            state.loading = "error";
             state.error = action.error.message;
         });
 

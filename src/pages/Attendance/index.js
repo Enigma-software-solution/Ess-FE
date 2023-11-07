@@ -1,12 +1,14 @@
 import React from 'react'
-import FaceDetectionComponent from 'src/features/Attendance'
+import Attendence from 'src/features/Attendance'
+// import FaceDetectionComponent from 'src/features/Attendance/FaceDetection'
 
-const Page = () => {
+const AttendancePage = () => {
   return (
     <div>
-        <FaceDetectionComponent/>
+      {/* <FaceDetectionComponent/> */}
+      <Attendence />
     </div>
   )
 }
 
-export default Page
+export default AttendancePage
