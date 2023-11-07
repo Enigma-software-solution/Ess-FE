@@ -7,7 +7,8 @@ const initialState = {
   status: "idle",
   error: null,
   selectedProfile: undefined,
-  data: []
+  data: [],
+  isLoading: false,
 };
 
 const profileSlice = createSlice({
@@ -24,15 +25,18 @@ const profileSlice = createSlice({
   extraReducers(builder) {
     builder.addCase(getProfilesApi.pending, (state, action) => {
       state.status = "loading";
+      state.isLoading = true;
     });
 
     builder.addCase(getProfilesApi.fulfilled, (state, action) => {
       state.status = "succeeded";
+      state.isLoading = false;
       state.data = action.payload.data;
     });
 
     builder.addCase(getProfilesApi.rejected, (state, action) => {
       state.status = "error";
+      state.isLoading = 'error';
       state.error = action.error.message;
     });
 

@@ -6,7 +6,8 @@ import { createClientApi, deleteClientApi, getAllClientsApi } from "./apis";
 const initialState = {
     status: "idle",
     error: null,
-    data: []
+    data: [],
+    loading: false,
 };
 
 const clientSlice = createSlice({
@@ -15,15 +16,18 @@ const clientSlice = createSlice({
     extraReducers(builder) {
         builder.addCase(getAllClientsApi.pending, (state, action) => {
             state.status = "loading";
+            state.loading = true;
         });
 
         builder.addCase(getAllClientsApi.fulfilled, (state, action) => {
             state.status = "succeeded";
+            state.loading = false
             state.data = action.payload.data;
         });
 
         builder.addCase(getAllClientsApi.rejected, (state, action) => {
             state.status = "error";
+            state.loading = "error"
             state.error = action.error.message;
         });
 
