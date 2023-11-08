@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { Card, CardContent, CardMedia, Button, Box } from '@mui/material';
-import Slider from 'react-slick'; // Import the Slider component from react-slick
+import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { CarouselContainer, CarouselSlide, CarouselCenterSlide } from './styled'; // Import your styled components
-
+import PresentEmployeesTable from './AttendenceTable/index.js'
+import { CarouselCenterSlide, CarouselContainer, CarouselSlide } from './styled.js';
 
 
 const Attendence = () => {
@@ -108,59 +108,60 @@ const Attendence = () => {
     };
 
     return (
-        <CarouselContainer>
-            <Slider {...slickSettings}>
-                {persons.map((person) => (
-                    <div key={person.id}>
-                        {person.attended ? (
-                            <CarouselCenterSlide>
-                                {/* Selected (center) card */}
-                                <Card>
-                                    <CardMedia
-                                        component="img"
-                                        alt={person.name}
-                                        height="150"
-                                        image={person.image}
-                                    />
-                                    <CardContent>
-                                        <div>{person.name}</div>
-                                        <Button
-                                            variant="contained"
-                                            color="secondary"
-                                            onClick={() => handleAttendClick(person.id)}
-                                        >
-                                            Mark Absent
-                                        </Button>
-                                    </CardContent>
-                                </Card>
-                            </CarouselCenterSlide>
-                        ) : (
-                            <CarouselSlide>
-                                {/* Surrounding cards */}
-                                <Card>
-                                    <CardMedia
-                                        component="img"
-                                        alt={person.name}
-                                        height="150"
-                                        image={person.image}
-                                    />
-                                    <CardContent>
-                                        <div>{person.name}</div>
-                                        <Button
-                                            variant="contained"
-                                            color="primary"
-                                            onClick={() => handleAttendClick(person.id)}
-                                        >
-                                            Mark Present
-                                        </Button>
-                                    </CardContent>
-                                </Card>
-                            </CarouselSlide>
-                        )}
-                    </div>
-                ))}
-            </Slider>
-        </CarouselContainer>
+        <>
+            <CarouselContainer>
+                <Slider {...slickSettings}>
+                    {persons.map((person) => (
+                        <div key={person.id}>
+                            {person.attended ? (
+                                <CarouselCenterSlide>
+                                    <Card>
+                                        <CardMedia
+                                            component="img"
+                                            alt={person.name}
+                                            height="150"
+                                            image={person.image}
+                                        />
+                                        <CardContent>
+                                            <div>{person.name}</div>
+                                            <Button
+                                                variant="contained"
+                                                color="secondary"
+                                                onClick={() => handleAttendClick(person.id)}
+                                            >
+                                                Mark Absent
+                                            </Button>
+                                        </CardContent>
+                                    </Card>
+                                </CarouselCenterSlide>
+                            ) : (
+                                <CarouselSlide>
+                                    <Card>
+                                        <CardMedia
+                                            component="img"
+                                            alt={person.name}
+                                            height="150"
+                                            image={person.image}
+                                        />
+                                        <CardContent>
+                                            <div>{person.name}</div>
+                                            <Button
+                                                variant="contained"
+                                                color="primary"
+                                                onClick={() => handleAttendClick(person.id)}
+                                            >
+                                                Mark Present
+                                            </Button>
+                                        </CardContent>
+                                    </Card>
+                                </CarouselSlide>
+                            )}
+                        </div>
+                    ))}
+                </Slider>
+            </CarouselContainer>
+            <PresentEmployeesTable presentEmployees={presentEmployees} />
+        </>
     );
 };
 export default Attendence;
