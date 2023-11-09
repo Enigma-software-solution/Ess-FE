@@ -1,167 +1,108 @@
-import React, { useState } from 'react';
-import { Card, CardContent, CardMedia, Button, Box } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Card, Select } from 'antd';
+import avatar from '../../assets/avatar.jpg'
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import PresentEmployeesTable from './AttendenceTable/index.js'
-import { CarouselCenterSlide, CarouselContainer, CarouselSlide } from './styled.js';
+import { ImageWrapper, InnerCard } from './styled';
+import { getAllUsersApi } from 'src/store/slices/userSlice/apis';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllUsers } from 'src/store/slices/userSlice/selectors';
+import { submitAttendanceApi } from 'src/store/slices/attendanceSlice/api';
+import { toast } from "react-toastify";
 
+
+
+
+const { Meta } = Card;
 
 const Attendence = () => {
-    const [persons, setPersons] = useState([
-        {
-            id: 1,
-            name: 'Kashif',
-            image: 'https://via.placeholder.com/150',
-            attended: false,
-        },
-        {
-            id: 2,
-            name: 'Talha Satti',
-            image: 'https://via.placeholder.com/150',
-            attended: false,
-        },
-        {
-            id: 3,
-            name: 'Anas Khan',
-            image: 'https://via.placeholder.com/150',
-            attended: false,
-        },
-        {
-            id: 4,
-            name: 'Saad',
-            image: 'https://via.placeholder.com/150',
-            attended: false,
-        },
-        {
-            id: 5,
-            name: 'Saad',
-            image: 'https://via.placeholder.com/150',
-            attended: false,
-        },
-        {
-            id: 6,
-            name: 'Saad',
-            image: 'https://via.placeholder.com/150',
-            attended: false,
-        },
-        {
-            id: 7,
-            name: 'Saad',
-            image: 'https://via.placeholder.com/150',
-            attended: false,
-        },
-        {
-            id: 8,
-            name: 'Saad',
-            image: 'https://via.placeholder.com/150',
-            attended: false,
-        },
-        {
-            id: 9,
-            name: 'Saad',
-            image: 'https://via.placeholder.com/150',
-            attended: false,
-        },
-        {
-            id: 10,
-            name: 'Saad',
-            image: 'https://via.placeholder.com/150',
-            attended: false,
-        },
-    ]);
 
-    const [presentEmployees, setPresentEmployees] = useState([]);
+    const users = useSelector(getAllUsers);
+    const dispatch = useDispatch();
+    const [selecteValue, setSelectedValue] = useState('')
 
-    const handleAttendClick = (personId) => {
-        setPersons((prevPersons) =>
-            prevPersons.map((person) => {
-                if (person?.id === personId) {
-                    const updatedPerson = { ...person, attended: !person.attended };
-                    if (updatedPerson.attended) {
-                        setPresentEmployees((prevEmployees) => [...prevEmployees, updatedPerson]);
-                    } else {
-                        setPresentEmployees((prevEmployees) =>
-                            prevEmployees.filter((employee) => employee?.id !== updatedPerson?.id)
-                        );
-                    }
-                    return updatedPerson;
-                }
-                return person;
-            })
-        );
-    };
+    useEffect(() => {
+        if (!users?.length) {
+            dispatch(getAllUsersApi());
+        }
 
-    const slickSettings = {
+    }, [])
+
+    const settings = {
+        slidesToShow: 5,
         dots: true,
         infinite: true,
-        speed: 500,
-        slidesToShow: 5,
-        slidesToScroll: 1,
-        centerMode: true,
-        centerPadding: '10px',
-        focusOnSelect: true,
-        draggable: true,
-        autoplay: true,
-        autoplaySpeed: 5000,
-        cssEase: 'linear',
+        arrows: true,
+    };
+
+    const cardStyle = {
+        width: '250px',
+    };
+
+    const imageStyle = {
+        borderRadius: '50%', // Makes the image round
+    };
+    const currentTime = new Date();
+    const nextDay = new Date(currentTime);
+    nextDay.setDate(currentTime.getDate() + 1);
+
+    const handleChange = (value, id) => {
+        setSelectedValue(value)
+        const prepareduser = {
+            user: id,
+            date: nextDay,
+            status: value,
+            checkInTime: nextDay,
+        };
+
+        const response = dispatch(submitAttendanceApi(prepareduser))
+        if (response.status === 'success') { toast.warn('Attendance Submitted') } else {
+            toast.warn('Attendance not Submitted')
+        }
+
     };
 
     return (
-        <>
-            <CarouselContainer>
-                <Slider {...slickSettings}>
-                    {persons.map((person) => (
-                        <div key={person.id}>
-                            {person.attended ? (
-                                <CarouselCenterSlide>
-                                    <Card>
-                                        <CardMedia
-                                            component="img"
-                                            alt={person.name}
-                                            height="150"
-                                            image={person.image}
-                                        />
-                                        <CardContent>
-                                            <div>{person.name}</div>
-                                            <Button
-                                                variant="contained"
-                                                color="secondary"
-                                                onClick={() => handleAttendClick(person.id)}
-                                            >
-                                                Mark Absent
-                                            </Button>
-                                        </CardContent>
-                                    </Card>
-                                </CarouselCenterSlide>
-                            ) : (
-                                <CarouselSlide>
-                                    <Card>
-                                        <CardMedia
-                                            component="img"
-                                            alt={person.name}
-                                            height="150"
-                                            image={person.image}
-                                        />
-                                        <CardContent>
-                                            <div>{person.name}</div>
-                                            <Button
-                                                variant="contained"
-                                                color="primary"
-                                                onClick={() => handleAttendClick(person.id)}
-                                            >
-                                                Mark Present
-                                            </Button>
-                                        </CardContent>
-                                    </Card>
-                                </CarouselSlide>
-                            )}
-                        </div>
-                    ))}
-                </Slider>
-            </CarouselContainer>
-            <PresentEmployeesTable presentEmployees={presentEmployees} />
-        </>
+        <div style={{ width: '100%', display: 'flex', flexDirection: 'column' }}>
+            <Slider touchMove={true} swipeToSlide slidesToScroll={1}  {...settings}>
+                {users.map((user) => (
+                    <div key={user._id} >
+                        <InnerCard hoverable style={cardStyle} >
+                            <ImageWrapper>
+                                <img width={'150px'} height={'150px'} src={avatar} style={imageStyle} alt="Avatar" />
+                            </ImageWrapper>
+                            <div>
+                                <div style={{ margin: '10px', display: 'flex', flexDirection: 'column', gap: '10px' }}>
+                                    <stack>
+                                        <h3>{user.first_name}</h3>
+                                        <h3 >{user.last_name}</h3>
+                                    </stack>
+                                    <h5>{user.role}</h5>
+                                    <h6>Status</h6>
+                                    <Select
+                                        defaultValue="absent"
+                                        style={{ width: 120 }}
+                                        onChange={(value) => handleChange(value, user._id)}
+                                        options={[
+                                            { value: 'present', label: 'present' },
+                                            { value: 'absent', label: 'absent' },
+                                            { value: 'late', label: 'late' },
+                                            { value: 'leave', label: 'leave' },
+                                            { value: 'half-day', label: 'half-day' },
+                                            { value: 'vacation', label: 'vacation' },
+                                        ]}
+                                    />
+                                </div>
+                            </div>
+                        </InnerCard>
+                    </div>
+                ))}
+            </Slider>
+        </div>
+
+
     );
 };
+
 export default Attendence;
