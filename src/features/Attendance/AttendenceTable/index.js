@@ -2,16 +2,18 @@ import React, { useState } from 'react';
 import { Table } from 'antd';
 import { StyledBox, StyledButton, StyledHeading } from './styled';
 import AttendenceDetails from '../AttendenceDetails';
+import { useNavigate } from 'react-router-dom';
+import { routes } from 'src/constant/routes';
 
 const PresentEmployeesTable = ({ presentEmployees }) => {
+    const navigate = useNavigate();
+
 
     const [selectedEmployee, setSelectedEmployee] = useState(null);
-    const [isDetailsDrawerOpen, setIsDetailsDrawerOpen] = useState(false);
 
 
     const handleRowClick = (record) => {
-        setSelectedEmployee(record); 
-        setIsDetailsDrawerOpen(true);
+        navigate(`${routes.USER_ATTENDANCE_DETAILS}/${record._id}`);
     };
 
     const columns = [
@@ -21,12 +23,12 @@ const PresentEmployeesTable = ({ presentEmployees }) => {
             key: 'name',
         },
         {
-            title: <span style={{ color: '#A7ACB2' }}>Employee Name</span>,
-            dataIndex: 'Employee Name',
+            title: <span style={{ color: '#A7ACB2' }}>checkInTime</span>,
+            dataIndex: 'checkInTime',
         },
         {
-            title: <span style={{ color: '#A7ACB2' }}>Department</span>,
-            dataIndex: 'Department',
+            title: <span style={{ color: '#A7ACB2' }}>Status</span>,
+            dataIndex: 'status',
         },
         {
             title: <span style={{ color: '#A7ACB2' }}>Details</span>,
@@ -52,7 +54,7 @@ const PresentEmployeesTable = ({ presentEmployees }) => {
             />
 
             {selectedEmployee && (
-                <AttendenceDetails employeeDetails={selectedEmployee} isOpen={isDetailsDrawerOpen} handleDetailsDrawer={() => setIsDetailsDrawerOpen(false)} />
+                <AttendenceDetails employeeDetails={selectedEmployee} />
             )}
         </StyledBox>
     );

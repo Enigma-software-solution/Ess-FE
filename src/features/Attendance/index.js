@@ -10,9 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllUsers } from 'src/store/slices/userSlice/selectors';
 import { submitAttendanceApi } from 'src/store/slices/attendanceSlice/api';
 import { toast } from "react-toastify";
-
-
-
+import PresentEmployeesTable from './AttendenceTable';
 
 const { Meta } = Card;
 
@@ -21,12 +19,14 @@ const Attendence = () => {
     const users = useSelector(getAllUsers);
     const dispatch = useDispatch();
     const [selecteValue, setSelectedValue] = useState('')
+    const [attendanceData, setAttendanceData] = useState([]);
+
+    console.log(users, "Users")
 
     useEffect(() => {
         if (!users?.length) {
             dispatch(getAllUsersApi());
         }
-
     }, [])
 
     const settings = {
@@ -41,13 +41,13 @@ const Attendence = () => {
     };
 
     const imageStyle = {
-        borderRadius: '50%', // Makes the image round
+        borderRadius: '50%',
     };
     const currentTime = new Date();
     const nextDay = new Date(currentTime);
     nextDay.setDate(currentTime.getDate() + 1);
 
-    const handleChange = (value, id) => {
+    const handleChange = async (value, id) => {
         setSelectedValue(value)
         const prepareduser = {
             user: id,
@@ -56,11 +56,17 @@ const Attendence = () => {
             checkInTime: nextDay,
         };
 
-        const response = dispatch(submitAttendanceApi(prepareduser))
-        if (response.status === 'success') { toast.warn('Attendance Submitted') } else {
-            toast.warn('Attendance not Submitted')
+        try {
+            const response = await dispatch(submitAttendanceApi(prepareduser));
+            setAttendanceData([...attendanceData, response.payload.data]);
+            if (response.status === 'success') {
+                toast.warn('Attendance Submitted');
+            } else {
+                toast.warn('Attendance not Submitted');
+            }
+        } catch (error) {
+            console.error('Error submitting attendance:', error);
         }
-
     };
 
     return (
@@ -99,6 +105,7 @@ const Attendence = () => {
                     </div>
                 ))}
             </Slider>
+            <PresentEmployeesTable presentEmployees={attendanceData} />
         </div>
 
 

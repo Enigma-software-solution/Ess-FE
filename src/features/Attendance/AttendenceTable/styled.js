@@ -1,8 +1,7 @@
-import { Box } from "@mui/material";
 import { Button, Typography } from "antd";
 import styled from "styled-components";
 
-export const StyledBox = styled(Box)`
+export const StyledBox = styled('div')`
   background: #fafafa;
   border-radius: 8px;
   margin-top: 50px;
