@@ -26,6 +26,7 @@ import UsersPage from "./pages/Users";
 import RoleRoute from "./components/RoleRoute";
 import AttendancePage from "./pages/Attendance";
 import AttendenceDetails from "./features/Attendance/AttendenceDetails";
+import NotFound from "./components/PageNotFound";
 
 function App() {
   const dispatch = useDispatch();
@@ -69,6 +70,8 @@ function App() {
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/Signup" element={<SignUpPage />} />
+            <Route path="*" element={<NotFound />} />
+
           </Routes>
         </ConfigProvider>
         <ToastContainer />
