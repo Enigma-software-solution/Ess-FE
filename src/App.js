@@ -27,6 +27,8 @@ import RoleRoute from "./components/RoleRoute";
 import AttendancePage from "./pages/Attendance";
 import AttendanceDashboard from "./pages/AttendanceDashboard";
 import AttendanceReports from "./pages/AttendanceReports";
+import AttendenceDetails from "./features/Attendance/AttendenceDetails";
+import NotFound from "./components/PageNotFound";
 
 function App() {
   const dispatch = useDispatch();
@@ -48,6 +50,8 @@ function App() {
                 <Route path={routes.ATTENDANCE} element={<AttendancePage />} />
                 <Route path={routes.ATTENDANCE_DASHBOARD} element={<AttendanceDashboard />} />
                 <Route path={routes.ATTENDANCE_REPORTS} element={<AttendanceReports />} />
+                <Route path={`${routes.USER_ATTENDANCE_DETAILS}/:id`} element={<AttendenceDetails />} />
+                <Route path={routes.PROFILE_SETTINGS} element={<ProfileSettings />} />
 
 
                 <Route element={<RoleRoute allowedRoles={['admin', 'sales-execitive', 'user']} />}>
@@ -71,6 +75,8 @@ function App() {
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/Signup" element={<SignUpPage />} />
+            <Route path="*" element={<NotFound />} />
+
           </Routes>
         </ConfigProvider>
         <ToastContainer />

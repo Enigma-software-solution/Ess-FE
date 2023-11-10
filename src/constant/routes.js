@@ -12,5 +12,6 @@ export const routes = {
     PROFILE_SETTINGS: '/dashboard/profile-settings',
     ATTENDANCE: '/dashboard/attendance',
     ATTENDANCE_DASHBOARD: '/dashboard/attendance-dashboard',
-    ATTENDANCE_REPORTS: '/dashboard/attendance-reports'
+    ATTENDANCE_REPORTS: '/dashboard/attendance-reports',
+    USER_ATTENDANCE_DETAILS: '/dashbaord/attendance/user-attendance-details'
 }
