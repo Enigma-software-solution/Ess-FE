@@ -10,5 +10,7 @@ export const routes = {
     PROFILE: '/dashboard/profile',
     SALES_EXECUTIVE: '/dashboard/sales-executive',
     PROFILE_SETTINGS: '/dashboard/profile-settings',
-    ATTENDANCE: '/dashboard/attendance'
+    ATTENDANCE: '/dashboard/attendance',
+    ATTENDANCE_DASHBOARD: '/dashboard/attendance-dashboard',
+    ATTENDANCE_REPORTS: '/dashboard/attendance-reports'
 }
