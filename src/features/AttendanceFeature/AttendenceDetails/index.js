@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux';
 import { getUserAttendanceById } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api';
 import { useParams } from 'react-router-dom';
 import SingleUserAttendanceDetails from './SingleUserAttendanceDetails';
-import { StyledDetailsTable } from './styled';
+import { StyledDetails, StyledDetailsTable } from './styled';
 
 const AttendenceDetails = () => {
 
@@ -18,10 +18,10 @@ const AttendenceDetails = () => {
 
 
     return (
-        <div style={{ cursor: 'pointer' }}>
+        <StyledDetails>
             <StyledDetailsTable> <SingleUserAttendanceDetails userId={id} /></StyledDetailsTable>
             <div><ViewUserAttendenceGraph /></div>
-        </div>
+        </StyledDetails>
     );
 };
 

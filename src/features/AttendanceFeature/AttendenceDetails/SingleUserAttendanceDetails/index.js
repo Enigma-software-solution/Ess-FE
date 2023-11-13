@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Spin, DatePicker, Button } from 'antd';
-import { ExportOutlined } from '@ant-design/icons';
-import { CSVLink } from 'react-csv';
 import styled from 'styled-components';
-import AttendanceTabs from 'src/features/AttandanceDashbaord/AttendanceTabs';
 import { useDispatch } from 'react-redux';
 import { format } from 'date-fns';
 import qs from 'qs';
@@ -16,9 +13,6 @@ const StyledPage = styled.div`
   font-family: 'Arial', sans-serif;
 `;
 
-const ExportButton = styled(Button)`
-  margin-bottom: 10px;
-`;
 
 const columns = [
     {
@@ -52,7 +46,6 @@ const columns = [
 ];
 
 const SingleUserAttendanceDetails = ({ userId }) => {
-    const [exportData, setExportData] = useState([]);
     const [reports, setReports] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -99,16 +92,6 @@ const SingleUserAttendanceDetails = ({ userId }) => {
         getAttendanceReports();
     }, [userId]);
 
-    const handleExport = () => {
-        const csvData = reports?.map((item) => ({
-            date: item?.date,
-            employeeName: `${item?.user?.first_name} ${item?.user?.last_name}`,
-            status: item.status,
-        }));
-
-        setExportData(csvData);
-    };
-
     return (
         <StyledPage>
             <h5>Attendance Report</h5>
@@ -117,11 +100,7 @@ const SingleUserAttendanceDetails = ({ userId }) => {
                     <MonthPicker onChange={handleMonthChange} placeholder="Select month" />
                     <RangePicker onChange={handleRangePicker} />
                 </div>
-                <CSVLink data={exportData} filename={'attendance-report.csv'}>
-                    <ExportButton type="primary" icon={<ExportOutlined />} onClick={handleExport} >
-                        Export to CSV
-                    </ExportButton>
-                </CSVLink>
+
             </div>
             {isLoading ? <Spin size="large" /> : <Table columns={columns} dataSource={reports} />}
         </StyledPage>
