@@ -5,9 +5,10 @@ import { CSVLink } from 'react-csv';
 import styled from 'styled-components';
 import AttendanceTabs from '../AttandanceDashbaord/AttendanceTabs';
 import { useDispatch } from 'react-redux';
-import { getAllAttendanceApi } from 'src/store/slices/attendanceSlice/api';
+
 import { format } from 'date-fns';
 import qs from 'qs';
+import { getAllAttendanceApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api';
 
 const { RangePicker, MonthPicker } = DatePicker;
 

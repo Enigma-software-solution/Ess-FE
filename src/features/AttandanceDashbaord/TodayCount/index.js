@@ -2,11 +2,11 @@ import { Col, DatePicker, Flex, Row, Select, Space, Spin } from 'antd'
 import React, { useEffect, useState } from 'react'
 import CountCard from '../CountCard'
 import { useDispatch } from 'react-redux'
-import { getAllStatsApi } from 'src/store/slices/attendanceSlice/api'
 import { toast } from 'react-toastify'
 import qs from 'qs'
 import { format } from 'date-fns'
 import Loader from 'src/components/Loader'
+import { getAllStatsApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api'
 
 const TodayCount = () => {
     const [loader, setLoader] = useState(false)
@@ -35,7 +35,6 @@ const TodayCount = () => {
     }, [dispatch, selectedDate]);
 
     const onChange = (date, dateString) => {
-        console.log(date, dateString);
         setSelectedDate(date)
     };
 

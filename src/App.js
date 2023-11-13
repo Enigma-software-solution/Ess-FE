@@ -27,8 +27,8 @@ import RoleRoute from "./components/RoleRoute";
 import AttendancePage from "./pages/Attendance";
 import AttendanceDashboard from "./pages/AttendanceDashboard";
 import AttendanceReports from "./pages/AttendanceReports";
-import AttendenceDetails from "./features/Attendance/AttendenceDetails";
 import NotFound from "./components/PageNotFound";
+import AttendenceDetails from "./features/AttendanceFeature/AttendenceDetails";
 
 function App() {
   const dispatch = useDispatch();
@@ -47,6 +47,7 @@ function App() {
               <Route path="/" element={<DashobardLayout />}>
 
                 <Route path={routes.ATTENDANCE} element={<AttendancePage />} />
+                <Route path={`${routes.USER_ATTENDANCE_DETAILS}/:id?`} element={<AttendenceDetails />} />
                 <Route path={routes.ATTENDANCE} element={<AttendancePage />} />
                 <Route path={routes.ATTENDANCE_DASHBOARD} element={<AttendanceDashboard />} />
                 <Route path={routes.ATTENDANCE_REPORTS} element={<AttendanceReports />} />

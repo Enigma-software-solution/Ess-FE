@@ -6,7 +6,7 @@ import agendaReducer from "./slices/agendaSlice"
 import globalReducer from "./slices/globalSlice";
 import userReducer from "./slices/userSlice";
 import clientReducer from "./slices/clientSlice";
-
+import attendanceReducer from "./slices/attendanceSlice/GetAttendanceSlice";
 const store = configureStore({
   reducer: {
     auth: authReducer,
@@ -16,7 +16,7 @@ const store = configureStore({
     agenda: agendaReducer,
     client: clientReducer,
     theme: globalReducer,
-
+    attendance: attendanceReducer,
 
   },
   middleware: [

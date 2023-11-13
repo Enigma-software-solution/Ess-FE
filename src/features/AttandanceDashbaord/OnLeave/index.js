@@ -1,11 +1,12 @@
 import { Avatar, Card, DatePicker, Flex, Select, Spin } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-import { getAllAttendanceApi } from 'src/store/slices/attendanceSlice/api'
+
 import qs from 'qs'
 import { toast } from 'react-toastify'
 import { format } from 'date-fns'
 import { StyledCard } from './styled'
+import { getAllAttendanceApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api'
 
 const OnLeave = () => {
 
@@ -37,11 +38,9 @@ const OnLeave = () => {
     }, [dispatch, selectedDate]);
 
     const onChange = (date, dateString) => {
-        console.log(date, dateString);
         setSelectedDate(date)
     };
 
-    console.log(onLeaveUser, 'ssssssss')
 
     return (
         <StyledCard title='who is on Leave' style={{ boxShadow: ' 0px 0px 20px -7px  rgba(0,0,0,0.2)' }}>

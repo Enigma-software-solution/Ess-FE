@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Popconfirm, Table } from "antd";
+import { Button, Popconfirm, Table } from "antd";
 import EditButton from "src/components/buttons/EditButton";
 import DeleteButton from "src/components/buttons/DeleteButton";
 import { getAllUsers, isUserLoading } from "src/store/slices/userSlice/selectors";
@@ -10,6 +10,8 @@ import { setSelectedUser } from "src/store/slices/userSlice";
 import CreateUserDrawer from "../CreateUserDrawer";
 import { activeBadgeStyle, inactiveBadgeStyle } from "./styled";
 import Loader from "src/components/Loader";
+import { useNavigate } from "react-router-dom";
+import { routes } from "src/constant/routes";
 
 const UserTable = () => {
 
@@ -17,6 +19,8 @@ const UserTable = () => {
 
 
     const dispatch = useDispatch();
+    const navigate = useNavigate();
+
 
     const isLoading = useSelector(isUserLoading)
     const clients = useSelector(getAllUsers);
@@ -43,6 +47,10 @@ const UserTable = () => {
     const handleConfirmDelete = (recordToDelete, e) => {
         e.stopPropagation();
         dispatch(deleteUserApi(recordToDelete._id));
+    };
+
+    const handleButtonClick = (record) => {
+        navigate(`${routes.USER_ATTENDANCE_DETAILS}/${record._id}`);
     };
 
     const handleChangeStatus = (e, record) => {
@@ -122,6 +130,7 @@ const UserTable = () => {
                     >
                         <DeleteButton onClick={(e) => e.stopPropagation()}>Delete</DeleteButton>
                     </Popconfirm>
+                    <Button type="primary" onClick={() => handleButtonClick(record)}>Attendance Details</Button>
                 </div>
             ),
         },
