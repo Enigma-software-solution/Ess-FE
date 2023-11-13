@@ -12,6 +12,12 @@ const Topbar = ({ setCollapsed, collapsed }) => {
 
   const navigate = useNavigate();
 
+  console.log(loggedInUser, "dadsasdadasdasdasd")
+
+  const handleButtonClick = (loggedInUser) => {
+    navigate(`${routes.USER_ATTENDANCE_DETAILS}/${loggedInUser?.id}`);
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("refresh_token");
@@ -22,6 +28,9 @@ const Topbar = ({ setCollapsed, collapsed }) => {
     <Menu>
       <Menu.Item key="1">
         <Link to={routes.PROFILE_SETTINGS}>Settings</Link>
+      </Menu.Item>
+      <Menu.Item key="2" onClick={() => handleButtonClick(loggedInUser)}>
+        Attendance
       </Menu.Item>
       <Menu.Item key="2" onClick={() => handleLogout()}>
         Log out
