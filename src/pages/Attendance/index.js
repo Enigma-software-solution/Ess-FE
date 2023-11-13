@@ -1,12 +1,10 @@
 import React from 'react'
-import Attendence from 'src/features/Attendance'
-// import FaceDetectionComponent from 'src/features/Attendance/FaceDetection'
+import AttendanceFeature from 'src/features/AttendanceFeature'
 
 const AttendancePage = () => {
   return (
     <div>
-      {/* <FaceDetectionComponent/> */}
-      <Attendence />
+      <AttendanceFeature />
     </div>
   )
 }
