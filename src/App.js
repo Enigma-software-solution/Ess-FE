@@ -24,7 +24,6 @@ import SignUpPage from "./pages/SignUp";
 import ProfileSettings from "./pages/profileSettings";
 import UsersPage from "./pages/Users";
 import RoleRoute from "./components/RoleRoute";
-import AttendancePage from "./pages/Attendance";
 import AttendanceDashboard from "./pages/AttendanceDashboard";
 import AttendanceReports from "./pages/AttendanceReports";
 import NotFound from "./components/PageNotFound";
@@ -46,14 +45,11 @@ function App() {
             <Route element={<ProtectedRoutes />}>
               <Route path="/" element={<DashobardLayout />}>
 
-                <Route path={routes.ATTENDANCE} element={<AttendancePage />} />
-                <Route path={`${routes.USER_ATTENDANCE_DETAILS}/:id?`} element={<AttendenceDetails />} />
-                <Route path={routes.ATTENDANCE} element={<AttendancePage />} />
                 <Route path={routes.ATTENDANCE_DASHBOARD} element={<AttendanceDashboard />} />
+                <Route path={`${routes.USER_ATTENDANCE_DETAILS}/:id?`} element={<AttendenceDetails />} />
                 <Route path={routes.ATTENDANCE_REPORTS} element={<AttendanceReports />} />
-                <Route path={`${routes.USER_ATTENDANCE_DETAILS}/:id`} element={<AttendenceDetails />} />
-                <Route path={routes.PROFILE_SETTINGS} element={<ProfileSettings />} />
 
+                <Route path={routes.PROFILE_SETTINGS} element={<ProfileSettings />} />
 
                 <Route element={<RoleRoute allowedRoles={['admin', 'sales-execitive', 'user']} />}>
                   <Route index element={<Dashobard />} />

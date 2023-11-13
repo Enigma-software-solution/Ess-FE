@@ -104,7 +104,7 @@ export const sidebarMenuItems = [
         key: routes.ATTENDANCE,
         title: 'Attendance',
         icon: <CheckSquareOutlined />,
-        path: routes.ATTENDANCE,
+        path: routes.ATTENDANCE_DASHBOARD,
         roles: ['admin', 'sales-executive', 'user'],
     },
     {
