@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Spin, DatePicker, Button } from 'antd';
+import { Table, Spin, DatePicker, Button, Tag } from 'antd';
 import { ExportOutlined } from '@ant-design/icons';
 import { CSVLink } from 'react-csv';
 import styled from 'styled-components';
 import AttendanceTabs from '../AttandanceDashbaord/AttendanceTabs';
 import { useDispatch } from 'react-redux';
-
 import { format } from 'date-fns';
 import qs from 'qs';
 import { getAllAttendanceApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api';
+import { Colors } from 'src/constant/colors';
 
 const { RangePicker, MonthPicker } = DatePicker;
 
@@ -20,6 +20,25 @@ const StyledPage = styled.div`
 const ExportButton = styled(Button)`
   margin-bottom: 10px;
 `;
+
+const getStatusColor = (status) => {
+    switch (status) {
+        case 'present':
+            return Colors.Present;
+        case 'absent':
+            return Colors.Absent;
+        case 'leave':
+            return Colors.Leave;
+        case 'vacation':
+            return Colors.Vacation;
+        case 'late':
+            return Colors.Late;
+        case 'half-day':
+            return Colors.HalfDay;
+        default:
+            return '#000'; 
+    }
+};
 
 const columns = [
     {
@@ -49,6 +68,11 @@ const columns = [
         title: 'Status',
         dataIndex: 'status',
         key: 'status',
+        render: (text) => {
+            return (
+                <Tag color={getStatusColor(text)}>{text}</Tag>
+            );
+        },
     },
 ];
 
@@ -98,7 +122,7 @@ const AttendanceReport = () => {
         const csvData = reports?.map((item) => ({
             date: item?.date,
             employeeName: `${item?.user?.first_name} ${item?.user?.last_name}`,
-            status: item.status,
+            tatus: item.status,
         }));
 
         setExportData(csvData);
