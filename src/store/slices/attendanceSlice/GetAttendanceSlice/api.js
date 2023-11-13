@@ -28,6 +28,30 @@ export const getUserAttendanceById = createAsyncThunk(
         } catch (error) {
             return rejectWithValue(error.response.data);
         }
+    })
+
+export const getAllAttendanceApi = createAsyncThunk(
+    "attendance/get-all-attendance",
+    async (params, { rejectWithValue }) => {
+        try {
+            const response = await api.get(`/attendance?${params}`);
+            return response;
+        } catch (error) {
+            toast.warn(error.response.data.message || error?.message)
+            return rejectWithValue(error.response?.data || "An error occurred");
+        }
     }
 );
 
+export const getAllStatsApi = createAsyncThunk(
+    "attendance/get-all-stats",
+    async (params, { rejectWithValue }) => {
+        try {
+            const response = await api.get(`/attendance/stats/all?${params}`);
+            return response;
+        } catch (error) {
+            toast.warn(error.response.data.message || error?.message)
+            return rejectWithValue(error.response?.data || "An error occurred");
+        }
+    }
+);
