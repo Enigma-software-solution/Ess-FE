@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
-import { Row } from 'antd';
-import { StyledGraphColumn, StyledGraphRow, StyledUserColumn } from './styled';
-import ViewUser from './ViewUser';
 import ViewUserAttendenceGraph from './ViewUserGraph';
 import { useDispatch } from 'react-redux';
 import { getUserAttendanceById } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api';
 import { useParams } from 'react-router-dom';
+import SingleUserAttendanceDetails from './SingleUserAttendanceDetails';
+import { StyledDetailsTable } from './styled';
 
 const AttendenceDetails = () => {
 
     const dispatch = useDispatch()
     let { id } = useParams();
+
 
     useEffect(() => {
         dispatch(getUserAttendanceById(id))
@@ -19,10 +19,8 @@ const AttendenceDetails = () => {
 
     return (
         <div style={{ cursor: 'pointer' }}>
-            <StyledGraphRow gutter={8} >
-                <StyledUserColumn span={6}><ViewUser /></StyledUserColumn>
-                <StyledGraphColumn span={17}><ViewUserAttendenceGraph /></StyledGraphColumn>
-            </StyledGraphRow>
+            <StyledDetailsTable> <SingleUserAttendanceDetails userId={id} /></StyledDetailsTable>
+            <div><ViewUserAttendenceGraph /></div>
         </div>
     );
 };
