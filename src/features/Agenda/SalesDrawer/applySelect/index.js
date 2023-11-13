@@ -23,7 +23,6 @@ const ApplySelect = ({ onSelect }) => {
         }
     };
 
-    console.log(applies, 'sssssssssss')
     return (
         <Select
             style={{ width: '100%' }}

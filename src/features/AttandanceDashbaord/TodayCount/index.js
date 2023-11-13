@@ -35,7 +35,6 @@ const TodayCount = () => {
     }, [dispatch, selectedDate]);
 
     const onChange = (date, dateString) => {
-        console.log(date, dateString);
         setSelectedDate(date)
     };
 

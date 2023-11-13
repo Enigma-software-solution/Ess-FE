@@ -66,7 +66,6 @@ const ProfileSettings = () => {
   };
 
   const saveChanges = (values) => {
-    console.log("Saving changes...", loggedInUser.id);
 
     const data = {
       userId: loggedInUser?.id,

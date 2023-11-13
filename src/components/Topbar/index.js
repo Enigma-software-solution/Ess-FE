@@ -12,7 +12,6 @@ const Topbar = ({ setCollapsed, collapsed }) => {
 
   const navigate = useNavigate();
 
-  console.log(loggedInUser, "dadsasdadasdasdasd")
 
   const handleButtonClick = (loggedInUser) => {
     navigate(`${routes.USER_ATTENDANCE_DETAILS}/${loggedInUser?.id}`);

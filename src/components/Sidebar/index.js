@@ -30,10 +30,6 @@ const Sidebar = ({ collapsed, setCollapsed }) => {
     menuItem.roles.includes(loggedInUserRole)
   );
 
-  // console.log(filteredMenuItems, 'ssss')
-  // console.log(loggedInUserRole, 'loggedInUserRole')
-
-
   return (
     <>
       <div

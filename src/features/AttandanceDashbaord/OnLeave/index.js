@@ -38,11 +38,9 @@ const OnLeave = () => {
     }, [dispatch, selectedDate]);
 
     const onChange = (date, dateString) => {
-        console.log(date, dateString);
         setSelectedDate(date)
     };
 
-    console.log(onLeaveUser, 'ssssssss')
 
     return (
         <StyledCard title='who is on Leave' style={{ boxShadow: ' 0px 0px 20px -7px  rgba(0,0,0,0.2)' }}>
