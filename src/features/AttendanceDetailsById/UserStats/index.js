@@ -1,56 +1,32 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Spin, Table } from 'antd';
+import { Card } from 'antd';
 import { getUserAttendanceStatsById } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api';
 import { getAttendenceByIdSelector } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/selectors';
 import { format } from 'date-fns';
-import { StyledStatsTable } from './styled';
+import { StyledStatusCard } from './styled';
 import qs from 'qs';
 import { DatePicker } from 'antd';
 
 const { MonthPicker, YearPicker } = DatePicker;
 
 
-const columns = [
-    {
-        title: 'Absent Count',
-        dataIndex: 'absentCount',
-        key: 'absentCount',
-    },
-    {
-        title: 'Half Count',
-        dataIndex: 'halfCount',
-        key: 'halfCount',
-    },
-    {
-        title: 'Late Count',
-        dataIndex: 'lateCount',
-        key: 'lateCount',
-    },
-    {
-        title: 'Leave',
-        dataIndex: 'leave',
-        key: 'leave',
-    },
-    {
-        title: 'Present Count',
-        dataIndex: 'presentCount',
-        key: 'presentCount',
-    },
-    {
-        title: 'Total Attendance Count',
-        dataIndex: 'totalAttendanceCount',
-        key: 'totalAttendanceCount',
-    },
-];
 
 const UserStats = ({ userId }) => {
     const [stats, setStats] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
 
     const dispatch = useDispatch();
 
     const userStats = useSelector(getAttendenceByIdSelector);
+
+    const statItems = [
+        { label: 'Absent ', value: userStats?.absentCount },
+        { label: 'Half-Day', value: userStats?.halfCount },
+        { label: 'Late ', value: userStats?.lateCount },
+        { label: 'Leave', value: userStats?.leave },
+        { label: 'Present ', value: userStats?.presentCount },
+        { label: 'Total Attendance ', value: userStats?.totalAttendanceCount },
+    ];
 
     const getAttendanceStats = async (month, year) => {
         const params = qs.stringify({
@@ -62,7 +38,6 @@ const UserStats = ({ userId }) => {
             userId,
             params,
         }
-
         try {
             const res = await dispatch(getUserAttendanceStatsById(data))
             setStats(userStats)
@@ -87,21 +62,24 @@ const UserStats = ({ userId }) => {
         getAttendanceStats();
     }, [userId]);
 
-    const data = [userStats];
-
     return (
-        <StyledStatsTable>
-            <h2>Attendance Stats</h2>
+        <div>
+            <h4>Attendance Stats</h4>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
                     <MonthPicker onChange={handleMonthChange} placeholder="Select month" />
                     <YearPicker onChange={handleYearChange} placeholder='Select Year' />
                 </div>
-
             </div>
-            {isLoading ? <Spin size="large" /> : <Table columns={columns} dataSource={data} pagination={false} rowKey={(record) => record.id} />}
-
-        </StyledStatsTable>
+            <Card title="Attendance Stats" style={{ width: 300 }}>
+                {statItems?.map((item, index) => (
+                    <StyledStatusCard key={index}>
+                        <strong>{item?.label}</strong>
+                        <p>{item?.value}</p>
+                    </StyledStatusCard>
+                ))}
+            </Card>
+        </div>
     );
 };
 

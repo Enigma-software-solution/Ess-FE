@@ -14,5 +14,6 @@ export const routes = {
 
     ATTENDANCE_DASHBOARD: '/dashboard/attendance-dashboard',
     ATTENDANCE_REPORTS: '/dashboard/attendance-reports',
-    USER_ATTENDANCE_DETAILS: '/dashbaord/attendance/user-attendance-details'
+    USER_ATTENDANCE_DETAILS: '/dashbaord/attendance/user-attendance-details',
+    USER_ATTENDANCE_COUNT: '/dashbaord/attendance/user-attendance-count'
 }
