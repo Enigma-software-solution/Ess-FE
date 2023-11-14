@@ -7,7 +7,7 @@ import { useDispatch } from 'react-redux';
 import { format } from 'date-fns';
 import qs from 'qs';
 import { getAllAttendanceApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api';
-import { Colors } from 'src/constant/colors';
+import { AttendanceStatusColor } from 'src/constant/colors';
 
 const { RangePicker, MonthPicker } = DatePicker;
 const { Option } = Select;
@@ -24,17 +24,17 @@ const ExportButton = styled(Button)`
 const getStatusColor = (status) => {
     switch (status) {
         case 'present':
-            return Colors.Present;
+            return AttendanceStatusColor.Present;
         case 'absent':
-            return Colors.Absent;
+            return AttendanceStatusColor.Absent;
         case 'leave':
-            return Colors.Leave;
+            return AttendanceStatusColor.Leave;
         case 'vacation':
-            return Colors.Vacation;
+            return AttendanceStatusColor.Vacation;
         case 'late':
-            return Colors.Late;
+            return AttendanceStatusColor.Late;
         case 'half-day':
-            return Colors.HalfDay;
+            return AttendanceStatusColor.HalfDay;
         default:
             return '#000'; 
     }
