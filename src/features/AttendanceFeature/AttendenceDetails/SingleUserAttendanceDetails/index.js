@@ -64,7 +64,7 @@ const SingleUserAttendanceDetails = ({ userId }) => {
         try {
             setIsLoading(true);
             const res = await dispatch(getAllAttendanceApi(params, userId)).unwrap();
-            setReports(res?.data);
+            setReports(res?.data?.attendance);
         } catch (error) {
             console.error("Error fetching data:", error);
         } finally {
