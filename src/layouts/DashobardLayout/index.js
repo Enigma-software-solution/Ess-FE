@@ -1,14 +1,18 @@
 import React from "react";
-// import "antd/dist/antd.css";
-import { Layout, Menu } from "antd";
+import { Layout } from "antd";
 import { useState } from "react";
+import { useLocation } from "react-router-dom";
 import { StyledContent, StyledHeader, StyledSider } from "./styled";
 import Sidebar from "src/components/Sidebar";
 import Topbar from "src/components/Topbar";
 import { Outlet } from "react-router-dom";
+import AttendanceTabs from "src/features/AttandanceDashbaord/AttendanceTabs";
 
 const DashboardLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
+  const location = useLocation();
+
+  const isAttendanceRoute = location.pathname.includes("attendance");
 
   return (
     <Layout>
@@ -20,6 +24,9 @@ const DashboardLayout = () => {
           <Topbar setCollapsed={setCollapsed} collapsed={collapsed} />
         </StyledHeader>
         <StyledContent>
+
+          {isAttendanceRoute && <AttendanceTabs />}
+
           <Outlet />
         </StyledContent>
       </Layout>
@@ -27,5 +34,4 @@ const DashboardLayout = () => {
   );
 };
 
-
-export default DashboardLayout
+export default DashboardLayout;

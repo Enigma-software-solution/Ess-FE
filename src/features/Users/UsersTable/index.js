@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Popconfirm, Table } from "antd";
+import { Popconfirm, Table } from "antd";
 import EditButton from "src/components/buttons/EditButton";
 import DeleteButton from "src/components/buttons/DeleteButton";
 import { getAllUsers, isUserLoading } from "src/store/slices/userSlice/selectors";
@@ -10,7 +10,7 @@ import { setSelectedUser } from "src/store/slices/userSlice";
 import CreateUserDrawer from "../CreateUserDrawer";
 import { activeBadgeStyle, inactiveBadgeStyle } from "./styled";
 import Loader from "src/components/Loader";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { routes } from "src/constant/routes";
 
 const UserTable = () => {
@@ -115,6 +115,16 @@ const UserTable = () => {
             }
         },
         {
+            key: "attendance",
+            title: "Attendance",
+            dataIndex: "attendance",
+            render: (text, record) => (
+                <Link to={`${routes.USER_ATTENDANCE_DETAILS}/${record._id}`}>
+                    Attendance Details
+                </Link>
+            ),
+        },
+        {
             key: "action",
             title: "Action",
             dataIndex: "action",
@@ -130,7 +140,6 @@ const UserTable = () => {
                     >
                         <DeleteButton onClick={(e) => e.stopPropagation()}>Delete</DeleteButton>
                     </Popconfirm>
-                    <Button type="primary" onClick={() => handleButtonClick(record)}>Attendance Details</Button>
                 </div>
             ),
         },
