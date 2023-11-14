@@ -1,12 +1,12 @@
-import React from 'react'
-import AttandanceDashbaord from 'src/features/AttandanceDashbaord'
+import React from "react";
+import Attendance from "src/features/AttendanceSubmission";
 
 const Page = () => {
-    return (
-        <>
-            <AttandanceDashbaord />
-        </>
-    )
-}
+  return (
+    <>
+      <Attendance />
+    </>
+  );
+};
 
-export default Page
+export default Page;
