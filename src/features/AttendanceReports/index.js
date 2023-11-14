@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Spin, Select, Space, DatePicker, Button, Typography, Flex } from 'antd';
+import { Table, Spin, Select, Space, DatePicker, Button, Typography, Flex, Pagination } from 'antd';
 import { ExportOutlined } from '@ant-design/icons';
 import { CSVLink } from 'react-csv';
 import styled from 'styled-components';
@@ -51,16 +51,18 @@ const AttendanceReport = () => {
     const [exportData, setExportData] = useState([]);
     const [reports, setReports] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedPagination, setSelectedPagination] = useState(null);
 
     const dispatch = useDispatch();
 
     const getAttendanceReports = async (options = {}) => {
-        const { month, startDate, endDate, status } = options;
+        const { month, startDate, endDate, status, pagination } = options;
         const params = qs.stringify({
-            month: month,
-            startDate: startDate,
-            endDate: endDate,
-            status: status,
+            month,
+            startDate,
+            endDate,
+            status,
+            ...pagination,
         });
 
         try {
@@ -91,10 +93,6 @@ const AttendanceReport = () => {
         getAttendanceReports({ status: value });
     };
 
-    useEffect(() => {
-        getAttendanceReports();
-    }, []);
-
     const handleExport = () => {
         const csvData = reports?.map((item) => ({
             date: item?.date,
@@ -106,13 +104,36 @@ const AttendanceReport = () => {
         setExportData(csvData);
     };
 
+    const { totalItems, pageSize, totalPages, page } = reports?.paginator ?? {};
+
+    const onPaginationChange = (page, pageSize) => {
+        setSelectedPagination({
+            page,
+            pageSize,
+        });
+
+        const pagination = {
+            page,
+            pageSize,
+        };
+        getAttendanceReports({ pagination });
+    };
+
+    useEffect(() => {
+        getAttendanceReports();
+    }, []);
+
     return (
         <StyledPage>
-            <h5 className='p-2'>Attendance Reports</h5>
-            <Flex justify='space-between' align='center' className='mb-2'>
-                <Flex align='center' gap={4}>
+            <h5 className="p-2">Attendance Reports</h5>
+            <Flex justify="space-between" align="center" className="mb-2">
+                <Flex align="center" gap={4}>
                     <Space>
-                        <Select placeholder="Select attendance status" onChange={handleStatusChange} style={{ minWidth: '120px' }}>
+                        <Select
+                            placeholder="Select attendance status"
+                            onChange={handleStatusChange}
+                            style={{ minWidth: '120px' }}
+                        >
                             <Option value="present">Present</Option>
                             <Option value="absent">Absent</Option>
                             <Option value="leave">Leave</Option>
@@ -130,7 +151,24 @@ const AttendanceReport = () => {
                     </Button>
                 </CSVLink>
             </Flex>
-            <Table columns={columns} dataSource={reports} loading={isLoading} />
+            <Table columns={columns} dataSource={reports?.attendance} loading={isLoading} />
+
+            {reports?.paginator && reports?.attendance.length ? (
+                <Pagination
+                    style={{ padding: '10px', display: 'flex', justifyContent: 'flex-end' }}
+                    total={totalItems}
+                    showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
+                    defaultPageSize={pageSize}
+                    defaultCurrent={page}
+                    onChange={(page, pageSize) => {
+                        onPaginationChange(page, pageSize);
+                    }}
+                    showSizeChanger
+                    onShowSizeChange={(current, size) => {
+                        console.log(`Current: ${current}, PageSize: ${size}`);
+                    }}
+                />
+            ) : null}
         </StyledPage>
     );
 };
