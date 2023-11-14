@@ -57,7 +57,7 @@ const OnLeave = () => {
                     :
                     <div style={{ overflow: 'auto', height: '240px', marginTop: '20px' }}>
                         {
-                            onLeaveUser?.map(data => {
+                            onLeaveUser?.attendance?.map(data => {
                                 return (
                                     <div className='d-flex align-items-center gap-2 mt-3' key={data.user.first_name} >
                                         <Avatar />
