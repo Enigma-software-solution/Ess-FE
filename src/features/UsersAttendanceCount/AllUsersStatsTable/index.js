@@ -1,34 +1,52 @@
-import { Table } from 'antd'
+import { Button, DatePicker, Space, Table } from 'antd'
+import { format } from 'date-fns'
+import qs from 'qs'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { getAllUsersStatsApi } from 'src/store/slices/attendanceSlice/AllStatsSlice/api'
 
+
 const AllUsersStatsTable = () => {
     const [allStats, setAllStats] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
+    const [selectedMonth, setSelectedMonth] = useState(null)
+    const [selectedYear, setSelectdYear] = useState(null)
 
     const dispatch = useDispatch()
 
     const getAllStats = async () => {
+
+        const queryParams = qs.stringify({
+            month: selectedMonth ? format(new Date(selectedMonth), 'MMM') : undefined,
+            year: selectedYear ? format(new Date(selectedYear), 'yyyy') : undefined,
+
+        })
+
         try {
-            const res = await dispatch(getAllUsersStatsApi()).unwrap()
-            console.log(res, 'ssssssssss')
+            const res = await dispatch(getAllUsersStatsApi(selectedMonth && queryParams)).unwrap()
             setAllStats(res?.data)
         } catch (err) {
             console.log(err)
-        }
-        finally {
+        } finally {
             setIsLoading(false)
         }
+    }
+
+    const handleMonthChange = (date) => {
+        setSelectedMonth(date)
+        setSelectdYear(null)
+    }
+
+    const handleYearChange = (date) => {
+        setSelectdYear(date)
+        setSelectedMonth(null)
+
     }
 
 
     useEffect(() => {
         getAllStats()
-    }, [])
-
-
-
+    }, [selectedMonth, selectedYear])
 
     const columns = [
         {
@@ -42,7 +60,6 @@ const AllUsersStatsTable = () => {
             title: 'Present',
             dataIndex: 'present',
             key: 'present',
-            sorter: (a, b) => a.present - b.present,
         },
         {
             title: 'Absent',
@@ -65,11 +82,15 @@ const AllUsersStatsTable = () => {
             dataIndex: 'vacation',
             key: 'vacation',
         },
-
     ];
 
     return (
         <>
+            <Space size={10} style={{ marginBottom: '10px' }}>
+                <DatePicker picker='month' onChange={handleMonthChange} value={selectedMonth} />
+                <DatePicker picker='year' onChange={handleYearChange} value={selectedYear} />
+            </Space>
+
             <Table columns={columns} dataSource={allStats} loading={isLoading} pagination={false} />
         </>
     )

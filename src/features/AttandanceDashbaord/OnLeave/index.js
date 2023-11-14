@@ -45,7 +45,7 @@ const OnLeave = () => {
     return (
         <StyledCard title='who is on Leave' style={{ boxShadow: ' 0px 0px 20px -7px  rgba(0,0,0,0.2)' }}>
             <div className='d-flex justify-content-between align-items-center'>
-                <p>On Leve : <span style={{ color: "red" }}>{onLeaveUser?.length}</span></p>
+                <p style={{ fontWeight: 'bold' }}>On Leve : <span style={{ color: "red" }}>{onLeaveUser?.attendance.length}</span></p>
                 <DatePicker onChange={onChange} allowClear={false} />
 
             </div>
@@ -59,7 +59,7 @@ const OnLeave = () => {
                         {
                             onLeaveUser?.attendance?.map(data => {
                                 return (
-                                    <div className='d-flex align-items-center gap-2 mt-3' key={data.user.first_name} >
+                                    <div className='d-flex align-items-center gap-2 mt-3' key={data?.user?.first_name} >
                                         <Avatar />
                                         <div>
                                             <p style={{ fontSize: '14px', fontWeight: 'bold', color: '#4154F1' }}>
