@@ -28,6 +28,7 @@ import AttendanceDashboard from "./pages/AttendanceDashboard";
 import AttendanceReports from "./pages/AttendanceReports";
 import NotFound from "./components/PageNotFound";
 import AttendenceDetails from "./features/AttendanceFeature/AttendenceDetails";
+import UsersAttendanceCount from "./pages/UsersAttendanceCount";
 
 function App() {
   const dispatch = useDispatch();
@@ -48,6 +49,7 @@ function App() {
                 <Route path={routes.ATTENDANCE_DASHBOARD} element={<AttendanceDashboard />} />
                 <Route path={`${routes.USER_ATTENDANCE_DETAILS}/:id?`} element={<AttendenceDetails />} />
                 <Route path={routes.ATTENDANCE_REPORTS} element={<AttendanceReports />} />
+                <Route path={routes.USER_ATTENDANCE_COUNT} element={<UsersAttendanceCount />} />
 
                 <Route path={routes.PROFILE_SETTINGS} element={<ProfileSettings />} />
 

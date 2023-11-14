@@ -180,7 +180,7 @@ const AttendanceReport = () => {
                     </Button>
                 </CSVLink>
             </Flex>
-            <Table columns={columns} dataSource={reports?.attendance} loading={isLoading} />
+            <Table columns={columns} dataSource={reports?.attendance} loading={isLoading} pagination={false} />
 
             {reports?.paginator && reports?.attendance.length ? (
                 <Pagination

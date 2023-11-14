@@ -16,8 +16,8 @@ const AttendanceTabs = () => {
             label: 'Reports',
         },
         {
-            key: routes.DASHBOARD,
-            label: 'History',
+            key: routes.USER_ATTENDANCE_COUNT,
+            label: 'Reports Count',
         },
     ];
 
