@@ -27,7 +27,7 @@ import RoleRoute from "./components/RoleRoute";
 import AttendanceDashboard from "./pages/AttendanceDashboard";
 import AttendanceReports from "./pages/AttendanceReports";
 import NotFound from "./components/PageNotFound";
-import AttendenceDetails from "./features/AttendanceFeature/AttendenceDetails";
+import AttendenceDetails from "./features/AttendanceDetailsById";
 
 function App() {
   const dispatch = useDispatch();

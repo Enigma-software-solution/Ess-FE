@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Spin, DatePicker, Button } from 'antd';
+import { Table, Spin, DatePicker } from 'antd';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { format } from 'date-fns';
 import qs from 'qs';
 import { getAllAttendanceApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api';
 
-const { RangePicker, MonthPicker } = DatePicker;
+const { RangePicker, MonthPicker, YearPicker } = DatePicker;
 
 const StyledPage = styled.div`
   padding: 20px;
@@ -50,7 +50,6 @@ const SingleUserAttendanceDetails = ({ userId }) => {
     const [isLoading, setIsLoading] = useState(false);
 
     const dispatch = useDispatch();
-
 
     const getAttendanceReports = async (month, startDate, endDate) => {
         const params = qs.stringify({

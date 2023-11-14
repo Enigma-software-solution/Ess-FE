@@ -58,11 +58,12 @@ export const getAllStatsApi = createAsyncThunk(
 
 export const getUserAttendanceStatsById = createAsyncThunk(
     'attendance/get-all-stats-byId',
-    async (id, { rejectWithValue }) => {
+    async (data) => {
         try {
-            const response = await api.get(`/attendance/stats/user/${id}`);
+            const response = await api.get(`/attendance/stats/user/${data?.userId}?${data?.params}`);
+            console.log('RESPONSE', response)
             return response.data;
         } catch (error) {
-            return rejectWithValue(error.response.data);
+            return (error.response.data);
         }
     })
