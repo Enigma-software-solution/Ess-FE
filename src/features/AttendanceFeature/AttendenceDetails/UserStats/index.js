@@ -24,10 +24,10 @@ const UserStats = ({ userId }) => {
 
     return (
         <Card title="Attendance Stats" style={{ width: 300 }}>
-            {statItems.map((item, index) => (
+            {statItems?.map((item, index) => (
                 <StyledStatusCard key={index}>
-                    <strong>{item.label}</strong>
-                    <p>{item.value}</p>
+                    <strong>{item?.label}</strong>
+                    <p>{item?.value}</p>
                 </StyledStatusCard>
             ))}
         </Card>
