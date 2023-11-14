@@ -51,9 +51,6 @@ const SingleUserAttendanceDetails = ({ userId }) => {
 
     const dispatch = useDispatch();
 
-    console.log(userId, "dsadasdasdasdas")
-
-
 
     const getAttendanceReports = async (month, startDate, endDate) => {
         const params = qs.stringify({
@@ -67,7 +64,7 @@ const SingleUserAttendanceDetails = ({ userId }) => {
         try {
             setIsLoading(true);
             const res = await dispatch(getAllAttendanceApi(params, userId)).unwrap();
-            setReports(res?.data);
+            setReports(res?.data?.attendance);
         } catch (error) {
             console.error("Error fetching data:", error);
         } finally {
