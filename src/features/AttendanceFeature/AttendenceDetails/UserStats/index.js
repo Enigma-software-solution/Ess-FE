@@ -1,59 +1,36 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Table } from 'antd';
+import { Card } from 'antd';
 import { getUserAttendanceStatsById } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api';
 import { getAttendenceByIdSelector } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/selectors';
-import { StyledStatsTable } from './styled';
-
-const columns = [
-    {
-        title: 'Absent Count',
-        dataIndex: 'absentCount',
-        key: 'absentCount',
-    },
-    {
-        title: 'Half Count',
-        dataIndex: 'halfCount',
-        key: 'halfCount',
-    },
-    {
-        title: 'Late Count',
-        dataIndex: 'lateCount',
-        key: 'lateCount',
-    },
-    {
-        title: 'Leave',
-        dataIndex: 'leave',
-        key: 'leave',
-    },
-    {
-        title: 'Present Count',
-        dataIndex: 'presentCount',
-        key: 'presentCount',
-    },
-    {
-        title: 'Total Attendance Count',
-        dataIndex: 'totalAttendanceCount',
-        key: 'totalAttendanceCount',
-    },
-];
+import { StyledStatusCard } from './styled';
 
 const UserStats = ({ userId }) => {
     const dispatch = useDispatch();
-
     const userStats = useSelector(getAttendenceByIdSelector);
 
     useEffect(() => {
         dispatch(getUserAttendanceStatsById(userId));
-    }, []);
+    }, ); 
 
-    const data = [userStats];
+    const statItems = [
+        { label: 'Absent ', value: userStats?.absentCount },
+        { label: 'Half-Day', value: userStats?.halfCount },
+        { label: 'Late ', value: userStats?.lateCount },
+        { label: 'Leave', value: userStats?.leave },
+        { label: 'Present ', value: userStats?.presentCount },
+        { label: 'Total Attendance ', value: userStats?.totalAttendanceCount },
+    ];
 
     return (
-        <StyledStatsTable>
-            <h2>Attendance Stats</h2>
-            <Table columns={columns} dataSource={data} pagination={false} rowKey={(record) => record.id} />
-        </StyledStatsTable>
+        <Card title="Attendance Stats" style={{ width: 300 }}>
+            {statItems?.map((item, index) => (
+                <StyledStatusCard key={index}>
+                    <strong>{item?.label}</strong>
+                    <p>{item?.value}</p>
+                </StyledStatusCard>
+            ))}
+        </Card>
     );
 };
 
