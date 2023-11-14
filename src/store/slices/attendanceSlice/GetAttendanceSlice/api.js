@@ -55,3 +55,14 @@ export const getAllStatsApi = createAsyncThunk(
         }
     }
 );
+
+export const getUserAttendanceStatsById = createAsyncThunk(
+    'attendance/get-all-stats-byId',
+    async (id, { rejectWithValue }) => {
+        try {
+            const response = await api.get(`/attendance/stats/user/${id}`);
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(error.response.data);
+        }
+    })

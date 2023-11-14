@@ -51,9 +51,6 @@ const SingleUserAttendanceDetails = ({ userId }) => {
 
     const dispatch = useDispatch();
 
-    console.log(userId, "dsadasdasdasdas")
-
-
 
     const getAttendanceReports = async (month, startDate, endDate) => {
         const params = qs.stringify({

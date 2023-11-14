@@ -1,1 +1,1 @@
-export const getAttendenceByIdSelector = (state) => state?.attendance?.data
+export const getAttendenceByIdSelector = (state) => state?.attendanceStats?.statsData
