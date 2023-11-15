@@ -30,18 +30,18 @@ export const getUserAttendanceById = createAsyncThunk(
         }
     })
 
-export const getAllAttendanceApi = createAsyncThunk(
-    "attendance/get-all-attendance",
-    async (params, { rejectWithValue }) => {
-        try {
-            const response = await api.get(`/attendance?${params}`);
-            return response;
-        } catch (error) {
-            toast.warn(error.response.data.message || error?.message)
-            return rejectWithValue(error.response?.data || "An error occurred");
+    export const getAllAttendanceApi = createAsyncThunk(
+        "attendance/get-all-attendance",
+        async (params, { rejectWithValue }) => {
+            try {
+                const response = await api.get(`/attendance?${params}`);
+                return response;
+            } catch (error) {
+                toast.warn(error.response.data.message || error?.message)
+                return rejectWithValue(error.response?.data || "An error occurred");
+            }
         }
-    }
-);
+    );
 
 export const getAllStatsApi = createAsyncThunk(
     "attendance/get-all-stats",

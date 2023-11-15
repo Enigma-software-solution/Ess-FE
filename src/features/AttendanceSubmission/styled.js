@@ -57,3 +57,7 @@ export const SearchWrapper = styled.div`
 export const CardWrapper = styled.div`
   margin-bottom: "40px";
 `;
+export const CardImage = styled.img`
+  border-radius: 50%;
+  box-shadow: -4px -4px 119px -16px rgba(0, 0, 0, 0.75);
+`;

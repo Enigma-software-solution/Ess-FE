@@ -8,6 +8,7 @@ import {
   SearchWrapper,
   SubmitButton,
   CardWrapper,
+  CardImage,
 } from "./styled";
 import { getAllUsersApi } from "src/store/slices/userSlice/apis";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,11 +35,6 @@ const Attendance = () => {
     setFilteredUsers(users);
   }, [users]);
 
-  const imageStyle = {
-    borderRadius: "50%",
-    boxShadow: "-4px -4px 119px -16px rgba(0,0,0,0.75)",
-  };
-
   let settings = {
     slidesToShow: 5,
     arrows: false,
@@ -53,7 +49,7 @@ const Attendance = () => {
   const nextDay = new Date(currentTime);
   nextDay.setDate(currentTime.getDate() + 1);
 
-  const handleChange = (value, id) => {
+  const handleChange = (value) => {
     setSelectedValue(value);
   };
 
@@ -77,12 +73,8 @@ const Attendance = () => {
     const user = filteredUsers.find((u) => u._id === userId);
     const userReason = reason[userId];
 
-    if (user) {
-      setPresentUsers((prevUsers) => [...prevUsers, user]);
-      setFilteredUsers((prevUsers) =>
-        prevUsers.filter((u) => u._id !== userId)
-      );
-    }
+    setPresentUsers((prevUsers) => [...prevUsers, user]);
+    setFilteredUsers((prevUsers) => prevUsers.filter((u) => u._id !== userId));
     const prepareduser = {
       user: userId,
       date: nextDay,
@@ -118,7 +110,7 @@ const Attendance = () => {
     {
       title: "Last Name",
       dataIndex: "last_name",
-      key: "first_name",
+      key: "last_name",
     },
     {
       title: "Role",
@@ -163,11 +155,10 @@ const Attendance = () => {
                 color="green"
               >
                 <ImageWrapper>
-                  <img
+                  <CardImage
                     width={"100px"}
                     height={"100px"}
                     src={avatar}
-                    style={imageStyle}
                     alt="Avatar"
                   />
                 </ImageWrapper>
