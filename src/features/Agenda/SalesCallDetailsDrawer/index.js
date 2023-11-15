@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Card, Drawer, Popconfirm, Select } from "antd";
+import { Button, Card, Drawer, Popconfirm } from "antd";
 import { format } from "date-fns";
 import {
   checkEventDrawer,
@@ -26,17 +26,13 @@ const SalesCallDetailsDrawer = () => {
   const isNotesDrawer = useSelector(checkNotesDrawer);
   const selectedEvent = useSelector(getSelectedEvent);
 
-  const formatDate = (dateString) => {
-    return format(new Date(dateString), "MMMM dd, yyyy HH:mm");
-  };
-
   const handleNotesDrawer = () => {
     dispatch(showNotesDrawer());
   };
 
   const handleConfirmDelete = (record) => {
     try {
-      dispatch(DeleteEventsApi(record._id));
+      dispatch(DeleteEventsApi(record?._id));
       dispatch(closeEventDrawer());
       toast.success("Record Deleted Successfully");
     } catch (err) {
@@ -76,7 +72,7 @@ const SalesCallDetailsDrawer = () => {
           </div>
         }
       >
-        {selectedEvent?.start && selectedEvent.end && (
+        {selectedEvent?.start && selectedEvent?.end && (
           <div className="mb-1"  >
             <div style={{ display: "flex", justifyContent: 'space-between', gap: "20px", marginBottom: '20px' }}>
               <Button type="primary" onClick={handleNotesDrawer}>
@@ -91,17 +87,17 @@ const SalesCallDetailsDrawer = () => {
 
             <div className="d-flex justify-content-end align-items-end flex-column  mb-1">
               <p>
-               <strong> Date:</strong> {format(new Date(selectedEvent?.start), "dd-MM-yyyy")}
+                <strong> Date:</strong> {format(new Date(selectedEvent?.start), "dd-MM-yyyy")}
               </p>
               <p>
-              <strong> Time:</strong> {format(new Date(selectedEvent.start), "p")} -{" "}
-                {format(new Date(selectedEvent.end), "p")}
+                <strong> Time:</strong> {format(new Date(selectedEvent?.start), "p")} -{" "}
+                {format(new Date(selectedEvent?.end), "p")}
               </p>
             </div>
           </div>
         )}
 
-        {selectedEvent && selectedEvent.start && selectedEvent.end && (
+        {selectedEvent && selectedEvent?.start && selectedEvent?.end && (
           <div className="d-flex  gap-2">
             <Card className="w-100 shadow m-3 ">
               <table className="table">
@@ -120,19 +116,19 @@ const SalesCallDetailsDrawer = () => {
                   </tr>
                   <tr>
                     <th className="fw-bold">Call Duration :</th>
-                    <td>{selectedEvent.callDuration} seconds</td>
+                    <td>{selectedEvent?.callDuration} seconds</td>
                   </tr>
                   <tr>
                     <th className="fw-bold">Number of Guests :</th>
-                    <td>{selectedEvent.numOfGuests}</td>
+                    <td>{selectedEvent?.numOfGuests}</td>
                   </tr>
                   <tr>
                     <th className="fw-bold">Call Type :</th>
-                    <td>{selectedEvent.callType}</td>
+                    <td>{selectedEvent?.callType}</td>
                   </tr>
                   <tr>
                     <th className="fw-bold">Call Mode :</th>
-                    <td>{selectedEvent.callMode}</td>
+                    <td>{selectedEvent?.callMode}</td>
                   </tr>
                   <tr>
                     <th className="fw-bold">Apply Platform :</th>
@@ -140,7 +136,7 @@ const SalesCallDetailsDrawer = () => {
                   </tr>
                   <tr>
                     <th className="fw-bold">Call Platform :</th>
-                    <td>{selectedEvent.callPlatform}</td>
+                    <td>{selectedEvent?.callPlatform}</td>
                   </tr>
                   <tr>
                     <th className="fw-bold">Mail Link :</th>
@@ -168,21 +164,17 @@ const SalesCallDetailsDrawer = () => {
               </table>
             </Card>
 
-
             {selectedEvent?.notes &&
               selectedEvent?.notes !== null &&
               selectedEvent?.notes !== "" && (
                 <Card className="w-100" title="Notes" style={{ maxHeight: "500px", overflow: "auto" }}>
-                  <div
-                    dangerouslySetInnerHTML={{ __html: selectedEvent?.notes }}
-                  />
+                  <div dangerouslySetInnerHTML={{ __html: selectedEvent?.notes }} />
                 </Card>
               )}
-
           </div>
         )}
 
-        {selectedEvent && selectedEvent.start && selectedEvent.end && (
+        {selectedEvent && selectedEvent?.start && selectedEvent?.end && (
           <div className="w-100  text-end">
             <div className="mb-1">
               <span className="fw-bold">Profile:</span>
@@ -197,7 +189,7 @@ const SalesCallDetailsDrawer = () => {
             <div className="mb-1 ">
               <span className="fw-bold">Created Date:</span>
               <span className="m-3">
-                {selectedEvent?.createdAt ? new Date(selectedEvent.createdAt).toLocaleDateString() : ''}
+                {selectedEvent?.createdAt ? new Date(selectedEvent?.createdAt).toLocaleDateString() : ''}
               </span>
             </div>
           </div>
