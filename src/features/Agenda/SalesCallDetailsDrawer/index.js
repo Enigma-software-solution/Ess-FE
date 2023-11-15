@@ -91,10 +91,10 @@ const SalesCallDetailsDrawer = () => {
 
             <div className="d-flex justify-content-end align-items-end flex-column  mb-1">
               <p>
-                Date: {format(new Date(selectedEvent?.start), "dd-MM-yyyy")}
+               <strong> Date:</strong> {format(new Date(selectedEvent?.start), "dd-MM-yyyy")}
               </p>
               <p>
-                Time: {format(new Date(selectedEvent.start), "p")} -{" "}
+              <strong> Time:</strong> {format(new Date(selectedEvent.start), "p")} -{" "}
                 {format(new Date(selectedEvent.end), "p")}
               </p>
             </div>
@@ -102,75 +102,72 @@ const SalesCallDetailsDrawer = () => {
         )}
 
         {selectedEvent && selectedEvent.start && selectedEvent.end && (
-          <div className="d-flex gap-2">
-            <Card className="w-100" title="Call information">
-              <div className="mb-1">
-                <span className="fw-bold">Company Name:</span>
-                <span className="m-3">{selectedEvent?.apply?.companyName}</span>
-              </div>
-
-              <div className="mb-1">
-                <span className="fw-bold">Call With:</span>
-                <span className="m-3">{selectedEvent?.callWith}</span>
-              </div>
-
-              <div className="mb-1">
-                <span className="fw-bold">Job Title:</span>
-                <span className="m-3">
-                  {selectedEvent?.apply?.positionToApply}
-                </span>
-              </div>
-              <div className="mb-1">
-                <span className="fw-bold">Call Duration:</span>
-                <span className="m-3">
-                  {selectedEvent.callDuration} seconds
-                </span>
-              </div>
-              <div className="mb-1">
-                <span className="fw-bold">Number of Guests:</span>
-                <span className="m-3">{selectedEvent.numOfGuests}</span>
-              </div>
-              <div className="mb-1">
-                <span className="fw-bold">Call Type:</span>
-                <span className="m-3">{selectedEvent.callType}</span>
-              </div>
-              <div className="mb-1">
-                <span className="fw-bold">Call Mode:</span>
-                <span className="m-3">{selectedEvent.callMode}</span>
-              </div>
-              <div className="mb-1">
-                <span className="fw-bold">Apply Platform:</span>
-                <span className="m-3">{selectedEvent?.apply?.platform}</span>
-              </div>
-              <div className="mb-1">
-                <span className="fw-bold">Call Platform:</span>
-                <span className="m-3">{selectedEvent.callPlatform}</span>
-              </div>
-              <div className="mb-1">
-                <span className="fw-bold">Mail Link:</span>
-                <span className="m-3">
-                  <a href={selectedEvent?.mailLink}>Mail</a>
-                </span>
-              </div>
-              <div className="mb-1">
-                <span className="fw-bold">Call Link:</span>
-                <span className="m-3">
-                  <a href={selectedEvent?.callLink}>Call</a>
-                </span>
-              </div>
-
-              <div className="mb-1">
-                <span className="fw-bold">Apply Link:</span>
-                <span className="m-3">
-                  <a href={selectedEvent?.apply?.link}>Apply Link</a>
-                </span>
-              </div>
-
-              <div className="mb-1">
-                <span className="fw-bold">Company Information:</span>
-                <span className="m-3">{selectedEvent?.companyInformation}</span>
-              </div>
+          <div className="d-flex  gap-2">
+            <Card className="w-100 shadow m-3 ">
+              <table className="table">
+                <tbody>
+                  <tr>
+                    <th className="fw-bold">Company Name :</th>
+                    <td>{selectedEvent?.apply?.companyName}</td>
+                  </tr>
+                  <tr>
+                    <th className="fw-bold">Call With :</th>
+                    <td>{selectedEvent?.callWith}</td>
+                  </tr>
+                  <tr>
+                    <th className="fw-bold">Job Title :</th>
+                    <td>{selectedEvent?.apply?.positionToApply}</td>
+                  </tr>
+                  <tr>
+                    <th className="fw-bold">Call Duration :</th>
+                    <td>{selectedEvent.callDuration} seconds</td>
+                  </tr>
+                  <tr>
+                    <th className="fw-bold">Number of Guests :</th>
+                    <td>{selectedEvent.numOfGuests}</td>
+                  </tr>
+                  <tr>
+                    <th className="fw-bold">Call Type :</th>
+                    <td>{selectedEvent.callType}</td>
+                  </tr>
+                  <tr>
+                    <th className="fw-bold">Call Mode :</th>
+                    <td>{selectedEvent.callMode}</td>
+                  </tr>
+                  <tr>
+                    <th className="fw-bold">Apply Platform :</th>
+                    <td>{selectedEvent?.apply?.platform}</td>
+                  </tr>
+                  <tr>
+                    <th className="fw-bold">Call Platform :</th>
+                    <td>{selectedEvent.callPlatform}</td>
+                  </tr>
+                  <tr>
+                    <th className="fw-bold">Mail Link :</th>
+                    <td>
+                      <a href={selectedEvent?.mailLink}>Mail</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="fw-bold">Call Link :</th>
+                    <td>
+                      <a href={selectedEvent?.callLink}>Call</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="fw-bold">Apply Link :</th>
+                    <td>
+                      <a href={selectedEvent?.apply?.link}>Apply Link</a>
+                    </td>
+                  </tr>
+                  <tr>
+                    <th className="fw-bold">Company Information :</th>
+                    <td>{selectedEvent?.companyInformation}</td>
+                  </tr>
+                </tbody>
+              </table>
             </Card>
+
 
             {selectedEvent?.notes &&
               selectedEvent?.notes !== null &&
@@ -186,21 +183,21 @@ const SalesCallDetailsDrawer = () => {
         )}
 
         {selectedEvent && selectedEvent.start && selectedEvent.end && (
-          <div className="w-100 d-flex flex-column align-items-end">
+          <div className="w-100  text-end">
             <div className="mb-1">
               <span className="fw-bold">Profile:</span>
               <span className="m-3">{selectedEvent?.apply?.profile?.name}</span>
             </div>
             <div className="mb-1">
-              <span className="fw-bold">Created by:</span>
+              <span className="fw-bold">Created By:</span>
               <span className="m-3">
                 {selectedEvent?.createdBy?.first_name} {selectedEvent?.createdBy?.last_name}
               </span>
             </div>
-            <div className="mb-1">
+            <div className="mb-1 ">
               <span className="fw-bold">Created Date:</span>
               <span className="m-3">
-                {formatDate(selectedEvent?.createdAt)}
+                {selectedEvent?.createdAt ? new Date(selectedEvent.createdAt).toLocaleDateString() : ''}
               </span>
             </div>
           </div>
