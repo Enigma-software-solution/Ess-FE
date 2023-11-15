@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Spin, DatePicker, Button } from 'antd';
+import { Table, Spin, Select, Space, DatePicker, Button, Typography, Flex, Pagination, Tag } from 'antd';
 import { ExportOutlined } from '@ant-design/icons';
 import { CSVLink } from 'react-csv';
 import styled from 'styled-components';
-import AttendanceTabs from '../AttandanceDashbaord/AttendanceTabs';
 import { useDispatch } from 'react-redux';
-
 import { format } from 'date-fns';
 import qs from 'qs';
 import { getAllAttendanceApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api';
+import { AttendanceStatusColor } from 'src/constant/colors';
 
 const { RangePicker, MonthPicker } = DatePicker;
+const { Option } = Select;
 
 const StyledPage = styled.div`
   padding: 20px;
@@ -20,6 +20,25 @@ const StyledPage = styled.div`
 const ExportButton = styled(Button)`
   margin-bottom: 10px;
 `;
+
+const getStatusColor = (status) => {
+    switch (status) {
+        case 'present':
+            return AttendanceStatusColor.Present;
+        case 'absent':
+            return AttendanceStatusColor.Absent;
+        case 'leave':
+            return AttendanceStatusColor.Leave;
+        case 'vacation':
+            return AttendanceStatusColor.Vacation;
+        case 'late':
+            return AttendanceStatusColor.Late;
+        case 'half-day':
+            return AttendanceStatusColor.HalfDay;
+        default:
+            return '#000';
+    }
+};
 
 const columns = [
     {
@@ -49,6 +68,11 @@ const columns = [
         title: 'Status',
         dataIndex: 'status',
         key: 'status',
+        render: (text) => {
+            return (
+                <Tag color={getStatusColor(text)}>{text}</Tag>
+            );
+        },
     },
 ];
 
@@ -56,14 +80,18 @@ const AttendanceReport = () => {
     const [exportData, setExportData] = useState([]);
     const [reports, setReports] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedPagination, setSelectedPagination] = useState(null);
 
     const dispatch = useDispatch();
 
-    const getAttendanceReports = async (month, startDate, endDate) => {
+    const getAttendanceReports = async (options = {}) => {
+        const { month, startDate, endDate, status, pagination } = options;
         const params = qs.stringify({
-            month: month,
-            startDate: startDate,
-            endDate: endDate,
+            month,
+            startDate,
+            endDate,
+            status,
+            ...pagination,
         });
 
         try {
@@ -71,7 +99,7 @@ const AttendanceReport = () => {
             const res = await dispatch(getAllAttendanceApi(params)).unwrap();
             setReports(res?.data);
         } catch (error) {
-            console.error("Error fetching data:", error);
+            console.error('Error fetching data:', error);
         } finally {
             setIsLoading(false);
         }
@@ -79,47 +107,97 @@ const AttendanceReport = () => {
 
     const handleMonthChange = (value) => {
         const month = format(new Date(value), 'MMM');
-        getAttendanceReports(month);
+        getAttendanceReports({ month });
     };
 
     const handleRangePicker = (dates) => {
         if (dates && dates.length === 2) {
             const startDate = format(new Date(dates[0]), 'yyyy-MM-dd');
             const endDate = format(new Date(dates[1]), 'yyyy-MM-dd');
-            getAttendanceReports(null, startDate, endDate);
+            getAttendanceReports({ startDate, endDate });
         }
     };
 
-    useEffect(() => {
-        getAttendanceReports();
-    }, []);
+    const handleStatusChange = (value) => {
+        getAttendanceReports({ status: value });
+    };
 
     const handleExport = () => {
         const csvData = reports?.map((item) => ({
             date: item?.date,
             employeeName: `${item?.user?.first_name} ${item?.user?.last_name}`,
+            checkInTime: item?.checkInTime,
             status: item.status,
         }));
 
         setExportData(csvData);
     };
 
+    const { totalItems, pageSize, totalPages, page } = reports?.paginator ?? {};
+
+    const onPaginationChange = (page, pageSize) => {
+        setSelectedPagination({
+            page,
+            pageSize,
+        });
+
+        const pagination = {
+            page,
+            pageSize,
+        };
+        getAttendanceReports({ pagination });
+    };
+
+    useEffect(() => {
+        getAttendanceReports();
+    }, []);
+
     return (
         <StyledPage>
-            <AttendanceTabs />
-            <h5>Attendance Report</h5>
-            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <MonthPicker onChange={handleMonthChange} placeholder="Select month" />
+            <h5 className="p-2">Attendance Reports</h5>
+            <Flex justify="space-between" align="center" className="mb-2">
+                <Flex align="center" gap={4}>
+                    <Space>
+                        <Select
+                            placeholder="Select attendance status"
+                            onChange={handleStatusChange}
+                            style={{ minWidth: '120px' }}
+                        >
+                            <Option value="present">Present</Option>
+                            <Option value="absent">Absent</Option>
+                            <Option value="leave">Leave</Option>
+                            <Option value="vacation">Vacation</Option>
+                            <Option value="half-day">Half-day</Option>
+                            <Option value="late">Late</Option>
+                        </Select>
+                    </Space>
+                    <MonthPicker onChange={handleMonthChange} />
                     <RangePicker onChange={handleRangePicker} />
-                </div>
+                </Flex>
                 <CSVLink data={exportData} filename={'attendance-report.csv'}>
-                    <ExportButton type="primary" icon={<ExportOutlined />} onClick={handleExport} >
+                    <Button type="primary" icon={<ExportOutlined />} onClick={handleExport}>
                         Export to CSV
-                    </ExportButton>
+                    </Button>
                 </CSVLink>
-            </div>
-            {isLoading ? <Spin size="large" /> : <Table columns={columns} dataSource={reports} />}
+            </Flex>
+            <Table columns={columns} dataSource={reports?.attendance} loading={isLoading} pagination={false} />
+
+            {reports?.paginator && reports?.attendance.length ? (
+                <Pagination
+                    style={{ padding: '10px', display: 'flex', justifyContent: 'flex-end' }}
+                    total={totalItems}
+                    showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
+                    defaultPageSize={pageSize}
+                    defaultCurrent={page}
+                    onChange={(page, pageSize) => {
+                        onPaginationChange(page, pageSize);
+                    }}
+                    showSizeChanger
+                    onShowSizeChange={(current, size) => {
+                        console.log(`Current: ${current}, PageSize: ${size}`);
+                    }}
+                />
+            ) : null}
         </StyledPage>
     );
 };

@@ -1,7 +1,5 @@
-import {
-    createSlice,
-} from "@reduxjs/toolkit";
-import { getUserAttendanceById } from "./api";
+import { createSlice } from "@reduxjs/toolkit";
+import { getUserAttendanceById, getUserAttendanceStatsById } from "./api";
 
 const initialState = {
     status: "idle",
@@ -21,26 +19,48 @@ const attendanceSlice = createSlice({
 
         builder.addCase(getUserAttendanceById.fulfilled, (state, action) => {
             state.status = "succeeded";
-            state.loading = false
+            state.loading = false;
             state.data = action.payload.data;
         });
 
         builder.addCase(getUserAttendanceById.rejected, (state, action) => {
             state.status = "error";
-            state.loading = false
+            state.loading = false;
             state.error = action.error.message;
         });
-
-        // builder.addCase(createClientApi.fulfilled, (state, action) => {
-        //     state.status = "succeeded";
-        //     state.data = [action?.payload?.data, ...state.data];
-        // });
-
-        // builder.addCase(deleteClientApi.fulfilled, (state, action) => {
-        //     state.data = state?.data?.filter((client) => client?._id !== action?.payload?.clientId)
-        // });
     },
-
 });
+
+const initialStateStats = {
+    status: "idle",
+    error: null,
+    statsData: {},
+    loading: false,
+};
+
+const attendanceStatsSlice = createSlice({
+    name: "attendanceStats",
+    initialState: initialStateStats,
+    extraReducers(builder) {
+        builder.addCase(getUserAttendanceStatsById.pending, (state, action) => {
+            state.status = "loading";
+            state.loading = true;
+        });
+
+        builder.addCase(getUserAttendanceStatsById.fulfilled, (state, action) => {
+            state.status = "succeeded";
+            state.loading = false;
+            state.statsData = action.payload;
+        });
+
+        builder.addCase(getUserAttendanceStatsById.rejected, (state, action) => {
+            state.status = "error";
+            state.loading = false;
+            state.error = action.error.message;
+        });
+    },
+});
+
+export const { reducer: attendanceStatsReducer } = attendanceStatsSlice;
 
 export default attendanceSlice.reducer;

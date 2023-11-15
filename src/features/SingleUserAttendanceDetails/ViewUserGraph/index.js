@@ -9,6 +9,7 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js';
+import { StyledGraph } from './styled';
 
 ChartJS.register(
     CategoryScale,
@@ -27,7 +28,7 @@ const options = {
         },
         title: {
             display: true,
-            text: 'Attendance Chart',
+            text: 'Full Month Chart',
         },
     },
 };
@@ -57,9 +58,9 @@ const attendanceData = {
 
 const ViewUserAttendanceGraph = () => {
     return (
-        <div>
-            <Bar options={options} data={attendanceData} />
-        </div>
+        <StyledGraph >
+            <Bar options={options} data={attendanceData} width={"500px"} height={"300px"} />
+        </StyledGraph>
     );
 };
 
