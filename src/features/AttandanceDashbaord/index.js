@@ -2,6 +2,7 @@ import React from 'react'
 import TodayCount from './TodayCount'
 import OnLeave from './OnLeave'
 import ReportChart from './ReportChart'
+import { Divider } from 'antd'
 
 const AttandanceDashbaord = () => {
     return (
@@ -12,10 +13,7 @@ const AttandanceDashbaord = () => {
                 <div className='w-75'>
                     <TodayCount />
 
-                    <div className='mt-5'>
-                        <ReportChart />
-
-                    </div>
+                    <ReportChart />
                 </div>
                 <div className='w-25 mt-3' >
                     <OnLeave />

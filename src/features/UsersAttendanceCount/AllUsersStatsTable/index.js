@@ -23,7 +23,7 @@ const AllUsersStatsTable = () => {
         })
 
         try {
-            const res = await dispatch(getAllUsersStatsApi(selectedMonth && queryParams)).unwrap()
+            const res = await dispatch(getAllUsersStatsApi(queryParams)).unwrap()
             setAllStats(res?.data)
         } catch (err) {
             console.log(err)
