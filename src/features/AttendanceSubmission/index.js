@@ -1,120 +1,74 @@
 import React, { useEffect, useState } from "react";
-import { Badge, Carousel, Select, Table } from "antd";
-import avatar from "../../assets/avatar.jpg";
-import {
-  ImageWrapper,
-  InnerCard,
-  SearchInput,
-  SearchWrapper,
-  SubmitButton,
-  CardWrapper,
-  CardImage,
-} from "./styled";
-import { getAllUsersApi } from "src/store/slices/userSlice/apis";
 import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteAttendance,
+  getAllAttendanceApi,
+} from "src/store/slices/attendanceSlice/GetAttendanceSlice/api";
+import { getAllUsersApi } from "src/store/slices/userSlice/apis";
 import { getAllUsers } from "src/store/slices/userSlice/selectors";
+import AttendanceSlider from "./AttendanceSlider";
+import qs from "qs";
+import { getAllAttendance } from "src/store/slices/attendanceSlice/GetAttendanceSlice/selectors";
+import { Table } from "antd";
 import DeleteButton from "src/components/buttons/DeleteButton";
-import { submitAttendanceApi } from "src/store/slices/attendanceSlice/GetAttendanceSlice/api";
-import { toast } from "react-toastify";
 
-const Attendance = () => {
+const AttendanceSubmission = () => {
   const users = useSelector(getAllUsers);
-  const [filteredUsers, setFilteredUsers] = useState(users);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [presentUsers, setPresentUsers] = useState([]);
+  const todayAllAttendance = useSelector(getAllAttendance);
+
+  const [filterdUsers, setFilterdUsers] = useState([]);
+
   const dispatch = useDispatch();
-  const [selectedValue, setSelectedValue] = useState("");
-  const [reason, setReason] = useState({});
+
+  const currentDate = new Date();
+  const nextDay = new Date(currentDate);
+  nextDay.setDate(currentDate.getDate() + 1);
 
   useEffect(() => {
     dispatch(getAllUsersApi());
-    setFilteredUsers(users);
   }, []);
 
   useEffect(() => {
-    setFilteredUsers(users);
+    const filteredUsers = users?.filter(
+      (user) =>
+        !todayAllAttendance
+          ?.map((record) =>
+            record.user?._id ? record?.user?._id : record?.user
+          )
+          .includes(user?._id)
+    );
+
+    setFilterdUsers(filteredUsers);
+  }, [users, todayAllAttendance]);
+
+  useEffect(() => {
+    const queryParams = qs.stringify({
+      date: nextDay,
+    });
+    dispatch(getAllAttendanceApi(queryParams));
   }, [users]);
 
-  let settings = {
-    slidesToShow: 5,
-    arrows: false,
-    infinite: false,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 8000,
-    lazyLoad: true,
-  };
-
-  const currentTime = new Date();
-  const nextDay = new Date(currentTime);
-  nextDay.setDate(currentTime.getDate() + 1);
-
-  const handleChange = (value) => {
-    setSelectedValue(value);
-  };
-
-  const handleSearchChange = (e) => {
-    const { value } = e.target;
-    setSearchTerm(value);
-
-    if (value === "") {
-      setFilteredUsers(users);
-    } else {
-      const filtered = users.filter(
-        (user) =>
-          user.first_name.toLowerCase().includes(value.toLowerCase()) ||
-          user.last_name.toLowerCase().includes(value.toLowerCase())
-      );
-      setFilteredUsers(filtered);
-    }
-  };
-
-  const handlePresent = (userId) => {
-    const user = filteredUsers.find((u) => u._id === userId);
-    const userReason = reason[userId];
-
-    setPresentUsers((prevUsers) => [...prevUsers, user]);
-    setFilteredUsers((prevUsers) => prevUsers.filter((u) => u._id !== userId));
-    const prepareduser = {
-      user: userId,
-      date: nextDay,
-      status: selectedValue || "present",
-      checkInTime: nextDay,
-      notes: userReason || "",
-    };
-
-    const response = dispatch(submitAttendanceApi(prepareduser));
-    if (response.status === "success") {
-      toast.warn("Attendance Submitted");
-    }
-    if (response.status === "pending") {
-      toast.warn("Attendance Pending");
-    }
-  };
-
-  const handleDelete = (userId) => {
-    const user = presentUsers.find((u) => u._id === userId);
-
-    if (user) {
-      setFilteredUsers((prevUsers) => [...prevUsers, user]);
-      setPresentUsers((prevUsers) => prevUsers.filter((u) => u._id !== userId));
-    }
+  const handleDelete = (id) => {
+    dispatch(deleteAttendance(id));
   };
 
   const columns = [
     {
       title: "First Name",
-      dataIndex: "first_name",
+      dataIndex: "user?.first_name",
       key: "first_name",
+      render: (text, record) => record?.user?.first_name,
     },
+
     {
       title: "Last Name",
-      dataIndex: "last_name",
+      dataIndex: "user?.last_name",
       key: "last_name",
+      render: (text, record) => record?.user?.last_name,
     },
     {
-      title: "Role",
-      dataIndex: "role",
+      title: "Check In Time",
+      dataIndex: "checkInTime",
     },
     {
       title: "Status",
@@ -128,7 +82,7 @@ const Attendance = () => {
         <div className="d-flex gap-1">
           <DeleteButton
             onClick={() => {
-              handleDelete(record._id);
+              handleDelete(record?._id, record?.user?.first_name);
             }}
           >
             Delete
@@ -137,108 +91,17 @@ const Attendance = () => {
       ),
     },
   ];
-  const renderSlider = (users) => (
-    <Carousel
-      style={{
-        background:
-          "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 0%, rgba(0,212,255,1) 100%)",
-      }}
-      {...settings}
-    >
-      {users &&
-        users?.map((user) => (
-          <div>
-            <InnerCard key={user?._id} hoverable>
-              <Badge.Ribbon
-                style={{ right: 20 }}
-                text={user?.role}
-                color="green"
-              >
-                <ImageWrapper>
-                  <CardImage
-                    width={"100px"}
-                    height={"100px"}
-                    src={avatar}
-                    alt="Avatar"
-                  />
-                </ImageWrapper>
-                <div>
-                  <div
-                    style={{
-                      margin: "10px",
-                      display: "flex",
-                      flexDirection: "column",
-                      gap: "30px",
-                    }}
-                  >
-                    <h5>
-                      {user?.first_name} {user?.last_name}
-                    </h5>
-                    <Select
-                      dropdownStyle={{
-                        background: "#e4eefc",
-                        fontSize: "25px",
-                      }}
-                      showSearch
-                      defaultValue="present"
-                      size="large"
-                      onChange={(value) => handleChange(value, user?._id)}
-                      options={[
-                        { value: "present", label: "Present" },
-                        { value: "absent", label: "Absent" },
-                        { value: "late", label: "Late" },
-                        { value: "leave", label: "Leave" },
-                        { value: "half-day", label: "Half-day" },
-                        { value: "vacation", label: "Vacation" },
-                      ]}
-                    />
-
-                    <div>
-                      <h6>Notes:</h6>
-                      <input
-                        style={{
-                          padding: "20px",
-                          width: "100%",
-                          borderRadius: "20px",
-                          height: "70px",
-                        }}
-                        value={reason[user._id] || ""}
-                        onChange={(e) =>
-                          setReason((prevReasons) => ({
-                            ...prevReasons,
-                            [user._id]: e.target.value,
-                          }))
-                        }
-                      ></input>
-                    </div>
-                    <SubmitButton onClick={() => handlePresent(user._id)}>
-                      Submit
-                    </SubmitButton>
-                  </div>
-                </div>
-              </Badge.Ribbon>
-            </InnerCard>
-          </div>
-        ))}
-    </Carousel>
-  );
   return (
-    <>
-      <SearchWrapper>
-        <SearchInput
-          type="text"
-          placeholder="Search by name"
-          value={searchTerm}
-          onChange={handleSearchChange}
-        />
-      </SearchWrapper>
-      <CardWrapper>
-        {renderSlider(filteredUsers)}
-        {searchTerm && filteredUsers?.length === 0 && <p>No Employee Found</p>}
-      </CardWrapper>
-      <Table dataSource={presentUsers} columns={columns} />
-    </>
+    <div>
+      <AttendanceSlider users={filterdUsers} />
+      <Table
+        dataSource={todayAllAttendance}
+        columns={columns}
+        pagination={false}
+      />
+      ;
+    </div>
   );
 };
 
-export default Attendance;
+export default AttendanceSubmission;
