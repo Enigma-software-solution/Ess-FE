@@ -41,12 +41,11 @@ export const SubmitButton = styled.button`
 
 export const SearchInput = styled.input`
   width: 50%;
+  margin: 30px;
+  height: 40px;
   padding: 10px;
-  border: 3px solid light grey;
-  border-radius: 40px;
-  fontsize: 16px;
-  margin: 30px 10px;
-  boxshadow: 7px 9px 10px 0px rgba(0, 0, 0, 0.18);
+  border-radius: 20px;
+  box-shadow: 7px 9px 10px 0px rgba(0, 0, 0, 0.18);
 `;
 export const SearchWrapper = styled.div`
   margin-bottom: 10px;
@@ -55,9 +54,17 @@ export const SearchWrapper = styled.div`
   align-items: center;
 `;
 export const CardWrapper = styled.div`
-  margin-bottom: "40px";
+  margin-bottom: 40px;
 `;
 export const CardImage = styled.img`
   border-radius: 50%;
   box-shadow: -4px -4px 119px -16px rgba(0, 0, 0, 0.75);
+`;
+
+export const MainWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
 `;

@@ -11,6 +11,7 @@ import qs from "qs";
 import { getAllAttendance } from "src/store/slices/attendanceSlice/GetAttendanceSlice/selectors";
 import { Table } from "antd";
 import DeleteButton from "src/components/buttons/DeleteButton";
+import { MainWrapper, SearchInput } from "./styled";
 
 const AttendanceSubmission = () => {
   const users = useSelector(getAllUsers);
@@ -91,16 +92,41 @@ const AttendanceSubmission = () => {
       ),
     },
   ];
+  const handleChange = (value) => {
+    if (value.trim() === "") {
+      const filteredUsers = users?.filter(
+        (user) =>
+          !todayAllAttendance
+            ?.map((record) =>
+              record.user?._id ? record?.user?._id : record?.user
+            )
+            .includes(user?._id)
+      );
+
+      setFilterdUsers(filteredUsers);
+    } else {
+      const dd = users.filter((u) =>
+        u.first_name.toLowerCase().includes(value.toLowerCase())
+      );
+      setFilterdUsers(dd);
+    }
+  };
   return (
-    <div>
-      <AttendanceSlider users={filterdUsers} />
-      <Table
-        dataSource={todayAllAttendance}
-        columns={columns}
-        pagination={false}
-      />
-      ;
-    </div>
+    <>
+      <MainWrapper>
+        <SearchInput
+          onChange={(e) => handleChange(e.target.value)}
+        ></SearchInput>
+      </MainWrapper>
+      <div>
+        <AttendanceSlider users={filterdUsers} />
+        <Table
+          dataSource={todayAllAttendance}
+          columns={columns}
+          pagination={false}
+        />
+      </div>
+    </>
   );
 };
 
