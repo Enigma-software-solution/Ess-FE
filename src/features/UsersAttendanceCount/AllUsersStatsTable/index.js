@@ -1,10 +1,11 @@
-import { Button, DatePicker, Space, Table } from 'antd'
-import { format } from 'date-fns'
-import qs from 'qs'
-import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { getAllUsersStatsApi } from 'src/store/slices/attendanceSlice/AllStatsSlice/api'
-
+import { ExportOutlined } from '@ant-design/icons';
+import { Button, DatePicker, Flex, Space, Table } from 'antd';
+import { format } from 'date-fns';
+import qs from 'qs';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { getAllUsersStatsApi } from 'src/store/slices/attendanceSlice/AllStatsSlice/api';
+import * as XLSX from 'xlsx';
 
 const AllUsersStatsTable = () => {
     const [allStats, setAllStats] = useState(null)
@@ -84,12 +85,35 @@ const AllUsersStatsTable = () => {
         },
     ];
 
+    const handleExport = () => {
+        if (allStats) {
+            const dataForExport = allStats.map((item) => ({
+                UserName: `${item?.user?.first_name} ${item?.user?.last_name}`,
+                Present: item.present,
+                Absent: item.absent,
+                Leave: item.leave,
+                'Half-Day': item.halfDay,
+                Vacation: item.vacation,
+            }));
+
+            const worksheet = XLSX.utils.json_to_sheet(dataForExport);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'All Users Stats');
+            XLSX.writeFile(workbook, 'all_users_stats.xlsx');
+        }
+    };
+
     return (
         <>
-            <Space size={10} style={{ marginBottom: '10px' }}>
-                <DatePicker picker='month' onChange={handleMonthChange} value={selectedMonth} />
-                <DatePicker picker='year' onChange={handleYearChange} value={selectedYear} />
-            </Space>
+            <Flex justify='space-between' className='mb-3'>
+                <Space size={6}>
+                    <DatePicker picker='month' onChange={handleMonthChange} value={selectedMonth} />
+                    <DatePicker picker='year' onChange={handleYearChange} value={selectedYear} />
+                </Space>
+                <Button type="primary" icon={<ExportOutlined />} onClick={handleExport}>
+                    Export
+                </Button>
+            </Flex>
 
             <Table columns={columns} dataSource={allStats} loading={isLoading} pagination={false} />
         </>
