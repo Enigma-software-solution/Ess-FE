@@ -8,18 +8,10 @@ import { format } from 'date-fns';
 import qs from 'qs';
 import { getAllAttendanceApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api';
 import { AttendanceStatusColor } from 'src/constant/colors';
+import { StyledDiv, StyledPage } from './styled';
 
 const { RangePicker, MonthPicker } = DatePicker;
 const { Option } = Select;
-
-const StyledPage = styled.div`
-  padding: 20px;
-  font-family: 'Arial', sans-serif;
-`;
-
-const ExportButton = styled(Button)`
-  margin-bottom: 10px;
-`;
 
 const getStatusColor = (status) => {
     switch (status) {
@@ -154,32 +146,37 @@ const AttendanceReport = () => {
 
     return (
         <StyledPage>
-            <h5 className="p-2">Attendance Reports</h5>
-            <Flex justify="space-between" align="center" className="mb-2">
-                <Flex align="center" gap={4}>
-                    <Space>
-                        <Select
-                            placeholder="Select attendance status"
-                            onChange={handleStatusChange}
-                            style={{ minWidth: '120px' }}
-                        >
-                            <Option value="present">Present</Option>
-                            <Option value="absent">Absent</Option>
-                            <Option value="leave">Leave</Option>
-                            <Option value="vacation">Vacation</Option>
-                            <Option value="half-day">Half-day</Option>
-                            <Option value="late">Late</Option>
-                        </Select>
-                    </Space>
-                    <MonthPicker onChange={handleMonthChange} />
-                    <RangePicker onChange={handleRangePicker} />
+            <StyledDiv>
+                <Flex justify="space-between" className="mb-3" >
+                    <h5 className="p-2">Attendance Reports</h5>
+                    <CSVLink data={exportData} filename={'attendance-report.csv'}>
+                        <Button type="primary" icon={<ExportOutlined />} onClick={handleExport}>
+                            Export to CSV
+                        </Button>
+                    </CSVLink>
                 </Flex>
-                <CSVLink data={exportData} filename={'attendance-report.csv'}>
-                    <Button type="primary" icon={<ExportOutlined />} onClick={handleExport}>
-                        Export to CSV
-                    </Button>
-                </CSVLink>
-            </Flex>
+                <Flex justify="space-between" align="center" className="mb-2">
+                    <Flex align="center" gap={4}>
+                        <Space>
+                            <Select
+                                placeholder="Select attendance status"
+                                onChange={handleStatusChange}
+                                style={{ minWidth: '120px' }}
+                            >
+                                <Option value="present">Present</Option>
+                                <Option value="absent">Absent</Option>
+                                <Option value="leave">Leave</Option>
+                                <Option value="vacation">Vacation</Option>
+                                <Option value="half-day">Half-day</Option>
+                                <Option value="late">Late</Option>
+                            </Select>
+                        </Space>
+                        <MonthPicker onChange={handleMonthChange} />
+                        <RangePicker onChange={handleRangePicker} />
+                    </Flex>
+                </Flex>
+            </StyledDiv>
+
             <Table columns={columns} dataSource={reports?.attendance} loading={isLoading} pagination={false} />
 
             {reports?.paginator && reports?.attendance.length ? (

@@ -12,13 +12,15 @@ const AttendenceDetails = () => {
 
     return (
         <>
-            <StyledDetailsTable> <SingleUserAttendanceDetails userId={id} /></StyledDetailsTable>
 
-            <Divider />
             <StyledDetailsStats>
                 <UserStats userId={id} />
                 <ViewUserAttendenceGraph />
             </StyledDetailsStats>
+            <Divider />
+            <StyledDetailsTable> <SingleUserAttendanceDetails userId={id} /></StyledDetailsTable>
+
+
 
         </>
     );
