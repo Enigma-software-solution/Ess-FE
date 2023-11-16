@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Spin, Select, Space, DatePicker, Button, Typography, Flex, Pagination, Tag } from 'antd';
+import { Table, Select, Space, DatePicker, Button, Typography, Flex, Pagination, Tag } from 'antd';
 import { ExportOutlined } from '@ant-design/icons';
 import { CSVLink } from 'react-csv';
 import styled from 'styled-components';
@@ -9,7 +9,7 @@ import qs from 'qs';
 import { getAllAttendanceApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api';
 import { AttendanceStatusColor } from 'src/constant/colors';
 
-const { RangePicker, MonthPicker } = DatePicker;
+const { RangePicker } = DatePicker;
 const { Option } = Select;
 
 const StyledPage = styled.div`
@@ -80,6 +80,9 @@ const AttendanceReport = () => {
     const [exportData, setExportData] = useState([]);
     const [reports, setReports] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedStatus, setSelectedStatus] = useState(null);
+    const [selectedDateRange, setSelectedDateRange] = useState(null);
+
     const [selectedPagination, setSelectedPagination] = useState(null);
 
     const dispatch = useDispatch();
@@ -105,21 +108,32 @@ const AttendanceReport = () => {
         }
     };
 
-    const handleMonthChange = (value) => {
-        const month = format(new Date(value), 'MMM');
-        getAttendanceReports({ month });
+    const handleStatusChange = (value) => {
+        setSelectedStatus(value);
     };
 
     const handleRangePicker = (dates) => {
         if (dates && dates.length === 2) {
-            const startDate = format(new Date(dates[0]), 'yyyy-MM-dd');
-            const endDate = format(new Date(dates[1]), 'yyyy-MM-dd');
-            getAttendanceReports({ startDate, endDate });
+            setSelectedDateRange(dates);
         }
     };
 
-    const handleStatusChange = (value) => {
-        getAttendanceReports({ status: value });
+    const handleSubmit = () => {
+        const status = selectedStatus;
+        let startDate = null;
+        let endDate = null;
+
+        if (selectedDateRange && selectedDateRange.length === 2) {
+            startDate = selectedDateRange[0]?.toISOString();
+            endDate = selectedDateRange[1]?.toISOString();
+        }
+        getAttendanceReports({ status, startDate, endDate });
+    };
+
+    const handleReset = () => {
+        setSelectedStatus(null);
+        setSelectedDateRange(null);
+        getAttendanceReports(); // Trigger function without any parameters to fetch all data
     };
 
     const handleExport = () => {
@@ -162,6 +176,7 @@ const AttendanceReport = () => {
                             placeholder="Select attendance status"
                             onChange={handleStatusChange}
                             style={{ minWidth: '120px' }}
+                            value={selectedStatus}
                         >
                             <Option value="present">Present</Option>
                             <Option value="absent">Absent</Option>
@@ -171,9 +186,18 @@ const AttendanceReport = () => {
                             <Option value="late">Late</Option>
                         </Select>
                     </Space>
-                    <MonthPicker onChange={handleMonthChange} />
-                    <RangePicker onChange={handleRangePicker} />
+                    {/* <MonthPicker onChange={handleMonthChange} /> */}
+                    <RangePicker onChange={handleRangePicker} value={selectedDateRange} />
+                    <Space>
+                        <Button type="primary" onClick={handleSubmit}>
+                            Submit
+                        </Button>
+                        <Button onClick={handleReset} >
+                            Reset
+                        </Button>
+                    </Space>
                 </Flex>
+
                 <CSVLink data={exportData} filename={'attendance-report.csv'}>
                     <Button type="primary" icon={<ExportOutlined />} onClick={handleExport}>
                         Export to CSV
