@@ -21,3 +21,13 @@ export const getAllUsersStatsApi = createAsyncThunk("attendance/get-all-users-at
         throw error;
     }
 });
+
+
+export const getYearlyStatsApi = createAsyncThunk("attendance/get-yearly-stats", async (queryParams) => {
+    try {
+        const response = await api.get(`/attendance/stats/yearly?${queryParams}`);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+});

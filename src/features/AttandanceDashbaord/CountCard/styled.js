@@ -5,7 +5,7 @@ width: 100%;
 border-radius:10px;
 padding: 20px;
 background: #fff;
-box-shadow: 0px 0px 20px -7px  rgba(0,0,0,0.2);
+box-shadow: 4px 2px 20px -7px  rgba(0,0,0,0.2);
 
 h5{
     color:#4154F1;
