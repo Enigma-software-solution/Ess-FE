@@ -1,6 +1,6 @@
 import { Badge, Carousel, Select } from "antd";
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { submitAttendanceApi } from "src/store/slices/attendanceSlice/GetAttendanceSlice/api";
 import { CardImage, ImageWrapper, InnerCard, SubmitButton } from "../styled";
 import avatar from "../../../assets/avatar.jpg";
@@ -50,6 +50,7 @@ const AttendanceSlider = ({ users }) => {
       style={{
         background:
           "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 0%, rgba(0,212,255,1) 100%)",
+        marginBottom: "50px",
       }}
       draggable={true}
       {...settings}
