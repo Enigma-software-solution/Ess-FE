@@ -1,10 +1,10 @@
 import React from "react";
-import AttendanceReport from "src/features/AttendanceReports";
-
+import AttandanceDashbaord from "src/features/AttandanceDashbaord";
+  
 const Page = () => {
   return (
     <>
-      <AttendanceReport />
+      <AttandanceDashbaord />
     </>
   );
 };
