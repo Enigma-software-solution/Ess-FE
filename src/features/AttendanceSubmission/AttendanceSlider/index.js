@@ -36,7 +36,7 @@ const AttendanceSlider = ({ users }) => {
   };
 
   let settings = {
-    slidesToShow: 5,
+    slidesToShow: 4,
     arrows: false,
     infinite: false,
     slidesToScroll: 1,
@@ -105,7 +105,7 @@ const AttendanceSlider = ({ users }) => {
                         padding: "20px",
                         width: "100%",
                         borderRadius: "20px",
-                        height: "70px",
+                        height: "40px",
                       }}
                       value={notes[user?._id] || ""}
                       onChange={(e) =>
