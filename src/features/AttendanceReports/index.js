@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Spin, Select, Space, DatePicker, Button, Typography, Flex, Pagination, Tag } from 'antd';
+import { Table, Select, Space, DatePicker, Button, Typography, Flex, Pagination, Tag } from 'antd';
 import { ExportOutlined } from '@ant-design/icons';
 import { CSVLink } from 'react-csv';
 import styled from 'styled-components';
@@ -10,7 +10,7 @@ import { getAllAttendanceApi } from 'src/store/slices/attendanceSlice/GetAttenda
 import { AttendanceStatusColor } from 'src/constant/colors';
 import { StyledDiv, StyledPage } from './styled';
 
-const { RangePicker, MonthPicker } = DatePicker;
+const { RangePicker } = DatePicker;
 const { Option } = Select;
 
 const getStatusColor = (status) => {
@@ -72,6 +72,9 @@ const AttendanceReport = () => {
     const [exportData, setExportData] = useState([]);
     const [reports, setReports] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [selectedStatus, setSelectedStatus] = useState(null);
+    const [selectedDateRange, setSelectedDateRange] = useState(null);
+
     const [selectedPagination, setSelectedPagination] = useState(null);
 
     const dispatch = useDispatch();
@@ -97,21 +100,32 @@ const AttendanceReport = () => {
         }
     };
 
-    const handleMonthChange = (value) => {
-        const month = format(new Date(value), 'MMM');
-        getAttendanceReports({ month });
+    const handleStatusChange = (value) => {
+        setSelectedStatus(value);
     };
 
     const handleRangePicker = (dates) => {
         if (dates && dates.length === 2) {
-            const startDate = format(new Date(dates[0]), 'yyyy-MM-dd');
-            const endDate = format(new Date(dates[1]), 'yyyy-MM-dd');
-            getAttendanceReports({ startDate, endDate });
+            setSelectedDateRange(dates);
         }
     };
 
-    const handleStatusChange = (value) => {
-        getAttendanceReports({ status: value });
+    const handleSubmit = () => {
+        const status = selectedStatus;
+        let startDate = null;
+        let endDate = null;
+
+        if (selectedDateRange && selectedDateRange.length === 2) {
+            startDate = selectedDateRange[0]?.toISOString();
+            endDate = selectedDateRange[1]?.toISOString();
+        }
+        getAttendanceReports({ status, startDate, endDate });
+    };
+
+    const handleReset = () => {
+        setSelectedStatus(null);
+        setSelectedDateRange(null);
+        getAttendanceReports(); // Trigger function without any parameters to fetch all data
     };
 
     const handleExport = () => {

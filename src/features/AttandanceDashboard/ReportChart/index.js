@@ -5,6 +5,9 @@ import { useDispatch } from 'react-redux';
 import { getYearlyStatsApi } from 'src/store/slices/attendanceSlice/AllStatsSlice/api';
 import qs from 'qs'
 import { format } from 'date-fns';
+import { DatePicker, Flex } from 'antd';
+import dayjs from 'dayjs';
+import { AttendanceStatusColor } from 'src/constant/colors';
 
 
 
@@ -18,9 +21,9 @@ const BarChart = () => {
     const dispatch = useDispatch()
 
 
-    const getYearlylStats = async () => {
+    const getYearlylStats = async (year = new Date()) => {
         const queryParams = qs.stringify({
-            year: format(new Date(), 'yyyy'),
+            year: format(new Date(year), 'yyyy'),
         });
 
         try {
@@ -44,28 +47,47 @@ const BarChart = () => {
     const months = allStats ? Object.keys(allStats) : [];
 
 
+    const getStatusColor = (status) => {
+        switch (status) {
+            case 'present':
+                return AttendanceStatusColor.Present;
+            case 'absent':
+                return AttendanceStatusColor.Absent;
+            case 'leave':
+                return AttendanceStatusColor.Leave;
+            case 'vacation':
+                return AttendanceStatusColor.Vacation;
+            case 'late':
+                return AttendanceStatusColor.Late;
+            case 'half-day':
+                return AttendanceStatusColor.HalfDay;
+            default:
+                return '#000';
+        }
+    };
+
     const chartData = {
         labels: months,
         datasets: [
             {
                 label: 'Leave',
                 data: months.map((month) => allStats?.[month].leave),
-                backgroundColor: 'rgba(75,192,192,0.6)',
+                backgroundColor: AttendanceStatusColor.Leave
             },
             {
                 label: 'Absent',
                 data: months.map((month) => allStats?.[month].absent),
-                backgroundColor: 'rgba(255,99,132,0.6)',
+                backgroundColor: AttendanceStatusColor.Absent
             },
             {
                 label: 'Half Day',
                 data: months.map((month) => allStats?.[month].halfDay),
-                backgroundColor: 'rgba(255,205,86,0.6)',
+                backgroundColor: AttendanceStatusColor.HalfDay
             },
             {
                 label: 'Present',
                 data: months.map((month) => allStats?.[month].present),
-                backgroundColor: 'rgba(54,162,235,0.6)',
+                backgroundColor: AttendanceStatusColor.Present
             },
             {
                 label: 'Total',
@@ -75,19 +97,25 @@ const BarChart = () => {
         ],
     };
 
-    const chartOptions = {
 
-    };
+
+    const handleYearlyReports = (e) => {
+        getYearlylStats(e)
+    }
 
 
 
 
     return (
         <div style={{ boxShadow: '4px 2px 20px -7px  rgba(0,0,0,0.2)', marginTop: '40px', padding: '20px' }}>
-            <h5 style={{ color: '#4154F1', marginBottom: '10px' }}>
-                Yearly Reports
-            </h5>
-            <Bar data={chartData} options={chartOptions} />
+            <Flex justify='space-between' align='center' className='mb-2'>
+                <h5 style={{ color: '#4154F1', marginBottom: '10px' }}>
+                    Yearly Reports
+                </h5>
+
+                <DatePicker picker='year' onChange={handleYearlyReports} allowClear={false} defaultValue={dayjs()} />
+            </Flex>
+            <Bar data={chartData} />
         </div>
     );
 };

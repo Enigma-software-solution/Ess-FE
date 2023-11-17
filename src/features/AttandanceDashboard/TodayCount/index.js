@@ -5,17 +5,18 @@ import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import qs from 'qs'
 import { format } from 'date-fns'
-import Loader from 'src/components/Loader'
+
 import { getAllStatsApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api'
+import dayjs from 'dayjs'
 
 const TodayCount = () => {
-    const [loader, setLoader] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
     const [todayStats, setTodayStats] = useState(null)
     const [selectedDate, setSelectedDate] = useState(new Date())
     const dispatch = useDispatch()
 
     const getAllStats = async () => {
-        setLoader(true)
+        setIsLoading(true)
         const params = qs.stringify({ date: new Date(selectedDate) });
         try {
             const res = await dispatch(getAllStatsApi(params)).unwrap();
@@ -25,7 +26,7 @@ const TodayCount = () => {
             toast.error('Error getting stats')
         }
         finally {
-            setLoader(false)
+            setIsLoading(false)
         }
     }
 
@@ -38,20 +39,22 @@ const TodayCount = () => {
         setSelectedDate(date)
     };
 
-
-
-
     return (
         <>
             <Flex justify='space-between' align='center' className='mb-2'>
                 <h6 style={{ color: '#899BBD' }} className='mb-1'>
                     {format(new Date(selectedDate), 'dd MMM yyyy')}
                 </h6>
-                <DatePicker onChange={onChange} allowClear={false} />
+                <DatePicker onChange={onChange} allowClear={false} defaultValue={dayjs()} />
 
             </Flex>
             {
-                !loader ?
+                isLoading ?
+                    <Flex justify='center' align='center'>
+                        <Spin />
+                    </Flex>
+                    :
+
                     <Row gutter={16} >
                         <Col className="gutter-row" span={6}>
                             <CountCard title='Present' day='Today' count={todayStats?.presentCount} />
@@ -67,16 +70,7 @@ const TodayCount = () => {
                             <CountCard title='Half-day' day='Today' count={todayStats?.halfCount} />
                         </Col>
                     </Row>
-                    :
-
-                    <Flex justify='center' align='center'>
-                        <Spin />
-                    </Flex>
             }
-
-
-
-
         </>
     )
 }

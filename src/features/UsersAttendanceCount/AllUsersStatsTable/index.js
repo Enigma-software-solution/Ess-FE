@@ -1,10 +1,11 @@
-import { Button, DatePicker, Space, Table } from 'antd'
-import { format } from 'date-fns'
-import qs from 'qs'
-import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
-import { getAllUsersStatsApi } from 'src/store/slices/attendanceSlice/AllStatsSlice/api'
-
+import { ExportOutlined } from '@ant-design/icons';
+import { Button, DatePicker, Flex, Space, Table } from 'antd';
+import { format } from 'date-fns';
+import qs from 'qs';
+import React, { useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { getAllUsersStatsApi } from 'src/store/slices/attendanceSlice/AllStatsSlice/api';
+import * as XLSX from 'xlsx';
 
 const AllUsersStatsTable = () => {
     const [allStats, setAllStats] = useState(null)
@@ -56,11 +57,7 @@ const AllUsersStatsTable = () => {
             sorter: (a, b) => a.user.first_name.localeCompare(b.user.first_name),
             render: (text, record) => `${record?.user?.first_name} ${record?.user?.last_name}`,
         },
-        {
-            title: 'Present',
-            dataIndex: 'present',
-            key: 'present',
-        },
+
         {
             title: 'Absent',
             dataIndex: 'absent',
@@ -82,14 +79,52 @@ const AllUsersStatsTable = () => {
             dataIndex: 'vacation',
             key: 'vacation',
         },
+        {
+            title: 'Total',
+            dataIndex: 'total',
+            render: (text, record) => record.absent + record.leave + record.halfDay + record.vacation,
+        },
     ];
+
+    const handleExport = () => {
+        if (allStats) {
+            const dataForExport = allStats.map((item) => ({
+                UserName: `${item?.user?.first_name} ${item?.user?.last_name}`,
+                Absent: item.absent,
+                Leave: item.leave,
+                'Half-Day': item.halfDay,
+                Vacation: item.vacation,
+                Total: item.absent + item.leave + item.halfDay + item.vacation,
+            }));
+
+            // Calculate the total for the entire sheet
+            const totalRow = {
+                UserName: 'Total',
+                Absent: allStats.reduce((acc, item) => acc + item.absent, 0),
+                Leave: allStats.reduce((acc, item) => acc + item.leave, 0),
+                'Half-Day': allStats.reduce((acc, item) => acc + item.halfDay, 0),
+                Vacation: allStats.reduce((acc, item) => acc + item.vacation, 0),
+                Total: allStats.reduce((acc, item) => acc + item.absent + item.leave + item.halfDay + item.vacation, 0),
+            };
+
+            const worksheet = XLSX.utils.json_to_sheet([...dataForExport, totalRow]);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, 'All Users Stats');
+            XLSX.writeFile(workbook, 'all_users_stats.xlsx');
+        }
+    };
 
     return (
         <>
-            <Space size={10} style={{ marginBottom: '10px' }}>
-                <DatePicker picker='month' onChange={handleMonthChange} value={selectedMonth} />
-                <DatePicker picker='year' onChange={handleYearChange} value={selectedYear} />
-            </Space>
+            <Flex justify='space-between' className='mb-3'>
+                <Space size={6}>
+                    <DatePicker picker='month' onChange={handleMonthChange} value={selectedMonth} />
+                    <DatePicker picker='year' onChange={handleYearChange} value={selectedYear} />
+                </Space>
+                <Button type="primary" icon={<ExportOutlined />} onClick={handleExport}>
+                    Export
+                </Button>
+            </Flex>
 
             <Table columns={columns} dataSource={allStats} loading={isLoading} pagination={false} />
         </>

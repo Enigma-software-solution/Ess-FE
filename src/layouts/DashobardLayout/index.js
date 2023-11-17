@@ -6,7 +6,7 @@ import { StyledContent, StyledHeader, StyledSider } from "./styled";
 import Sidebar from "src/components/Sidebar";
 import Topbar from "src/components/Topbar";
 import { Outlet } from "react-router-dom";
-import AttendanceTabs from "src/features/AttandanceDashbaord/AttendanceTabs";
+import AttendanceTabs from "src/features/AttandanceDashboard/AttendanceTabs";
 
 const DashboardLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
