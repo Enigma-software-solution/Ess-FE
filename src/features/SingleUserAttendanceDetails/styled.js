@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const StyledDetailsTable = styled('div')`
-height: 100vh;
+height: 85vh;
 width:"100%";
 margin-bottom: 20vh;
 `;
