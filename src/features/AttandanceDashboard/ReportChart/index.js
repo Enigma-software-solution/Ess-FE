@@ -7,6 +7,7 @@ import qs from 'qs'
 import { format } from 'date-fns';
 import { DatePicker, Flex } from 'antd';
 import dayjs from 'dayjs';
+import { AttendanceStatusColor } from 'src/constant/colors';
 
 
 
@@ -46,8 +47,24 @@ const BarChart = () => {
     const months = allStats ? Object.keys(allStats) : [];
 
 
-
-    const chartOptions = {};
+    const getStatusColor = (status) => {
+        switch (status) {
+            case 'present':
+                return AttendanceStatusColor.Present;
+            case 'absent':
+                return AttendanceStatusColor.Absent;
+            case 'leave':
+                return AttendanceStatusColor.Leave;
+            case 'vacation':
+                return AttendanceStatusColor.Vacation;
+            case 'late':
+                return AttendanceStatusColor.Late;
+            case 'half-day':
+                return AttendanceStatusColor.HalfDay;
+            default:
+                return '#000';
+        }
+    };
 
     const chartData = {
         labels: months,
@@ -55,22 +72,22 @@ const BarChart = () => {
             {
                 label: 'Leave',
                 data: months.map((month) => allStats?.[month].leave),
-                backgroundColor: 'rgba(75,192,192,0.6)',
+                backgroundColor: AttendanceStatusColor.Leave
             },
             {
                 label: 'Absent',
                 data: months.map((month) => allStats?.[month].absent),
-                backgroundColor: 'rgba(255,99,132,0.6)',
+                backgroundColor: AttendanceStatusColor.Absent
             },
             {
                 label: 'Half Day',
                 data: months.map((month) => allStats?.[month].halfDay),
-                backgroundColor: 'rgba(255,205,86,0.6)',
+                backgroundColor: AttendanceStatusColor.HalfDay
             },
             {
                 label: 'Present',
                 data: months.map((month) => allStats?.[month].present),
-                backgroundColor: 'rgba(54,162,235,0.6)',
+                backgroundColor: AttendanceStatusColor.Present
             },
             {
                 label: 'Total',
@@ -98,7 +115,7 @@ const BarChart = () => {
 
                 <DatePicker picker='year' onChange={handleYearlyReports} allowClear={false} defaultValue={dayjs()} />
             </Flex>
-            <Bar data={chartData} options={chartOptions} />
+            <Bar data={chartData} />
         </div>
     );
 };
