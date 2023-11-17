@@ -5,7 +5,7 @@ import { submitAttendanceApi } from "src/store/slices/attendanceSlice/GetAttenda
 import { CardImage, ImageWrapper, InnerCard, SubmitButton } from "../styled";
 import avatar from "../../../assets/avatar.jpg";
 
-const AttendanceSlider = ({ users }) => {
+const AttendanceSlider = ({ users, attendanceDate }) => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState("present");
   const [notes, setNotes] = useState([]);
@@ -15,7 +15,7 @@ const AttendanceSlider = ({ users }) => {
   const handlePresent = async (userId) => {
     const data = {
       user: userId,
-      date: new Date(),
+      date: new Date(attendanceDate),
       status: selectedValue,
       checkInTime: new Date(),
       notes: notes[userId],
