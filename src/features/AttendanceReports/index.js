@@ -125,7 +125,7 @@ const AttendanceReport = () => {
     const handleReset = () => {
         setSelectedStatus(null);
         setSelectedDateRange(null);
-        getAttendanceReports(); // Trigger function without any parameters to fetch all data
+        getAttendanceReports();
     };
 
     const handleExport = () => {
@@ -135,7 +135,6 @@ const AttendanceReport = () => {
             checkInTime: item?.checkInTime,
             status: item.status,
         }));
-
         setExportData(csvData);
     };
 
@@ -160,22 +159,22 @@ const AttendanceReport = () => {
 
     return (
         <StyledPage>
+            <Flex justify="space-between" className="mb-3" >
+                <h5 className="p-2">Attendance Reports</h5>
+                <CSVLink data={exportData} filename={'attendance-report.csv'}>
+                    <Button type="primary" icon={<ExportOutlined />} onClick={handleExport}>
+                        Export to CSV
+                    </Button>
+                </CSVLink>
+            </Flex>
             <StyledDiv>
-                <Flex justify="space-between" className="mb-3" >
-                    <h5 className="p-2">Attendance Reports</h5>
-                    <CSVLink data={exportData} filename={'attendance-report.csv'}>
-                        <Button type="primary" icon={<ExportOutlined />} onClick={handleExport}>
-                            Export to CSV
-                        </Button>
-                    </CSVLink>
-                </Flex>
                 <Flex justify="space-between" align="center" className="mb-2">
-                    <Flex align="center" gap={4}>
+                    <Flex align="center" gap={4} >
                         <Space>
                             <Select
                                 placeholder="Select attendance status"
                                 onChange={handleStatusChange}
-                                style={{ minWidth: '120px' }}
+                                style={{ minWidth: '120px', width: "200px" }}
                             >
                                 <Option value="present">Present</Option>
                                 <Option value="absent">Absent</Option>
@@ -185,8 +184,15 @@ const AttendanceReport = () => {
                                 <Option value="late">Late</Option>
                             </Select>
                         </Space>
-                        <MonthPicker onChange={handleMonthChange} />
                         <RangePicker onChange={handleRangePicker} />
+                    </Flex>
+                    <Flex gap={"20px"}>
+                        <Button type="primary" onClick={handleSubmit}>
+                            Submit
+                        </Button>
+                        <Button onClick={handleReset}>
+                            Reset
+                        </Button>
                     </Flex>
                 </Flex>
             </StyledDiv>
