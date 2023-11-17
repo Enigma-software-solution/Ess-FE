@@ -1,7 +1,6 @@
-import { Avatar, Card, DatePicker, Flex, Select, Spin } from 'antd'
+import { Avatar, DatePicker, Flex, Spin } from 'antd'
 import React, { useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
-
 import qs from 'qs'
 import { toast } from 'react-toastify'
 import { format } from 'date-fns'
@@ -32,7 +31,6 @@ const OnLeave = () => {
         }
     }
 
-
     useEffect(() => {
         getAllAttendance();
     }, [dispatch, selectedDate]);
@@ -41,11 +39,10 @@ const OnLeave = () => {
         setSelectedDate(date)
     };
 
-
     return (
-        <StyledCard title='who is on Leave' style={{ boxShadow: ' 0px 0px 20px -7px  rgba(0,0,0,0.2)' }}>
+        <StyledCard title='Who Is On Leave'>
             <div className='d-flex justify-content-between align-items-center'>
-                <p style={{ fontWeight: 'bold' }}>On Leve : <span style={{ color: "red" }}>{onLeaveUser?.attendance.length}</span></p>
+                <p style={{ fontWeight: 'bold' }}>On Leave : <span style={{ color: "red" }}>{onLeaveUser?.attendance.length}</span></p>
                 <DatePicker onChange={onChange} allowClear={false} />
 
             </div>
@@ -63,13 +60,13 @@ const OnLeave = () => {
                                         <Avatar />
                                         <div>
                                             <p style={{ fontSize: '14px', fontWeight: 'bold', color: '#4154F1' }}>
-                                                {data.user?.first_name} {data?.user?.last_name}</p>
+                                                {data?.user?.first_name} {data?.user?.last_name}</p>
 
                                             <Flex justify='center' align='center' gap={6}>
                                                 <p style={{ fontSize: '12px', color: '#899BBD' }}>
                                                     {format(new Date(data?.date), 'dd MMM ')}
                                                 </p>
-                                                <p style={{ fontWeight: 'bold', fontSize: '12px', color: '#899BBD' }}> {data.status}</p>
+                                                <p style={{ fontWeight: 'bold', fontSize: '12px', color: '#899BBD' }}> {data?.status}</p>
                                             </Flex>
                                         </div>
                                     </div>
