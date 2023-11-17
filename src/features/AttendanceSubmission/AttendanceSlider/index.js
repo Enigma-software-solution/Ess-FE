@@ -5,21 +5,19 @@ import { submitAttendanceApi } from "src/store/slices/attendanceSlice/GetAttenda
 import { CardImage, ImageWrapper, InnerCard, SubmitButton } from "../styled";
 import avatar from "../../../assets/avatar.jpg";
 
-const AttendanceSlider = ({ users }) => {
+const AttendanceSlider = ({ users, attendanceDate }) => {
   const dispatch = useDispatch();
   const [selectedValue, setSelectedValue] = useState("present");
   const [notes, setNotes] = useState([]);
 
   const currentDate = new Date();
-  const nextDay = new Date(currentDate);
-  nextDay.setDate(currentDate.getDate() + 1);
 
   const handlePresent = async (userId) => {
     const data = {
       user: userId,
-      date: nextDay,
+      date: new Date(attendanceDate),
       status: selectedValue,
-      checkInTime: nextDay,
+      checkInTime: new Date(),
       notes: notes[userId],
     };
 
@@ -48,6 +46,7 @@ const AttendanceSlider = ({ users }) => {
   return (
     <Carousel
       style={{
+        height: "75vh",
         background:
           "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 0%, rgba(0,212,255,1) 100%)",
         marginBottom: "50px",
@@ -59,7 +58,7 @@ const AttendanceSlider = ({ users }) => {
         <div>
           <InnerCard key={user?._id} hoverable>
             <Badge.Ribbon style={{ right: 20 }} text={user?.role} color="green">
-              <ImageWrapper>
+              <ImageWrapper style={{ height: "1vh" }}>
                 <CardImage
                   width={"100px"}
                   height={"100px"}

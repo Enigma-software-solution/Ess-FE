@@ -12,16 +12,13 @@ const AttendenceDetails = () => {
 
     return (
         <>
-
+            <h4 style={{ color: '#4154F1', marginBottom: '10px' }}>Reports</h4>
             <StyledDetailsStats>
                 <UserStats userId={id} />
                 <ViewUserAttendenceGraph />
             </StyledDetailsStats>
             <Divider />
             <StyledDetailsTable> <SingleUserAttendanceDetails userId={id} /></StyledDetailsTable>
-
-
-
         </>
     );
 };

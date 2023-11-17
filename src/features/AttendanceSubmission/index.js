@@ -9,21 +9,26 @@ import { getAllUsers } from "src/store/slices/userSlice/selectors";
 import AttendanceSlider from "./AttendanceSlider";
 import qs from "qs";
 import { getAllAttendance } from "src/store/slices/attendanceSlice/GetAttendanceSlice/selectors";
-import { Table } from "antd";
+import { DatePicker, Flex, Input, Table } from "antd";
 import DeleteButton from "src/components/buttons/DeleteButton";
 import { MainWrapper, SearchInput } from "./styled";
+import EditButton from "src/components/buttons/EditButton";
+import EditAttendanceModal from './EditAttendanceModal/index'
+import { format } from "date-fns";
+import { setSelectedAttendance } from "src/store/slices/attendanceSlice/GetAttendanceSlice";
+import dayjs from 'dayjs';
 
 const AttendanceSubmission = () => {
+  const [filterdUsers, setFilterdUsers] = useState([]);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+
   const users = useSelector(getAllUsers);
   const todayAllAttendance = useSelector(getAllAttendance);
 
-  const [filterdUsers, setFilterdUsers] = useState([]);
-
   const dispatch = useDispatch();
-
-  const currentDate = new Date();
-  const nextDay = new Date(currentDate);
-  nextDay.setDate(currentDate.getDate() + 1);
+  const { Search } = Input;
 
   useEffect(() => {
     dispatch(getAllUsersApi());
@@ -44,13 +49,26 @@ const AttendanceSubmission = () => {
 
   useEffect(() => {
     const queryParams = qs.stringify({
-      date: nextDay,
+      date: new Date(),
     });
     dispatch(getAllAttendanceApi(queryParams));
   }, [users]);
 
   const handleDelete = (id) => {
     dispatch(deleteAttendance(id));
+  };
+
+  const handleEdit = (record, e) => {
+    e.stopPropagation();
+    dispatch(setSelectedAttendance(record))
+    setSelectedRecord(record);
+    setIsEditModalVisible(true);
+  };
+
+  const handleModalClose = () => {
+    setIsEditModalVisible(false);
+    dispatch(setSelectedAttendance(null));
+    setSelectedRecord(null);
   };
 
   const columns = [
@@ -70,6 +88,7 @@ const AttendanceSubmission = () => {
     {
       title: "Check In Time",
       dataIndex: "checkInTime",
+      render: (text, record) => format(new Date(record.checkInTime), "p"),
     },
     {
       title: "Status",
@@ -81,6 +100,7 @@ const AttendanceSubmission = () => {
       dataIndex: "action",
       render: (text, record) => (
         <div className="d-flex gap-1">
+          <EditButton onClick={(e) => handleEdit(record, e)} />
           <DeleteButton
             onClick={() => {
               handleDelete(record?._id, record?.user?.first_name);
@@ -92,6 +112,7 @@ const AttendanceSubmission = () => {
       ),
     },
   ];
+
   const handleChange = (value) => {
     if (value.trim() === "") {
       const filteredUsers = users?.filter(
@@ -111,21 +132,70 @@ const AttendanceSubmission = () => {
       setFilterdUsers(dd);
     }
   };
+
+  const range = (start, end) => {
+    const result = [];
+    for (let i = start; i < end; i++) {
+      result.push(i);
+    }
+    return result;
+  };
+
+  // const disabledDate = (current) => {
+  //   // Can not select days before today and today
+  //   return current && current < dayjs().endOf('day');
+  // };
+
+  // const disabledDateTime = () => ({
+  //   disabledHours: () => range(0, 24).splice(4, 20),
+  //   disabledMinutes: () => range(30, 60),
+  //   disabledSeconds: () => [55, 56],
+  // });
+
+  const handleDateTimeChange = (value) => {
+    setSelectedDate(value)
+  }
+
+  console.log(selectedDate, "sadasdasdasdasdads")
+
   return (
     <>
       <MainWrapper>
-        <SearchInput
-          onChange={(e) => handleChange(e.target.value)}
-        ></SearchInput>
+        <Flex gap={"50px"}>
+          <Search
+            placeholder="input search text"
+            allowClear
+            enterButton="Search"
+            size="large"
+            onSearch={(value) => handleChange(value)}
+            style={{ width: "300px", marginBottom: "40px" }}
+          />
+
+          {/* <DatePicker
+            format="YYYY-MM-DD HH:mm:ss"
+
+            showTime={{
+              defaultValue: dayjs('00:00:00', 'HH:mm:ss'),
+            }}
+            style={{ height: "40px" }}
+            onChange={handleDateTimeChange}
+          /> */}
+        </Flex>
+
+
       </MainWrapper>
       <div>
-        <AttendanceSlider users={filterdUsers} />
+        <AttendanceSlider users={filterdUsers} attendanceDate={selectedDate} />
         <Table
           dataSource={todayAllAttendance}
           columns={columns}
           pagination={false}
         />
       </div>
+      <EditAttendanceModal
+        visible={isEditModalVisible}
+        onClose={handleModalClose}
+        record={selectedRecord} />
     </>
   );
 };

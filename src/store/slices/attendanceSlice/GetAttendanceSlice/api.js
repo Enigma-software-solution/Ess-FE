@@ -79,3 +79,19 @@ export const deleteAttendance = createAsyncThunk(
     }
   }
 );
+
+export const updateAttendaceApi = createAsyncThunk(
+  "attendance/patch-attendance",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await api.patch(`/attendance/${data.id}`, {
+        status: data.status
+      });
+      toast.success("Attendance Updated Successfully")
+
+      return response;
+    } catch (error) {
+      return rejectWithValue(error.response?.data || "An error occurred");
+    }
+  }
+);

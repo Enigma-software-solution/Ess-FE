@@ -120,7 +120,7 @@ const AttendanceReport = () => {
             endDate = selectedDateRange[1]?.toISOString();
         }
         getAttendanceReports({ status, startDate, endDate });
-    };
+    };  
 
     const handleReset = () => {
         setSelectedStatus(null);
