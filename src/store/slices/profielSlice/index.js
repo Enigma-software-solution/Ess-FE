@@ -19,7 +19,6 @@ const profileSlice = createSlice({
     setSelectedProfile(state, action) {
       state.selectedProfile = action.payload;
     },
-
   },
 
   extraReducers(builder) {

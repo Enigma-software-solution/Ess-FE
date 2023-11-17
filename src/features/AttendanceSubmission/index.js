@@ -12,18 +12,20 @@ import { getAllAttendance } from "src/store/slices/attendanceSlice/GetAttendance
 import { Table } from "antd";
 import DeleteButton from "src/components/buttons/DeleteButton";
 import { MainWrapper, SearchInput } from "./styled";
+import EditButton from "src/components/buttons/EditButton";
+import EditAttendanceModal from './EditAttendanceModal/index'
+import { format } from "date-fns";
+import { setSelectedAttendance } from "src/store/slices/attendanceSlice/GetAttendanceSlice";
 
 const AttendanceSubmission = () => {
+  const [filterdUsers, setFilterdUsers] = useState([]);
+  const [isEditModalVisible, setIsEditModalVisible] = useState(false);
+  const [selectedRecord, setSelectedRecord] = useState(null);
+
   const users = useSelector(getAllUsers);
   const todayAllAttendance = useSelector(getAllAttendance);
 
-  const [filterdUsers, setFilterdUsers] = useState([]);
-
   const dispatch = useDispatch();
-
-  const currentDate = new Date();
-  const nextDay = new Date(currentDate);
-  nextDay.setDate(currentDate.getDate() + 1);
 
   useEffect(() => {
     dispatch(getAllUsersApi());
@@ -44,13 +46,26 @@ const AttendanceSubmission = () => {
 
   useEffect(() => {
     const queryParams = qs.stringify({
-      date: nextDay,
+      date: new Date(),
     });
     dispatch(getAllAttendanceApi(queryParams));
   }, [users]);
 
   const handleDelete = (id) => {
     dispatch(deleteAttendance(id));
+  };
+
+  const handleEdit = (record, e) => {
+    e.stopPropagation();
+    dispatch(setSelectedAttendance(record))
+    setSelectedRecord(record);
+    setIsEditModalVisible(true);
+  };
+
+  const handleModalClose = () => {
+    setIsEditModalVisible(false);
+    dispatch(setSelectedAttendance(null));
+    setSelectedRecord(null);
   };
 
   const columns = [
@@ -70,6 +85,7 @@ const AttendanceSubmission = () => {
     {
       title: "Check In Time",
       dataIndex: "checkInTime",
+      render: (text, record) => format(new Date(record.checkInTime), "p"),
     },
     {
       title: "Status",
@@ -81,6 +97,7 @@ const AttendanceSubmission = () => {
       dataIndex: "action",
       render: (text, record) => (
         <div className="d-flex gap-1">
+          <EditButton onClick={(e) => handleEdit(record, e)} />
           <DeleteButton
             onClick={() => {
               handleDelete(record?._id, record?.user?.first_name);
@@ -92,6 +109,7 @@ const AttendanceSubmission = () => {
       ),
     },
   ];
+
   const handleChange = (value) => {
     if (value.trim() === "") {
       const filteredUsers = users?.filter(
@@ -126,6 +144,10 @@ const AttendanceSubmission = () => {
           pagination={false}
         />
       </div>
+      <EditAttendanceModal
+        visible={isEditModalVisible}
+        onClose={handleModalClose}
+        record={selectedRecord} />
     </>
   );
 };
