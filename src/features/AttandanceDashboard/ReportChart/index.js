@@ -5,6 +5,8 @@ import { useDispatch } from 'react-redux';
 import { getYearlyStatsApi } from 'src/store/slices/attendanceSlice/AllStatsSlice/api';
 import qs from 'qs'
 import { format } from 'date-fns';
+import { DatePicker, Flex } from 'antd';
+import dayjs from 'dayjs';
 
 
 
@@ -18,9 +20,9 @@ const BarChart = () => {
     const dispatch = useDispatch()
 
 
-    const getYearlylStats = async () => {
+    const getYearlylStats = async (year = new Date()) => {
         const queryParams = qs.stringify({
-            year: format(new Date(), 'yyyy'),
+            year: format(new Date(year), 'yyyy'),
         });
 
         try {
@@ -43,6 +45,9 @@ const BarChart = () => {
 
     const months = allStats ? Object.keys(allStats) : [];
 
+
+
+    const chartOptions = {};
 
     const chartData = {
         labels: months,
@@ -75,18 +80,24 @@ const BarChart = () => {
         ],
     };
 
-    const chartOptions = {
 
-    };
+
+    const handleYearlyReports = (e) => {
+        getYearlylStats(e)
+    }
 
 
 
 
     return (
         <div style={{ boxShadow: '4px 2px 20px -7px  rgba(0,0,0,0.2)', marginTop: '40px', padding: '20px' }}>
-            <h5 style={{ color: '#4154F1', marginBottom: '10px' }}>
-                Yearly Reports
-            </h5>
+            <Flex justify='space-between' align='center' className='mb-2'>
+                <h5 style={{ color: '#4154F1', marginBottom: '10px' }}>
+                    Yearly Reports
+                </h5>
+
+                <DatePicker picker='year' onChange={handleYearlyReports} allowClear={false} defaultValue={dayjs()} />
+            </Flex>
             <Bar data={chartData} options={chartOptions} />
         </div>
     );
