@@ -31,6 +31,9 @@ import UsersAttendanceCount from "./pages/UsersAttendanceCount";
 import AttendenceDetails from "./features/SingleUserAttendanceDetails";
 import AttendanceSubmission from "./features/AttendanceSubmission";
 
+import { format } from 'date-fns';
+import { enUS, fr } from 'date-fns/locale';
+
 function App() {
   const dispatch = useDispatch();
   const refresh_token = localStorage.getItem("refresh_token");
@@ -40,8 +43,9 @@ function App() {
 
   return (
     <div className="App">
-      <ThemeProvider theme={theme}>
-        <ConfigProvider theme={theme}>
+      <ThemeProvider theme={theme} >
+        <ConfigProvider theme={theme} locale={enUS}>
+
           <GlobalStyles />
           <Routes>
             <Route element={<ProtectedRoutes />}>

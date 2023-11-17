@@ -5,8 +5,9 @@ import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import qs from 'qs'
 import { format } from 'date-fns'
-import Loader from 'src/components/Loader'
+
 import { getAllStatsApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api'
+import dayjs from 'dayjs'
 
 const TodayCount = () => {
     const [isLoading, setIsLoading] = useState(false)
@@ -38,39 +39,38 @@ const TodayCount = () => {
         setSelectedDate(date)
     };
 
-
-    if (isLoading) {
-        return (
-            <Flex justify='center' align='center'>
-                <Spin />
-            </Flex>
-        )
-    }
-
     return (
         <>
             <Flex justify='space-between' align='center' className='mb-2'>
                 <h6 style={{ color: '#899BBD' }} className='mb-1'>
                     {format(new Date(selectedDate), 'dd MMM yyyy')}
                 </h6>
-                <DatePicker onChange={onChange} allowClear={false} />
+                <DatePicker onChange={onChange} allowClear={false} defaultValue={dayjs()} />
 
             </Flex>
-            <Row gutter={16} >
-                <Col className="gutter-row" span={6}>
-                    <CountCard title='Present' day='Today' count={todayStats?.presentCount} />
-                </Col>
-                <Col className="gutter-row" span={6}>
-                    <CountCard title='Absent' day='Today' count={todayStats?.absentCount} />
-                </Col>
-                <Col className="gutter-row" span={6}>
-                    <CountCard title='Late' day='Today' count={todayStats?.lateCount} />
-                </Col>
+            {
+                isLoading ?
+                    <Flex justify='center' align='center'>
+                        <Spin />
+                    </Flex>
+                    :
 
-                <Col className="gutter-row" span={6}>
-                    <CountCard title='Half-day' day='Today' count={todayStats?.halfCount} />
-                </Col>
-            </Row>
+                    <Row gutter={16} >
+                        <Col className="gutter-row" span={6}>
+                            <CountCard title='Present' day='Today' count={todayStats?.presentCount} />
+                        </Col>
+                        <Col className="gutter-row" span={6}>
+                            <CountCard title='Absent' day='Today' count={todayStats?.absentCount} />
+                        </Col>
+                        <Col className="gutter-row" span={6}>
+                            <CountCard title='Late' day='Today' count={todayStats?.lateCount} />
+                        </Col>
+
+                        <Col className="gutter-row" span={6}>
+                            <CountCard title='Half-day' day='Today' count={todayStats?.halfCount} />
+                        </Col>
+                    </Row>
+            }
         </>
     )
 }

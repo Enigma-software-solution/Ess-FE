@@ -1,6 +1,6 @@
 import React from "react";
-import AttandanceDashbaord from "src/features/AttandanceDashbaord";
-  
+import AttandanceDashbaord from "src/features/AttandanceDashboard";
+
 const Page = () => {
   return (
     <>
