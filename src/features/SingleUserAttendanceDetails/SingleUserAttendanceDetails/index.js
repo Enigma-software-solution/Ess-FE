@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Spin, DatePicker } from 'antd';
+import { Table, Spin, DatePicker, Tag } from 'antd';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { format } from 'date-fns';
 import qs from 'qs';
 import { getAllAttendanceApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api';
+import { AttendanceStatusColor } from 'src/constant/colors';
 
 const { RangePicker, MonthPicker, YearPicker } = DatePicker;
 
@@ -12,6 +13,25 @@ const StyledPage = styled.div`
   padding: 20px;
   font-family: 'Arial', sans-serif;
 `;
+
+const getStatusColor = (status) => {
+    switch (status) {
+        case 'present':
+            return AttendanceStatusColor.Present;
+        case 'absent':
+            return AttendanceStatusColor.Absent;
+        case 'leave':
+            return AttendanceStatusColor.Leave;
+        case 'vacation':
+            return AttendanceStatusColor.Vacation;
+        case 'late':
+            return AttendanceStatusColor.Late;
+        case 'half-day':
+            return AttendanceStatusColor.HalfDay;
+        default:
+            return '#000';
+    }
+};
 
 
 const columns = [
@@ -42,6 +62,11 @@ const columns = [
         title: 'Status',
         dataIndex: 'status',
         key: 'status',
+        render: (text) => {
+            return (
+                <Tag color={getStatusColor(text)}>{text}</Tag>
+            );
+        },
     },
 ];
 
@@ -90,9 +115,8 @@ const SingleUserAttendanceDetails = ({ userId }) => {
 
     return (
         <StyledPage>
-            <h5>Attendance Report</h5>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: "20px" }}>
                     <MonthPicker onChange={handleMonthChange} placeholder="Select month" />
                     <RangePicker onChange={handleRangePicker} />
                 </div>

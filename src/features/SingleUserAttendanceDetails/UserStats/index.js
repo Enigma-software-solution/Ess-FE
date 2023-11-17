@@ -14,6 +14,8 @@ const { MonthPicker, YearPicker } = DatePicker;
 
 const UserStats = ({ userId }) => {
     const [stats, setStats] = useState(null);
+    const [selectedMonth, setSelectedMonth] = useState(null)
+    const [selectedYear, setSelectdYear] = useState(null)
 
     const dispatch = useDispatch();
 
@@ -48,11 +50,15 @@ const UserStats = ({ userId }) => {
     };
 
     const handleMonthChange = (value) => {
+        setSelectedMonth(value)
+        setSelectdYear(null)
         const month = format(new Date(value), 'MMM');
         getAttendanceStats(month);
     };
 
     const handleYearChange = (value) => {
+        setSelectdYear(value)
+        setSelectedMonth(null)
         const year = format(new Date(value), 'yyyy');
         const month = format(new Date(value), 'MMM');
         getAttendanceStats(month, year);
@@ -64,14 +70,13 @@ const UserStats = ({ userId }) => {
 
     return (
         <div>
-            <h4>Attendance Stats</h4>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <MonthPicker onChange={handleMonthChange} placeholder="Select month" />
-                    <YearPicker onChange={handleYearChange} placeholder='Select Year' />
+                    <MonthPicker onChange={handleMonthChange} placeholder="Select month" value={selectedMonth} />
+                    <YearPicker onChange={handleYearChange} placeholder='Select Year' value={selectedYear} />
                 </div>
             </div>
-            <Card title="Attendance Stats" style={{ width: 300 }}>
+            <Card title="Attendance Stats" style={{ width: 300, color: '#4154F1' }}>
                 {statItems?.map((item, index) => (
                     <StyledStatusCard key={index}>
                         <strong>{item?.label}</strong>
