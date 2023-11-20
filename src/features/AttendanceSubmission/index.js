@@ -181,9 +181,8 @@ const AttendanceSubmission = () => {
             onChange={handleDateTimeChange}
           /> */}
         </Flex>
-
-
       </MainWrapper>
+
       <div>
         <AttendanceSlider users={filterdUsers} attendanceDate={selectedDate} />
         <Table
@@ -192,6 +191,7 @@ const AttendanceSubmission = () => {
           pagination={false}
         />
       </div>
+      
       <EditAttendanceModal
         visible={isEditModalVisible}
         onClose={handleModalClose}

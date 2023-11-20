@@ -6,6 +6,8 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getAllUsersStatsApi } from 'src/store/slices/attendanceSlice/AllStatsSlice/api';
 import * as XLSX from 'xlsx';
+import { ReportCount } from './styled';
+import dayjs from 'dayjs';
 
 const AllUsersStatsTable = () => {
     const [allStats, setAllStats] = useState(null)
@@ -113,21 +115,25 @@ const AllUsersStatsTable = () => {
             XLSX.writeFile(workbook, 'all_users_stats.xlsx');
         }
     };
+    const disabledDate = (current) => {
+        return current && current > dayjs().endOf('day');
+      };
 
     return (
-        <>
-            <Flex justify='space-between' className='mb-3'>
-                <Space size={6}>
-                    <DatePicker picker='month' onChange={handleMonthChange} value={selectedMonth} />
-                    <DatePicker picker='year' onChange={handleYearChange} value={selectedYear} />
-                </Space>
+        <ReportCount>
+            <Flex justify='space-between' className='m-2'>
+                <h5>Reports Count</h5>
                 <Button type="primary" icon={<ExportOutlined />} onClick={handleExport}>
                     Export
                 </Button>
             </Flex>
+            <Space size={6} className='p-3 mb-3' style={{ boxShadow: '0px 8px 24px rgba(149,157,165,0.2)' }}>
+                <DatePicker picker='month' onChange={handleMonthChange} value={selectedMonth}  disabledDate={disabledDate}  />
+                <DatePicker picker='year' onChange={handleYearChange} value={selectedYear} disabledDate={disabledDate} />
+            </Space>
 
             <Table columns={columns} dataSource={allStats} loading={isLoading} pagination={false} />
-        </>
+        </ReportCount>
     )
 }
 
