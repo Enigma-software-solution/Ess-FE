@@ -6,7 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { getAllUsersStatsApi } from 'src/store/slices/attendanceSlice/AllStatsSlice/api';
 import * as XLSX from 'xlsx';
-import { ReportCount } from './styled';
+import { StyledReportCount } from './styled';
 import dayjs from 'dayjs';
 
 const AllUsersStatsTable = () => {
@@ -120,7 +120,7 @@ const AllUsersStatsTable = () => {
       };
 
     return (
-        <ReportCount>
+        <StyledReportCount>
             <Flex justify='space-between' className='m-2'>
                 <h5>Reports Count</h5>
                 <Button type="primary" icon={<ExportOutlined />} onClick={handleExport}>
@@ -133,7 +133,7 @@ const AllUsersStatsTable = () => {
             </Space>
 
             <Table columns={columns} dataSource={allStats} loading={isLoading} pagination={false} />
-        </ReportCount>
+        </StyledReportCount>
     )
 }
 
