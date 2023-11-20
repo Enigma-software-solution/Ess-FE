@@ -1,11 +1,12 @@
 import { Button, Tabs } from "antd";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import { routes } from "src/constant/routes";
 
 const AttendanceTabs = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const [activeKey, setActiveKey] = useState("");
 
   const items = [
     {
@@ -22,26 +23,37 @@ const AttendanceTabs = () => {
     },
   ];
 
-  // Find the key based on the current URL
-  const defaultActiveKey =
-    items.find((item) => location.pathname.includes(item.key))?.key || "1";
+  useEffect(() => {
+    // Find the key based on the current URL
+    const foundKey =
+      items.find((item) => location.pathname.includes(item.key))?.key || "1";
+    setActiveKey(foundKey);
+  }, [location.pathname, items]);
 
   const onChange = (key) => {
     navigate(key);
   };
 
+  const handleMarkAttendance = () => {
+    navigate(routes.ATTENDANCE_SUBMISSION);
+    setActiveKey(routes.ATTENDANCE_SUBMISSION); // Update activeKey when "Mark Attendance" button is clicked
+  };
+
   return (
     <div>
       <Tabs
-        defaultActiveKey={defaultActiveKey}
-        items={items}
+        activeKey={activeKey}
         onChange={onChange}
         tabBarExtraContent={
-          <Button onClick={() => navigate(routes.ATTENDANCE_SUBMISSION)}>
+          <Button onClick={handleMarkAttendance}>
             Mark Attendance
           </Button>
         }
-      />
+      >
+        {items.map((item) => (
+          <Tabs.TabPane key={item.key} tab={item.label} />
+        ))}
+      </Tabs>
     </div>
   );
 };

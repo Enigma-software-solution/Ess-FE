@@ -2,7 +2,7 @@ import React from 'react'
 import TodayCount from './TodayCount'
 import OnLeave from './OnLeave'
 import ReportChart from './ReportChart'
-import { Divider, Flex } from 'antd'
+import { Flex } from 'antd'
 
 const AttandanceDashbaord = () => {
     return (
