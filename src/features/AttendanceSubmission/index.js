@@ -16,7 +16,6 @@ import EditButton from "src/components/buttons/EditButton";
 import EditAttendanceModal from './EditAttendanceModal/index'
 import { format } from "date-fns";
 import { setSelectedAttendance } from "src/store/slices/attendanceSlice/GetAttendanceSlice";
-import dayjs from 'dayjs';
 
 const AttendanceSubmission = () => {
   const [filterdUsers, setFilterdUsers] = useState([]);
@@ -155,8 +154,6 @@ const AttendanceSubmission = () => {
   const handleDateTimeChange = (value) => {
     setSelectedDate(value)
   }
-
-  console.log(selectedDate, "sadasdasdasdasdads")
 
   return (
     <>

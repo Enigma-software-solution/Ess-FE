@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Select, Space, DatePicker, Button, Typography, Flex, Pagination, Tag } from 'antd';
+import { Table, Select, Space, DatePicker, Button, Flex, Pagination, Tag } from 'antd';
 import { ExportOutlined } from '@ant-design/icons';
 import { CSVLink } from 'react-csv';
 import styled from 'styled-components';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { format } from 'date-fns';
 import qs from 'qs';
 import { getAllAttendanceApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api';
 import { AttendanceStatusColor } from 'src/constant/colors';
 import { StyledDiv, StyledPage } from './styled';
+import { getAllUsers } from 'src/store/slices/userSlice/selectors';
+import { getAllUsersApi } from 'src/store/slices/userSlice/apis';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -74,24 +76,29 @@ const AttendanceReport = () => {
     const [isLoading, setIsLoading] = useState(false);
     const [selectedStatus, setSelectedStatus] = useState(null);
     const [selectedDateRange, setSelectedDateRange] = useState(null);
-
+    const [selectedUser, setSelectedUser] = useState(null);
     const [selectedPagination, setSelectedPagination] = useState(null);
+    const [selectedFilters, setSelectedFilters] = useState(null)
 
     const dispatch = useDispatch();
 
+    const users = useSelector(getAllUsers)
+
     const getAttendanceReports = async (options = {}) => {
-        const { month, startDate, endDate, status, pagination } = options;
+        const { month, startDate, endDate, status, pagination, userId } = options;
         const params = qs.stringify({
             month,
             startDate,
             endDate,
             status,
+            userId,
             ...pagination,
         });
 
         try {
             setIsLoading(true);
             const res = await dispatch(getAllAttendanceApi(params)).unwrap();
+            setSelectedFilters(params)
             setReports(res?.data);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -104,6 +111,10 @@ const AttendanceReport = () => {
         setSelectedStatus(value);
     };
 
+    const handleUserChange = (value) => {
+        setSelectedUser(value);
+    };
+
     const handleRangePicker = (dates) => {
         if (dates && dates.length === 2) {
             setSelectedDateRange(dates);
@@ -112,6 +123,7 @@ const AttendanceReport = () => {
 
     const handleSubmit = () => {
         const status = selectedStatus;
+        const userId = selectedUser;
         let startDate = null;
         let endDate = null;
 
@@ -119,13 +131,15 @@ const AttendanceReport = () => {
             startDate = selectedDateRange[0]?.toISOString();
             endDate = selectedDateRange[1]?.toISOString();
         }
-        getAttendanceReports({ status, startDate, endDate });
-    };  
+        getAttendanceReports({ status, startDate, endDate, userId });
+    };
 
     const handleReset = () => {
         setSelectedStatus(null);
         setSelectedDateRange(null);
+        setSelectedUser(null)
         getAttendanceReports();
+
     };
 
     const handleExport = () => {
@@ -147,6 +161,7 @@ const AttendanceReport = () => {
         });
 
         const pagination = {
+            ...(selectedFilters ? { selectedFilters } : { date: new Date() }),
             page,
             pageSize,
         };
@@ -154,12 +169,19 @@ const AttendanceReport = () => {
     };
 
     useEffect(() => {
+        if (!users?.length) {
+            dispatch(getAllUsersApi());
+        }
+
+    }, []);
+
+    useEffect(() => {
         getAttendanceReports();
     }, []);
 
     return (
         <StyledPage>
-            <Flex justify="space-between" className="mb-3" >
+            <Flex justify="space-between" className="mb-3">
                 <h5 className="p-2">Attendance Reports</h5>
                 <CSVLink data={exportData} filename={'attendance-report.csv'}>
                     <Button type="primary" icon={<ExportOutlined />} onClick={handleExport}>
@@ -169,12 +191,25 @@ const AttendanceReport = () => {
             </Flex>
             <StyledDiv>
                 <Flex justify="space-between" align="center" className="mb-2">
-                    <Flex align="center" gap={4} >
-                        <Space>
+                    <Flex>
+                        <Space size={6}>
+                            <Select
+                                placeholder="Select user"
+                                onChange={handleUserChange}
+                                style={{ minWidth: '120px', width: "200px" }}
+                                value={selectedUser}
+                            >
+                                {users.map(user => (
+                                    <Option key={user._id} value={user._id}>
+                                        {`${user.first_name} ${user.last_name}`}
+                                    </Option>
+                                ))}
+                            </Select>
                             <Select
                                 placeholder="Select attendance status"
                                 onChange={handleStatusChange}
                                 style={{ minWidth: '120px', width: "200px" }}
+                                value={selectedStatus}
                             >
                                 <Option value="present">Present</Option>
                                 <Option value="absent">Absent</Option>
@@ -183,16 +218,19 @@ const AttendanceReport = () => {
                                 <Option value="half-day">Half-day</Option>
                                 <Option value="late">Late</Option>
                             </Select>
+                            <RangePicker onChange={handleRangePicker} value={selectedDateRange} />
+
                         </Space>
-                        <RangePicker onChange={handleRangePicker} />
                     </Flex>
-                    <Flex gap={"20px"}>
-                        <Button type="primary" onClick={handleSubmit}>
-                            Submit
-                        </Button>
-                        <Button onClick={handleReset}>
-                            Reset
-                        </Button>
+                    <Flex>
+                        <Space size={6}>
+                            <Button type="primary" onClick={handleSubmit}>
+                                Submit
+                            </Button>
+                            <Button onClick={handleReset}>
+                                Reset
+                            </Button>
+                        </Space>
                     </Flex>
                 </Flex>
             </StyledDiv>
