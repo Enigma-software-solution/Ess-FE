@@ -74,31 +74,44 @@ const AttendanceReport = () => {
     const [exportData, setExportData] = useState([]);
     const [reports, setReports] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [selectedStatus, setSelectedStatus] = useState(null);
-    const [selectedDateRange, setSelectedDateRange] = useState(null);
-    const [selectedUser, setSelectedUser] = useState(null);
-    const [selectedPagination, setSelectedPagination] = useState(null);
-    const [selectedFilters, setSelectedFilters] = useState(null)
+    const [selectedPagination, setSelectedPagination] = useState({
+        page: 1,
+        pageSize: 10
+    });
+    const [selectedFilters, setSelectedFilters] = useState({
+        status: null,
+        userId: null,
+        dateRange: []
+    })
 
     const dispatch = useDispatch();
-
     const users = useSelector(getAllUsers)
 
-    const getAttendanceReports = async (options = {}) => {
-        const { month, startDate, endDate, status, pagination, userId } = options;
-        const params = qs.stringify({
-            month,
-            startDate,
-            endDate,
-            status,
-            userId,
-            ...pagination,
-        });
+    const getAttendanceReports = async (filters) => {
+        const params = {};
 
+        if (filters?.status !== null) {
+            params.status = filters?.status;
+        }
+
+        if (filters?.userId !== null) {
+            params.userId = filters?.userId;
+        }
+
+        if (filters?.dateRange.length > 0) {
+            params.startDate = new Date(filters?.dateRange[0]);
+            params.endDate = new Date(filters?.dateRange[1]);
+        }
+
+        if (selectedPagination) {
+            params.page = selectedPagination?.page;
+            params.pageSize = selectedPagination?.pageSize;
+        }
+
+        const queryString = qs.stringify(params);
         try {
             setIsLoading(true);
-            const res = await dispatch(getAllAttendanceApi(params)).unwrap();
-            setSelectedFilters(params)
+            const res = await dispatch(getAllAttendanceApi(queryString)).unwrap();
             setReports(res?.data);
         } catch (error) {
             console.error('Error fetching data:', error);
@@ -107,37 +120,41 @@ const AttendanceReport = () => {
         }
     };
 
+
     const handleStatusChange = (value) => {
-        setSelectedStatus(value);
+        setSelectedFilters(prevFilters => ({
+            ...prevFilters,
+            status: value
+        }));
     };
 
     const handleUserChange = (value) => {
-        setSelectedUser(value);
+        setSelectedFilters(prevFilters => ({
+            ...prevFilters,
+            userId: value
+        }));
     };
 
     const handleRangePicker = (dates) => {
         if (dates && dates.length === 2) {
-            setSelectedDateRange(dates);
+            setSelectedFilters(prevFilters => ({
+                ...prevFilters,
+                dateRange: dates
+            }));
         }
     };
 
     const handleSubmit = () => {
-        const status = selectedStatus;
-        const userId = selectedUser;
-        let startDate = null;
-        let endDate = null;
-
-        if (selectedDateRange && selectedDateRange.length === 2) {
-            startDate = selectedDateRange[0]?.toISOString();
-            endDate = selectedDateRange[1]?.toISOString();
-        }
-        getAttendanceReports({ status, startDate, endDate, userId });
+        getAttendanceReports(selectedFilters);
     };
 
     const handleReset = () => {
-        setSelectedStatus(null);
-        setSelectedDateRange(null);
-        setSelectedUser(null)
+        setSelectedFilters({
+            status: null,
+            userId: null,
+            dateRange: []
+        })
+        setSelectedPagination()
         getAttendanceReports();
 
     };
@@ -159,13 +176,6 @@ const AttendanceReport = () => {
             page,
             pageSize,
         });
-
-        const pagination = {
-            ...(selectedFilters ? { selectedFilters } : { date: new Date() }),
-            page,
-            pageSize,
-        };
-        getAttendanceReports({ pagination });
     };
 
     useEffect(() => {
@@ -176,8 +186,8 @@ const AttendanceReport = () => {
     }, []);
 
     useEffect(() => {
-        getAttendanceReports();
-    }, []);
+        getAttendanceReports(selectedFilters);
+    }, [selectedPagination]);
 
     return (
         <StyledPage>
@@ -197,7 +207,7 @@ const AttendanceReport = () => {
                                 placeholder="Select user"
                                 onChange={handleUserChange}
                                 style={{ minWidth: '120px', width: "200px" }}
-                                value={selectedUser}
+                                value={selectedFilters.userId}
                             >
                                 {users.map(user => (
                                     <Option key={user._id} value={user._id}>
@@ -209,7 +219,7 @@ const AttendanceReport = () => {
                                 placeholder="Select attendance status"
                                 onChange={handleStatusChange}
                                 style={{ minWidth: '120px', width: "200px" }}
-                                value={selectedStatus}
+                                value={selectedFilters.status}
                             >
                                 <Option value="present">Present</Option>
                                 <Option value="absent">Absent</Option>
@@ -218,7 +228,7 @@ const AttendanceReport = () => {
                                 <Option value="half-day">Half-day</Option>
                                 <Option value="late">Late</Option>
                             </Select>
-                            <RangePicker onChange={handleRangePicker} value={selectedDateRange} />
+                            <RangePicker onChange={handleRangePicker} value={selectedFilters.dateRange} />
 
                         </Space>
                     </Flex>
@@ -248,8 +258,8 @@ const AttendanceReport = () => {
                         onPaginationChange(page, pageSize);
                     }}
                     showSizeChanger
-                    onShowSizeChange={(current, size) => {
-                        console.log(`Current: ${current}, PageSize: ${size}`);
+                    onShowSizeChange={(current, pageSize) => {
+                        onPaginationChange(1, 1);
                     }}
                 />
             ) : null}
