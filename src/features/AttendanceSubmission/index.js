@@ -138,28 +138,6 @@ const AttendanceSubmission = () => {
     }
   };
 
-  const range = (start, end) => {
-    const result = [];
-    for (let i = start; i < end; i++) {
-      result.push(i);
-    }
-    return result;
-  };
-
-  const disabledDate = (current) => {
-    // Can not select days before today and today
-    return current && current < dayjs().endOf('day');
-  };
-
-  const disabledDateTime = () => ({
-    disabledHours: () => range(0, 24).splice(4, 20),
-    disabledMinutes: () => range(30, 60),
-    disabledSeconds: () => [55, 56],
-  });
-
-  const handleDateTimeChange = (value) => {
-    setSelectedDate(value)
-  }
 
   return (
     <>
@@ -174,15 +152,7 @@ const AttendanceSubmission = () => {
             style={{ width: "300px", marginBottom: "40px" }}
           />
 
-           <DatePicker
-            format="YYYY-MM-DD HH:mm:ss"
-
-            showTime={{
-              defaultValue: dayjs('00:00:00', 'HH:mm:ss'),
-            }}
-            style={{ height: "40px" }}
-            onChange={handleDateTimeChange}
-          />  
+     
         </Flex>
 
       <div>
