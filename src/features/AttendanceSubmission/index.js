@@ -11,7 +11,6 @@ import qs from "qs";
 import { getAllAttendance } from "src/store/slices/attendanceSlice/GetAttendanceSlice/selectors";
 import { DatePicker, Flex, Input, Table, Tag } from "antd";
 import DeleteButton from "src/components/buttons/DeleteButton";
-import { MainWrapper, SearchInput } from "./styled";
 import EditButton from "src/components/buttons/EditButton";
 import EditAttendanceModal from './EditAttendanceModal/index'
 import { format } from "date-fns";
@@ -164,8 +163,8 @@ const AttendanceSubmission = () => {
 
   return (
     <>
-      <MainWrapper>
-        <Flex gap={"50px"}>
+    
+        <Flex justify="space-between" className="mt-2">
           <Search
             placeholder="input search text"
             allowClear
@@ -185,7 +184,6 @@ const AttendanceSubmission = () => {
             onChange={handleDateTimeChange}
           />  
         </Flex>
-      </MainWrapper>
 
       <div>
         <AttendanceSlider users={filterdUsers} attendanceDate={selectedDate} />

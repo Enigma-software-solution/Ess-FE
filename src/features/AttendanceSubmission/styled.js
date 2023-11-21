@@ -38,14 +38,6 @@ width: 100px;
 border-radius: 50%;
 `;
 
-export const MainWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-`;
-
 export const StyledCarousel = styled(Carousel)`
 > .slick-dots li button {
   background: #468b9f;
