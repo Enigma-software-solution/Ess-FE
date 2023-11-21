@@ -39,13 +39,17 @@ const TodayCount = () => {
         setSelectedDate(date)
     };
 
+    const disabledDate = (current) => {
+        return current && current > dayjs().endOf('day');
+      };
+
     return (
         <>
             <Flex justify='space-between' align='center' className='mb-2'>
                 <h6 style={{ color: '#899BBD' }} className='mb-1'>
                     {format(new Date(selectedDate), 'dd MMM yyyy')}
                 </h6>
-                <DatePicker onChange={onChange} allowClear={false} defaultValue={dayjs()} />
+                <DatePicker onChange={onChange} allowClear={false} defaultValue={dayjs()}  disabledDate={disabledDate}/>
 
             </Flex>
             {

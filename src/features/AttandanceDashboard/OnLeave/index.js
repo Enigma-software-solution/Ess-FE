@@ -43,7 +43,7 @@ const OnLeave = () => {
         <StyledCard title='Who Is On Leave'>
             <div className='d-flex justify-content-between align-items-center'>
                 <p style={{ fontWeight: 'bold' }}>On Leave : <span style={{ color: "red" }}>{onLeaveUser?.attendance.length}</span></p>
-                <DatePicker onChange={onChange} allowClear={false} />
+                <DatePicker onChange={onChange} allowClear={false}  />
 
             </div>
             {
