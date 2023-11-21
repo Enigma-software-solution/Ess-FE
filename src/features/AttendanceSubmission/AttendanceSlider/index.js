@@ -1,9 +1,10 @@
-import { Badge, Carousel, Select } from "antd";
+import { Badge, Button, Select } from "antd";
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { submitAttendanceApi } from "src/store/slices/attendanceSlice/GetAttendanceSlice/api";
-import { CardImage, ImageWrapper, InnerCard, SubmitButton } from "../styled";
+import { CardImage, ImageWrapper, InnerCard, StyledCarousel } from "../styled";
 import avatar from "../../../assets/avatar.jpg";
+import TextArea from "antd/es/input/TextArea";
 
 const AttendanceSlider = ({ users, attendanceDate }) => {
   const dispatch = useDispatch();
@@ -34,34 +35,26 @@ const AttendanceSlider = ({ users, attendanceDate }) => {
   };
 
   let settings = {
-    slidesToShow: 4,
-    arrows: false,
+    slidesToShow: 5,
     infinite: false,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 8000,
-    lazyLoad: true,
+    slidesToScroll: 2,
   };
 
   return (
-    <Carousel
+    <StyledCarousel
+
       style={{
-        height: "75vh",
-        background:
-          "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 0%, rgba(0,212,255,1) 100%)",
-        marginBottom: "50px",
+        background: '#F1F2F3',
+        marginBottom: "20px",
       }}
-      draggable={true}
       {...settings}
     >
       {users?.map((user) => (
         <div>
-          <InnerCard key={user?._id} hoverable>
+          <InnerCard key={user?._id} >
             <Badge.Ribbon style={{ right: 20 }} text={user?.role} color="green">
               <ImageWrapper style={{ height: "1vh" }}>
                 <CardImage
-                  width={"100px"}
-                  height={"100px"}
                   src={avatar}
                   alt="Avatar"
                 />
@@ -99,13 +92,7 @@ const AttendanceSlider = ({ users, attendanceDate }) => {
 
                   <div>
                     <h6>Notes:</h6>
-                    <input
-                      style={{
-                        padding: "20px",
-                        width: "100%",
-                        borderRadius: "20px",
-                        height: "40px",
-                      }}
+                    <TextArea rows={3}
                       value={notes[user?._id] || ""}
                       onChange={(e) =>
                         setNotes((prevReasons) => ({
@@ -113,18 +100,18 @@ const AttendanceSlider = ({ users, attendanceDate }) => {
                           [user?._id]: e.target.value,
                         }))
                       }
-                    ></input>
+                    />
                   </div>
-                  <SubmitButton onClick={() => handlePresent(user?._id)}>
+                  <Button type="primary" onClick={() => handlePresent(user?._id)}>
                     Submit
-                  </SubmitButton>
+                  </Button>
                 </div>
               </div>
             </Badge.Ribbon>
           </InnerCard>
         </div>
       ))}
-    </Carousel>
+    </StyledCarousel>
   );
 };
 

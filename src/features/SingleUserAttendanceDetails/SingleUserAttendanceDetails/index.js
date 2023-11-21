@@ -5,7 +5,7 @@ import { useDispatch } from 'react-redux';
 import { format } from 'date-fns';
 import qs from 'qs';
 import { getAllAttendanceApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api';
-import { AttendanceStatusColor } from 'src/constant/colors';
+import { CheckAttendanceStatusColor } from 'src/components/Utils/checkAttendanceStatusColor';
 
 const { RangePicker, MonthPicker, YearPicker } = DatePicker;
 
@@ -14,24 +14,7 @@ const StyledPage = styled.div`
   font-family: 'Arial', sans-serif;
 `;
 
-const getStatusColor = (status) => {
-    switch (status) {
-        case 'present':
-            return AttendanceStatusColor.Present;
-        case 'absent':
-            return AttendanceStatusColor.Absent;
-        case 'leave':
-            return AttendanceStatusColor.Leave;
-        case 'vacation':
-            return AttendanceStatusColor.Vacation;
-        case 'late':
-            return AttendanceStatusColor.Late;
-        case 'half-day':
-            return AttendanceStatusColor.HalfDay;
-        default:
-            return '#000';
-    }
-};
+
 
 
 const columns = [
@@ -64,7 +47,7 @@ const columns = [
         key: 'status',
         render: (text) => {
             return (
-                <Tag color={getStatusColor(text)}>{text}</Tag>
+                <Tag color={CheckAttendanceStatusColor(text)}>{text}</Tag>
             );
         },
     },

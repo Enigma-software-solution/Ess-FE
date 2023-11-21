@@ -2,37 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { Table, Select, Space, DatePicker, Button, Flex, Pagination, Tag } from 'antd';
 import { ExportOutlined } from '@ant-design/icons';
 import { CSVLink } from 'react-csv';
-import styled from 'styled-components';
 import { useDispatch, useSelector } from 'react-redux';
 import { format } from 'date-fns';
 import qs from 'qs';
 import { getAllAttendanceApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api';
-import { AttendanceStatusColor } from 'src/constant/colors';
 import { StyledDiv, StyledPage } from './styled';
 import { getAllUsers } from 'src/store/slices/userSlice/selectors';
 import { getAllUsersApi } from 'src/store/slices/userSlice/apis';
+import { CheckAttendanceStatusColor } from 'src/components/Utils/checkAttendanceStatusColor';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
-
-const getStatusColor = (status) => {
-    switch (status) {
-        case 'present':
-            return AttendanceStatusColor.Present;
-        case 'absent':
-            return AttendanceStatusColor.Absent;
-        case 'leave':
-            return AttendanceStatusColor.Leave;
-        case 'vacation':
-            return AttendanceStatusColor.Vacation;
-        case 'late':
-            return AttendanceStatusColor.Late;
-        case 'half-day':
-            return AttendanceStatusColor.HalfDay;
-        default:
-            return '#000';
-    }
-};
 
 const columns = [
     {
@@ -64,7 +44,7 @@ const columns = [
         key: 'status',
         render: (text) => {
             return (
-                <Tag color={getStatusColor(text)}>{text}</Tag>
+                <Tag color={CheckAttendanceStatusColor(text)}>{text}</Tag>
             );
         },
     },

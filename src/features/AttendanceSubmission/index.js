@@ -9,13 +9,14 @@ import { getAllUsers } from "src/store/slices/userSlice/selectors";
 import AttendanceSlider from "./AttendanceSlider";
 import qs from "qs";
 import { getAllAttendance } from "src/store/slices/attendanceSlice/GetAttendanceSlice/selectors";
-import { DatePicker, Flex, Input, Table } from "antd";
+import { DatePicker, Flex, Input, Table, Tag } from "antd";
 import DeleteButton from "src/components/buttons/DeleteButton";
-import { MainWrapper, SearchInput } from "./styled";
 import EditButton from "src/components/buttons/EditButton";
 import EditAttendanceModal from './EditAttendanceModal/index'
 import { format } from "date-fns";
 import { setSelectedAttendance } from "src/store/slices/attendanceSlice/GetAttendanceSlice";
+import { CheckAttendanceStatusColor } from "src/components/Utils/checkAttendanceStatusColor";
+import dayjs from "dayjs";
 
 const AttendanceSubmission = () => {
   const [filterdUsers, setFilterdUsers] = useState([]);
@@ -92,6 +93,11 @@ const AttendanceSubmission = () => {
     {
       title: "Status",
       dataIndex: "status",
+      render: (text) => {
+        return (
+            <Tag color={CheckAttendanceStatusColor(text)}>{text}</Tag>
+        );
+    },
     },
     {
       key: "action",
@@ -140,16 +146,16 @@ const AttendanceSubmission = () => {
     return result;
   };
 
-  // const disabledDate = (current) => {
-  //   // Can not select days before today and today
-  //   return current && current < dayjs().endOf('day');
-  // };
+  const disabledDate = (current) => {
+    // Can not select days before today and today
+    return current && current < dayjs().endOf('day');
+  };
 
-  // const disabledDateTime = () => ({
-  //   disabledHours: () => range(0, 24).splice(4, 20),
-  //   disabledMinutes: () => range(30, 60),
-  //   disabledSeconds: () => [55, 56],
-  // });
+  const disabledDateTime = () => ({
+    disabledHours: () => range(0, 24).splice(4, 20),
+    disabledMinutes: () => range(30, 60),
+    disabledSeconds: () => [55, 56],
+  });
 
   const handleDateTimeChange = (value) => {
     setSelectedDate(value)
@@ -157,8 +163,8 @@ const AttendanceSubmission = () => {
 
   return (
     <>
-      <MainWrapper>
-        <Flex gap={"50px"}>
+    
+        <Flex justify="space-between" className="mt-2">
           <Search
             placeholder="input search text"
             allowClear
@@ -168,7 +174,7 @@ const AttendanceSubmission = () => {
             style={{ width: "300px", marginBottom: "40px" }}
           />
 
-          {/* <DatePicker
+           <DatePicker
             format="YYYY-MM-DD HH:mm:ss"
 
             showTime={{
@@ -176,9 +182,8 @@ const AttendanceSubmission = () => {
             }}
             style={{ height: "40px" }}
             onChange={handleDateTimeChange}
-          /> */}
+          />  
         </Flex>
-      </MainWrapper>
 
       <div>
         <AttendanceSlider users={filterdUsers} attendanceDate={selectedDate} />
