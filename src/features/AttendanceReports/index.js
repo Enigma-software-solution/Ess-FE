@@ -9,7 +9,7 @@ import { getAllAttendanceApi } from 'src/store/slices/attendanceSlice/GetAttenda
 import { StyledDiv, StyledPage } from './styled';
 import { getAllUsers } from 'src/store/slices/userSlice/selectors';
 import { getAllUsersApi } from 'src/store/slices/userSlice/apis';
-import { getAttendanceStatusColor } from 'src/components/Utils/getAttendanceStatusColor';
+import { CheckAttendanceStatusColor } from 'src/components/Utils/checkAttendanceStatusColor';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
@@ -44,7 +44,7 @@ const columns = [
         key: 'status',
         render: (text) => {
             return (
-                <Tag color={getAttendanceStatusColor(text)}>{text}</Tag>
+                <Tag color={CheckAttendanceStatusColor(text)}>{text}</Tag>
             );
         },
     },

@@ -15,7 +15,7 @@ import EditButton from "src/components/buttons/EditButton";
 import EditAttendanceModal from './EditAttendanceModal/index'
 import { format } from "date-fns";
 import { setSelectedAttendance } from "src/store/slices/attendanceSlice/GetAttendanceSlice";
-import { getAttendanceStatusColor } from "src/components/Utils/getAttendanceStatusColor";
+import { CheckAttendanceStatusColor } from "src/components/Utils/checkAttendanceStatusColor";
 import dayjs from "dayjs";
 
 const AttendanceSubmission = () => {
@@ -95,7 +95,7 @@ const AttendanceSubmission = () => {
       dataIndex: "status",
       render: (text) => {
         return (
-            <Tag color={getAttendanceStatusColor(text)}>{text}</Tag>
+            <Tag color={CheckAttendanceStatusColor(text)}>{text}</Tag>
         );
     },
     },

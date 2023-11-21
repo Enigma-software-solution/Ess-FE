@@ -1,19 +1,19 @@
+import { AttendanceStatus } from "src/constant/attendanceStatus";
 import { AttendanceStatusColor } from "src/constant/colors";
 
-
-export const getAttendanceStatusColor = (status) => {
+export const CheckAttendanceStatusColor = (status) => {
     switch (status) {
-        case 'present':
+        case AttendanceStatus.Present:
             return AttendanceStatusColor.Present;
-        case 'absent':
+        case AttendanceStatus.Absent:
             return AttendanceStatusColor.Absent;
-        case 'leave':
+        case AttendanceStatus.Leave:
             return AttendanceStatusColor.Leave;
-        case 'vacation':
+        case AttendanceStatus.Vacation:
             return AttendanceStatusColor.Vacation;
-        case 'late':
+        case AttendanceStatus.Late:
             return AttendanceStatusColor.Late;
-        case 'half-day':
+        case AttendanceStatus.HalfDay:
             return AttendanceStatusColor.HalfDay;
         default:
             return '#000';
