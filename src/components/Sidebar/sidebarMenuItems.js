@@ -1,5 +1,67 @@
-import { UserOutlined,ContainerOutlined,CalendarOutlined,  DashboardOutlined, UsergroupAddOutlined } from '@ant-design/icons';
+import { UserOutlined, ContainerOutlined, CalendarOutlined, DashboardOutlined, CheckSquareOutlined, ProfileOutlined, UserSwitchOutlined, UsergroupAddOutlined } from '@ant-design/icons';
 import { routes } from 'src/constant/routes';
+
+
+// export const sidebarMenuItems = [
+//     {
+//         key: routes.DASHBOARD,
+//         title: 'Dashboard',
+//         icon: <DashboardOutlined />,
+//         path: routes.DASHBOARD,
+//     },
+
+//     {
+//         key: routes.DAILY_APPLY,
+//         title: 'Daily Apply',
+//         icon: <ContainerOutlined />,
+//         path: routes.DAILY_APPLY,
+//     },
+
+//     {
+//         key: routes.AGENDA,
+//         title: 'Agenda',
+//         icon: <CalendarOutlined />,
+//         path: routes.AGENDA,
+
+//     },
+//     {
+//         key: routes.PROFILE,
+//         title: 'Profile',
+//         icon: <UsergroupAddOutlined />,
+//         path: routes.PROFILE,
+
+//     },
+//     {
+//         key: routes.CLIENT,
+//         title: 'Client',
+//         icon: <UserOutlined />,
+//         path: routes.CLIENT,
+
+//     },
+//     {
+//         key: routes.ATTENDANCE,
+//         title: 'Attendance',
+//         icon: <UserOutlined />,
+//         path: routes.ATTENDANCE,
+
+//     },
+//     {
+//         key: routes.USERS,
+//         title: 'Users',
+//         icon: <DashboardOutlined />,
+//         path: routes.USERS,
+//     },
+//     // {
+//     //     key: 'admin',
+//     //     title: 'Admin',
+//     //     icon: <UserOutlined />,
+//     //     subMenu: [
+//     //         { key: '/dashboard/sales', title: 'Admin 1', path: '/dashboard/sales' },
+//     //         { key: '/dashboard/users', title: 'Admin 2', path: '/dashboard/users' },
+//     //         { key: 'admin3', title: 'Admin 3', path: '/dashboard/test' },
+//     //     ],
+//     // },
+// ];
 
 
 export const sidebarMenuItems = [
@@ -8,50 +70,48 @@ export const sidebarMenuItems = [
         title: 'Dashboard',
         icon: <DashboardOutlined />,
         path: routes.DASHBOARD,
+        roles: ['super_admin', 'admin', "user", "sales-executive"],
     },
     {
         key: routes.DAILY_APPLY,
         title: 'Daily Apply',
         icon: <ContainerOutlined />,
         path: routes.DAILY_APPLY,
+        roles: ['super_admin', 'admin', 'sales-executive'],
     },
-
     {
         key: routes.AGENDA,
         title: 'Agenda',
         icon: <CalendarOutlined />,
         path: routes.AGENDA,
-
+        roles: ['super_admin', 'admin', 'sales-executive'],
     },
     {
         key: routes.PROFILE,
         title: 'Profile',
-        icon: <UsergroupAddOutlined />,
+        icon: <ProfileOutlined />,
         path: routes.PROFILE,
-
+        roles: ['super_admin', 'admin', 'sales-executive'],
     },
     {
         key: routes.CLIENT,
         title: 'Client',
-        icon: <UserOutlined />,
+        icon: <UsergroupAddOutlined />,
         path: routes.CLIENT,
-
+        roles: ['super_admin', 'admin', 'sales-executive'],
     },
     {
         key: routes.ATTENDANCE,
         title: 'Attendance',
-        icon: <UserOutlined />,
-        path: routes.ATTENDANCE,
-
+        icon: <CheckSquareOutlined />,
+        path: routes.ATTENDANCE_DASHBOARD,
+        roles: ['super_admin', 'admin', 'sales-executive', 'user'],
     },
-    // {
-    //     key: 'admin',
-    //     title: 'Admin',
-    //     icon: <UserOutlined />,
-    //     subMenu: [
-    //         { key: '/dashboard/sales', title: 'Admin 1', path: '/dashboard/sales' },
-    //         { key: '/dashboard/users', title: 'Admin 2', path: '/dashboard/users' },
-    //         { key: 'admin3', title: 'Admin 3', path: '/dashboard/test' },
-    //     ],
-    // },
+    {
+        key: routes.USERS,
+        title: 'Users',
+        icon: <UserSwitchOutlined />,
+        path: routes.USERS,
+        roles: ['super_admin', 'admin'],
+    },
 ];

@@ -1,5 +1,7 @@
 export const platformOptions = [
-    { value: "LinkedIn", label: "LinkedIn" },
-    { value: "GlassDoor", label: "Glass Door" },
-    { value: "Indeed", label: "Indeed" },
-  ];
+  { value: "linkedin", label: "LinkedIn" },
+  { value: "glassdoor", label: "Glass Door" },
+  { value: "indeed", label: "Indeed" },
+  { value: "recruiter", label: "Recruiter" },
+  { value: "other", label: "Other" },
+];

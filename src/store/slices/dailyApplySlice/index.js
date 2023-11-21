@@ -1,7 +1,7 @@
 import {
   createSlice,
 } from "@reduxjs/toolkit";
-import { createDailyAppliesApi, deteleDailyAppliesApi, getdailyAppliesApi, updateDailyAppliesApi,getDailyApplyStats } from "./apis";
+import { createDailyAppliesApi, deteleDailyAppliesApi, getdailyAppliesApi, updateDailyAppliesApi, getDailyApplyStats } from "./apis";
 // import { toast } from "react-toastify";
 
 
@@ -10,7 +10,8 @@ const initialState = {
   error: null,
   data: [],
   selectedApply: undefined,
-  stats:null
+  stats: null,
+  loading: false,
 };
 
 
@@ -27,16 +28,19 @@ const dailyApplySlice = createSlice({
 
   extraReducers(builder) {
     builder.addCase(getdailyAppliesApi.pending, (state, action) => {
+      state.loading = true;
       state.status = "loading";
     });
 
     builder.addCase(getdailyAppliesApi.fulfilled, (state, action) => {
       state.status = "succeeded";
+      state.loading = false;
       state.data = action.payload.data;
     });
 
     builder.addCase(getdailyAppliesApi.rejected, (state, action) => {
       state.status = "error";
+      state.loading = "error";
       state.error = action.error.message;
     });
 
@@ -60,8 +64,8 @@ const dailyApplySlice = createSlice({
 
     builder.addCase(getDailyApplyStats.fulfilled, (state, action) => {
       state.stats = action.payload.data
-  })
-    
+    })
+
   }
 
 });

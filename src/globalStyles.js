@@ -5,6 +5,7 @@ const GlobalStyles = createGlobalStyle`
   padding:0;
   margin:0;
   box-sizing: border-box;
+  font-family: 'Roboto', sans-serif;
 }
 
 h1,h2,h3,h4,h5,p,span {
@@ -15,7 +16,6 @@ h1,h2,h3,h4,h5,p,span {
   body {
     background-color: ${(props) => props.theme.token.background};
     color: ${(props) => props.theme.token.text};
-    font-family: 'Manrope', sans-serif;
     font-size: 16px;
   }
 
@@ -26,6 +26,30 @@ h1,h2,h3,h4,h5,p,span {
 .ql-editor{
     min-height:calc(100vh - 200px);
 }
+
+
+.rbc-event{
+box-sizing: border-box;
+padding: 6px !important;
+}
+
+
+::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: #f1f1f1;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background-color: #d8dee8;
+      border-radius: 6px;
+    }
+
+    /* Firefox */
+    scrollbar-width: thin;
+    scrollbar-color: #888 #f1f1f1;
 `;
 
 export default GlobalStyles;

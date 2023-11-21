@@ -14,8 +14,7 @@ const Header = () => {
 
     return (
         <div>
-            <div className="d-flex justify-content-between mb-3">
-                <CustomSearchField />
+            <div className="d-flex flex-row-reverse mb-3">
                 <AddButton onClick={handleDrawer} text="New Client" />
             </div>
             <CreateClientDrawer isOpen={isOpen} handleDrawer={handleDrawer} />

@@ -1,15 +1,17 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteClientApi, deteleClientApi, getAllClientsApi } from "src/store/slices/clientSlice/apis";
-import { getAllClientsSelector } from "src/store/slices/clientSlice/selectors";
+import { getAllClientsSelector, isClientLoading } from "src/store/slices/clientSlice/selectors";
 import { Popconfirm, Table } from "antd";
 import Header from "../Header";
 import EditButton from "src/components/buttons/EditButton";
 import DeleteButton from "src/components/buttons/DeleteButton";
+import Loader from "src/components/Loader";
 
 const ClientTable = () => {
     const dispatch = useDispatch();
 
+    const isLoading = useSelector(isClientLoading);
     const clients = useSelector(getAllClientsSelector);
 
     useEffect(() => {
@@ -68,6 +70,10 @@ const ClientTable = () => {
             ),
         },
     ];
+
+    if (isLoading) {
+        return <Loader />
+    }
 
     return (
         <div>

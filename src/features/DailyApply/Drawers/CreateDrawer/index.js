@@ -14,11 +14,11 @@ import CustomInput from 'src/components/formElements/CustomInput';
 
 const initialFormValues = {
   clientJobPosition: '',
-  clientName: '',
+  companyName: '',
   link: localStorage.getItem('link') || '',
   profile: '',
-  platform: localStorage.getItem('platform') || 'GlassDoor',
-  positionToApply: 'Full Stack',
+  platform: localStorage.getItem('platform') || 'glassdoor',
+  positionToApply: 'full_stack',
 };
 
 const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
@@ -39,7 +39,7 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
     if (selectedApply) {
       form.setFieldsValue({
         clientJobPosition: selectedApply?.clientJobPosition,
-        clientName: selectedApply?.clientName,
+        companyName: selectedApply?.companyName,
         link: selectedApply?.link,
         profile: selectedApply?.profile?._id,
         platform: selectedApply?.platform,
@@ -49,7 +49,7 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
     } else {
       form.setFieldsValue({
         clientJobPosition: initialFormValues.clientJobPosition,
-        clientName: initialFormValues.clientName,
+        companyName: initialFormValues.companyName,
         link: initialFormValues.link,
         profile: initialFormValues.profile,
         platform: initialFormValues.platform,
@@ -61,11 +61,11 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
   const handleSubmit = async (values) => {
     try {
       localStorage.setItem('link', values?.link || '');
-      localStorage.setItem('platform', values?.platform || 'GlassDoor');
+      localStorage.setItem('platform', values?.platform || 'glassdoor');
 
       const data = {
         clientJobPosition: values?.clientJobPosition,
-        clientName: values?.clientName,
+        companyName: values?.companyName,
         platform: values?.platform,
         positionToApply: values?.positionToApply,
         link: values?.link,
@@ -87,7 +87,6 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
     }
   };
 
-
   return (
     <Drawer open={isOpen} onClose={handleDrawer} width={800}
       title={selectedApply ? 'Update Daily Apply' : 'Create Daily Apply'}
@@ -100,10 +99,10 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
         <Row gutter={16}>
           <Col span={12}>
             <CustomInput
-              label="Client Name"
-              name="clientName"
-              placeholder="Please enter Client name"
-              rules={[{ required: true, message: 'Please enter Client name' }]}
+              label="Company Name"
+              name="companyName"
+              placeholder="Please enter Company name"
+              rules={[{ required: true, message: 'Please enter Comapny name' }]}
               type="text"
             />
           </Col>
@@ -112,7 +111,7 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
               label="Link"
               name="link"
               placeholder="Please enter link"
-              rules={[{ required: true, message: 'Please enter link' }]}
+              rules={[{ message: 'Please enter link' }]}
               type="text"
             />
           </Col>

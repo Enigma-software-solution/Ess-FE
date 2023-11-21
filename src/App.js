@@ -8,7 +8,6 @@ import ProtectedRoutes from "./components/ProtectedRoutes";
 import Dashobard from "./pages/Dashobard";
 import { routes } from "./constant/routes";
 import DailyApply from "./pages/DailyApply";
-import Attendance from "./pages/Attendance";
 import Profile from "./pages/Profile";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
@@ -23,6 +22,17 @@ import { ConfigProvider } from "antd";
 import ClientPage from "./pages/Clients";
 import SignUpPage from "./pages/SignUp";
 import ProfileSettings from "./pages/profileSettings";
+import UsersPage from "./pages/Users";
+import RoleRoute from "./components/RoleRoute";
+import AttendanceDashboard from "./pages/AttendanceDashboard";
+import AttendanceReports from "./pages/AttendanceReports";
+import NotFound from "./components/PageNotFound";
+import UsersAttendanceCount from "./pages/UsersAttendanceCount";
+import AttendenceDetails from "./features/SingleUserAttendanceDetails";
+import AttendanceSubmission from "./features/AttendanceSubmission";
+
+import { format } from 'date-fns';
+import { enUS, fr } from 'date-fns/locale';
 
 function App() {
   const dispatch = useDispatch();
@@ -33,24 +43,77 @@ function App() {
 
   return (
     <div className="App">
-      <ThemeProvider theme={theme}>
-        <ConfigProvider theme={theme}>
+      <ThemeProvider theme={theme} >
+        <ConfigProvider theme={theme} locale={enUS}>
+
           <GlobalStyles />
           <Routes>
             <Route element={<ProtectedRoutes />}>
               <Route path="/" element={<DashobardLayout />}>
-                <Route index element={<Dashobard />} />
-                <Route path={routes.DAILY_APPLY} element={<DailyApply />} />
-                <Route path={routes.PROFILE} element={<Profile />} />
-                <Route path={routes.AGENDA} element={<Agenda />} />
-                <Route path={routes.CLIENT} element={<ClientPage />} />
-                <Route path={routes.ATTENDANCE} element={<Attendance />} />
-                <Route path={routes.PROFILE_SETTINGS} element={<ProfileSettings />} />
+                <Route
+                  path={routes.ATTENDANCE_DASHBOARD}
+                  element={<AttendanceDashboard />}
+                />
+                <Route
+                  path={routes.ATTENDANCE_SUBMISSION}
+                  element={<AttendanceSubmission />}
+                />
 
+                <Route
+                  path={`${routes.USER_ATTENDANCE_DETAILS}/:id?`}
+                  element={<AttendenceDetails />}
+                />
+                <Route
+                  path={routes.ATTENDANCE_REPORTS}
+                  element={<AttendanceReports />}
+                />
+                <Route
+                  path={routes.USER_ATTENDANCE_COUNT}
+                  element={<UsersAttendanceCount />}
+                />
+
+                <Route
+                  path={routes.PROFILE_SETTINGS}
+                  element={<ProfileSettings />}
+                />
+
+                <Route
+                  element={
+                    <RoleRoute
+                      allowedRoles={["admin", "sales-execitive", "user"]}
+                    />
+                  }
+                >
+                  <Route index element={<Dashobard />} />
+                  <Route path={routes.USERS} element={<UsersPage />} />
+                </Route>
+
+                <Route
+                  element={
+                    <RoleRoute
+                      allowedRoles={["admin", "sales-execitive", "user"]}
+                    />
+                  }
+                >
+                  <Route index element={<Dashobard />} />
+                  <Route path={routes.USERS} element={<UsersPage />} />
+                </Route>
+
+                <Route
+                  element={
+                    <RoleRoute allowedRoles={["admin", "sales-execitive"]} />
+                  }
+                >
+                  <Route path={routes.DAILY_APPLY} element={<DailyApply />} />
+                  <Route path={routes.PROFILE} element={<Profile />} />
+                  <Route path={routes.AGENDA} element={<Agenda />} />
+                  <Route path={routes.CLIENT} element={<ClientPage />} />
+                </Route>
               </Route>
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/Signup" element={<SignUpPage />} />
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </ConfigProvider>
         <ToastContainer />

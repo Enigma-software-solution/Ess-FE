@@ -4,6 +4,7 @@ import ApplyCard from "../Card";
 import { useDispatch, useSelector } from "react-redux";
 import { getDailyApplyStats } from "src/store/slices/dailyApplySlice/apis";
 import { getStats } from "src/store/slices/dailyApplySlice/selectors";
+import Loader from "src/components/Loader";
 
 export const ApplyHistory = () => {
   const dispatch = useDispatch();
@@ -14,10 +15,10 @@ export const ApplyHistory = () => {
   }, []);
 
   if (!stats) {
-    return <h5>Loading...</h5>
+    return <Loader />
   }
 
-  
+
   return (
     <>
       <h5 className="mb-3">Daily Applies History</h5>
