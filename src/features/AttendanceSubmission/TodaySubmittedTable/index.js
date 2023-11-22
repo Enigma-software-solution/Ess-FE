@@ -20,22 +20,14 @@ const TodaySubmittedTable = ({ todayAllAttendance }) => {
 
     const handleEdit = (record, e) => { };
 
-
-
     const columns = [
         {
-            title: "First Name",
+            title: "User Name",
             dataIndex: "user?.first_name",
             key: "first_name",
-            render: (text, record) => record?.user?.first_name,
+            render: (text, record) => record?.user?.first_name + ' ' + record?.user?.last_name,
         },
 
-        {
-            title: "Last Name",
-            dataIndex: "user?.last_name",
-            key: "last_name",
-            render: (text, record) => record?.user?.last_name,
-        },
         {
             title: "Check In Time",
             dataIndex: "checkInTime",
