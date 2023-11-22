@@ -43,12 +43,14 @@ const SignUpForm = () => {
                             name="first_name"
                             rules={[{ required: true, message: "Please input your first name!" }]}
                         >
+                            <strong>First Name</strong>
                             <Input placeholder="First Name" />
                         </Form.Item>
                         <Form.Item
                             name="last_name"
                             rules={[{ required: true, message: "Please input your last name!" }]}
                         >
+                            <strong>Last Name</strong>
                             <Input placeholder="Last Name" />
                         </Form.Item>
                     </FieldGroup>
@@ -56,13 +58,15 @@ const SignUpForm = () => {
                         <Form.Item
                             name="email"
                             rules={[{ required: true, message: "Please input your email!" }]}
-                        >
+                        >   
+                            <strong>Email</strong>
                             <Input placeholder="Email" />
                         </Form.Item>
                         <Form.Item
                             name="password"
-                            rules={[{ required: true, message: "Please input your password!" }]}
+                            rles={[{ required: true, message: "Please input your password!" }]}
                         >
+                            <strong>Password</strong>
                             <Input.Password placeholder="Password" />
                         </Form.Item>
                     </FieldGroup>
