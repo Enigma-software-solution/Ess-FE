@@ -1,65 +1,72 @@
-import { Badge, Button, Select } from "antd";
-import React, { useState } from "react";
+import React from "react";
+import { Badge, Button, Form, Select } from "antd";
 import { useDispatch } from "react-redux";
 import { submitAttendanceApi } from "src/store/slices/attendanceSlice/GetAttendanceSlice/api";
 import { CardImage, ImageWrapper, InnerCard, StyledCarousel } from "../styled";
 import avatar from "../../../assets/avatar.jpg";
 import TextArea from "antd/es/input/TextArea";
+import { format } from "date-fns";
 
 const AttendanceSlider = ({ users, attendanceDate }) => {
   const dispatch = useDispatch();
-  const [selectedValue, setSelectedValue] = useState("present");
-  const [notes, setNotes] = useState([]);
+  const [form] = Form.useForm();
 
-  const currentDate = new Date();
+  const initialValues = {
+    status: "present",
+    notes: ''
+  };
 
   const handlePresent = async (userId) => {
-    const data = {
-      user: userId,
-      date: new Date(attendanceDate),
-      status: selectedValue,
-      checkInTime: new Date(),
-      notes: notes[userId],
-    };
-
     try {
-      const response = await dispatch(submitAttendanceApi(data));
+      const values = await form.validateFields();
+      const data = {
+        user: userId,
+        date: format(new Date(attendanceDate), 'yyyy-MM-dd'),
+        status: values?.status,
+        checkInTime: (values.status === 'late' || values.status === 'present' || values.status === 'half-day') ? new Date() : null,
+        notes: values?.notes,
+      };
+
+      await dispatch(submitAttendanceApi(data));
     } catch (err) {
       console.log(err);
-    } finally {
     }
   };
 
-  const handleChange = (value) => {
-    setSelectedValue(value);
-  };
-
   let settings = {
-    slidesToShow: 5,
+    slidesToShow: 4,
     infinite: false,
     slidesToScroll: 2,
   };
 
+  if (!users?.length) {
+    return <div style={{
+      background: "#F1F2F3",
+      marginBottom: "20px",
+      padding: '20px'
+
+    }}>
+      <h4>All Users have sbubmitted attendance</h4>
+    </div>;
+  }
+
   return (
     <StyledCarousel
-
       style={{
-        background: '#F1F2F3',
+        background: "#F1F2F3",
         marginBottom: "20px",
       }}
       {...settings}
     >
       {users?.map((user) => (
-        <div>
-          <InnerCard key={user?._id} >
+        <div key={user?._id}>
+          <InnerCard>
             <Badge.Ribbon style={{ right: 20 }} text={user?.role} color="green">
               <ImageWrapper style={{ height: "1vh" }}>
-                <CardImage
-                  src={avatar}
-                  alt="Avatar"
-                />
+                <CardImage src={avatar} alt="Avatar" />
               </ImageWrapper>
-              <div>
+
+              <Form form={form} initialValues={initialValues} >
                 <div
                   style={{
                     margin: "10px",
@@ -71,42 +78,37 @@ const AttendanceSlider = ({ users, attendanceDate }) => {
                   <h5>
                     {user?.first_name} {user?.last_name}
                   </h5>
-                  <Select
-                    dropdownStyle={{
-                      background: "#e4eefc",
-                      fontSize: "25px",
-                    }}
-                    showSearch
-                    defaultValue={selectedValue}
-                    size="large"
-                    onChange={(value) => handleChange(value, user?._id)}
-                    options={[
-                      { value: "present", label: "Present" },
-                      { value: "absent", label: "Absent" },
-                      { value: "late", label: "Late" },
-                      { value: "leave", label: "Leave" },
-                      { value: "half-day", label: "Half-day" },
-                      { value: "vacation", label: "Vacation" },
-                    ]}
-                  />
-
-                  <div>
-                    <h6>Notes:</h6>
-                    <TextArea rows={3}
-                      value={notes[user?._id] || ""}
-                      onChange={(e) =>
-                        setNotes((prevReasons) => ({
-                          ...prevReasons,
-                          [user?._id]: e.target.value,
-                        }))
-                      }
+                  <Form.Item name="status">
+                    <Select
+                      dropdownStyle={{
+                        background: "#e4eefc",
+                        fontSize: "25px",
+                      }}
+                      showSearch
+                      size="large"
+                      options={[
+                        { value: "present", label: "Present" },
+                        { value: "absent", label: "Absent" },
+                        { value: "late", label: "Late" },
+                        { value: "leave", label: "Leave" },
+                        { value: "half-day", label: "Half-day" },
+                        { value: "vacation", label: "Vacation" },
+                      ]}
                     />
-                  </div>
+                  </Form.Item>
+
+                  <Form.Item name={'notes'}>
+                    <div>
+                      <h6>Notes:</h6>
+                      <TextArea rows={3} />
+                    </div>
+                  </Form.Item>
+
                   <Button type="primary" onClick={() => handlePresent(user?._id)}>
                     Submit
                   </Button>
                 </div>
-              </div>
+              </Form>
             </Badge.Ribbon>
           </InnerCard>
         </div>
