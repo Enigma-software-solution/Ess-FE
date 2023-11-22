@@ -112,7 +112,7 @@ const AttendanceSlider = ({ users, attendanceDate }) => {
                     </div>
                   </Form.Item>
 
-                  <Button type="primary" onClick={() => handlePresent(user)} loading={user?._id === selectedUser?._id} disabled={isLoading}>
+                  <Button type="primary" onClick={() => handlePresent(user)} loading={user?._id === selectedUser?._id && isLoading} disabled={isLoading}>
                     Submit
                   </Button>
                 </div>

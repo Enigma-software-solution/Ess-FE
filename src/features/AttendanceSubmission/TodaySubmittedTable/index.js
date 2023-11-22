@@ -1,12 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import { deleteAttendance, getAllAttendanceApi } from "src/store/slices/attendanceSlice/GetAttendanceSlice/api";
-import { Table, Tag } from "antd";
+import { deleteAttendance } from "src/store/slices/attendanceSlice/GetAttendanceSlice/api";
+import { Popconfirm, Table, Tag } from "antd";
 import DeleteButton from "src/components/buttons/DeleteButton";
 import EditButton from "src/components/buttons/EditButton";
 import { format } from "date-fns";
-import qs from "qs";
-
 import { CheckAttendanceStatusColor } from "src/components/Utils/checkAttendanceStatusColor";
 import { setSelectedAttendance } from "src/store/slices/attendanceSlice/GetAttendanceSlice";
 import EditAttendanceModal from "../EditAttendanceModal";
@@ -14,22 +12,37 @@ import EditAttendanceModal from "../EditAttendanceModal";
 const TodaySubmittedTable = ({ todayAllAttendance }) => {
     const [selectedRecord, setSelectedRecord] = useState(null)
     const [isEditModalVisible, setIsEditModalVisible] = useState(false)
+    const [isLoading, setIsLoading] = useState(false)
 
     const dispatch = useDispatch();
 
-    const handleDelete = (id) => {
-        dispatch(deleteAttendance(id));
+    // const handleDelete = async (id) => {
+    //     try {
+    //         setIsLoading(true)
+    //         await dispatch(deleteAttendance(id));
+    //     }
+    //     catch (error) {
+    //         console.log(error)
+    //     } 
+    //     finally {
+    //         setIsLoading(false)
+    //     }
+
+    // };
+
+    const handleConfirmDelete = (recordToDelete, e) => {
+        e.stopPropagation();
+        dispatch(deleteAttendance(recordToDelete._id));
     };
 
-
-    const handleEdit = (record, e) => { 
+    const handleEdit = (record, e) => {
         e.stopPropagation();
         dispatch(setSelectedAttendance(record));
         setSelectedRecord(record);
         setIsEditModalVisible(true);
     };
 
-    const handleModalClose = ()=>{
+    const handleModalClose = () => {
         setIsEditModalVisible(false)
         dispatch(setSelectedAttendance(null))
         setSelectedRecord(null)
@@ -64,12 +77,18 @@ const TodaySubmittedTable = ({ todayAllAttendance }) => {
             render: (text, record) => (
                 <div className="d-flex gap-1">
                     <EditButton onClick={(e) => handleEdit(record, e)} />
-                    <DeleteButton onClick={() => {
-                        handleDelete(record?._id);
-                    }}
+                    
+            
+
+            <Popconfirm
+                        title="Are you sure to delete this task?"
+                        onConfirm={(e) => handleConfirmDelete(record, e)}
+                        onCancel={(e) => e.stopPropagation()}
+                        okText="Yes"
+                        cancelText="No"
                     >
-                        Delete
-                    </DeleteButton>
+                        <DeleteButton onClick={(e) => e.stopPropagation()}>Delete</DeleteButton>
+                    </Popconfirm>
                 </div>
             ),
         },
@@ -85,9 +104,9 @@ const TodaySubmittedTable = ({ todayAllAttendance }) => {
             />
 
             <EditAttendanceModal
-                visible= {isEditModalVisible}
+                visible={isEditModalVisible}
                 onClose={handleModalClose}
-                record={selectedRecord}/>
+                record={selectedRecord} />
         </div>
     )
 }

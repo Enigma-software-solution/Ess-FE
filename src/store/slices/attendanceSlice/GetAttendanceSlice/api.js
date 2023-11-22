@@ -73,6 +73,7 @@ export const deleteAttendance = createAsyncThunk(
   async (id) => {
     try {
       const response = await api.delete(`/attendance/${id}`);
+      toast.success("Attendance Deleted Successfully")
       return id;
     } catch (error) {
       return error.response.data;
