@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Input, Button, Avatar, message } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -11,11 +11,12 @@ import { toast } from "react-toastify";
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false)
 
-  const status = useSelector((state) => state.auth.status);
 
   const onFinish = async (values) => {
     try {
+      setIsLoading(true)
       const res = await dispatch(
         loginUser({ email: values.email, password: values.password })
       ).unwrap()
@@ -24,10 +25,14 @@ const LoginForm = () => {
         navigate("/");
 
       }
+      setIsLoading(false)
+
       toast.success("User successfully logged in");
     } catch (err) {
       toast.error(err?.message)
       console.log(err.message)
+    } finally {
+      setIsLoading(false)
     }
   };
 
@@ -70,7 +75,7 @@ const LoginForm = () => {
               type="primary"
               htmlType="submit"
               block
-              loading={status === "loading" ? true : false}
+              loading={isLoading}
             >
               Log in
             </Button>

@@ -38,7 +38,9 @@ function App() {
   const dispatch = useDispatch();
   const refresh_token = localStorage.getItem("refresh_token");
   useEffect(() => {
-    dispatch(refresh(refresh_token));
+    if (refresh_token) {
+      dispatch(refresh(refresh_token));
+    }
   }, []);
 
   return (
