@@ -2,13 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllAttendanceApi } from "src/store/slices/attendanceSlice/GetAttendanceSlice/api";
 import { getAllUsersApi } from "src/store/slices/userSlice/apis";
-import { getAllUsers } from "src/store/slices/userSlice/selectors";
+import { getAllUsers, isUserLoading } from "src/store/slices/userSlice/selectors";
 import AttendanceSlider from "./AttendanceSlider";
 import qs from "qs";
 import { Flex, Input } from "antd";
 import { format } from "date-fns";
 import TodaySubmittedTable from "./TodaySubmittedTable";
 import { getAllAttendance } from "src/store/slices/attendanceSlice/GetAttendanceSlice/selectors";
+import Loader from "src/components/Loader";
 
 const AttendanceSubmission = () => {
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -17,6 +18,7 @@ const AttendanceSubmission = () => {
   const { Search } = Input;
 
   const users = useSelector(getAllUsers);
+  const userLoading = useSelector(isUserLoading);
   const todayAllAttendance = useSelector(getAllAttendance);
 
 
@@ -64,6 +66,10 @@ const AttendanceSubmission = () => {
     dispatch(getAllUsersApi());
     getTodayAllSubmittedAttendance();
   }, [dispatch]);
+
+  if (userLoading || !todayAllAttendance) {
+    return <Loader />
+  }
 
   return (
     <>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Badge, Button, Form, Select } from "antd";
 import { useDispatch } from "react-redux";
 import { submitAttendanceApi } from "src/store/slices/attendanceSlice/GetAttendanceSlice/api";
@@ -6,8 +6,11 @@ import { CardImage, ImageWrapper, InnerCard, StyledCarousel } from "../styled";
 import avatar from "../../../assets/avatar.jpg";
 import TextArea from "antd/es/input/TextArea";
 import { format } from "date-fns";
+import Loader from "src/components/Loader";
 
 const AttendanceSlider = ({ users, attendanceDate }) => {
+  const [isLoading, setIsLoading] = useState(false)
+  const [selectedUser, setSelectedUser] = useState(null)
   const dispatch = useDispatch();
   const [form] = Form.useForm();
 
@@ -16,11 +19,13 @@ const AttendanceSlider = ({ users, attendanceDate }) => {
     notes: ''
   };
 
-  const handlePresent = async (userId) => {
+  const handlePresent = async (user) => {
+    setSelectedUser(user)
     try {
+      setIsLoading(true)
       const values = await form.validateFields();
       const data = {
-        user: userId,
+        user: user?._id,
         date: format(new Date(attendanceDate), 'yyyy-MM-dd'),
         status: values?.status,
         checkInTime: (values.status === 'late' || values.status === 'present' || values.status === 'half-day') ? new Date() : null,
@@ -30,6 +35,8 @@ const AttendanceSlider = ({ users, attendanceDate }) => {
       await dispatch(submitAttendanceApi(data));
     } catch (err) {
       console.log(err);
+    } finally {
+      setIsLoading(false)
     }
   };
 
@@ -46,9 +53,10 @@ const AttendanceSlider = ({ users, attendanceDate }) => {
       padding: '20px'
 
     }}>
-      <h4>All Users have sbubmitted attendance</h4>
+      <h4>No Users Found </h4>
     </div>;
   }
+
 
   return (
     <StyledCarousel
@@ -104,7 +112,7 @@ const AttendanceSlider = ({ users, attendanceDate }) => {
                     </div>
                   </Form.Item>
 
-                  <Button type="primary" onClick={() => handlePresent(user?._id)}>
+                  <Button type="primary" onClick={() => handlePresent(user)} loading={user?._id === selectedUser?._id} disabled={isLoading}>
                     Submit
                   </Button>
                 </div>
