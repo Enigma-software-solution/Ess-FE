@@ -5,7 +5,7 @@ import DeleteButton from "src/components/buttons/DeleteButton";
 import Header from "../Header";
 import { useDispatch, useSelector } from "react-redux";
 import { getdailyAppliesApi, deteleDailyAppliesApi } from "src/store/slices/dailyApplySlice/apis";
-import { getAllDailyApplies, getLoadingStatus, isDailyAppliesLoading, } from "src/store/slices/dailyApplySlice/selectors";
+import { getAllDailyApplies,  isDailyAppliesLoading, } from "src/store/slices/dailyApplySlice/selectors";
 import CreateDailyApplyDrawer from "../Drawers/CreateDrawer";
 import { setSelectedApply } from "src/store/slices/dailyApplySlice";
 import qs from "qs";
@@ -17,7 +17,6 @@ const CreateDailyAppliesTable = () => {
     const dispatch = useDispatch();
     const dailyAppliesData = useSelector(getAllDailyApplies);
     const isLoading = useSelector(isDailyAppliesLoading)
-    const loadingStatus = useSelector(getLoadingStatus);
     const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
     const [isDetailsDrawerOpen, setIsDetailsDrawerOpen] = useState(false);
     const [selectedRecord, setSelectedRecord] = useState(null);
