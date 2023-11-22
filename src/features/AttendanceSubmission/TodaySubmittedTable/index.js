@@ -8,8 +8,12 @@ import { format } from "date-fns";
 import qs from "qs";
 
 import { CheckAttendanceStatusColor } from "src/components/Utils/checkAttendanceStatusColor";
+import { setSelectedAttendance } from "src/store/slices/attendanceSlice/GetAttendanceSlice";
+import EditAttendanceModal from "../EditAttendanceModal";
 
 const TodaySubmittedTable = ({ todayAllAttendance }) => {
+    const [selectedRecord, setSelectedRecord] = useState(null)
+    const [isEditModalVisible, setIsEditModalVisible] = useState(false)
 
     const dispatch = useDispatch();
 
@@ -18,7 +22,18 @@ const TodaySubmittedTable = ({ todayAllAttendance }) => {
     };
 
 
-    const handleEdit = (record, e) => { };
+    const handleEdit = (record, e) => { 
+        e.stopPropagation();
+        dispatch(setSelectedAttendance(record));
+        setSelectedRecord(record);
+        setIsEditModalVisible(true);
+    };
+
+    const handleModalClose = ()=>{
+        setIsEditModalVisible(false)
+        dispatch(setSelectedAttendance(null))
+        setSelectedRecord(null)
+    }
 
     const columns = [
         {
@@ -68,6 +83,11 @@ const TodaySubmittedTable = ({ todayAllAttendance }) => {
                 columns={columns}
                 pagination={false}
             />
+
+            <EditAttendanceModal
+                visible= {isEditModalVisible}
+                onClose={handleModalClose}
+                record={selectedRecord}/>
         </div>
     )
 }
