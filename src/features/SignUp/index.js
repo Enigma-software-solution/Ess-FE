@@ -22,7 +22,6 @@ const SignUpForm = () => {
             ).unwrap();
 
             navigate("/login");
-            message.success("User registered successfully");
         } catch (err) {
             message.error(err.message);
         }

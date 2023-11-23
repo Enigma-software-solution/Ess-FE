@@ -5,6 +5,7 @@ import api from "src/helpers/api";
 export const registerUser = createAsyncThunk("auth/register", async (data) => {
   try {
     const response = await api.post("register", data);
+    toast.success("User created successfully! Please check your inbox for a confirmation email.")
     return response;
   } catch (error) {
     throw error;

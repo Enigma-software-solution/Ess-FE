@@ -52,27 +52,7 @@ function App() {
           <Routes>
             <Route element={<ProtectedRoutes />}>
               <Route path="/" element={<DashobardLayout />}>
-                <Route
-                  path={routes.ATTENDANCE_DASHBOARD}
-                  element={<AttendanceDashboard />}
-                />
-                <Route
-                  path={routes.ATTENDANCE_SUBMISSION}
-                  element={<AttendanceSubmission />}
-                />
 
-                <Route
-                  path={`${routes.USER_ATTENDANCE_DETAILS}/:id?`}
-                  element={<AttendenceDetails />}
-                />
-                <Route
-                  path={routes.ATTENDANCE_REPORTS}
-                  element={<AttendanceReports />}
-                />
-                <Route
-                  path={routes.USER_ATTENDANCE_COUNT}
-                  element={<UsersAttendanceCount />}
-                />
 
                 <Route
                   path={routes.PROFILE_SETTINGS}
@@ -90,14 +70,43 @@ function App() {
                   <Route path={routes.USERS} element={<UsersPage />} />
                 </Route>
 
+
+                {/* ATTENDANCE PROTECTED ROUTES  */}
+                <Route element={<RoleRoute allowedRoles={["admin", "hr"]} />}>
+                  <Route
+                    path={routes.ATTENDANCE_DASHBOARD}
+                    element={<AttendanceDashboard />}
+                  />
+                  <Route
+                    path={routes.ATTENDANCE_SUBMISSION}
+                    element={<AttendanceSubmission />}
+                  />
+
+
+                  <Route
+                    path={routes.ATTENDANCE_REPORTS}
+                    element={<AttendanceReports />}
+                  />
+                  <Route
+                    path={routes.USER_ATTENDANCE_COUNT}
+                    element={<UsersAttendanceCount />}
+                  />
+                </Route>
+                {/* ATTENDANCE FREE ROUTES  */}
+                <Route
+                  path={`${routes.USER_ATTENDANCE_DETAILS}/:id?`}
+                  element={<AttendenceDetails />}
+                />
+
+
+
                 <Route
                   element={
                     <RoleRoute
-                      allowedRoles={["admin", "sales-execitive", "user"]}
+                      allowedRoles={["admin", "sales-execitive"]}
                     />
                   }
                 >
-                  <Route index element={<Dashobard />} />
                   <Route path={routes.USERS} element={<UsersPage />} />
                 </Route>
 
