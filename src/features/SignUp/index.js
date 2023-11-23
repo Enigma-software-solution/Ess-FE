@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Input, Button, Avatar, message } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useDispatch } from "react-redux";
@@ -7,11 +7,14 @@ import { FormContainer, Title, Wrapper, FieldGroup } from "./styled";
 import { registerUser } from "src/store/slices/authSlice/apis";
 
 const SignUpForm = () => {
+    const [isLoading, setIsLoading] = useState(false)
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
+
     const onFinish = async (values) => {
         try {
+            setIsLoading(true)
             const res = await dispatch(
                 registerUser({
                     email: values.email,
@@ -24,6 +27,8 @@ const SignUpForm = () => {
             navigate("/login");
         } catch (err) {
             message.error(err.message);
+        } finally {
+            setIsLoading(false)
         }
     };
 
@@ -66,7 +71,7 @@ const SignUpForm = () => {
                         </Form.Item>
                     </FieldGroup>
                     <Form.Item>
-                        <Button type="primary" htmlType="submit" block>
+                        <Button type="primary" htmlType="submit" block loading={isLoading}>
                             Sign Up
                         </Button>
                     </Form.Item>

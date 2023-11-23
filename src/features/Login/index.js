@@ -17,10 +17,7 @@ const LoginForm = () => {
   const onFinish = async (values) => {
     try {
       setIsLoading(true)
-      const res = await dispatch(
-        loginUser({ email: values.email, password: values.password })
-      ).unwrap()
-
+      const res = await dispatch(loginUser({ email: values.email, password: values.password })).unwrap()
       if (res) {
         navigate("/");
 
@@ -29,7 +26,7 @@ const LoginForm = () => {
 
       toast.success("User successfully logged in");
     } catch (err) {
-      toast.error(err?.message)
+      // toast.error(err?.message)
       console.log(err.message)
     } finally {
       setIsLoading(false)

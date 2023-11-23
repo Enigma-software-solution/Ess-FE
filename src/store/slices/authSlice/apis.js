@@ -17,8 +17,7 @@ export const loginUser = createAsyncThunk("auth/login", async (data) => {
     const response = await api.post("login", data);
     return response;
   } catch (error) {
-    toast.warn(error?.error?.message)
-    throw error;
+    toast.warn(error?.message)
   }
 });
 
