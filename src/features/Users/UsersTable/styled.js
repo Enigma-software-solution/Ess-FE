@@ -1,13 +1,22 @@
-export const activeBadgeStyle = {
-    backgroundColor: 'green',
-    color: 'white',
-    padding: '2px 6px',
-    borderRadius: '4px',
+import styled from "styled-components";
+
+const getBackgroundColor = (status) => {
+    switch (status) {
+        case "active":
+            return "green";
+        case "pending":
+            return "#fcba03";
+        case "inactive":
+            return "red";
+        default:
+            return "grey"; // Default to red if the status is not recognized
+    }
 };
 
-export const inactiveBadgeStyle = {
-    backgroundColor: 'red',
-    color: 'white',
-    padding: '2px 6px',
-    borderRadius: '4px',
-};
+export const StyledBadge = styled.span`
+  background-color: ${(props) => getBackgroundColor(props.status)};
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  cursor: pointer;
+`;

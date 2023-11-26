@@ -80,11 +80,8 @@ api.interceptors.response.use(
       }
     }
 
-    if (error.response && error.response.data && error.response.data.error) {
-      return Promise.reject(error.response.data.error);
-    }
 
-    return Promise.reject(error.response.data?.error);
+    return Promise.reject(error.response.data);
   }
 );
 
