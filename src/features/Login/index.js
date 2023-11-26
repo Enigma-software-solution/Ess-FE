@@ -6,6 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { FormContainer, Title, Wrapper } from "./styled";
 import { loginUser } from "src/store/slices/authSlice/apis";
 import { toast } from "react-toastify";
+import { routes } from "src/constant/routes";
 
 
 const LoginForm = () => {
@@ -37,6 +38,10 @@ const LoginForm = () => {
     navigate("/signup");
   };
 
+  const handleForgotPassword = () => {
+    navigate(routes.FORGOT_PASSWORD);
+  };
+
   return (
     <Wrapper>
       <FormContainer>
@@ -62,7 +67,7 @@ const LoginForm = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button type="link" style={{ float: "right" }}>
+            <Button type="link" style={{ float: "right" }} onClick={handleForgotPassword}>
               Forgot password
             </Button>
           </Form.Item>

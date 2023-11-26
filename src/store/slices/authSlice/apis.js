@@ -22,6 +22,26 @@ export const resendConfiramtionEmail = createAsyncThunk("auth/resend-confirmatio
   }
 });
 
+export const forgotPasswordApi = createAsyncThunk("auth/forgot-password", async (data, { rejectWithValue }) => {
+  try {
+    const response = await api.post("/forgot_password", data);
+    toast.success(response.message);
+    return response;
+  } catch (error) {
+    return rejectWithValue(error);
+  }
+})
+
+export const ResetPasswordApi = createAsyncThunk("auth/reset-password", async (data, { rejectWithValue }) => {
+  try {
+    const response = await api.post(`/reset_password/${data.token}`, data);
+    toast.success(response.message);
+    return response;
+  } catch (error) {
+    return rejectWithValue(error);
+  }
+})
+
 export const loginUser = createAsyncThunk("auth/login", async (data, { rejectWithValue }) => {
   try {
     const response = await api.post("login", data);

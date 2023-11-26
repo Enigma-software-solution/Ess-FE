@@ -30,6 +30,8 @@ import NotFound from "./components/PageNotFound";
 import UsersAttendanceCount from "./pages/UsersAttendanceCount";
 import AttendenceDetails from "./features/SingleUserAttendanceDetails";
 import AttendanceSubmission from "./features/AttendanceSubmission";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 import { format } from 'date-fns';
 import { enUS, fr } from 'date-fns/locale';
@@ -98,8 +100,6 @@ function App() {
                   element={<AttendenceDetails />}
                 />
 
-
-
                 <Route
                   element={
                     <RoleRoute
@@ -124,6 +124,8 @@ function App() {
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/Signup" element={<SignUpPage />} />
+            <Route path={routes.FORGOT_PASSWORD} element={<ForgotPassword />} />
+            <Route path={`${routes.RESET_PASSWORD}/:token`} element={<ResetPassword />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </ConfigProvider>
