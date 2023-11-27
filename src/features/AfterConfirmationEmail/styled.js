@@ -10,6 +10,12 @@ export const Wrapper = styled.div`
   h3 {
     color: #52c41a;
   }
+
+  img{
+    height:400px;
+    width:400px;
+
+  }
 `
 
 
