@@ -6,7 +6,6 @@ import { CardImage, ImageWrapper, InnerCard, StyledCarousel } from "../styled";
 import avatar from "../../../assets/avatar.jpg";
 import TextArea from "antd/es/input/TextArea";
 import { format } from "date-fns";
-import Loader from "src/components/Loader";
 
 const AttendanceSlider = ({ users, attendanceDate }) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -66,7 +65,7 @@ const AttendanceSlider = ({ users, attendanceDate }) => {
       }}
       {...settings}
     >
-      {users?.map((user) => (
+      {users?.filter(user => user.status === "active").map((user) => (
         <div key={user?._id}>
           <InnerCard>
             <Badge.Ribbon style={{ right: 20 }} text={user?.role} color="green">
@@ -121,6 +120,7 @@ const AttendanceSlider = ({ users, attendanceDate }) => {
           </InnerCard>
         </div>
       ))}
+
     </StyledCarousel>
   );
 };
