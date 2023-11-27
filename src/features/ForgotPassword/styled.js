@@ -13,19 +13,11 @@ export const FormContainer = styled.div`
   border-radius: 8px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   padding: 40px;
-  max-width: 40%;
-  min-width: 30%;
+  max-width: 400px;
   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
-`;
-
-export const FieldGroup = styled.div`
-  display: flex;
-  justify-content: space-between;
-  gap: 16px;
-  width: 100%;
 `;
 
 export const Title = styled.h1`

@@ -30,15 +30,15 @@ const refreshApi = async () => {
         // Handle the case where there is no refresh token (user is not logged in)
         // For example, you can redirect the user to the login page.
         // You can also throw an error or take other appropriate actions.
-        // In this example, we just clear the queue and set isRefreshing to false.
+        // In this example, we just clear the queue.
         refreshQueue = [];
       }
-
-      isRefreshing = false;
     } catch (error) {
-      isRefreshing = false;
       // Handle refresh token error or redirect to login
       throw error;
+    } finally {
+      // Set isRefreshing to false regardless of success or failure
+      isRefreshing = false;
     }
   }
 
@@ -65,7 +65,7 @@ api.interceptors.response.use(
   (response) => response.data,
   async (error) => {
     const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
+    if (error.response.status === 500 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
@@ -80,11 +80,8 @@ api.interceptors.response.use(
       }
     }
 
-    if (error.response && error.response.data && error.response.data.error) {
-      return Promise.reject(error.response.data.error);
-    }
 
-    return Promise.reject(error.response.data?.error);
+    return Promise.reject(error.response.data);
   }
 );
 

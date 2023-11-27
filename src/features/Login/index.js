@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Form, Input, Button, Avatar, message } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,33 +6,40 @@ import { useNavigate } from "react-router-dom";
 import { FormContainer, Title, Wrapper } from "./styled";
 import { loginUser } from "src/store/slices/authSlice/apis";
 import { toast } from "react-toastify";
+import { routes } from "src/constant/routes";
 
 
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false)
 
-  const status = useSelector((state) => state.auth.status);
 
   const onFinish = async (values) => {
     try {
-      const res = await dispatch(
-        loginUser({ email: values.email, password: values.password })
-      ).unwrap()
-
+      setIsLoading(true)
+      const res = await dispatch(loginUser({ email: values.email, password: values.password })).unwrap()
       if (res) {
         navigate("/");
 
       }
+      setIsLoading(false)
+
       toast.success("User successfully logged in");
     } catch (err) {
-      toast.error(err?.message)
+      // toast.error(err?.message)
       console.log(err.message)
+    } finally {
+      setIsLoading(false)
     }
   };
 
   const handleSignUpClick = () => {
     navigate("/signup");
+  };
+
+  const handleForgotPassword = () => {
+    navigate(routes.FORGOT_PASSWORD);
   };
 
   return (
@@ -60,7 +67,7 @@ const LoginForm = () => {
           </Form.Item>
 
           <Form.Item>
-            <Button type="link" style={{ float: "right" }}>
+            <Button type="link" style={{ float: "right" }} onClick={handleForgotPassword}>
               Forgot password
             </Button>
           </Form.Item>
@@ -70,7 +77,7 @@ const LoginForm = () => {
               type="primary"
               htmlType="submit"
               block
-              loading={status === "loading" ? true : false}
+              loading={isLoading}
             >
               Log in
             </Button>

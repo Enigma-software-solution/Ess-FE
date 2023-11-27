@@ -8,7 +8,7 @@ import { deleteUserApi, getAllUsersApi, updateUserApi } from "src/store/slices/u
 import Header from "../Header";
 import { setSelectedUser } from "src/store/slices/userSlice";
 import CreateUserDrawer from "../CreateUserDrawer";
-import { activeBadgeStyle, inactiveBadgeStyle } from "./styled";
+import { StyledBadge } from "./styled";
 import Loader from "src/components/Loader";
 import { Link, useNavigate } from "react-router-dom";
 import { routes } from "src/constant/routes";
@@ -93,7 +93,7 @@ const UserTable = () => {
             dataIndex: "status",
             render: (text, record) => {
                 const isActive = text === "active";
-                const badgeStyle = isActive ? activeBadgeStyle : inactiveBadgeStyle;
+
 
                 return (
                     <div className="d-flex gap-1">
@@ -103,14 +103,11 @@ const UserTable = () => {
                             okText="Yes"
                             cancelText="No"
                         >
-                            <span
-                                style={{ cursor: "pointer", ...badgeStyle }}
-                                onClick={(e) => e.stopPropagation()}
-                            >
+                            <StyledBadge onClick={(e) => e.stopPropagation()} status={text}>
                                 {text}
-                            </span>
+                            </StyledBadge>
                         </Popconfirm>
-                    </div>
+                    </div >
                 );
             }
         },
