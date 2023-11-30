@@ -8,29 +8,28 @@ import { loginUser } from "src/store/slices/authSlice/apis";
 import { toast } from "react-toastify";
 import { routes } from "src/constant/routes";
 
-
 const LoginForm = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false)
-
+  const [isLoading, setIsLoading] = useState(false);
 
   const onFinish = async (values) => {
     try {
-      setIsLoading(true)
-      const res = await dispatch(loginUser({ email: values.email, password: values.password })).unwrap()
+      setIsLoading(true);
+      const res = await dispatch(
+        loginUser({ email: values.email, password: values.password })
+      ).unwrap();
       if (res) {
         navigate("/");
-
       }
-      setIsLoading(false)
+      setIsLoading(false);
 
       toast.success("User successfully logged in");
     } catch (err) {
       // toast.error(err?.message)
-      console.log(err.message)
+      console.log(err.message);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
@@ -50,35 +49,34 @@ const LoginForm = () => {
           icon={<UserOutlined />}
           style={{ marginBottom: 24 }}
         />
-        <Title>login</Title>
+        <Title>Login</Title>
         <Form name="login" onFinish={onFinish}>
           <Form.Item
             name="email"
             rules={[{ required: true, message: "Please input your email!" }]}
           >
-            <Input placeholder="Email" />
+            <Input size="large" placeholder="Email" />
           </Form.Item>
 
           <Form.Item
             name="password"
             rules={[{ required: true, message: "Please input your password!" }]}
           >
-            <Input.Password placeholder="Password" />
-          </Form.Item>
-
-          <Form.Item>
-            <Button type="link" style={{ float: "right" }} onClick={handleForgotPassword}>
-              Forgot password
-            </Button>
+            <Input.Password size="large" placeholder="Password" />
           </Form.Item>
 
           <Form.Item>
             <Button
-              type="primary"
-              htmlType="submit"
-              block
-              loading={isLoading}
+              type="link"
+              style={{ float: "right", padding: "2px" }}
+              onClick={handleForgotPassword}
             >
+              Forgot password ?
+            </Button>
+          </Form.Item>
+
+          <Form.Item>
+            <Button type="primary" htmlType="submit" block loading={isLoading}>
               Log in
             </Button>
           </Form.Item>
