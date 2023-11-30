@@ -32,6 +32,7 @@ import AttendenceDetails from "./features/SingleUserAttendanceDetails";
 import AttendanceSubmission from "./features/AttendanceSubmission";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import AfterConfirmationEmail from "./pages/AfterConfirmationEmail";
 
 import { format } from 'date-fns';
 import { enUS, fr } from 'date-fns/locale';
@@ -55,66 +56,28 @@ function App() {
             <Route element={<ProtectedRoutes />}>
               <Route path="/" element={<DashobardLayout />}>
 
+                <Route path={routes.PROFILE_SETTINGS} element={<ProfileSettings />} />
 
-                <Route
-                  path={routes.PROFILE_SETTINGS}
-                  element={<ProfileSettings />}
-                />
-
-                <Route
-                  element={
-                    <RoleRoute
-                      allowedRoles={["admin", "sales-execitive", "user"]}
-                    />
-                  }
-                >
+                <Route element={<RoleRoute allowedRoles={["admin", "sales-execitive", "user"]} />} >
                   <Route index element={<Dashobard />} />
                   <Route path={routes.USERS} element={<UsersPage />} />
                 </Route>
 
-
                 {/* ATTENDANCE PROTECTED ROUTES  */}
                 <Route element={<RoleRoute allowedRoles={["admin", "hr"]} />}>
-                  <Route
-                    path={routes.ATTENDANCE_DASHBOARD}
-                    element={<AttendanceDashboard />}
-                  />
-                  <Route
-                    path={routes.ATTENDANCE_SUBMISSION}
-                    element={<AttendanceSubmission />}
-                  />
-
-
-                  <Route
-                    path={routes.ATTENDANCE_REPORTS}
-                    element={<AttendanceReports />}
-                  />
-                  <Route
-                    path={routes.USER_ATTENDANCE_COUNT}
-                    element={<UsersAttendanceCount />}
-                  />
+                  <Route path={routes.ATTENDANCE_DASHBOARD} element={<AttendanceDashboard />} />
+                  <Route path={routes.ATTENDANCE_SUBMISSION} element={<AttendanceSubmission />} />
+                  <Route path={routes.ATTENDANCE_REPORTS} element={<AttendanceReports />} />
+                  <Route path={routes.USER_ATTENDANCE_COUNT} element={<UsersAttendanceCount />} />
                 </Route>
                 {/* ATTENDANCE FREE ROUTES  */}
-                <Route
-                  path={`${routes.USER_ATTENDANCE_DETAILS}/:id?`}
-                  element={<AttendenceDetails />}
-                />
+                <Route path={`${routes.USER_ATTENDANCE_DETAILS}/:id?`} element={<AttendenceDetails />} />
 
-                <Route
-                  element={
-                    <RoleRoute
-                      allowedRoles={["admin", "sales-execitive"]}
-                    />
-                  }
-                >
+                <Route element={<RoleRoute allowedRoles={["admin", "sales-execitive"]} />}>
                   <Route path={routes.USERS} element={<UsersPage />} />
                 </Route>
 
-                <Route
-                  element={
-                    <RoleRoute allowedRoles={["admin", "sales-execitive"]} />
-                  }
-                >
+                <Route element={<RoleRoute allowedRoles={["admin", "sales-execitive"]} />}>
                   <Route path={routes.DAILY_APPLY} element={<DailyApply />} />
                   <Route path={routes.PROFILE} element={<Profile />} />
                   <Route path={routes.AGENDA} element={<Agenda />} />
@@ -126,6 +89,7 @@ function App() {
             <Route path="/Signup" element={<SignUpPage />} />
             <Route path={routes.FORGOT_PASSWORD} element={<ForgotPassword />} />
             <Route path={`${routes.RESET_PASSWORD}/:token`} element={<ResetPassword />} />
+            <Route path={`${routes.AFTER_CONFIRMATION_EMAIL}`} element={<AfterConfirmationEmail />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </ConfigProvider>
