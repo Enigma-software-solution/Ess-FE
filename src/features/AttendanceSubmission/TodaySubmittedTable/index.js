@@ -62,6 +62,11 @@ const TodaySubmittedTable = ({ todayAllAttendance }) => {
             render: (text, record) => format(new Date(record.checkInTime), "p"),
         },
         {
+            title: "Check Out Time",
+            dataIndex: "checkOutTime",
+            render: (text, record) => record?.checkOutTime ? format(new Date(record?.checkOutTime), "p") : 'N/A',
+        },
+        {
             title: "Status",
             dataIndex: "status",
             render: (text) => {
@@ -77,10 +82,10 @@ const TodaySubmittedTable = ({ todayAllAttendance }) => {
             render: (text, record) => (
                 <div className="d-flex gap-1">
                     <EditButton onClick={(e) => handleEdit(record, e)} />
-                    
-            
 
-            <Popconfirm
+
+
+                    <Popconfirm
                         title="Are you sure to delete this task?"
                         onConfirm={(e) => handleConfirmDelete(record, e)}
                         onCancel={(e) => e.stopPropagation()}
