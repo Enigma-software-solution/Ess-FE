@@ -87,6 +87,7 @@ function App() {
             </Route>
             <Route path="/login" element={<Login />} />
             <Route path="/Signup" element={<SignUpPage />} />
+            <Route path={`${routes.AfterConfirmationEmail}/confirm-email/:token`} element={<AfterConfirmationEmail />} />
             <Route path={routes.FORGOT_PASSWORD} element={<ForgotPassword />} />
             <Route path={`${routes.RESET_PASSWORD}/:token`} element={<ResetPassword />} />
             <Route path={`${routes.AFTER_CONFIRMATION_EMAIL}`} element={<AfterConfirmationEmail />} />
