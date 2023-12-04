@@ -20,7 +20,9 @@ const AttendenceDetails = () => {
                 </Space>
             </Flex>
             <Divider />
-            <StyledDetailsTable> <SingleUserAttendanceDetails userId={id} /></StyledDetailsTable>
+            <StyledDetailsTable>
+                <SingleUserAttendanceDetails userId={id} />
+            </StyledDetailsTable>
         </>
     );
 };
