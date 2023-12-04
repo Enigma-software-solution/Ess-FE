@@ -1,10 +1,10 @@
 import React from 'react';
 import ViewUserAttendenceGraph from './ViewUserGraph';
 import { useParams } from 'react-router-dom';
-import SingleUserAttendanceDetails from './SingleUserAttendanceDetails';
 import { StyledDetailsTable } from './styled';
 import UserStats from './UserStats';
 import { Divider, Flex, Space } from 'antd';
+import SingleUserAttendancTable from './SingleUserAttendanceTable';
 
 const AttendenceDetails = () => {
 
@@ -21,7 +21,7 @@ const AttendenceDetails = () => {
             </Flex>
             <Divider />
             <StyledDetailsTable>
-                <SingleUserAttendanceDetails userId={id} />
+                <SingleUserAttendancTable userId={id} />
             </StyledDetailsTable>
         </>
     );

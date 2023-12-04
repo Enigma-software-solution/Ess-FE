@@ -53,7 +53,7 @@ const columns = [
     },
 ];
 
-const SingleUserAttendanceDetails = ({ userId }) => {
+const SingleUserAttendancTable = ({ userId }) => {
     const [reports, setReports] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
 
@@ -110,4 +110,4 @@ const SingleUserAttendanceDetails = ({ userId }) => {
     );
 };
 
-export default SingleUserAttendanceDetails;
+export default SingleUserAttendancTable;
