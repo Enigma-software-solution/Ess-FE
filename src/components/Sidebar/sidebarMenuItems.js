@@ -113,6 +113,6 @@ export const sidebarMenuItems = [
         title: 'Users',
         icon: <UserSwitchOutlined />,
         path: routes.USERS,
-        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN],
+        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.HR],
     },
 ];
