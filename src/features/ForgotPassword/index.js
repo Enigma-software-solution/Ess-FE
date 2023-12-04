@@ -19,9 +19,7 @@ const ForgotPassword = () => {
       const res = await dispatch(
         forgotPasswordApi({ email: values.email })
       ).unwrap();
-      if (res) {
-        navigate("/");
-      }
+
     } catch (err) {
       toast.error(err?.message);
     } finally {
