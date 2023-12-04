@@ -28,7 +28,7 @@ import AttendanceDashboard from "./pages/Attendance/AttendanceDashboard";
 import AttendanceReports from "./pages/Attendance/AttendanceReports";
 import NotFound from "./components/PageNotFound";
 import UsersAttendanceCount from "./pages/Attendance/UsersAttendanceCount";
-import AttendenceDetails from "./features/SingleUserAttendanceDetails";
+// import AttendenceDetails from "./features/SingleUserAttendanceDetails";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import AfterConfirmationEmail from "./pages/AfterConfirmationEmail";
@@ -37,6 +37,7 @@ import { format } from 'date-fns';
 import { enUS, fr } from 'date-fns/locale';
 import { ROLES } from "./constant/roles";
 import MarkAttendance from "./pages/Attendance/MarkAttendance";
+import AttendenceDetails from "./features/AttendanceFeature/SingleUserAttendanceDetails";
 
 function App() {
   const dispatch = useDispatch();
