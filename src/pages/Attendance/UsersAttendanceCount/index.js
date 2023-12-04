@@ -1,5 +1,5 @@
 import React from 'react'
-import UsersAttendanceCount from 'src/features/UsersAttendanceCount'
+import UsersAttendanceCount from 'src/features/AttendanceFeature/UsersAttendanceCount'
 
 const Page = () => {
     return (
