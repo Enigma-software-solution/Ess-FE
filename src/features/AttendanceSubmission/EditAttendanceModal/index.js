@@ -39,13 +39,12 @@ const EditAttendanceModal = ({ visible, onClose, record }) => {
         }
     };
 
-
-
     return (
         <Modal
             title="Edit Attendance"
             open={visible}
             footer={null}
+            onCancel={handleCancel}
         >
             <Form
                 form={form}
