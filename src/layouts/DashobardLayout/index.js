@@ -9,7 +9,6 @@ import { Outlet } from "react-router-dom";
 import AttendanceTabs from "src/features/AttandanceDashboard/AttendanceTabs";
 import { useSelector } from "react-redux";
 import { getLogedInUser } from "src/store/slices/authSlice/selectors";
-import { roles } from "src/constant/roles";
 
 const DashboardLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
