@@ -23,7 +23,6 @@ const MarkCard = ({ user, isLoading, handleSubmit }) => {
 
     const [form] = Form.useForm();
 
-
     const onSubmit = async (values) => {
 
         const data = {
@@ -69,8 +68,7 @@ const MarkCard = ({ user, isLoading, handleSubmit }) => {
                 </Form.Item>
 
                 <Form.Item name="notes">
-                    <label className="fw-bold">Notes:</label>
-                    <TextArea rows={3} />
+                    <TextArea rows={3} placeholder='Notes' />
                 </Form.Item>
 
                 <Button
