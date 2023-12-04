@@ -26,6 +26,10 @@ export const roles = [
   {
     label: "TEAM_LEAD",
     value: "team_lead"
+  },
+  {
+    label: "HR",
+    value: "hr"
   }
 ];
 
