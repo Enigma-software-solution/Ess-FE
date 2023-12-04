@@ -1,5 +1,5 @@
 import React from 'react'
-import AttendanceReports from 'src/features/AttendanceReports'
+import AttendanceReports from 'src/features/AttendanceFeature/AttendanceReports'
 
 const Page = () => {
     return (
