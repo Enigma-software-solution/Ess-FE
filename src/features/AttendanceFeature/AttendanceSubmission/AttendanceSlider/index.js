@@ -3,9 +3,9 @@ import { Button, Form, Select } from "antd";
 import { useDispatch } from "react-redux";
 import { submitAttendanceApi } from "src/store/slices/attendanceSlice/GetAttendanceSlice/api";
 import { CardImage, ImageWrapper, InnerCard, StyledCarousel } from "../styled";
-import avatar from "../../../assets/avatar.jpg";
 import TextArea from "antd/es/input/TextArea";
 import { format } from "date-fns";
+import Avatar from '../../../../assets/avatar.jpg'
 
 const STATUS_OPTIONS = [
   { value: "present", label: "Present" },
@@ -48,7 +48,7 @@ const UserCard = ({ user, handlePresent, isLoading, selectedUser }) => {
     <div key={user?._id}>
       <InnerCard>
         <ImageWrapper>
-          <CardImage src={avatar} alt="Avatar" />
+          <CardImage src={Avatar} alt="Avatar" />
         </ImageWrapper>
 
         <h5 className="text-center pt-3 pb-4">
@@ -94,7 +94,7 @@ const AttendanceSlider = ({ users, attendanceDate }) => {
     dispatch(submitAttendanceApi(data))
       .finally(() => {
         setIsLoading(false);
-        setSelectedUser(null);  
+        setSelectedUser(null);
       });
   };
   if (!users?.length) {

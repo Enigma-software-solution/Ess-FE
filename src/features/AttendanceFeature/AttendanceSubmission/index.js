@@ -11,7 +11,7 @@ import TodaySubmittedTable from "./TodaySubmittedTable";
 import { getAllAttendance } from "src/store/slices/attendanceSlice/GetAttendanceSlice/selectors";
 import Loader from "src/components/Loader";
 
-const AttendanceSubmission = () => {
+const MarkAttendance = () => {
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const dispatch = useDispatch();
@@ -92,4 +92,4 @@ const AttendanceSubmission = () => {
   );
 };
 
-export default AttendanceSubmission;
+export default MarkAttendance;
