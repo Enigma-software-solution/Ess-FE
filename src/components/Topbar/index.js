@@ -6,6 +6,7 @@ import { ToggleButton } from "./styled";
 import { routes } from "src/constant/routes";
 import { useSelector } from "react-redux";
 import { getLogedInUser } from "src/store/slices/authSlice/selectors";
+import { MenuOutlined } from "@ant-design/icons";
 
 const Topbar = ({ setCollapsed, collapsed }) => {
   const loggedInUser = useSelector(getLogedInUser)
@@ -52,14 +53,15 @@ const Topbar = ({ setCollapsed, collapsed }) => {
       </ToggleButton>
 
       <div className="d-flex justify-content-center align-items-center gap-2">
-        <Dropdown overlay={menu}>
-          <Avatar
-            size={"large"}
-            src="https://joesch.moe/api/v1/random"
-            style={{ border: "1px solid lightgray" }}
-          />
+        <Avatar
+          size={"large"}
+          src="https://joesch.moe/api/v1/random"
+          style={{ border: "1px solid lightgray" }}
+        />
+        <span>{loggedInUser && loggedInUser?.first_name}</span>
+        <Dropdown overlay={menu} trigger={['click']}>
+          <span><MenuOutlined /></span>
         </Dropdown>
-        {loggedInUser && loggedInUser?.first_name}
       </div>
     </div>
   );
