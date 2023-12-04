@@ -7,6 +7,7 @@ const AttendanceTabs = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [activeKey, setActiveKey] = useState("");
+  const [isMarkAttendanceDisabled, setMarkAttendanceDisabled] = useState(false);
 
   const items = [
     {
@@ -28,6 +29,7 @@ const AttendanceTabs = () => {
     const foundKey =
       items.find((item) => location.pathname.includes(item.key))?.key || "1";
     setActiveKey(foundKey);
+    setMarkAttendanceDisabled(location.pathname.includes(routes.ATTENDANCE_SUBMISSION));
   }, [location.pathname, items]);
 
   const onChange = (key) => {
@@ -37,6 +39,8 @@ const AttendanceTabs = () => {
   const handleMarkAttendance = () => {
     navigate(routes.ATTENDANCE_SUBMISSION);
     setActiveKey(routes.ATTENDANCE_SUBMISSION); // Update activeKey when "Mark Attendance" button is clicked
+    setMarkAttendanceDisabled(true);
+
   };
 
   return (
@@ -45,7 +49,8 @@ const AttendanceTabs = () => {
         activeKey={activeKey}
         onChange={onChange}
         tabBarExtraContent={
-          <Button onClick={handleMarkAttendance}>
+          <Button onClick={handleMarkAttendance} disabled={isMarkAttendanceDisabled} 
+          style={{ cursor: isMarkAttendanceDisabled ? 'default' : 'pointer' }}>
             Mark Attendance
           </Button>
         }
