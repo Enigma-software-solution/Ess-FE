@@ -5,7 +5,7 @@ import { getSelectedUser } from 'src/store/slices/userSlice/selectors';
 import { updateUserApi } from 'src/store/slices/userSlice/apis';
 import { registerUser } from 'src/store/slices/authSlice/apis';
 import CustomInput from 'src/components/formElements/CustomInput';
-import { roles } from 'src/constant/roles';
+import { rolesDropdown } from 'src/constant/roles';
 import CustomSelect from 'src/components/formElements/CustomSelect';
 
 const { Option } = Select;
@@ -117,7 +117,7 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
                             rules={[{ required: true }]}
                             component={CustomSelect}
                             placeholder="Select Role"
-                            options={roles}
+                            options={rolesDropdown}
                             style={{ width: "200px" }}
                         />
                     </Form.Item>

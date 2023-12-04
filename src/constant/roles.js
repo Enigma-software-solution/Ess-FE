@@ -1,35 +1,45 @@
-export const roles = [
+export const ROLES = {
+  SUPER_ADMIN: "super_admin",
+  ADMIN: "admin",
+  USER: "user",
+  MANAGER: "manager",
+  SALES_EXECUTIVE: "sales_executive",
+  PROJECT_MANAGER: "project_manager",
+  TEAM_LEAD: "team_lead",
+  HR: 'hr'
+};
+
+export const rolesDropdown = [
   {
-    label: "SUPER_ADMIN",
-    value: "super_admin"
+    label: "SUPER ADMIN",
+    value: ROLES.SUPER_ADMIN
   },
   {
     label: "ADMIN",
-    value: "admin"
+    value: ROLES.ADMIN
   },
   {
     label: "USER",
-    value: "user"
+    value: ROLES.USER
   },
   {
     label: "MANAGER",
-    value: "manager"
+    value: ROLES.MANAGER
   },
   {
     label: "SALES",
-    value: "sales_executive"
+    value: ROLES.SALES_EXECUTIVE
   },
   {
-    label: "PROJECT_MANAGER",
-    value: "project_manager"
+    label: "PROJECT MANAGER",
+    value: ROLES.PROJECT_MANAGER
   },
   {
-    label: "TEAM_LEAD",
-    value: "team_lead"
+    label: "TEAM LEAD",
+    value: ROLES.TEAM_LEAD
   },
   {
     label: "HR",
-    value: "hr"
+    value: ROLES.HR
   }
 ];
-

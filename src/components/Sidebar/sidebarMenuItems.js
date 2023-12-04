@@ -1,4 +1,5 @@
 import { UserOutlined, ContainerOutlined, CalendarOutlined, DashboardOutlined, CheckSquareOutlined, ProfileOutlined, UserSwitchOutlined, UsergroupAddOutlined } from '@ant-design/icons';
+import { ROLES } from 'src/constant/roles';
 import { routes } from 'src/constant/routes';
 
 
@@ -70,48 +71,48 @@ export const sidebarMenuItems = [
         title: 'Dashboard',
         icon: <DashboardOutlined />,
         path: routes.DASHBOARD,
-        roles: ['super_admin', 'admin', "user", "sales-executive"],
+        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.SALES_EXECUTIVE],
     },
     {
         key: routes.DAILY_APPLY,
         title: 'Daily Apply',
         icon: <ContainerOutlined />,
         path: routes.DAILY_APPLY,
-        roles: ['super_admin', 'admin', 'sales-executive'],
+        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.SALES_EXECUTIVE],
     },
     {
         key: routes.AGENDA,
         title: 'Agenda',
         icon: <CalendarOutlined />,
         path: routes.AGENDA,
-        roles: ['super_admin', 'admin', 'sales-executive'],
+        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.SALES_EXECUTIVE],
     },
     {
         key: routes.PROFILE,
         title: 'Profile',
         icon: <ProfileOutlined />,
         path: routes.PROFILE,
-        roles: ['super_admin', 'admin', 'sales-executive'],
+        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.SALES_EXECUTIVE],
     },
     {
         key: routes.CLIENT,
         title: 'Client',
         icon: <UsergroupAddOutlined />,
         path: routes.CLIENT,
-        roles: ['super_admin', 'admin', 'sales-executive'],
+        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.SALES_EXECUTIVE],
     },
     {
         key: routes.ATTENDANCE,
         title: 'Attendance',
         icon: <CheckSquareOutlined />,
         path: routes.ATTENDANCE_DASHBOARD,
-        roles: ['super_admin', 'admin', 'sales-executive',],
+        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.HR],
     },
     {
         key: routes.USERS,
         title: 'Users',
         icon: <UserSwitchOutlined />,
         path: routes.USERS,
-        roles: ['super_admin', 'admin'],
+        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN],
     },
 ];

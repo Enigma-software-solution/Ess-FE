@@ -36,6 +36,7 @@ import AfterConfirmationEmail from "./pages/AfterConfirmationEmail";
 
 import { format } from 'date-fns';
 import { enUS, fr } from 'date-fns/locale';
+import { ROLES } from "./constant/roles";
 
 function App() {
   const dispatch = useDispatch();
@@ -58,13 +59,13 @@ function App() {
 
                 <Route path={routes.PROFILE_SETTINGS} element={<ProfileSettings />} />
 
-                <Route element={<RoleRoute allowedRoles={["admin", "sales-execitive", "user"]} />} >
+                <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.SALES_EXECUTIVE, ROLES.USER]} />} >
                   <Route index element={<Dashobard />} />
                   <Route path={routes.USERS} element={<UsersPage />} />
                 </Route>
 
                 {/* ATTENDANCE PROTECTED ROUTES  */}
-                <Route element={<RoleRoute allowedRoles={["admin", "hr"]} />}>
+                <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.HR]} />}>
                   <Route path={routes.ATTENDANCE_DASHBOARD} element={<AttendanceDashboard />} />
                   <Route path={routes.ATTENDANCE_SUBMISSION} element={<AttendanceSubmission />} />
                   <Route path={routes.ATTENDANCE_REPORTS} element={<AttendanceReports />} />
@@ -73,11 +74,11 @@ function App() {
                 {/* ATTENDANCE FREE ROUTES  */}
                 <Route path={`${routes.USER_ATTENDANCE_DETAILS}/:id?`} element={<AttendenceDetails />} />
 
-                <Route element={<RoleRoute allowedRoles={["admin", "sales-execitive"]} />}>
+                <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.SALES_EXECUTIVE]} />}>
                   <Route path={routes.USERS} element={<UsersPage />} />
                 </Route>
 
-                <Route element={<RoleRoute allowedRoles={["admin", "sales-execitive"]} />}>
+                <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.SALES_EXECUTIVE]} />}>
                   <Route path={routes.DAILY_APPLY} element={<DailyApply />} />
                   <Route path={routes.PROFILE} element={<Profile />} />
                   <Route path={routes.AGENDA} element={<Agenda />} />
