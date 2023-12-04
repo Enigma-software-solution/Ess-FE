@@ -19,17 +19,19 @@ const STATUS_OPTIONS = [
 
 
 const MarkCard = ({ user, isLoading, handleSubmit }) => {
-    const DATE_FORMAT = 'yyyy-MM-dd';
 
     const [form] = Form.useForm();
 
     const onSubmit = async (values) => {
+        const attendanceDate = format(new Date(), 'yyyy-MM-dd')
+        const attendanceTime = new Date()
+
 
         const data = {
             user: user?._id,
-            date: format(new Date(), DATE_FORMAT),
+            date: attendanceDate,
             status: values?.status,
-            checkInTime: ['late', 'present', 'half-day'].includes(values?.status) ? new Date() : null,
+            checkInTime: ['late', 'present', 'half-day'].includes(values?.status) ? attendanceTime : null,
             notes: values?.notes,
         };
 

@@ -1,4 +1,3 @@
-import { Card, Carousel } from "antd";
 import styled from "styled-components";
 
 
@@ -16,11 +15,4 @@ export const SearchWrapper = styled.div`
   align-items: center;
 `;
 
-export const StyledCarousel = styled(Carousel)`
-> .slick-dots li button {
-  background: #468b9f;
-}
-> .slick-dots li.slick-active button {
-  background: #468b9f;
-}
-`
+

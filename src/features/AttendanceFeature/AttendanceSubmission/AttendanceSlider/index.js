@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { submitAttendanceApi } from "src/store/slices/attendanceSlice/GetAttendanceSlice/api";
-import { StyledCarousel } from "../styled";
 import MarkCard from "../MarkCard";
+import { Swiper, SwiperSlide } from 'swiper/react';
+import 'swiper/css';
 
 
 const AttendanceSlider = ({ users, attendanceDate }) => {
@@ -26,23 +27,25 @@ const AttendanceSlider = ({ users, attendanceDate }) => {
     );
   }
 
-  let settings = {
-    slidesToShow: 4,
-    infinite: false,
-    slidesToScroll: 2,
-  };
 
   return (
-    <StyledCarousel style={{ background: "#F1F2F3", marginBottom: "20px" }} {...settings}>
+    <Swiper
+      slidesPerView={4}
+      spaceBetween={10}
+      grabCursor={true}
+      style={{ padding: '20px' }}
+    >
       {users?.filter((user) => user.status === "active").map((user) => (
-        <MarkCard
-          key={user?._id}
-          user={user}
-          handleSubmit={handleSubmit}
-          isLoading={isLoading}
-        />
+        <SwiperSlide>
+          <MarkCard
+            key={user?._id}
+            user={user}
+            handleSubmit={handleSubmit}
+            isLoading={isLoading}
+          />
+        </SwiperSlide>
       ))}
-    </StyledCarousel>
+    </Swiper>
   );
 };
 

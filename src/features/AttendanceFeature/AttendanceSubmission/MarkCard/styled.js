@@ -2,16 +2,15 @@ import { Card } from "antd";
 import styled from "styled-components";
 
 export const CardWrapper = styled(Card)`
-  margin: 30px;
+  width: 100%;
   border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  overflow: "hidden";
+  overflow: hidden;
+  box-shadow: 4px 2px 20px -7px  rgba(0,0,0,0.2);
+  transition: all.5s;
+
   &:hover {
-   cursor: 'pointer';
-    box-shadow: 4px 2px 20px -7px  rgba(0,0,0,0.2);
+    cursor: pointer;
+    box-shadow: 4px 2px 20px -7px  rgba(0,0,0,0.7);
   }
 `;
 
