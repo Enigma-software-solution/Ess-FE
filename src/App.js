@@ -24,10 +24,10 @@ import SignUpPage from "./pages/SignUp";
 import ProfileSettings from "./pages/profileSettings";
 import UsersPage from "./pages/Users";
 import RoleRoute from "./components/RoleRoute";
-import AttendanceDashboard from "./pages/AttendanceDashboard";
-import AttendanceReports from "./pages/AttendanceReports";
+import AttendanceDashboard from "./pages/Attendance/AttendanceDashboard";
+import AttendanceReports from "./pages/Attendance/AttendanceReports";
 import NotFound from "./components/PageNotFound";
-import UsersAttendanceCount from "./pages/UsersAttendanceCount";
+import UsersAttendanceCount from "./pages/Attendance/UsersAttendanceCount";
 import AttendenceDetails from "./features/SingleUserAttendanceDetails";
 import AttendanceSubmission from "./features/AttendanceSubmission";
 import ForgotPassword from "./pages/ForgotPassword";
@@ -37,6 +37,7 @@ import AfterConfirmationEmail from "./pages/AfterConfirmationEmail";
 import { format } from 'date-fns';
 import { enUS, fr } from 'date-fns/locale';
 import { ROLES } from "./constant/roles";
+import MarkAttendance from "./pages/Attendance/MarkAttendance";
 
 function App() {
   const dispatch = useDispatch();
@@ -67,7 +68,7 @@ function App() {
                 {/* ATTENDANCE PROTECTED ROUTES  */}
                 <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.HR]} />}>
                   <Route path={routes.ATTENDANCE_DASHBOARD} element={<AttendanceDashboard />} />
-                  <Route path={routes.ATTENDANCE_SUBMISSION} element={<AttendanceSubmission />} />
+                  <Route path={routes.ATTENDANCE_SUBMISSION} element={<MarkAttendance />} />
                   <Route path={routes.ATTENDANCE_REPORTS} element={<AttendanceReports />} />
                   <Route path={routes.USER_ATTENDANCE_COUNT} element={<UsersAttendanceCount />} />
                 </Route>
