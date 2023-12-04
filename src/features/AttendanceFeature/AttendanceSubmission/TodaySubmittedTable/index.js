@@ -12,23 +12,8 @@ import EditAttendanceModal from "../EditAttendanceModal";
 const TodaySubmittedTable = ({ todayAllAttendance }) => {
     const [selectedRecord, setSelectedRecord] = useState(null)
     const [isEditModalVisible, setIsEditModalVisible] = useState(false)
-    const [isLoading, setIsLoading] = useState(false)
-
     const dispatch = useDispatch();
 
-    // const handleDelete = async (id) => {
-    //     try {
-    //         setIsLoading(true)
-    //         await dispatch(deleteAttendance(id));
-    //     }
-    //     catch (error) {
-    //         console.log(error)
-    //     } 
-    //     finally {
-    //         setIsLoading(false)
-    //     }
-
-    // };
 
     const handleConfirmDelete = (recordToDelete, e) => {
         e.stopPropagation();
@@ -59,7 +44,7 @@ const TodaySubmittedTable = ({ todayAllAttendance }) => {
         {
             title: "Check In Time",
             dataIndex: "checkInTime",
-            render: (text, record) => format(new Date(record.checkInTime), "p"),
+            render: (text, record) => record?.checkInTime ? format(new Date(record.checkInTime), "p") : 'N/A',
         },
         {
             title: "Check Out Time",
@@ -82,9 +67,6 @@ const TodaySubmittedTable = ({ todayAllAttendance }) => {
             render: (text, record) => (
                 <div className="d-flex gap-1">
                     <EditButton onClick={(e) => handleEdit(record, e)} />
-
-
-
                     <Popconfirm
                         title="Are you sure to delete this task?"
                         onConfirm={(e) => handleConfirmDelete(record, e)}
