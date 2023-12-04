@@ -29,7 +29,6 @@ import AttendanceReports from "./pages/Attendance/AttendanceReports";
 import NotFound from "./components/PageNotFound";
 import UsersAttendanceCount from "./pages/Attendance/UsersAttendanceCount";
 import AttendenceDetails from "./features/SingleUserAttendanceDetails";
-import AttendanceSubmission from "./features/AttendanceSubmission";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import AfterConfirmationEmail from "./pages/AfterConfirmationEmail";

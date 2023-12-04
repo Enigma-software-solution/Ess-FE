@@ -1,5 +1,5 @@
 import React from 'react'
-import MarkAttendance from 'src/features/AttendanceSubmission'
+import MarkAttendance from 'src/features/AttendanceFeature/AttendanceSubmission'
 
 const Page = () => {
     return (
