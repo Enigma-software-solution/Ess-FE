@@ -31,7 +31,7 @@ const Topbar = ({ setCollapsed, collapsed }) => {
       <Menu.Item key="2" onClick={() => handleButtonClick(loggedInUser)}>
         Attendance
       </Menu.Item>
-      <Menu.Item key="2" onClick={() => handleLogout()}>
+      <Menu.Item key="3" onClick={() => handleLogout()}>
         Log out
       </Menu.Item>
     </Menu>
