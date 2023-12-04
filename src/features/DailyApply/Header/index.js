@@ -10,6 +10,7 @@ import { getLogedInUser } from "src/store/slices/authSlice/selectors";
 import CustomSelect from "src/components/formElements/CustomSelect";
 import { Wrapper } from "./styled";
 import qs from "qs";
+import { ROLES } from "src/constant/roles";
 
 const Header = ({ pageSize, onSearch }) => {
   const dispatch = useDispatch();
@@ -72,7 +73,7 @@ const Header = ({ pageSize, onSearch }) => {
       </div>
       <Wrapper>
         <div className="d-flex gap-3">
-          {logedInUser && logedInUser?.role === "admin" && (
+          {logedInUser && logedInUser?.role === ROLES.ADMIN && (
             <CustomSelect
               style={{ width: "180px" }}
               value={selectedProfile}

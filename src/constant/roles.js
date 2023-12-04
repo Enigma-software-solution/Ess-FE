@@ -3,7 +3,7 @@ export const ROLES = {
   ADMIN: "admin",
   USER: "user",
   MANAGER: "manager",
-  SALES: "sales_executive",
+  SALES_EXECUTIVE: "sales_executive",
   PROJECT_MANAGER: "project_manager",
   TEAM_LEAD: "team_lead",
   HR: 'hr'
@@ -28,7 +28,7 @@ export const rolesDropdown = [
   },
   {
     label: "SALES",
-    value: ROLES.SALES
+    value: ROLES.SALES_EXECUTIVE
   },
   {
     label: "PROJECT MANAGER",
