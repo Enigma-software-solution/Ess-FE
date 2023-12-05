@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Card } from 'antd';
+import { Card, Spin } from 'antd';
 import { getUserAttendanceStatsById } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api';
 import { getAttendenceByIdSelector } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/selectors';
 import { format } from 'date-fns';
@@ -16,6 +16,7 @@ const UserStats = ({ userId }) => {
     const [stats, setStats] = useState(null);
     const [selectedMonth, setSelectedMonth] = useState(null)
     const [selectedYear, setSelectdYear] = useState(null)
+    const [loading, setLoading] = useState(false);
 
     const dispatch = useDispatch();
 
@@ -31,6 +32,7 @@ const UserStats = ({ userId }) => {
     ];
 
     const getAttendanceStats = async (month, year) => {
+        setLoading(true);
         const params = qs.stringify({
             month: month,
             year: year,
@@ -43,8 +45,10 @@ const UserStats = ({ userId }) => {
         try {
             const res = await dispatch(getUserAttendanceStatsById(data))
             setStats(userStats)
+            setLoading(false);
         }
         catch (error) {
+            setLoading(false);
             console.error("Error fetching data:", error);
         }
     };
@@ -77,12 +81,18 @@ const UserStats = ({ userId }) => {
                 </div>
             </div>
             <Card title="Attendance Stats" style={{ width: 300, color: '#4154F1' }}>
-                {statItems?.map((item, index) => (
-                    <StyledStatusCard key={index}>
-                        <strong>{item?.label}</strong>
-                        <p>{item?.value}</p>
-                    </StyledStatusCard>
-                ))}
+                {loading ? (
+                    <div style={{ textAlign: 'center', height: "133px" }}>
+                        <Spin size="large" />
+                    </div>
+                ) : (
+                    statItems?.map((item, index) => (
+                        <StyledStatusCard key={index}>
+                            <strong>{item?.label}</strong>
+                            <p>{item?.value}</p>
+                        </StyledStatusCard>
+                    ))
+                )}
             </Card>
         </div>
     );
