@@ -6,6 +6,7 @@ import { getDailyApplyStats } from "src/store/slices/dailyApplySlice/apis";
 import { getStats } from "src/store/slices/dailyApplySlice/selectors";
 import Loader from "src/components/Loader";
 import { PendingUsersCard } from "./styled";
+import { UserOutlined } from "@ant-design/icons";
 
 export const ApplyHistory = () => {
   const dispatch = useDispatch();
@@ -39,9 +40,9 @@ export const ApplyHistory = () => {
       </Row>
       <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '20px' }}>
       <PendingUsersCard
-      title='Pending Approval Users'>
+      title='Pending Approvals'>
       <Flex gap={10} align="center">
-      <Avatar  size={50} />
+      <Avatar  size={50} icon={<UserOutlined />} />
       <Flex vertical={true} >
         <h6>Username</h6>
         <p>Email</p>
