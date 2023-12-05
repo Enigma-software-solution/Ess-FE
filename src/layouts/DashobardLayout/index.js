@@ -6,10 +6,9 @@ import { StyledContent, StyledHeader, StyledSider } from "./styled";
 import Sidebar from "src/components/Sidebar";
 import Topbar from "src/components/Topbar";
 import { Outlet } from "react-router-dom";
-import AttendanceTabs from "src/features/AttandanceDashboard/AttendanceTabs";
+import AttendanceTabs from "src/features/AttendanceFeature/AttandanceDashboard/AttendanceTabs";
 import { useSelector } from "react-redux";
 import { getLogedInUser } from "src/store/slices/authSlice/selectors";
-import { roles } from "src/constant/roles";
 
 const DashboardLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
