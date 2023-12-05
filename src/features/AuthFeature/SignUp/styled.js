@@ -12,9 +12,8 @@ export const FormContainer = styled.div`
   background: #fff;
   border-radius: 8px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  padding: 40px;
-  max-width: 40%;
-  min-width: 30%;
+  padding: 30px;
+  max-width: 400px;
   width: 100%;
   display: flex;
   flex-direction: column;

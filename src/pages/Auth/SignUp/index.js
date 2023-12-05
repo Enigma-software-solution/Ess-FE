@@ -3,9 +3,7 @@ import SignUp from 'src/features/AuthFeature/SignUp'
 
 const SignUpPage = () => {
     return (
-        <>
-            <SignUp />
-        </>
+        <SignUp />
     )
 }
 
