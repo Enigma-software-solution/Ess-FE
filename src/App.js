@@ -3,7 +3,7 @@ import GlobalStyles from "./globalStyles";
 import { Route, Routes } from "react-router-dom";
 import { theme } from "./theme";
 import DashobardLayout from "./layouts/DashobardLayout";
-import Login from "./pages/Login";
+import Login from "./pages/Auth/Login";
 import ProtectedRoutes from "./components/ProtectedRoutes";
 import Dashobard from "./pages/Dashobard";
 import { routes } from "./constant/routes";
@@ -20,7 +20,6 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import Agenda from "./pages/Agenda";
 import { ConfigProvider } from "antd";
 import ClientPage from "./pages/Clients";
-import SignUpPage from "./pages/SignUp";
 import ProfileSettings from "./pages/profileSettings";
 import UsersPage from "./pages/Users";
 import RoleRoute from "./components/RoleRoute";
@@ -28,16 +27,16 @@ import AttendanceDashboard from "./pages/Attendance/AttendanceDashboard";
 import AttendanceReports from "./pages/Attendance/AttendanceReports";
 import NotFound from "./components/PageNotFound";
 import UsersAttendanceCount from "./pages/Attendance/UsersAttendanceCount";
-// import AttendenceDetails from "./features/SingleUserAttendanceDetails";
-import ForgotPassword from "./pages/ForgotPassword";
-import ResetPassword from "./pages/ResetPassword";
-import AfterConfirmationEmail from "./pages/AfterConfirmationEmail";
+import ForgotPassword from "./pages/Auth/ForgotPassword";
+import ResetPassword from "./pages/Auth/ResetPassword";
+import AfterConfirmationEmail from "./pages/Auth/AfterConfirmationEmail";
 
 import { format } from 'date-fns';
 import { enUS, fr } from 'date-fns/locale';
 import { ROLES } from "./constant/roles";
 import MarkAttendance from "./pages/Attendance/MarkAttendance";
 import AttendenceDetails from "./features/AttendanceFeature/SingleUserAttendanceDetails";
+import SignUpPage from "./pages/Auth/SignUp";
 
 function App() {
   const dispatch = useDispatch();
