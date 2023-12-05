@@ -25,6 +25,7 @@ const MarkAttendance = () => {
   const getTodayAllSubmittedAttendance = async () => {
     const params = qs.stringify({
       date: format(new Date(), "yyyy-MM-dd"),
+      pageSize: 200
     });
 
     try {
@@ -55,10 +56,8 @@ const MarkAttendance = () => {
   };
 
   useEffect(() => {
-    if (todayAllAttendance) {
-      const nonSubmittedUsers = getNonSubmittedUsers();
-      setFilteredUsers(nonSubmittedUsers);
-    }
+    const nonSubmittedUsers = getNonSubmittedUsers();
+    setFilteredUsers(nonSubmittedUsers);
   }, [todayAllAttendance, users]);
 
 
