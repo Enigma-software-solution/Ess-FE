@@ -41,7 +41,7 @@ const TodayCount = () => {
 
     const disabledDate = (current) => {
         return current && current > dayjs().endOf('day');
-      };
+    };
 
     return (
         <>
@@ -49,7 +49,7 @@ const TodayCount = () => {
                 <h6 style={{ color: '#899BBD' }} className='mb-1'>
                     {format(new Date(selectedDate), 'dd MMM yyyy')}
                 </h6>
-                <DatePicker onChange={onChange} allowClear={false} defaultValue={dayjs()}  disabledDate={disabledDate}/>
+                <DatePicker onChange={onChange} allowClear={false} defaultValue={dayjs()} disabledDate={disabledDate} />
 
             </Flex>
             {
@@ -60,17 +60,17 @@ const TodayCount = () => {
                     :
 
                     <Row gutter={16} >
-                        <Col className="gutter-row" span={6}>
+                        <Col className="gutter-row" sm={24} md={6} >
                             <CountCard title='Present' day='Today' count={todayStats?.presentCount} />
                         </Col>
-                        <Col className="gutter-row" span={6}>
+                        <Col className="gutter-row" sm={24} md={6}>
                             <CountCard title='Absent' day='Today' count={todayStats?.absentCount} />
                         </Col>
-                        <Col className="gutter-row" span={6}>
+                        <Col className="gutter-row" sm={24} md={6}>
                             <CountCard title='Late' day='Today' count={todayStats?.lateCount} />
                         </Col>
 
-                        <Col className="gutter-row" span={6}>
+                        <Col className="gutter-row" sm={24} md={6}>
                             <CountCard title='Half-day' day='Today' count={todayStats?.halfCount} />
                         </Col>
                     </Row>

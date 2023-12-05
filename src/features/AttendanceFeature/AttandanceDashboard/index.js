@@ -2,27 +2,24 @@ import React from 'react'
 import TodayCount from './TodayCount'
 import OnLeave from './OnLeave'
 import ReportChart from './ReportChart'
-import { Flex } from 'antd'
+import { Row, Col } from 'antd';
 
 const AttandanceDashbaord = () => {
     return (
         <>
             <h5 style={{ color: '#4154F1', marginBottom: '10px' }}>Attendance Dashboard</h5>
 
-            <Flex gap={20}>
-                <div className='w-75'>
+            <Row gutter={20}>
+                <Col sm={24} md={18}>
                     <TodayCount />
                     <ReportChart />
-                </div>
-                <div className='w-25 mt-3' >
+                </Col>
+                <Col sm={24} md={6}>
                     <OnLeave />
-                </div>
-
-            </Flex>
-
-
+                </Col>
+            </Row>
         </>
     )
 }
 
-export default AttandanceDashbaord
+export default AttandanceDashbaord;
