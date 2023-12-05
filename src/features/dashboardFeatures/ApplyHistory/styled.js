@@ -9,7 +9,7 @@ import styled from "styled-components";
   .ant-card-head-title {
     text-align: center;
   }
-  h5, p {
+  h6, p {
     margin: 0;
     padding: 0;
   }

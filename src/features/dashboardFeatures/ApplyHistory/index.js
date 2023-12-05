@@ -43,7 +43,7 @@ export const ApplyHistory = () => {
       <Flex gap={10} align="center">
       <Avatar  size={50} />
       <Flex vertical={true} >
-        <h5>Username</h5>
+        <h6>Username</h6>
         <p>Email</p>
       </Flex>
     </Flex>
