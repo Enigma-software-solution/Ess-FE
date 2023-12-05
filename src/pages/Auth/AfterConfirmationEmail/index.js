@@ -1,5 +1,5 @@
 import React from 'react'
-import AfterConfirmationEmail from 'src/features/AfterConfirmationEmail'
+import AfterConfirmationEmail from 'src/features/AuthFeature/AfterConfirmationEmail'
 
 const Page = () => {
   return (

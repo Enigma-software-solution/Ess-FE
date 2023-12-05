@@ -1,5 +1,5 @@
 import React from 'react'
-import ResetPassword from 'src/features/ResetPassword'
+import ResetPassword from 'src/features/AuthFeature/ResetPassword'
 
 const Page = () => {
     return (
