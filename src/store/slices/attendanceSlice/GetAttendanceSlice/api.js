@@ -10,7 +10,7 @@ export const submitAttendanceApi = createAsyncThunk(
       toast.success(response?.message);
       return response;
     } catch (error) {
-      toast.warn(error.response.data.message || error?.message);
+      toast.warn(error?.message);
       return rejectWithValue(error.response?.data || "An error occurred");
     }
   }
