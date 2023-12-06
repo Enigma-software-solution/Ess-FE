@@ -1,27 +1,35 @@
-import React from 'react'
+import React, { useState } from 'react';
+import { Wrapper } from './styled';
+import { useNavigate } from 'react-router-dom';
+import { LeftOutlined } from '@ant-design/icons';
 
 const PolicySidebar = ({ handleClick }) => {
-
+    const navigate = useNavigate();
+    const [selectedItem, setSelectedItem] = useState(null);
     const list = [
-        'introduction',
-        'abc',
-        'xyz',
-    ]
-
-
+        'Introduction',
+        'Accountability Provision',
+        'Liability Provision',
+        'Privacy Policies',
+        'Right to Termination',];
+    const handleItemClick = (item) => {
+        handleClick(item);
+        setSelectedItem(item);
+    };
     return (
-        <div className='p-3'>
-            {
-                list?.map((item) => {
-                    return (
-                        <h5 onClick={() => handleClick(item)}>{item}</h5>
-                    )
-                })
-            }
-        </div>
-    )
-}
+        <Wrapper vertical >
+            <LeftOutlined style={{ position: 'absolute', top: '20px', left: '20px', fontSize: '20px' }} onClick={() => navigate(-1)} />
 
-export default PolicySidebar
-
-// https://dribbble.com/shots/21010477-Daily-UI-089-Terms-of-Services
+            {list?.map((item, index) => (
+                <h5
+                    key={index}
+                    className={`m-1 ${selectedItem === item ? 'selected' : ''}`}
+                    onClick={() => handleItemClick(item)}
+                >
+                    {`${index + 1}. ${item}`}
+                </h5>
+            ))}
+        </Wrapper>
+    );
+};
+export default PolicySidebar;
