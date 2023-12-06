@@ -62,7 +62,7 @@ const OnLeave = () => {
                                             <p style={{ fontSize: '14px', fontWeight: 'bold', color: '#4154F1' }}>
                                                 {data?.user?.first_name} {data?.user?.last_name}</p>
 
-                                            <Flex justify='center' align='center' gap={6}>
+                                            <Flex align='center' gap={6}>
                                                 <p style={{ fontSize: '12px', color: '#899BBD' }}>
                                                     {format(new Date(data?.date), 'dd MMM ')}
                                                 </p>
