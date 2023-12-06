@@ -1,4 +1,4 @@
-import { Col, DatePicker, Flex, Row, Select, Space, Spin } from 'antd'
+import { DatePicker, Flex, Spin } from 'antd'
 import React, { useEffect, useState } from 'react'
 import CountCard from '../CountCard'
 import { useDispatch } from 'react-redux'
@@ -70,10 +70,11 @@ const TodayCount = () => {
                         <SwiperSlide>
                             <CountCard title='Present' day='Today' count={todayStats?.presentCount} />
                         </SwiperSlide>
-
+                        <SwiperSlide>
+                            <CountCard title='Leave' day='Today' count={todayStats?.leave} />
+                        </SwiperSlide>
                         <SwiperSlide>
                             <CountCard title='Absent' day='Today' count={todayStats?.absentCount} />
-
                         </SwiperSlide>
                         <SwiperSlide>
                             <CountCard title='Late' day='Today' count={todayStats?.lateCount} />
@@ -81,9 +82,7 @@ const TodayCount = () => {
                         <SwiperSlide>
                             <CountCard title='Half-day' day='Today' count={todayStats?.halfCount} />
                         </SwiperSlide>
-                        <SwiperSlide>
-                            <CountCard title='Leave' day='Today' count={todayStats?.leave} />
-                        </SwiperSlide>
+
                         <SwiperSlide>
                             <CountCard title='Vacation' day='Today' count={todayStats?.vacation} />
                         </SwiperSlide>
