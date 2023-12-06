@@ -30,6 +30,7 @@ import UsersAttendanceCount from "./pages/Attendance/UsersAttendanceCount";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import ResetPassword from "./pages/Auth/ResetPassword";
 import AfterConfirmationEmail from "./pages/Auth/AfterConfirmationEmail";
+import Policy from "./pages/Policy";
 
 import { format } from 'date-fns';
 import { enUS, fr } from 'date-fns/locale';
@@ -90,12 +91,19 @@ function App() {
                 </Route>
               </Route>
             </Route>
+
+            {/* Auth ROUTES */}
             <Route path="/login" element={<Login />} />
             <Route path="/Signup" element={<SignUpPage />} />
             <Route path={`${routes.AfterConfirmationEmail}/confirm-email/:token`} element={<AfterConfirmationEmail />} />
             <Route path={routes.FORGOT_PASSWORD} element={<ForgotPassword />} />
             <Route path={`${routes.RESET_PASSWORD}/:token`} element={<ResetPassword />} />
             <Route path={`${routes.AFTER_CONFIRMATION_EMAIL}`} element={<AfterConfirmationEmail />} />
+
+            {/* POLICIES ROUTES */}
+            <Route path={`${routes.POLICIES}`} element={<Policy />} />
+
+
             <Route path="*" element={<NotFound />} />
           </Routes>
         </ConfigProvider>
