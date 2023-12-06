@@ -6,15 +6,12 @@ import { useNavigate } from 'react-router-dom'
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
-
-
 const Policy = () => {
     const [selectedPolicy, setsSlectedPolicy] = useState('introduction')
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [quillContent, setQuillContent] = useState('');
 
 
-    const navigate = useNavigate()
 
     const handlePolicyClick = (value) => {
         setsSlectedPolicy(value)
@@ -38,15 +35,14 @@ const Policy = () => {
 
     return (
         <Flex>
-
-            <Button onClick={() => navigate(-1)}>Back</Button>
-
-            <div className='w-25'>
+            <div style={{ flex: 1 }}>
                 <PolicySidebar handleClick={handlePolicyClick} />
+
             </div>
 
-            <div className='w-75'  >
+            <div style={{ flex: 5 }}>
                 <PolicyContent selectedPolicy={selectedPolicy} />
+
             </div>
 
             <div>
@@ -54,52 +50,51 @@ const Policy = () => {
                     Create
                 </Button>
                 <Modal
-  title="Create New Policy"
-  visible={isModalVisible}
-  onOk={handleOk}
-  onCancel={handleCancel}
->
-  <div>
-    <label htmlFor="title">Title:</label>
-    <Input id="title" size="large" placeholder="Enter Title" />
-  </div>
-  <div className='mb-2' style={{ maxHeight: '60vh', overflow: 'auto' }}>
-    <label htmlFor="quillEditor">Content:</label>
-    <ReactQuill
-      id="quillEditor"
-      value={quillContent}
-      onChange={setQuillContent}
-      modules={{
-        toolbar: [
-          ['bold', 'italic', 'underline', 'strike'],
-          [{ 'list': 'ordered' }, { 'list': 'bullet' }],
-          ['link', 'image'],
-          ['clean'],
-        ],
-      }}
-      formats={[
-        'header',
-        'font',
-        'size',
-        'bold',
-        'italic',
-        'underline',
-        'strike',
-        'blockquote',
-        'list',
-        'bullet',
-        'indent',
-        'link',
-        'image',
-      ]}
-      style={{ maxHeight: '100%', height: '100%' }}
-    />
-  </div>
+                    width={'60vw'}
+                    title="Create New Policy"
+                    open={isModalVisible}
+                    onOk={handleOk}
+                    onCancel={handleCancel}
+                >
+                    <div>
+                        <label htmlFor="title">Title:</label>
+                        <Input id="title" size="large" placeholder="Enter Title" />
+                    </div>
+                    <label className='mt-4' htmlFor="quillEditor">Content:</label>
+                    <div className='mb-2' style={{ height: '400px', overflow: 'auto' }} >
+                        <ReactQuill
+                            style={{ minHeight: '300px', height: '350px' }}
+                            value={quillContent}
+                            onChange={setQuillContent}
+                            modules={{
+                                toolbar: [
+                                    ['bold', 'italic', 'underline', 'strike'],
+                                    [{ 'list': 'ordered' }, { 'list': 'bullet' }],
+                                    ['link', 'image'],
+                                    ['clean'],
+                                ],
+                            }}
+                            formats={[
+                                'header',
+                                'font',
+                                'size',
+                                'bold',
+                                'italic',
+                                'underline',
+                                'strike',
+                                'blockquote',
+                                'list',
+                                'bullet',
+                                'indent',
+                                'link',
+                                'image',
+                            ]}
+                        />
+                    </div>
                 </Modal>
 
             </div>
         </Flex>
     )
 }
-
 export default Policy
