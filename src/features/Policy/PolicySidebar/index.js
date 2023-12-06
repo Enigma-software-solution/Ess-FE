@@ -10,7 +10,7 @@ const PolicySidebar = ({ handleClick }) => {
 
 
     return (
-        <div className='p-5'>
+        <div className='p-3'>
             {
                 list?.map((item) => {
                     return (
@@ -23,3 +23,5 @@ const PolicySidebar = ({ handleClick }) => {
 }
 
 export default PolicySidebar
+
+// https://dribbble.com/shots/21010477-Daily-UI-089-Terms-of-Services
