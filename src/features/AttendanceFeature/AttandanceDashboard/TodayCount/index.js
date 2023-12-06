@@ -1,4 +1,4 @@
-import { Col, DatePicker, Flex, Row, Select, Space, Spin } from 'antd'
+import { DatePicker, Flex, Spin } from 'antd'
 import React, { useEffect, useState } from 'react'
 import CountCard from '../CountCard'
 import { useDispatch } from 'react-redux'
@@ -8,6 +8,8 @@ import { format } from 'date-fns'
 
 import { getAllStatsApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api'
 import dayjs from 'dayjs'
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination, Navigation } from 'swiper/modules';
 
 const TodayCount = () => {
     const [isLoading, setIsLoading] = useState(false)
@@ -41,7 +43,7 @@ const TodayCount = () => {
 
     const disabledDate = (current) => {
         return current && current > dayjs().endOf('day');
-      };
+    };
 
     return (
         <>
@@ -49,7 +51,7 @@ const TodayCount = () => {
                 <h6 style={{ color: '#899BBD' }} className='mb-1'>
                     {format(new Date(selectedDate), 'dd MMM yyyy')}
                 </h6>
-                <DatePicker onChange={onChange} allowClear={false} defaultValue={dayjs()}  disabledDate={disabledDate}/>
+                <DatePicker onChange={onChange} allowClear={false} defaultValue={dayjs()} disabledDate={disabledDate} />
 
             </Flex>
             {
@@ -58,22 +60,33 @@ const TodayCount = () => {
                         <Spin />
                     </Flex>
                     :
-
-                    <Row gutter={16} >
-                        <Col className="gutter-row" span={6}>
+                    <Swiper
+                        pagination={true} modules={[Pagination]}
+                        slidesPerView={4}
+                        spaceBetween={10}
+                        grabCursor={true}
+                        style={{ padding: '26px' }}
+                    >
+                        <SwiperSlide>
                             <CountCard title='Present' day='Today' count={todayStats?.presentCount} />
-                        </Col>
-                        <Col className="gutter-row" span={6}>
+                        </SwiperSlide>
+                        <SwiperSlide>
+                            <CountCard title='Leave' day='Today' count={todayStats?.leave} />
+                        </SwiperSlide>
+                        <SwiperSlide>
                             <CountCard title='Absent' day='Today' count={todayStats?.absentCount} />
-                        </Col>
-                        <Col className="gutter-row" span={6}>
+                        </SwiperSlide>
+                        <SwiperSlide>
                             <CountCard title='Late' day='Today' count={todayStats?.lateCount} />
-                        </Col>
-
-                        <Col className="gutter-row" span={6}>
+                        </SwiperSlide>
+                        <SwiperSlide>
                             <CountCard title='Half-day' day='Today' count={todayStats?.halfCount} />
-                        </Col>
-                    </Row>
+                        </SwiperSlide>
+
+                        <SwiperSlide>
+                            <CountCard title='Vacation' day='Today' count={todayStats?.vacation} />
+                        </SwiperSlide>
+                    </Swiper>
             }
         </>
     )

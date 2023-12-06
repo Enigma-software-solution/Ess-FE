@@ -4,9 +4,7 @@ import AttandanceDashbaord from "src/features/AttendanceFeature/AttandanceDashbo
 
 const Page = () => {
   return (
-    <>
-      <AttandanceDashbaord />
-    </>
+    <AttandanceDashbaord />
   );
 };
 

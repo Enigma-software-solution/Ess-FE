@@ -34,6 +34,10 @@ padding: 6px !important;
 }
 
 
+.swiper-pagination {
+margin-bottom: -10px;
+}
+
 ::-webkit-scrollbar {
       width: 6px;
     }
@@ -50,6 +54,8 @@ padding: 6px !important;
     /* Firefox */
     scrollbar-width: thin;
     scrollbar-color: #888 #f1f1f1;
+
+
 `;
 
 export default GlobalStyles;

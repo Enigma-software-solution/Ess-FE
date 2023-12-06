@@ -70,7 +70,7 @@ const SignUpForm = () => {
             <FormContainer>
                 <Avatar size={64} icon={<UserOutlined />} style={{ marginBottom: 24 }} />
                 <Title>Sign Up</Title>
-                <Form name="register" onFinish={onFinish}>
+                <Form name="register" onFinish={onFinish} style={{ width: '100%' }}>
                     <FieldGroup>
                         <Form.Item
                             name="first_name"

@@ -40,10 +40,10 @@ const ForgotPassword = () => {
           style={{ marginBottom: 24 }}
         />
         <Title>Forgot Password</Title>
-        <Form name="forgot-password" onFinish={onFinish}>
+        <Form name="forgot-password" onFinish={onFinish} style={{ width: '100%' }}>
           <Form.Item
             name="email"
-            rules={[{ required: true, message: "Please input your email!" }]}
+            rules={[{ required: true, message: "Please type your email!" }]}
           >
             <Input size="large" placeholder="Email" />
           </Form.Item>

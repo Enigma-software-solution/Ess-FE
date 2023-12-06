@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { submitAttendanceApi } from "src/store/slices/attendanceSlice/GetAttendanceSlice/api";
 import MarkCard from "../MarkCard";
 import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
+
 
 
 const AttendanceSlider = ({ users, attendanceDate }) => {

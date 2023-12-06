@@ -50,7 +50,7 @@ const LoginForm = () => {
           style={{ marginBottom: 24 }}
         />
         <Title>Login</Title>
-        <Form name="login" onFinish={onFinish}>
+        <Form name="login" onFinish={onFinish} style={{ width: '100%' }}>
           <Form.Item
             name="email"
             rules={[{ required: true, message: "Please input your email!" }]}
