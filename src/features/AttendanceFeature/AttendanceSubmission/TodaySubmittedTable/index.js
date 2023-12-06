@@ -8,6 +8,7 @@ import { format } from "date-fns";
 import { CheckAttendanceStatusColor } from "src/components/Utils/checkAttendanceStatusColor";
 import { setSelectedAttendance } from "src/store/slices/attendanceSlice/GetAttendanceSlice";
 import EditAttendanceModal from "../EditAttendanceModal";
+import { capitalize } from "lodash";
 
 const TodaySubmittedTable = ({ todayAllAttendance }) => {
     const [selectedRecord, setSelectedRecord] = useState(null)
@@ -38,7 +39,7 @@ const TodaySubmittedTable = ({ todayAllAttendance }) => {
             title: "User Name",
             dataIndex: "user?.first_name",
             key: "first_name",
-            render: (text, record) => record?.user?.first_name + ' ' + record?.user?.last_name,
+            render: (text, record) => capitalize(record?.user?.first_name) + ' ' + capitalize(record?.user?.last_name),
         },
 
         {
