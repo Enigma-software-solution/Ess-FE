@@ -11,7 +11,6 @@ import EditAttendanceModal from "../EditAttendanceModal";
 import { capitalize } from "lodash";
 
 const TodaySubmittedTable = ({ todayAllAttendance }) => {
-    const [selectedRecord, setSelectedRecord] = useState(null)
     const [isEditModalVisible, setIsEditModalVisible] = useState(false)
     const dispatch = useDispatch();
 
@@ -24,14 +23,12 @@ const TodaySubmittedTable = ({ todayAllAttendance }) => {
     const handleEdit = (record, e) => {
         e.stopPropagation();
         dispatch(setSelectedAttendance(record));
-        setSelectedRecord(record);
         setIsEditModalVisible(true);
     };
 
     const handleModalClose = () => {
         setIsEditModalVisible(false)
         dispatch(setSelectedAttendance(null))
-        setSelectedRecord(null)
     }
 
     const columns = [
@@ -94,7 +91,7 @@ const TodaySubmittedTable = ({ todayAllAttendance }) => {
             <EditAttendanceModal
                 visible={isEditModalVisible}
                 onClose={handleModalClose}
-                record={selectedRecord} />
+            />
         </div>
     )
 }
