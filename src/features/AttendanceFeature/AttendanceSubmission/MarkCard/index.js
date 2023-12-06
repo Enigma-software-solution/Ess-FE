@@ -6,6 +6,7 @@ import { ImageWrapper } from '../styled';
 import Form from 'antd/es/form/Form';
 import format from 'date-fns/format';
 import { Button, Select } from 'antd';
+import { toast } from 'react-toastify';
 
 
 const STATUS_OPTIONS = [
@@ -23,9 +24,11 @@ const MarkCard = ({ user, isLoading, handleSubmit }) => {
     const [form] = Form.useForm();
 
     const onSubmit = async (values) => {
+        if (!values.status) {
+            return toast.warn("Status is required")
+        }
         const attendanceDate = format(new Date(), 'yyyy-MM-dd')
         const attendanceTime = new Date()
-
 
         const data = {
             user: user?._id,
@@ -43,12 +46,6 @@ const MarkCard = ({ user, isLoading, handleSubmit }) => {
         }
     };
 
-
-    const initialValues = {
-        status: "present",
-        notes: '',
-    };
-
     return (
         <CardWrapper>
             <ImageWrapper>
@@ -59,13 +56,15 @@ const MarkCard = ({ user, isLoading, handleSubmit }) => {
                 {user?.first_name} {user?.last_name}
             </h5>
 
-            <Form form={form} initialValues={initialValues} onFinish={onSubmit}>
-                <Form.Item name="status">
+            <Form form={form} onFinish={onSubmit}>
+                <Form.Item name="status" >
                     <Select
+                        placeholder='Select Status'
                         dropdownStyle={{ background: "#e4eefc", fontSize: "25px" }}
                         showSearch
                         size="large"
                         options={STATUS_OPTIONS}
+                        rules={[{ required: true, message: "Please input your password!" }]}
                     />
                 </Form.Item>
 

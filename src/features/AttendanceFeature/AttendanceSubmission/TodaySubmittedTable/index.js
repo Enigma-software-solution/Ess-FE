@@ -8,9 +8,9 @@ import { format } from "date-fns";
 import { CheckAttendanceStatusColor } from "src/components/Utils/checkAttendanceStatusColor";
 import { setSelectedAttendance } from "src/store/slices/attendanceSlice/GetAttendanceSlice";
 import EditAttendanceModal from "../EditAttendanceModal";
+import { capitalize } from "lodash";
 
 const TodaySubmittedTable = ({ todayAllAttendance }) => {
-    const [selectedRecord, setSelectedRecord] = useState(null)
     const [isEditModalVisible, setIsEditModalVisible] = useState(false)
     const dispatch = useDispatch();
 
@@ -23,14 +23,12 @@ const TodaySubmittedTable = ({ todayAllAttendance }) => {
     const handleEdit = (record, e) => {
         e.stopPropagation();
         dispatch(setSelectedAttendance(record));
-        setSelectedRecord(record);
         setIsEditModalVisible(true);
     };
 
     const handleModalClose = () => {
         setIsEditModalVisible(false)
         dispatch(setSelectedAttendance(null))
-        setSelectedRecord(null)
     }
 
     const columns = [
@@ -38,7 +36,7 @@ const TodaySubmittedTable = ({ todayAllAttendance }) => {
             title: "User Name",
             dataIndex: "user?.first_name",
             key: "first_name",
-            render: (text, record) => record?.user?.first_name + ' ' + record?.user?.last_name,
+            render: (text, record) => capitalize(record?.user?.first_name) + ' ' + capitalize(record?.user?.last_name),
         },
 
         {
@@ -93,7 +91,7 @@ const TodaySubmittedTable = ({ todayAllAttendance }) => {
             <EditAttendanceModal
                 visible={isEditModalVisible}
                 onClose={handleModalClose}
-                record={selectedRecord} />
+            />
         </div>
     )
 }

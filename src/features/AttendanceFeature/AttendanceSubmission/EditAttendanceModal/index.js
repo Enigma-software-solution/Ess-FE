@@ -15,11 +15,21 @@ const statusOptions = [
     { value: 'vacation', label: 'Vacation' },
 ];
 
-const EditAttendanceModal = ({ visible, onClose, record }) => {
+const EditAttendanceModal = ({ visible, onClose }) => {
     const [form] = Form.useForm();
 
-    const dispatch = useDispatch()
-    const selectedAttendance = useSelector(getSelectedAttendance)
+    const dispatch = useDispatch();
+    const selectedAttendance = useSelector(getSelectedAttendance);
+
+    useEffect(() => {
+        // Set initial values when selectedAttendance changes
+        form.setFieldsValue({
+            firstName: selectedAttendance?.user?.first_name || '',
+            lastName: selectedAttendance?.user?.last_name || '',
+            checkInTime: selectedAttendance?.checkInTime || '',
+            status: selectedAttendance?.status || '',
+        });
+    }, [selectedAttendance]);
 
     const handleCancel = () => {
         form.resetFields();
@@ -30,7 +40,7 @@ const EditAttendanceModal = ({ visible, onClose, record }) => {
         try {
             const data = {
                 id: selectedAttendance._id,
-                status: value.status
+                status: value.status,
             };
             await dispatch(updateAttendaceApi(data));
             onClose();
@@ -38,7 +48,6 @@ const EditAttendanceModal = ({ visible, onClose, record }) => {
             console.error('Form submission error:', error);
         }
     };
-
     return (
         <Modal
             title="Edit Attendance"
@@ -50,10 +59,10 @@ const EditAttendanceModal = ({ visible, onClose, record }) => {
                 form={form}
                 layout="vertical"
                 initialValues={{
-                    firstName: record?.user?.first_name || '',
-                    lastName: record?.user?.last_name || '',
-                    checkInTime: record?.checkInTime || '',
-                    status: record?.status || '',
+                    firstName: selectedAttendance?.user?.first_name || '',
+                    lastName: selectedAttendance?.user?.last_name || '',
+                    checkInTime: selectedAttendance?.checkInTime || '',
+                    status: selectedAttendance?.status || '',
                 }}
                 onFinish={handleSubmit}
 
