@@ -8,6 +8,7 @@ import userReducer from "./slices/userSlice";
 import clientReducer from "./slices/clientSlice";
 import attendanceReducer from "./slices/attendanceSlice/GetAttendanceSlice";
 import { attendanceStatsReducer } from "./slices/attendanceSlice/GetAttendanceSlice";
+import policyReducer from "./slices/policySlice";
 
 const store = configureStore({
   reducer: {
@@ -20,6 +21,7 @@ const store = configureStore({
     theme: globalReducer,
     attendance: attendanceReducer,
     attendanceStats: attendanceStatsReducer,
+    policy: policyReducer,
 
   },
   middleware: [
