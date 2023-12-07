@@ -5,10 +5,11 @@ p{
     font-size:18px;
     line-height: 40px;
     }
-h1{
+h2{
 padding-bottom:30px
 }
 h3{
     padding-bottom:20px
 }
+
 `

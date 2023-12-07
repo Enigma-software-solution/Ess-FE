@@ -33,7 +33,10 @@ const PolicySidebar = () => {
                     className={`m-1 ${selectedPolicy === item ? 'selected' : ''}`}
                     onClick={() => handlePolicyClick(item)}
                 >
-                    {`${index + 1}. ${item?.title}`}
+                    {`${index + 1}. ${item?.title.length > 13
+                        ? item?.title.substring(0, 10) + '...'
+                        : item?.title
+                        }`}
                 </h5>
             ))}
         </Wrapper>
