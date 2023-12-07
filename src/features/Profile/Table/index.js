@@ -9,6 +9,7 @@ import Header from "../Header";
 import { setSelectedProfile } from "src/store/slices/profielSlice";
 import CreateProfileDrawer from "../Drawers/CreateProfileDrawer";
 import Loader from "src/components/Loader";
+import { getPolicyApi } from "src/store/slices/policySlice/apis";
 
 const ProfileTable = () => {
     const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);

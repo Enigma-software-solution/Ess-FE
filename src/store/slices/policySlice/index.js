@@ -7,6 +7,7 @@ const initialState = {
     status: "idle",
     error: null,
     data: [],
+    selectedPolicy: null,
     stats: null,
     loading: false,
 };
@@ -15,6 +16,11 @@ const policySlice = createSlice({
     name: "policy",
     initialState,
 
+    reducers: {
+        setSelectedPolicy(state, action) {
+            state.selectedPolicy = action.payload
+        },
+    },
     extraReducers(builder) {
         builder.addCase(getPolicyApi.pending, (state, action) => {
             state.loading = true;
@@ -57,4 +63,5 @@ const policySlice = createSlice({
 
 });
 
+export const { setSelectedPolicy } = policySlice.actions;
 export default policySlice.reducer;
