@@ -7,7 +7,8 @@ export const Wrapper = styled(Flex)`
     padding: 30px;
    line-height: 50px;
 justify-content: center;
-     h5 {
+border-right: 1px solid #F1F1F1 ;
+ h5 {
         color:grey;
         cursor: pointer;
         &:hover {
