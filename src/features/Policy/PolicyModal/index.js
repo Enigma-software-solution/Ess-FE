@@ -8,13 +8,13 @@ import { getSelectedPolicy } from 'src/store/slices/policySlice/selectors';
 
 const PolicyModal = ({ open, handleClose, selectedPolicy }) => {
     const [form] = Form.useForm();
+    const [content, setContent] = useState('');
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     const handleCancel = () => {
         form.resetFields();
         handleClose(false);
-
     };
 
     useEffect(() => {
@@ -23,20 +23,27 @@ const PolicyModal = ({ open, handleClose, selectedPolicy }) => {
                 title: selectedPolicy?.title || '',
                 content: selectedPolicy.content || '',
             });
+            setContent(selectedPolicy.content || ''); // Set content for Quill
         } else {
             form.setFieldsValue({
                 title: '',
                 content: '',
             });
+            setContent(''); // Set empty content for Quill
         }
     }, [selectedPolicy, form]);
 
     const handleFinish = async (values) => {
         try {
+            const data = {
+                ...values,
+                content, // Send HTML content
+            };
+
             if (selectedPolicy) {
-                await dispatch(updatePolicyApi({ id: selectedPolicy?._id, data: values }));
+                await dispatch(updatePolicyApi({ id: selectedPolicy?._id, data }));
             } else {
-                await dispatch(createPolicyApi(values));
+                await dispatch(createPolicyApi(data));
             }
             form.resetFields();
             handleClose(false);
@@ -96,6 +103,8 @@ const PolicyModal = ({ open, handleClose, selectedPolicy }) => {
                         style={{ minHeight: '300px', height: '350px' }}
                         modules={module}
                         formats={format}
+                        value={content}
+                        onChange={setContent} // Update content on change
                     />
                 </Form.Item>
 
