@@ -12,8 +12,6 @@ const BarChart = () => {
     const [allStats, setAllStats] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
 
-    console.log(allStats, "s    ");
-
     const dispatch = useDispatch();
 
     const getYearlylStats = async (year = new Date()) => {
