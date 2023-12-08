@@ -5,7 +5,7 @@ import { EditOutlined, DeleteOutlined, LeftOutlined, MoreOutlined } from '@ant-d
 import { getAllPolicy, getSelectedPolicy } from 'src/store/slices/policySlice/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedPolicy } from 'src/store/slices/policySlice';
-import { Flex, Dropdown, Menu } from 'antd';
+import { Flex, Dropdown, Menu, Popconfirm } from 'antd';
 import PolicyModal from '../PolicyModal';
 import { detelePolicyApi } from 'src/store/slices/policySlice/apis';
 import { FiMoreVertical } from "react-icons/fi";
@@ -28,7 +28,11 @@ const PolicySidebar = () => {
         dispatch(setSelectedPolicy(item));
     };
 
-    const handleDeleteClick = (item) => {
+    const handleDeleteCancel = (e) => {
+        e.stopPropagation();
+    };
+
+    const handleDeleteConfirm = (item) => {
         const policyId = item?._id
         dispatch(detelePolicyApi(policyId))
     };
@@ -36,8 +40,6 @@ const PolicySidebar = () => {
     const handleMenuClick = ({ key }, item) => {
         if (key === 'edit') {
             handleEditClick(item);
-        } else if (key === 'delete') {
-            handleDeleteClick(item);
         }
     };
 
@@ -47,7 +49,15 @@ const PolicySidebar = () => {
                 <EditOutlined /> Edit
             </Menu.Item>
             <Menu.Item key="delete">
-                <DeleteOutlined /> Delete
+                <Popconfirm
+                    title="Are you sure to delete this client?"
+                    onConfirm={() => handleDeleteConfirm(item)}
+                    onCancel={handleDeleteCancel}
+                    okText="Yes"
+                    cancelText="No"
+                >
+                    <DeleteOutlined /> Delete
+                </Popconfirm>
             </Menu.Item>
         </Menu>
     );

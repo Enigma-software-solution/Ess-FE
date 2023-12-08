@@ -5,6 +5,7 @@ import 'react-quill/dist/quill.snow.css'; // Import Quill styles
 import { useDispatch, useSelector } from 'react-redux';
 import { createPolicyApi, updatePolicyApi } from 'src/store/slices/policySlice/apis';
 import { getSelectedPolicy } from 'src/store/slices/policySlice/selectors';
+import { toast } from 'react-toastify';
 
 const PolicyModal = ({ open, handleClose, selectedPolicy }) => {
     const [form] = Form.useForm();
@@ -37,8 +38,12 @@ const PolicyModal = ({ open, handleClose, selectedPolicy }) => {
         try {
             const data = {
                 ...values,
-                content, // Send HTML content
+                content,
             };
+            if (!content) {
+                toast.error('Content cannot be empty');
+                return;
+            }
 
             if (selectedPolicy) {
                 await dispatch(updatePolicyApi({ id: selectedPolicy?._id, data }));
@@ -98,9 +103,13 @@ const PolicyModal = ({ open, handleClose, selectedPolicy }) => {
                     <Input size="large" defaultValue={selectedPolicy?.title} placeholder="Enter Title" />
                 </Form.Item>
 
-                <Form.Item name="content">
+                <Form.Item
+                    name="content"
+                // rules={[{ required: true, message: 'Content is required' }]}
+                >
                     <ReactQuill
                         style={{ minHeight: '300px', height: '350px' }}
+                        required
                         modules={module}
                         formats={format}
                         value={content}

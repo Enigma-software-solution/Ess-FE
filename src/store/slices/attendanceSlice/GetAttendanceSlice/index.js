@@ -55,7 +55,6 @@ const attendanceSlice = createSlice({
     });
 
     builder.addCase(updateAttendaceApi.fulfilled, (state, action) => {
-      console.log(action.payload.data, "dadasdas")
       state.data.attendance = state?.data?.attendance?.map(attendance => {
         if (attendance?._id === action?.payload?.data?._id) {
           return action?.payload?.data
