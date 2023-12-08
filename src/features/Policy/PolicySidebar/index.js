@@ -9,9 +9,17 @@ import { Flex, Dropdown, Menu } from 'antd';
 import PolicyModal from '../PolicyModal';
 import { detelePolicyApi } from 'src/store/slices/policySlice/apis';
 import { FiMoreVertical } from "react-icons/fi";
+import { ROLES } from 'src/constant/roles';
+import { getLogedInUser } from 'src/store/slices/authSlice/selectors';
 
 const PolicySidebar = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
+
+
+    const authUser = useSelector(getLogedInUser)
+
+    const userRole = authUser?.role
+    const isAuthForActions = userRole === ROLES.ADMIN || userRole === ROLES.HR
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -59,7 +67,7 @@ const PolicySidebar = () => {
     return (
         <Wrapper >
             <Flex style={{ height: '40px', padding: '30px 20px', }}>
-                <LeftOutlined onClick={() => navigate(-1)} style={{ fontSize: '24px' }} />
+                <LeftOutlined onClick={() => navigate(-1)} style={{ fontSize: '20px' }} />
             </Flex>
             <PolicyTitleWrapper>
 
@@ -72,9 +80,13 @@ const PolicySidebar = () => {
                         >
                             {`${index + 1}. ${item?.title}`}
                         </p>
-                        <Dropdown overlay={() => menu(item)} trigger={['click']} >
-                            <FiMoreVertical style={{ fontSize: '18px', cursor: 'pointer', color: 'gray' }} />
-                        </Dropdown>
+
+                        {
+                            isAuthForActions && <Dropdown overlay={() => menu(item)} trigger={['click']} >
+                                <FiMoreVertical style={{ fontSize: '18px', cursor: 'pointer', color: 'gray' }} />
+                            </Dropdown>
+                        }
+
                     </Flex>
                 ))}
 
