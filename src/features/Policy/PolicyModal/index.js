@@ -45,6 +45,31 @@ const PolicyModal = ({ open, handleClose, selectedPolicy }) => {
         }
     };
 
+    const format = [
+        'header',
+        'font',
+        'size',
+        'bold',
+        'italic',
+        'underline',
+        'strike',
+        'blockquote',
+        'list',
+        'bullet',
+        'indent',
+        'link',
+        'image',
+        'color',
+    ];
+
+    const module = {
+        toolbar: [
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+            ['link', 'image'],
+            ['clean'], ['color']
+        ],
+    };
 
     return (
         <Modal
@@ -69,30 +94,8 @@ const PolicyModal = ({ open, handleClose, selectedPolicy }) => {
                 <Form.Item name="content">
                     <ReactQuill
                         style={{ minHeight: '300px', height: '350px' }}
-                        defaultValue={selectedPolicy?.content}
-                        modules={{
-                            toolbar: [
-                                ['bold', 'italic', 'underline', 'strike'],
-                                [{ list: 'ordered' }, { list: 'bullet' }],
-                                ['link', 'image'],
-                                ['clean'],
-                            ],
-                        }}
-                        formats={[
-                            'header',
-                            'font',
-                            'size',
-                            'bold',
-                            'italic',
-                            'underline',
-                            'strike',
-                            'blockquote',
-                            'list',
-                            'bullet',
-                            'indent',
-                            'link',
-                            'image',
-                        ]}
+                        modules={module}
+                        formats={format}
                     />
                 </Form.Item>
 
