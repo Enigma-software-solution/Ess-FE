@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Wrapper } from './styled';
+import { PolicyTitleWrapper, Wrapper } from './styled';
 import { useNavigate } from 'react-router-dom';
 import { EditOutlined, DeleteOutlined, LeftOutlined, MoreOutlined } from '@ant-design/icons';
 import { getAllPolicy, getSelectedPolicy } from 'src/store/slices/policySlice/selectors';
 import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedPolicy } from 'src/store/slices/policySlice';
-import { Button, Flex, Dropdown, Menu } from 'antd';
+import { Flex, Dropdown, Menu } from 'antd';
 import PolicyModal from '../PolicyModal';
 import { detelePolicyApi } from 'src/store/slices/policySlice/apis';
+import { FiMoreVertical } from "react-icons/fi";
 
 const PolicySidebar = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -56,22 +57,30 @@ const PolicySidebar = () => {
     }, [policyList]);
 
     return (
-        <Wrapper style={{ position: 'fixed', display: 'flex', flexDirection: 'column' }}>
-            <LeftOutlined style={{ position: 'absolute', top: '20px', left: '20px', fontSize: '20px' }} onClick={() => navigate(-1)} />
-            {policyList?.map((item, index) => (
-                <Flex justify='space-between' key={index} className={` ${selectedPolicy === item ? 'selected' : ''}`}>
-                    <h5
-                        key={index}
-                        className={`m-1 ${selectedPolicy === item ? 'selected' : ''}`}
-                        onClick={() => handlePolicyClick(item)}
-                    >
-                        {`${index + 1}. ${item?.title}`}
-                    </h5>
-                    <Dropdown overlay={() => menu(item)} trigger={['click']}>
-                        <MoreOutlined style={{ fontSize: '20px', cursor: 'pointer' }} />
-                    </Dropdown>
-                </Flex>
-            ))}
+        <Wrapper >
+            <Flex style={{ height: '40px', padding: '30px 20px', }}>
+                <LeftOutlined onClick={() => navigate(-1)} style={{ fontSize: '24px' }} />
+            </Flex>
+            <PolicyTitleWrapper>
+
+                {policyList?.map((item, index) => (
+                    <Flex justify='space-between' align='center' key={index} className={` ${selectedPolicy === item ? 'selected' : ''}`}>
+                        <p
+                            key={index}
+                            className={`m-1 ${selectedPolicy === item ? 'selected' : ''}`}
+                            onClick={() => handlePolicyClick(item)}
+                        >
+                            {`${index + 1}. ${item?.title}`}
+                        </p>
+                        <Dropdown overlay={() => menu(item)} trigger={['click']} >
+                            <FiMoreVertical style={{ fontSize: '18px', cursor: 'pointer', color: 'gray' }} />
+                        </Dropdown>
+                    </Flex>
+                ))}
+
+
+            </PolicyTitleWrapper>
+
             {isModalOpen && <PolicyModal open={isModalOpen} handleClose={() => setIsModalOpen(false)} selectedPolicy={selectedPolicy} />}
         </Wrapper>
     );
