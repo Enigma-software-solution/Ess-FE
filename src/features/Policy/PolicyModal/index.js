@@ -19,7 +19,33 @@ const PolicyModal = ({ open, handleClose }) => {
         dispatch(createPolicyApi(values))
         handleClose(false); // Close modal after submission
     };
+ 
+    const format = [
+        'header',
+        'font',
+        'size',
+        'bold',
+        'italic',
+        'underline',
+        'strike',
+        'blockquote',
+        'list',
+        'bullet',
+        'indent',
+        'link',
+        'image',
+        'color',
+    ];
 
+    const module = {
+        toolbar: [
+            ['bold', 'italic', 'underline', 'strike'],
+            [{ list: 'ordered' }, { list: 'bullet' }],
+            ['link', 'image'],
+            ['clean'], ['color']
+        ],
+    };
+    
     return (
         <Modal
             width={'60vw'}
@@ -36,29 +62,8 @@ const PolicyModal = ({ open, handleClose }) => {
                 <Form.Item name="content">
                     <ReactQuill
                         style={{ minHeight: '300px', height: '350px' }}
-                        modules={{
-                            toolbar: [
-                                ['bold', 'italic', 'underline', 'strike'],
-                                [{ list: 'ordered' }, { list: 'bullet' }],
-                                ['link', 'image'],
-                                ['clean'],
-                            ],
-                        }}
-                        formats={[
-                            'header',
-                            'font',
-                            'size',
-                            'bold',
-                            'italic',
-                            'underline',
-                            'strike',
-                            'blockquote',
-                            'list',
-                            'bullet',
-                            'indent',
-                            'link',
-                            'image',
-                        ]}
+                        modules={module}
+                        formats={format}
                     />
                 </Form.Item>
 
