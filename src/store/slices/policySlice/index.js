@@ -41,7 +41,7 @@ const policySlice = createSlice({
 
         builder.addCase(createPolicyApi.fulfilled, (state, action) => {
             state.status = "succeeded";
-            state.data.policy = [action?.payload?.data, ...state?.data?.policy];
+            state.data = [...state?.data, action?.payload?.data];
         });
 
 
@@ -50,7 +50,6 @@ const policySlice = createSlice({
         });
 
         builder.addCase(updatePolicyApi.fulfilled, (state, action) => {
-            console.log(action.payload.event, "stateeeee")
             state.data = state?.data?.map(policy => {
                 if (policy?._id === action?.payload?.event?._id) {
                     return action?.payload?.event
