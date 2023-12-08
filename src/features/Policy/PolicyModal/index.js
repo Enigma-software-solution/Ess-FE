@@ -1,25 +1,50 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Flex, Input, Modal, Form, Button } from 'antd';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Import Quill styles
-import { useDispatch } from 'react-redux';
-import { createPolicyApi } from 'src/store/slices/policySlice/apis';
+import { useDispatch, useSelector } from 'react-redux';
+import { createPolicyApi, updatePolicyApi } from 'src/store/slices/policySlice/apis';
+import { getSelectedPolicy } from 'src/store/slices/policySlice/selectors';
 
-const PolicyModal = ({ open, handleClose }) => {
-    const [form] = Form.useForm(); // Create form instance
+const PolicyModal = ({ open, handleClose, selectedPolicy }) => {
+    const [form] = Form.useForm();
 
     const dispatch = useDispatch()
+
     const handleCancel = () => {
-        form.resetFields(); // Reset fields on cancel
+        form.resetFields();
         handleClose(false);
+
     };
 
-    const handleFinish = (values) => {
-        console.log('Form values:', values);
-        dispatch(createPolicyApi(values))
-        handleClose(false); // Close modal after submission
+    useEffect(() => {
+        if (selectedPolicy) {
+            form.setFieldsValue({
+                title: selectedPolicy?.title || '',
+                content: selectedPolicy.content || '',
+            });
+        } else {
+            form.setFieldsValue({
+                title: '',
+                content: '',
+            });
+        }
+    }, [selectedPolicy, form]);
+
+    const handleFinish = async (values) => {
+        try {
+            if (selectedPolicy) {
+                await dispatch(updatePolicyApi({ id: selectedPolicy?._id, data: values }));
+            } else {
+                await dispatch(createPolicyApi(values));
+            }
+            form.resetFields();
+            handleClose(false);
+        } catch (error) {
+            console.error("An error occurred:", error);
+        }
     };
- 
+
     const format = [
         'header',
         'font',
@@ -45,7 +70,7 @@ const PolicyModal = ({ open, handleClose }) => {
             ['clean'], ['color']
         ],
     };
-    
+
     return (
         <Modal
             width={'60vw'}
@@ -54,9 +79,16 @@ const PolicyModal = ({ open, handleClose }) => {
             footer={null}
             onCancel={handleCancel}
         >
-            <Form form={form} onFinish={handleFinish}>
+            <Form
+                form={form}
+                initialValues={{
+                    content: selectedPolicy?.content,
+                    title: selectedPolicy?.title,
+                }}
+                onFinish={handleFinish}
+            >
                 <Form.Item name="title" rules={[{ required: true, message: 'Please enter a title' }]}>
-                    <Input size="large" placeholder="Enter Title" />
+                    <Input size="large" defaultValue={selectedPolicy?.title} placeholder="Enter Title" />
                 </Form.Item>
 
                 <Form.Item name="content">
