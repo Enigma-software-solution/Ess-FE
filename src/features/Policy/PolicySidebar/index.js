@@ -58,7 +58,7 @@ const PolicySidebar = () => {
             </Menu.Item>
             <Menu.Item key="delete">
                 <Popconfirm
-                    title="Are you sure to delete this client?"
+                    title="Are you sure to delete this policy?"
                     onConfirm={() => handleDeleteConfirm(item)}
                     onCancel={handleDeleteCancel}
                     okText="Yes"
