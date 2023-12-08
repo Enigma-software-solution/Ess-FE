@@ -23,13 +23,13 @@ const PolicyModal = ({ open, handleClose, selectedPolicy }) => {
                 title: selectedPolicy?.title || '',
                 content: selectedPolicy.content || '',
             });
-            setContent(selectedPolicy.content || ''); // Set content for Quill
+            setContent(selectedPolicy.content || '');
         } else {
             form.setFieldsValue({
                 title: '',
                 content: '',
             });
-            setContent(''); // Set empty content for Quill
+            setContent('');
         }
     }, [selectedPolicy, form]);
 
@@ -37,7 +37,7 @@ const PolicyModal = ({ open, handleClose, selectedPolicy }) => {
         try {
             const data = {
                 ...values,
-                content, // Send HTML content
+                content,
             };
 
             if (selectedPolicy) {
@@ -65,7 +65,6 @@ const PolicyModal = ({ open, handleClose, selectedPolicy }) => {
         'bullet',
         'indent',
         'link',
-        'image',
         'color',
     ];
 
@@ -73,8 +72,11 @@ const PolicyModal = ({ open, handleClose, selectedPolicy }) => {
         toolbar: [
             ['bold', 'italic', 'underline', 'strike'],
             [{ list: 'ordered' }, { list: 'bullet' }],
-            ['link', 'image'],
-            ['clean'], ['color']
+            ['link'],
+            ['clean'],
+            [{ size: ['small', false, 'large', 'huge'] }], // Add font size option
+            [{ color: [] }],
+
         ],
     };
 
