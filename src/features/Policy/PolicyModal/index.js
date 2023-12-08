@@ -1,23 +1,32 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Flex, Input, Modal, Form, Button } from 'antd';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Import Quill styles
-import { useDispatch } from 'react-redux';
-import { createPolicyApi } from 'src/store/slices/policySlice/apis';
+import { useDispatch, useSelector } from 'react-redux';
+import { createPolicyApi, updatePolicyApi } from 'src/store/slices/policySlice/apis';
+import { getSelectedPolicy } from 'src/store/slices/policySlice/selectors';
 
-const PolicyModal = ({ open, handleClose }) => {
-    const [form] = Form.useForm(); // Create form instance
+const PolicyModal = ({ open, handleClose, selectedPolicy }) => {
+    const [form] = Form.useForm();
 
     const dispatch = useDispatch()
+
+    console.log(selectedPolicy, "selecteddddd")
+
     const handleCancel = () => {
-        form.resetFields(); // Reset fields on cancel
+        form.resetFields();
         handleClose(false);
+
     };
 
     const handleFinish = (values) => {
-        console.log('Form values:', values);
-        dispatch(createPolicyApi(values))
-        handleClose(false); // Close modal after submission
+        if (selectedPolicy) {
+            dispatch(updatePolicyApi({ id: selectedPolicy?._id, data: values }));
+        } else {
+            dispatch(createPolicyApi(values));
+        }
+        form.resetFields();
+        handleClose(false);
     };
 
     return (
@@ -28,14 +37,22 @@ const PolicyModal = ({ open, handleClose }) => {
             footer={null}
             onCancel={handleCancel}
         >
-            <Form form={form} onFinish={handleFinish}>
+            <Form
+                form={form}
+                initialValues={{
+                    content: selectedPolicy?.content || '',
+                    title: selectedPolicy?.title || ''
+                }}
+                onFinish={handleFinish}
+            >
                 <Form.Item name="title" rules={[{ required: true, message: 'Please enter a title' }]}>
-                    <Input size="large" placeholder="Enter Title" />
+                    <Input size="large" defaultValue={selectedPolicy?.title} placeholder="Enter Title" />
                 </Form.Item>
 
                 <Form.Item name="content">
                     <ReactQuill
                         style={{ minHeight: '300px', height: '350px' }}
+                        defaultValue={selectedPolicy?.content}
                         modules={{
                             toolbar: [
                                 ['bold', 'italic', 'underline', 'strike'],

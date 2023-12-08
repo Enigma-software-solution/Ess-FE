@@ -19,3 +19,17 @@ export const createPolicyApi = createAsyncThunk("policy/create-policy", async (d
         throw error;
     }
 });
+
+export const updatePolicyApi = createAsyncThunk(
+    "policy/patch-policy",
+    async (data, { rejectWithValue }) => {
+        try {
+            const response = await api.patch(`/policy/${data.id}`, data.data);
+            toast.success("Policy Updated Successfully")
+
+            return response;
+        } catch (error) {
+            return rejectWithValue(error.response?.data || "An error occurred");
+        }
+    }
+);
