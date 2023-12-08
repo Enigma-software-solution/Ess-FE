@@ -33,3 +33,17 @@ export const updatePolicyApi = createAsyncThunk(
         }
     }
 );
+
+export const detelePolicyApi = createAsyncThunk(
+    "policy/delete-policy",
+    async (policyId, { rejectWithValue }) => {
+        try {
+            const response = await api.delete(`/policy/${policyId}`);
+            toast.success("Policy deleted Successfully")
+
+            return { policyId };
+        } catch (error) {
+            return rejectWithValue(error?.response?.data || "An error occurred");
+        }
+    }
+);

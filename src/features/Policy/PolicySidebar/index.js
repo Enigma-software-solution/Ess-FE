@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setSelectedPolicy } from 'src/store/slices/policySlice';
 import { Button, Flex, Dropdown, Menu } from 'antd';
 import PolicyModal from '../PolicyModal';
+import { detelePolicyApi } from 'src/store/slices/policySlice/apis';
 
 const PolicySidebar = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -27,7 +28,8 @@ const PolicySidebar = () => {
     };
 
     const handleDeleteClick = (item) => {
-
+        const policyId = item?._id
+        dispatch(detelePolicyApi(policyId))
     };
 
     const handleMenuClick = ({ key }, item) => {

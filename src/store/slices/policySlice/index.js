@@ -1,8 +1,7 @@
 import {
     createSlice,
 } from "@reduxjs/toolkit";
-import { createPolicyApi, getdailyAppliesApi, getDailyApplyStats, getPolicyApi, updatePolicyApi } from "./apis";
-import { updateDailyAppliesApi } from "../dailyApplySlice/apis";
+import { createPolicyApi, detelePolicyApi, getPolicyApi, updatePolicyApi } from "./apis";
 
 const initialState = {
     status: "idle",
@@ -45,9 +44,10 @@ const policySlice = createSlice({
             state.data.policy = [action?.payload?.data, ...state?.data?.policy];
         });
 
-        // builder.addCase(deteleDailyAppliesApi.fulfilled, (state, action) => {
-        //     state.data.daily_applies = state?.data.daily_applies?.filter((apply) => apply?._id !== action?.payload?.applyId)
-        // });
+
+        builder.addCase(detelePolicyApi.fulfilled, (state, action) => {
+            state.data = state?.data?.filter((policy) => policy?._id !== action?.payload?.policyId);
+        });
 
         builder.addCase(updatePolicyApi.fulfilled, (state, action) => {
             console.log(action.payload.event, "stateeeee")
@@ -58,9 +58,6 @@ const policySlice = createSlice({
                 return policy
             })
         });
-
-
-
     }
 
 });
