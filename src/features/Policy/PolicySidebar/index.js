@@ -79,8 +79,8 @@ const PolicySidebar = () => {
             <Flex style={{ height: '40px', padding: '30px 20px', }}>
                 <LeftOutlined onClick={() => navigate(-1)} style={{ fontSize: '20px' }} />
             </Flex>
+            
             <PolicyTitleWrapper>
-
                 {policyList?.map((item, index) => (
                     <Flex justify='space-between' align='center' key={index} className={` ${selectedPolicy === item ? 'selected' : ''}`}>
                         <p

@@ -35,7 +35,7 @@ export const Wrapper = styled('div')`
 export const PolicyTitleWrapper = styled('div')`
 height: calc(100vh - 60px);
 overflow: auto;
-padding: 40px 20px;
+padding:  5px 20px;
 display: flex;
 flex-direction: column;
 `
