@@ -24,22 +24,18 @@ const PolicySidebar = () => {
 
 
     return (
-        <Wrapper vertical >
+        <Wrapper style={{ position: 'fixed', display: 'flex', flexDirection: 'column' }}>
             <LeftOutlined style={{ position: 'absolute', top: '20px', left: '20px', fontSize: '20px' }} onClick={() => navigate(-1)} />
-
             {policyList?.map((item, index) => (
                 <h5
                     key={index}
                     className={`m-1 ${selectedPolicy === item ? 'selected' : ''}`}
                     onClick={() => handlePolicyClick(item)}
-                >
-                    {`${index + 1}. ${item?.title.length > 13
-                        ? item?.title.substring(0, 10) + '...'
-                        : item?.title
-                        }`}
+                     >
+                    {`${index + 1}. ${item?.title}`}
                 </h5>
             ))}
         </Wrapper>
-    );
+         );
 };
 export default PolicySidebar;
