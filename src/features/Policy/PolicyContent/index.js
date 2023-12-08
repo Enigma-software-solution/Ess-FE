@@ -24,16 +24,18 @@ const PolicyContent = () => {
 
 
         <>
-            <Wrapper>
+            <Flex vertical>
                 <Flex justify="end" className="p-3">
                     {
                         isAuthForActions &&
                         <AddButton text='Create new policy' onClick={() => setIsModalOpen(true)} />
                     }
                 </Flex>
-                <div className="p-5" style={{ flex: 1 }}>
+                <div style={{ flex: 1, padding: '0px 40px', }}>
+                    <h2>Terms of Services</h2>
+                    <h3 style={{ textTransform: 'capitalize', padding: '12px 0px', marginTop: '10px' }}>{selectedPolicy?.title}</h3>
+
                     <Watermark content="ENIGMA SOFTWARE SOLUTION" offset={[400, 300]} gap={[300, 550]}>
-                        <h2>{selectedPolicy?.title}</h2>
                         <div
                             dangerouslySetInnerHTML={{ __html: selectedPolicy?.content }}
                         />
@@ -41,7 +43,7 @@ const PolicyContent = () => {
                         <div style={{ height: 500 }} />
                     </Watermark>
                 </div>
-            </Wrapper>
+            </Flex>
 
             <PolicyModal open={isModalOpen} handleClose={() => setIsModalOpen(false)} />
         </>

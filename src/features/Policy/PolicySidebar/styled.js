@@ -17,6 +17,8 @@ export const Wrapper = styled('div')`
   cursor: pointer;
   line-height: 30px;
   font-size: 16px;
+  font-weight: bold;
+  text-transform: capitalize;
 
 
 &:hover {
