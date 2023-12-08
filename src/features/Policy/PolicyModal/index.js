@@ -11,23 +11,40 @@ const PolicyModal = ({ open, handleClose, selectedPolicy }) => {
 
     const dispatch = useDispatch()
 
-    console.log(selectedPolicy, "selecteddddd")
-
     const handleCancel = () => {
         form.resetFields();
         handleClose(false);
 
     };
 
-    const handleFinish = (values) => {
+    useEffect(() => {
         if (selectedPolicy) {
-            dispatch(updatePolicyApi({ id: selectedPolicy?._id, data: values }));
+            form.setFieldsValue({
+                title: selectedPolicy?.title || '',
+                content: selectedPolicy.content || '',
+            });
         } else {
-            dispatch(createPolicyApi(values));
+            form.setFieldsValue({
+                title: '',
+                content: '',
+            });
         }
-        form.resetFields();
-        handleClose(false);
+    }, [selectedPolicy, form]);
+
+    const handleFinish = async (values) => {
+        try {
+            if (selectedPolicy) {
+                await dispatch(updatePolicyApi({ id: selectedPolicy?._id, data: values }));
+            } else {
+                await dispatch(createPolicyApi(values));
+            }
+            form.resetFields();
+            handleClose(false);
+        } catch (error) {
+            console.error("An error occurred:", error);
+        }
     };
+
 
     return (
         <Modal
@@ -40,8 +57,8 @@ const PolicyModal = ({ open, handleClose, selectedPolicy }) => {
             <Form
                 form={form}
                 initialValues={{
-                    content: selectedPolicy?.content || '',
-                    title: selectedPolicy?.title || ''
+                    content: selectedPolicy?.content,
+                    title: selectedPolicy?.title,
                 }}
                 onFinish={handleFinish}
             >
