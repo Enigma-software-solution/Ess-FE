@@ -79,7 +79,7 @@ const PolicySidebar = () => {
             <Flex style={{ height: '40px', padding: '30px 20px', }}>
                 <LeftOutlined onClick={() => navigate(-1)} style={{ fontSize: '20px' }} />
             </Flex>
-            
+
             <PolicyTitleWrapper>
                 {policyList?.map((item, index) => (
                     <Flex justify='space-between' align='center' key={index} className={` ${selectedPolicy === item ? 'selected' : ''}`}>
@@ -88,12 +88,12 @@ const PolicySidebar = () => {
                             className={`m-1 ${selectedPolicy === item ? 'selected' : ''}`}
                             onClick={() => handlePolicyClick(item)}
                         >
-                            {`${index + 1}. ${item?.title}`}
+                            {`${index + 1}.  ${item?.title}`}
                         </p>
 
                         {
                             isAuthForActions && <Dropdown overlay={() => menu(item)} trigger={['click']} >
-                                <FiMoreVertical style={{ fontSize: '18px', cursor: 'pointer', color: 'gray' }} />
+                                <FiMoreVertical style={{ fontSize: '16px', cursor: 'pointer', color: 'gray' }} />
                             </Dropdown>
                         }
 

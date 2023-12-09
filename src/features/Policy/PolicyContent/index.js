@@ -21,8 +21,6 @@ const PolicyContent = () => {
 
 
     return (
-
-
         <>
             <Flex vertical>
                 <Flex justify="end" className="p-3">
@@ -31,7 +29,7 @@ const PolicyContent = () => {
                         <AddButton text='Create new policy' onClick={() => setIsModalOpen(true)} />
                     }
                 </Flex>
-                <div style={{ flex: 1, padding: '0px 40px', }}>
+                <div style={{ flex: 1, padding: '0px 40px 50px', }}>
                     <h2>Terms of Services</h2>
                     <h3 style={{ textTransform: 'capitalize', padding: '12px 0px', marginTop: '10px' }}>{selectedPolicy?.title}</h3>
 
@@ -39,8 +37,6 @@ const PolicyContent = () => {
                         <div
                             dangerouslySetInnerHTML={{ __html: selectedPolicy?.content }}
                         />
-
-                        <div style={{ height: 500 }} />
                     </Watermark>
                 </div>
             </Flex>

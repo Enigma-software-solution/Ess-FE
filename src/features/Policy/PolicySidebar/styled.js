@@ -8,7 +8,18 @@ export const Wrapper = styled('div')`
   position: fixed;
 
 
-  p {
+`;
+
+
+export const PolicyTitleWrapper = styled('div')`
+height: calc(100vh - 60px);
+overflow: auto;
+padding:  5px 20px;
+display: flex;
+flex-direction: column;
+
+
+p {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -16,8 +27,8 @@ export const Wrapper = styled('div')`
   color: grey;
   cursor: pointer;
   line-height: 30px;
-  font-size: 16px;
-  font-weight: bold;
+  font-size: 14px;
+  font-weight: 500;
   text-transform: capitalize;
 
 
@@ -29,13 +40,4 @@ export const Wrapper = styled('div')`
     color: #0c59db;
   }
   }
-`;
-
-
-export const PolicyTitleWrapper = styled('div')`
-height: calc(100vh - 60px);
-overflow: auto;
-padding:  5px 20px;
-display: flex;
-flex-direction: column;
 `
