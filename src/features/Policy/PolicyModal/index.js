@@ -36,22 +36,27 @@ const PolicyModal = ({ open, handleClose, selectedPolicy }) => {
 
     const handleFinish = async (values) => {
         try {
-            const data = {
-                ...values,
-                content,
-            };
+            const data = { ...values, content };
+
             if (!content) {
                 toast.error('Content cannot be empty');
                 return;
             }
 
             if (selectedPolicy) {
-                await dispatch(updatePolicyApi({ id: selectedPolicy?._id, data }));
+                const res = await dispatch(updatePolicyApi({ id: selectedPolicy?._id, data })).unwrap();
+                if (res.status === 200) {
+                    form.resetFields();
+                    handleClose(false);
+                }
             } else {
-                await dispatch(createPolicyApi(data));
+                const res = await dispatch(createPolicyApi(data)).unwrap();
+                if (res.status === 201) {
+                    form.resetFields();
+                    handleClose(false);
+                }
             }
-            form.resetFields();
-            handleClose(false);
+
         } catch (error) {
             console.error("An error occurred:", error);
         }
@@ -123,7 +128,7 @@ const PolicyModal = ({ open, handleClose, selectedPolicy }) => {
                     <Flex justify="end" gap={4} className='mt-5'>
                         <Button onClick={handleCancel}>Cancel</Button>
                         <Button type="primary" htmlType="submit">
-                            Submit
+                            {selectedPolicy ? "Update" : 'Save'}
                         </Button>
                     </Flex>
                 </Form.Item>

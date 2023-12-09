@@ -16,6 +16,7 @@ export const createPolicyApi = createAsyncThunk("policy/create-policy", async (d
         const response = await api.post("/policy", data);
         return response;
     } catch (error) {
+        toast.error(error.message)
         throw error;
     }
 });
@@ -29,6 +30,7 @@ export const updatePolicyApi = createAsyncThunk(
 
             return response;
         } catch (error) {
+            toast.error(error.message)
             return rejectWithValue(error?.response?.data || "An error occurred");
         }
     }

@@ -4,12 +4,10 @@ import {
 import { createPolicyApi, detelePolicyApi, getPolicyApi, updatePolicyApi } from "./apis";
 
 const initialState = {
-    status: "idle",
-    error: null,
     data: [],
     selectedPolicy: null,
     stats: null,
-    loading: false,
+    isLoading: false,
 };
 
 const policySlice = createSlice({
@@ -23,24 +21,19 @@ const policySlice = createSlice({
     },
     extraReducers(builder) {
         builder.addCase(getPolicyApi.pending, (state, action) => {
-            state.loading = true;
-            state.status = "loading";
+            state.isLoading = true;
         });
 
         builder.addCase(getPolicyApi.fulfilled, (state, action) => {
-            state.status = "succeeded";
-            state.loading = false;
             state.data = action.payload.data;
+            state.isLoading = false;
         });
 
         builder.addCase(getPolicyApi.rejected, (state, action) => {
-            state.status = "error";
-            state.loading = "error";
-            state.error = action.error.message;
+            state.isLoading = false;
         });
 
         builder.addCase(createPolicyApi.fulfilled, (state, action) => {
-            state.status = "succeeded";
             state.data = [...state?.data, action?.payload?.data];
         });
 
