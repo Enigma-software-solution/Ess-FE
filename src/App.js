@@ -36,11 +36,14 @@ import { format } from 'date-fns';
 import { enUS, fr } from 'date-fns/locale';
 import { ROLES } from "./constant/roles";
 import MarkAttendance from "./pages/Attendance/MarkAttendance";
+import ProjectDailyUpdate from "./pages/ProjectDailyUpdate"
 import AttendenceDetails from "./features/AttendanceFeature/SingleUserAttendanceDetails";
 import SignUpPage from "./pages/Auth/SignUp";
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import NewUpdate from "./features/ProjectDailyUpdate/ProjectDailyUpdateTabs/NewUpdate";
+import UpdateProjectTable from "./features/ProjectDailyUpdate/ProjectDailyUpdateTabs/UpdateHistory";
 
 
 function App() {
@@ -67,6 +70,7 @@ function App() {
                 <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.SALES_EXECUTIVE, ROLES.USER]} />} >
                   <Route index element={<Dashobard />} />
                   <Route path={routes.USERS} element={<UsersPage />} />
+                  <Route path={routes.NEW_UPDATE} element={<ProjectDailyUpdate />} />
                 </Route>
 
                 {/* ATTENDANCE PROTECTED ROUTES  */}
@@ -76,6 +80,7 @@ function App() {
                   <Route path={routes.ATTENDANCE_REPORTS} element={<AttendanceReports />} />
                   <Route path={routes.USER_ATTENDANCE_COUNT} element={<UsersAttendanceCount />} />
                 </Route>
+                
                 {/* ATTENDANCE FREE ROUTES  */}
                 <Route path={`${routes.USER_ATTENDANCE_DETAILS}/:id?`} element={<AttendenceDetails />} />
 
@@ -89,6 +94,13 @@ function App() {
                   <Route path={routes.AGENDA} element={<Agenda />} />
                   <Route path={routes.CLIENT} element={<ClientPage />} />
                 </Route>
+
+                {/* PROJECT UPDATE ROUTES */}
+                <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.HR, ROLES.SALES_EXECUTIVE]} />}>
+                  <Route path={routes.NEW_UPDATE} element={<NewUpdate/>} />
+                  <Route path={routes.UPDATE_HISTORY} element={<UpdateProjectTable/>} /> 
+                </Route>
+
               </Route>
             </Route>
 
@@ -114,3 +126,5 @@ function App() {
 }
 
 export default App;
+
+
