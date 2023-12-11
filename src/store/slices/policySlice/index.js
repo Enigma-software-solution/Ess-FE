@@ -4,7 +4,7 @@ import {
 import { createPolicyApi, detelePolicyApi, getPolicyApi, updatePolicyApi } from "./apis";
 
 const initialState = {
-    data: [],
+    data: null,
     selectedPolicy: null,
     stats: null,
     isLoading: false,
