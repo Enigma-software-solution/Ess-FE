@@ -12,7 +12,7 @@ import { FiMoreVertical } from "react-icons/fi";
 import { ROLES } from 'src/constant/roles';
 import { getLogedInUser } from 'src/store/slices/authSlice/selectors';
 
-const PolicySidebar = () => {
+const PolicySidebar = ({policyList}) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
 
@@ -24,7 +24,6 @@ const PolicySidebar = () => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
 
-    const policyList = useSelector(getAllPolicy);
     const selectedPolicy = useSelector(getSelectedPolicy);
 
     const handlePolicyClick = (item) => {

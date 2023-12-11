@@ -31,7 +31,7 @@ const PolicyContent = () => {
                 </Flex>
                 <div style={{ flex: 1, padding: '0px 40px 50px', }}>
                     <h2>Terms of Services</h2>
-                    <h4 style={{ textTransform: 'capitalize', padding: '12px 0px', marginTop: '10px',color:'#595959' }}>{selectedPolicy?.title}</h4>
+                    <h4 style={{ textTransform: 'capitalize', padding: '12px 0px', marginTop: '10px' }}>{selectedPolicy?.title}</h4>
 
                     <Watermark content="ENIGMA SOFTWARE SOLUTION" offset={[400, 300]} gap={[300, 550]}>
                         <div

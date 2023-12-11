@@ -64,7 +64,7 @@ function App() {
 
                   <Route path={routes.PROFILE_SETTINGS} element={<ProfileSettings />} />
 
-                  <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.SALES_EXECUTIVE, ROLES.USER]} />} >
+                  <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.SALES_EXECUTIVE, ROLES.HR]} />} >
                     <Route index element={<Dashobard />} />
                     <Route path={routes.USERS} element={<UsersPage />} />
                   </Route>

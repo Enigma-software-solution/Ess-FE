@@ -116,7 +116,7 @@ export const sidebarMenuItems = [
         roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.HR],
     },
     {
-        key: routes.USERS,
+        key: routes.POLICIES,
         title: 'Policy',
         icon: <FormOutlined />,
         path: routes.POLICIES,
