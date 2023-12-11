@@ -96,7 +96,7 @@ function App() {
                 </Route>
 
                 {/* PROJECT UPDATE ROUTES */}
-                <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.HR, ROLES.SALES_EXECUTIVE]} />}>
+                <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.HR, ROLES.SALES_EXECUTIVE, ROLES.USER]} />}>
                   <Route path={routes.NEW_UPDATE} element={<NewUpdate/>} />
                   <Route path={routes.UPDATE_HISTORY} element={<UpdateProjectTable/>} /> 
                 </Route>
