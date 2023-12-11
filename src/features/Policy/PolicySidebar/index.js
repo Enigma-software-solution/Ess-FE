@@ -83,6 +83,7 @@ const PolicySidebar = () => {
             <PolicyTitleWrapper>
                 {policyList?.map((item, index) => (
                     <Flex justify='space-between' align='center' key={index} className={` ${selectedPolicy === item ? 'selected' : ''}`}>
+                    <div className='w-100'> 
                         <p
                             key={index}
                             className={`m-1 ${selectedPolicy === item ? 'selected' : ''}`}
@@ -90,7 +91,7 @@ const PolicySidebar = () => {
                         >
                             {`${index + 1}.  ${item?.title}`}
                         </p>
-
+                        </div>
                         {
                             isAuthForActions && <Dropdown overlay={() => menu(item)} trigger={['click']} >
                                 <FiMoreVertical style={{ fontSize: '16px', cursor: 'pointer', color: 'gray' }} />

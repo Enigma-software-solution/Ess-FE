@@ -14,7 +14,6 @@ const Header = ({ onSearch }) => {
 
     const handleSearchChange = (e) => {
         const searchValue = e.target.value;
-        // Call the onSearch prop to update the search query in the parent component
         onSearch(searchValue);
     };
 
