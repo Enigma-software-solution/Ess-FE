@@ -10,6 +10,7 @@ import { getApplyBySearchApi } from 'src/store/slices/agendaSlice/apis';
 import { toast } from 'react-toastify';
 import { getAllUsers } from 'src/store/slices/userSlice/selectors';
 import { getAllUsersApi } from 'src/store/slices/userSlice/apis';
+import UserDropdown from 'src/components/UserDropdown';
 
 
 const { Option } = Select;
@@ -158,18 +159,12 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                             label="Project Manager"
                             rules={[{ required: true, message: 'Please select a Project Manager' }]}
                         >
-                            <Select
-                                style={{ width: '100%' }}
+                            <UserDropdown
+                                label="Project Manager"
                                 placeholder="Select a Project Manager"
-                                optionFilterProp="children"
-                                onChange={(value) => form.setFieldsValue({ username: value })}
-                            >
-                                {allUsers.map((user) => (
-                                    <Option key={user._id} value={user._id}>
-                                        {`${user.first_name} ${user.last_name}`}
-                                    </Option>
-                                ))}
-                            </Select>
+                                allUsers={allUsers} // assuming you have allUsers defined somewhere
+                                form={form} // assuming you have form defined somewhere
+                            />
                         </Form.Item>
                     </Col>
                 </Row>

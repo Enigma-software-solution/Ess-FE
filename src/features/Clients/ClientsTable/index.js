@@ -22,8 +22,6 @@ const ClientTable = () => {
         }
     }, []);
 
-    console.log(clients, "asdasdasdasdads")
-
     const handleConfirmDelete = (recordToDelete, e) => {
         e.stopPropagation();
         dispatch(deleteClientApi(recordToDelete._id));
