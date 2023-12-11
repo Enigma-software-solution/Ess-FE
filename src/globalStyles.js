@@ -23,9 +23,9 @@ h1,h2,h3,h4,h5,p,span {
   height: 340px !important; /* Change this value to your desired height */
 }
 
-.ql-editor{
+/* .ql-editor{
     min-height:calc(100vh - 200px);
-}
+} */
 
 
 .rbc-event{

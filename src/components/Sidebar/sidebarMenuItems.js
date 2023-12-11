@@ -1,4 +1,4 @@
-import { UserOutlined, ContainerOutlined, CalendarOutlined, DashboardOutlined, CheckSquareOutlined, ProfileOutlined, UserSwitchOutlined, UsergroupAddOutlined } from '@ant-design/icons';
+import { ContainerOutlined, CalendarOutlined, DashboardOutlined, CheckSquareOutlined, ProfileOutlined, UserSwitchOutlined, UsergroupAddOutlined, FormOutlined } from '@ant-design/icons';
 import { ROLES } from 'src/constant/roles';
 import { routes } from 'src/constant/routes';
 
@@ -114,5 +114,12 @@ export const sidebarMenuItems = [
         icon: <UserSwitchOutlined />,
         path: routes.USERS,
         roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.HR],
+    },
+    {
+        key: routes.POLICIES,
+        title: 'Policy',
+        icon: <FormOutlined />,
+        path: routes.POLICIES,
+        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.HR, ROLES.USER],
     },
 ];

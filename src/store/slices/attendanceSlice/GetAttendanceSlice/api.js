@@ -10,7 +10,7 @@ export const submitAttendanceApi = createAsyncThunk(
       toast.success(response?.message);
       return response;
     } catch (error) {
-      toast.warn(error.response.data.message || error?.message);
+      toast.warn(error?.message);
       return rejectWithValue(error.response?.data || "An error occurred");
     }
   }
@@ -61,7 +61,6 @@ export const getUserAttendanceStatsById = createAsyncThunk(
       const response = await api.get(
         `/attendance/stats/user/${data?.userId}?${data?.params}`
       );
-      console.log("RESPONSE", response);
       return response.data;
     } catch (error) {
       return error.response.data;

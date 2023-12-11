@@ -1,16 +1,16 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { deleteAttendance } from "src/store/slices/attendanceSlice/GetAttendanceSlice/api";
-import { Popconfirm, Table, Tag } from "antd";
+import { Popconfirm, Table, Tag, Tooltip } from "antd";
 import DeleteButton from "src/components/buttons/DeleteButton";
 import EditButton from "src/components/buttons/EditButton";
 import { format } from "date-fns";
 import { CheckAttendanceStatusColor } from "src/components/Utils/checkAttendanceStatusColor";
 import { setSelectedAttendance } from "src/store/slices/attendanceSlice/GetAttendanceSlice";
 import EditAttendanceModal from "../EditAttendanceModal";
+import { capitalize } from "lodash";
 
 const TodaySubmittedTable = ({ todayAllAttendance }) => {
-    const [selectedRecord, setSelectedRecord] = useState(null)
     const [isEditModalVisible, setIsEditModalVisible] = useState(false)
     const dispatch = useDispatch();
 
@@ -23,14 +23,12 @@ const TodaySubmittedTable = ({ todayAllAttendance }) => {
     const handleEdit = (record, e) => {
         e.stopPropagation();
         dispatch(setSelectedAttendance(record));
-        setSelectedRecord(record);
         setIsEditModalVisible(true);
     };
 
     const handleModalClose = () => {
         setIsEditModalVisible(false)
         dispatch(setSelectedAttendance(null))
-        setSelectedRecord(null)
     }
 
     const columns = [
@@ -38,7 +36,7 @@ const TodaySubmittedTable = ({ todayAllAttendance }) => {
             title: "User Name",
             dataIndex: "user?.first_name",
             key: "first_name",
-            render: (text, record) => record?.user?.first_name + ' ' + record?.user?.last_name,
+            render: (text, record) => capitalize(record?.user?.first_name) + ' ' + capitalize(record?.user?.last_name),
         },
 
         {
@@ -50,6 +48,19 @@ const TodaySubmittedTable = ({ todayAllAttendance }) => {
             title: "Check Out Time",
             dataIndex: "checkOutTime",
             render: (text, record) => record?.checkOutTime ? format(new Date(record?.checkOutTime), "p") : 'N/A',
+        },
+
+        {
+            title: 'Notes',
+            dataIndex: 'notes',
+            ellipsis: true,
+            render: (text, record) => (
+                <Tooltip title={text} placement="topLeft" arrowPointAtCenter>
+                    <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {text}
+                    </div>
+                </Tooltip>
+            ),
         },
         {
             title: "Status",
@@ -93,7 +104,7 @@ const TodaySubmittedTable = ({ todayAllAttendance }) => {
             <EditAttendanceModal
                 visible={isEditModalVisible}
                 onClose={handleModalClose}
-                record={selectedRecord} />
+            />
         </div>
     )
 }
