@@ -35,8 +35,6 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
 
     const [form] = Form.useForm();
 
-    console.log(allUsers, "usersssssss")
-
     useEffect(() => {
         if (!allProfiles.length) {
             dispatch(getProfilesApi());
@@ -44,7 +42,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
     }, []);
 
     useEffect(() => {
-        if (!allUsers) {
+        if (!allUsers || allUsers.length === 0) {
             dispatch(getAllUsersApi())
         }
     })
@@ -79,7 +77,6 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
         }
     };
 
-
     return (
         <Drawer open={isOpen} onClose={handleDrawer} width={800}
             title={"Create Client"}
@@ -99,7 +96,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                     <Col span={12}>
                         <Form.Item
                             name="phoneNumber"
-                            label="Company Phone Number"
+                            label="Client Phone Number"
                             rules={[{ required: true, message: 'Please enter Client Phone Number' }]}
                         >
                             <Input placeholder="Please enter Client Phone Number" />
@@ -154,18 +151,14 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                 </Row>
                 <Row gutter={16}>
                     <Col span={12}>
-                        <Form.Item
-                            name="projectManager"
-                            label="Project Manager"
-                            rules={[{ required: true, message: 'Please select a Project Manager' }]}
-                        >
-                            <UserDropdown
-                                label="Project Manager"
-                                placeholder="Select a Project Manager"
-                                allUsers={allUsers} // assuming you have allUsers defined somewhere
-                                form={form} // assuming you have form defined somewhere
-                            />
-                        </Form.Item>
+
+                        <UserDropdown
+                            name='projectManager'
+                            label="Project manger"
+                            placeholder="Select a Project Manager"
+                            allUsers={allUsers}
+                            form={form}
+                        />
                     </Col>
                 </Row>
 
