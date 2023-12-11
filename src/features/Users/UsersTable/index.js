@@ -16,6 +16,11 @@ import { routes } from "src/constant/routes";
 const UserTable = () => {
 
     const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const handleSearch = (value) => {
+        setSearchQuery(value);
+    };
 
 
     const dispatch = useDispatch();
@@ -69,6 +74,11 @@ const UserTable = () => {
             console.error("User record does not have a valid _id");
         }
     };
+
+    const filteredClients = clients.filter((client) => {
+        const fullName = `${client?.first_name} ${client?.last_name}`.toLowerCase();
+        return fullName.includes(searchQuery.toLowerCase());
+    });
 
 
 
@@ -149,8 +159,8 @@ const UserTable = () => {
     return (
         <>
             <div>
-                <Header />
-                <Table dataSource={clients} columns={columns} />
+                <Header onSearch={handleSearch} />
+                <Table dataSource={filteredClients} columns={columns} />
             </div>
             <CreateUserDrawer isOpen={isEditDrawerOpen} handleDrawer={handleDrawer} />
         </>
