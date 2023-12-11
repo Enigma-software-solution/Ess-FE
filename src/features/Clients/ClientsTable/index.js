@@ -22,6 +22,8 @@ const ClientTable = () => {
         }
     }, []);
 
+    console.log(clients, "asdasdasdasdads")
+
     const handleConfirmDelete = (recordToDelete, e) => {
         e.stopPropagation();
         dispatch(deleteClientApi(recordToDelete._id));
@@ -32,7 +34,7 @@ const ClientTable = () => {
             title: "Client Name",
             dataIndex: "clientName",
             key: "clientName",
-            render: (text, record) => record.apply?.clientName || record.clientName,
+            render: (text, record) => record?.apply?.clientName || record?.clientName,
         },
         {
             title: "Status",
@@ -41,13 +43,19 @@ const ClientTable = () => {
         {
             title: "Platform",
             dataIndex: "apply?.platform",
-            render: (text, record) => record.apply?.platform,
+            render: (text, record) => record?.apply?.platform,
 
         },
         {
             title: "Position",
             dataIndex: "apply?.positionToApply",
-            render: (text, record) => record.apply?.positionToApply,
+            render: (text, record) => record?.apply?.positionToApply,
+
+        },
+        {
+            title: "Project Manager",
+            dataIndex: "projectManager?.first_name",
+            render: (text, record) => record?.projectManager?.first_name,
 
         },
         {

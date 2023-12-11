@@ -8,6 +8,8 @@ import qs from "qs";
 import { format } from "date-fns";
 import { getApplyBySearchApi } from 'src/store/slices/agendaSlice/apis';
 import { toast } from 'react-toastify';
+import { getAllUsers } from 'src/store/slices/userSlice/selectors';
+import { getAllUsersApi } from 'src/store/slices/userSlice/apis';
 
 
 const { Option } = Select;
@@ -16,7 +18,8 @@ const initialFormValues = {
     email: '',
     phoneNumber: '',
     clientName: '',
-    apply: ""
+    apply: "",
+    username: ''
 };
 
 const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
@@ -27,14 +30,23 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
 
     const dispatch = useDispatch();
     const allProfiles = useSelector(getAllProfiles);
+    const allUsers = useSelector(getAllUsers)
 
     const [form] = Form.useForm();
+
+    console.log(allUsers, "usersssssss")
 
     useEffect(() => {
         if (!allProfiles.length) {
             dispatch(getProfilesApi());
         }
     }, []);
+
+    useEffect(() => {
+        if (!allUsers) {
+            dispatch(getAllUsersApi())
+        }
+    })
 
     const fetchApplyData = async (searchText) => {
         const d = {
@@ -139,6 +151,29 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                     </Col>
 
                 </Row>
+                <Row gutter={16}>
+                    <Col span={12}>
+                        <Form.Item
+                            name="projectManager"
+                            label="Project Manager"
+                            rules={[{ required: true, message: 'Please select a Project Manager' }]}
+                        >
+                            <Select
+                                style={{ width: '100%' }}
+                                placeholder="Select a Project Manager"
+                                optionFilterProp="children"
+                                onChange={(value) => form.setFieldsValue({ username: value })}
+                            >
+                                {allUsers.map((user) => (
+                                    <Option key={user._id} value={user._id}>
+                                        {`${user.first_name} ${user.last_name}`}
+                                    </Option>
+                                ))}
+                            </Select>
+                        </Form.Item>
+                    </Col>
+                </Row>
+
 
                 <Form.Item>
                     <Space>
