@@ -17,7 +17,7 @@ const PolicyContent = ({ policyList }) => {
     const selectedPolicy = useSelector(getSelectedPolicy);
     const authUser = useSelector(getLogedInUser)
     const userRole = authUser?.role
-    const isAuthForActions = userRole === ROLES.ADMIN || userRole === ROLES.HR
+    const isAuthForActions = userRole === ROLES?.ADMIN || userRole === ROLES?.HR
 
     return (
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
