@@ -1,6 +1,6 @@
 
 import React from 'react'
-import NewUpdate from './ProjectDailyUpdateTabs/NewUpdate'
+import NewUpdate from './ProjectDailyUpdateTabs/DailyProjectNewUpdate'
 
 const index = () => {
   return (

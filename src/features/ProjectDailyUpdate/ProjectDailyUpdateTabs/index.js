@@ -1,6 +1,6 @@
 import { Button, Tabs } from "antd";
 import React, { useState, useEffect } from "react";
-import NewUpdate from "./NewUpdate";
+import NewUpdate from "./DailyProjectNewUpdate";
 import { useNavigate, useLocation } from "react-router-dom";
 import { routes } from "src/constant/routes";
 

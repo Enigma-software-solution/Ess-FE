@@ -43,13 +43,7 @@ const UpdateProjectTable = () => {
             render: (text, record) => (
                 <div className='d-flex gap-1'>
                     <EditButton />
-                    <Popconfirm
-                        // title="Are you sure to delete this Profile?"
-                        // onConfirm={(e) => handleConfirmDelete(record, e)}
-                        // onCancel={(e) => e.stopPropagation()}
-                        // okText="Yes"
-                        // cancelText="No"
-                    >
+                    <Popconfirm>
                         <DeleteButton>Delete</DeleteButton>
                     </Popconfirm>
                 </div>

@@ -112,7 +112,6 @@ const PolicyModal = ({ open, handleClose, selectedPolicy }) => {
 
                 <Form.Item
                     name="content"
-                // rules={[{ required: true, message: 'Content is required' }]}
                 >
                     <ReactQuill
                         style={{ minHeight: '300px', height: '350px' }}

@@ -41,8 +41,8 @@ import SignUpPage from "./pages/Auth/SignUp";
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import NewUpdate from "./features/ProjectDailyUpdate/ProjectDailyUpdateTabs/NewUpdate";
-import UpdateProjectTable from "./features/ProjectDailyUpdate/ProjectDailyUpdateTabs/UpdateHistory";
+import NewUpdate from "./features/ProjectDailyUpdate/ProjectDailyUpdateTabs/DailyProjectNewUpdate";
+import UpdateProjectTable from "./features/ProjectDailyUpdate/ProjectDailyUpdateTabs/DailyProjectUpdateHistory";
 
 import ErrorBoundary from "./components/ErrorBoundary";
 
