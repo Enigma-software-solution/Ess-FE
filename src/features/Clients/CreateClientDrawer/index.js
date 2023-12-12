@@ -20,7 +20,7 @@ const initialFormValues = {
     phoneNumber: '',
     clientName: '',
     apply: "",
-    username: ''
+    projectManager: '',
 };
 
 const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
@@ -36,13 +36,13 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
     const [form] = Form.useForm();
 
     useEffect(() => {
-        if (!allProfiles.length) {
+        if (!allProfiles?.length) {
             dispatch(getProfilesApi());
         }
     }, []);
 
     useEffect(() => {
-        if (!allUsers || allUsers.length === 0) {
+        if (!allUsers || allUsers?.length === 0) {
             dispatch(getAllUsersApi())
         }
     })
@@ -128,7 +128,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                                 onChange={(value) => setApplyId(value)}
                             >
                                 {applies?.map((apply) => (
-                                    <Option key={apply._id} value={apply._id}>
+                                    <Option key={apply?._id} value={apply?._id}>
                                         {apply?.clientName}{" "}
                                         {apply?.clientJobPosition && ` -  ${apply?.clientJobPosition} `}
                                         <span
@@ -139,7 +139,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                                                 justifyContent: "flex-end",
                                             }}
                                         >
-                                            {format(new Date(apply.createdAt), "dd-MM-yyyy")}
+                                            {format(new Date(apply?.createdAt), "dd-MM-yyyy")}
                                         </span>
                                     </Option>
                                 ))}

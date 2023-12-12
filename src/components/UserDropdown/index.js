@@ -37,7 +37,9 @@ const UserDropdown = ({ placeholder, form, value, onChange, name, label }) => {
         <Form.Item
             name={name}
             label={label}
-            rules={[{ required: true, message: 'Please select a Project Manager' }]}
+            rules={[{
+                required: true, message: { placeholder }
+            }]}
         >
             <Select
                 style={{ width: '100%' }}
@@ -51,7 +53,7 @@ const UserDropdown = ({ placeholder, form, value, onChange, name, label }) => {
                     </Option>
                 ))}
             </Select>
-        </Form.Item>
+        </Form.Item >
     );
 };
 
