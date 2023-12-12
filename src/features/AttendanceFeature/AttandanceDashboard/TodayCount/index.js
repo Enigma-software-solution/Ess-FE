@@ -61,7 +61,8 @@ const TodayCount = () => {
                     </Flex>
                     :
                     <Swiper
-                        pagination={true} modules={[Pagination]}
+                        pagination={{ clickable: true }}
+                        modules={[Pagination]}
                         slidesPerView={4}
                         spaceBetween={10}
                         grabCursor={true}

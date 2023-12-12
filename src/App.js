@@ -32,7 +32,6 @@ import ResetPassword from "./pages/Auth/ResetPassword";
 import AfterConfirmationEmail from "./pages/Auth/AfterConfirmationEmail";
 import Policy from "./pages/Policy";
 
-import { format } from 'date-fns';
 import { enUS, fr } from 'date-fns/locale';
 import { ROLES } from "./constant/roles";
 import MarkAttendance from "./pages/Attendance/MarkAttendance";
@@ -45,6 +44,7 @@ import 'swiper/css/navigation';
 import NewUpdate from "./features/ProjectDailyUpdate/ProjectDailyUpdateTabs/NewUpdate";
 import UpdateProjectTable from "./features/ProjectDailyUpdate/ProjectDailyUpdateTabs/UpdateHistory";
 
+import ErrorBoundary from "./components/ErrorBoundary";
 
 function App() {
   const dispatch = useDispatch();
@@ -57,20 +57,22 @@ function App() {
 
   return (
     <div className="App">
-      <ThemeProvider theme={theme} >
-        <ConfigProvider theme={theme} locale={enUS}>
+      <ErrorBoundary>
+        <ThemeProvider theme={theme} >
+          <ConfigProvider theme={theme} locale={enUS}>
 
-          <GlobalStyles />
-          <Routes>
-            <Route element={<ProtectedRoutes />}>
-              <Route path="/" element={<DashobardLayout />}>
+            <GlobalStyles />
+            <Routes>
+              <Route element={<ProtectedRoutes />}>
+                <Route path="/" element={<DashobardLayout />}>
 
-                <Route path={routes.PROFILE_SETTINGS} element={<ProfileSettings />} />
+                  <Route path={routes.PROFILE_SETTINGS} element={<ProfileSettings />} />
 
                 <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.SALES_EXECUTIVE, ROLES.USER]} />} >
                   <Route index element={<Dashobard />} />
                   <Route path={routes.USERS} element={<UsersPage />} />
-                  <Route path={routes.NEW_UPDATE} element={<ProjectDailyUpdate />} />
+                  {/* <Route path={routes.NEW_UPDATE} element={<ProjectDailyUpdate />} />
+                  <Route path={routes.UPDATE_HISTORY} element={<UpdateProjectTable/>} />  */}
                 </Route>
 
                 {/* ATTENDANCE PROTECTED ROUTES  */}
@@ -84,43 +86,45 @@ function App() {
                 {/* ATTENDANCE FREE ROUTES  */}
                 <Route path={`${routes.USER_ATTENDANCE_DETAILS}/:id?`} element={<AttendenceDetails />} />
 
-                <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.SALES_EXECUTIVE]} />}>
-                  <Route path={routes.USERS} element={<UsersPage />} />
-                </Route>
+                  <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.SALES_EXECUTIVE]} />}>
+                    <Route path={routes.USERS} element={<UsersPage />} />
+                  </Route>
 
-                <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.SALES_EXECUTIVE]} />}>
-                  <Route path={routes.DAILY_APPLY} element={<DailyApply />} />
-                  <Route path={routes.PROFILE} element={<Profile />} />
-                  <Route path={routes.AGENDA} element={<Agenda />} />
-                  <Route path={routes.CLIENT} element={<ClientPage />} />
-                </Route>
+                  <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.SALES_EXECUTIVE]} />}>
+                    <Route path={routes.DAILY_APPLY} element={<DailyApply />} />
+                    <Route path={routes.PROFILE} element={<Profile />} />
+                    <Route path={routes.AGENDA} element={<Agenda />} />
+                    <Route path={routes.CLIENT} element={<ClientPage />} />
+                  </Route>
 
-                {/* PROJECT UPDATE ROUTES */}
-                <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.HR, ROLES.SALES_EXECUTIVE, ROLES.USER]} />}>
-                  <Route path={routes.NEW_UPDATE} element={<NewUpdate/>} />
-                  <Route path={routes.UPDATE_HISTORY} element={<UpdateProjectTable/>} /> 
+                   {/* PROJECT UPDATE ROUTES */}
+                  <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.HR, ROLES.SALES_EXECUTIVE, ROLES.USER]} />}>
+                    <Route path={routes.NEW_UPDATE} element={<NewUpdate/>} />
+                    <Route path={routes.UPDATE_HISTORY} element={<UpdateProjectTable/>} /> 
+                  </Route>
+
                 </Route>
 
               </Route>
-            </Route>
 
-            {/* Auth ROUTES */}
-            <Route path="/login" element={<Login />} />
-            <Route path="/Signup" element={<SignUpPage />} />
-            <Route path={`${routes.AfterConfirmationEmail}/confirm-email/:token`} element={<AfterConfirmationEmail />} />
-            <Route path={routes.FORGOT_PASSWORD} element={<ForgotPassword />} />
-            <Route path={`${routes.RESET_PASSWORD}/:token`} element={<ResetPassword />} />
-            <Route path={`${routes.AFTER_CONFIRMATION_EMAIL}`} element={<AfterConfirmationEmail />} />
+              {/* Auth ROUTES */}
+              <Route path="/login" element={<Login />} />
+              <Route path="/Signup" element={<SignUpPage />} />
+              <Route path={`${routes.AfterConfirmationEmail}/confirm-email/:token`} element={<AfterConfirmationEmail />} />
+              <Route path={routes.FORGOT_PASSWORD} element={<ForgotPassword />} />
+              <Route path={`${routes.RESET_PASSWORD}/:token`} element={<ResetPassword />} />
+              <Route path={`${routes.AFTER_CONFIRMATION_EMAIL}`} element={<AfterConfirmationEmail />} />
 
-            {/* POLICIES ROUTES */}
-            <Route path={`${routes.POLICIES}`} element={<Policy />} />
+              {/* POLICIES ROUTES */}
+              <Route path={`${routes.POLICIES}`} element={<Policy />} />
 
 
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </ConfigProvider>
-        <ToastContainer />
-      </ThemeProvider>
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </ConfigProvider>
+          <ToastContainer />
+        </ThemeProvider>
+      </ErrorBoundary>
     </div>
   );
 }

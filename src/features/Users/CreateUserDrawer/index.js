@@ -5,8 +5,9 @@ import { getSelectedUser } from 'src/store/slices/userSlice/selectors';
 import { updateUserApi } from 'src/store/slices/userSlice/apis';
 import { registerUser } from 'src/store/slices/authSlice/apis';
 import CustomInput from 'src/components/formElements/CustomInput';
-import { rolesDropdown } from 'src/constant/roles';
+import { ROLES, rolesDropdown } from 'src/constant/roles';
 import CustomSelect from 'src/components/formElements/CustomSelect';
+import { getLogedInUser } from 'src/store/slices/authSlice/selectors';
 
 const { Option } = Select;
 
@@ -19,6 +20,8 @@ const initialFormValues = {
 };
 
 const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
+    const authUser = useSelector(getLogedInUser)
+    const loggedInUserRole = authUser.role
     const dispatch = useDispatch();
     const selectedUser = useSelector(getSelectedUser);
 
@@ -110,8 +113,10 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
                     </>
                 )}
                 <Col>
+
                     <Form.Item>
                         <CustomInput
+                            disabled={loggedInUserRole !== ROLES.ADMIN}
                             label="Roles"
                             name="role"
                             rules={[{ required: true }]}

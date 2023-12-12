@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { deleteAttendance } from "src/store/slices/attendanceSlice/GetAttendanceSlice/api";
-import { Popconfirm, Table, Tag } from "antd";
+import { Popconfirm, Table, Tag, Tooltip } from "antd";
 import DeleteButton from "src/components/buttons/DeleteButton";
 import EditButton from "src/components/buttons/EditButton";
 import { format } from "date-fns";
@@ -48,6 +48,19 @@ const TodaySubmittedTable = ({ todayAllAttendance }) => {
             title: "Check Out Time",
             dataIndex: "checkOutTime",
             render: (text, record) => record?.checkOutTime ? format(new Date(record?.checkOutTime), "p") : 'N/A',
+        },
+
+        {
+            title: 'Notes',
+            dataIndex: 'notes',
+            ellipsis: true,
+            render: (text, record) => (
+                <Tooltip title={text} placement="topLeft" arrowPointAtCenter>
+                    <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                        {text}
+                    </div>
+                </Tooltip>
+            ),
         },
         {
             title: "Status",

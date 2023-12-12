@@ -2,7 +2,7 @@
 import React from 'react';
 import { Form, Input } from 'antd';
 
-const CustomInput = ({ label, name, placeholder, initialValue, rules, type = 'text', onChange, style, component: Component = Input, ...rest }) => {
+const CustomInput = ({ label, name, placeholder, initialValue, rules, type = 'text', onChange, style, component: Component = Input, disabled, ...rest }) => {
     return (
         <Form.Item
             label={label}
@@ -15,6 +15,7 @@ const CustomInput = ({ label, name, placeholder, initialValue, rules, type = 'te
                 placeholder={placeholder}
                 onChange={onChange}
                 style={style}
+                disabled={disabled}
                 {...rest}
             />
         </Form.Item>
