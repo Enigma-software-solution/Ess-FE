@@ -55,7 +55,8 @@ const Topbar = ({ setCollapsed, collapsed }) => {
             src="https://joesch.moe/api/v1/random"
             style={{ border: "1px solid lightgray" }}
           />
-          <span>{loggedInUser && loggedInUser?.first_name}</span>
+      <span>{loggedInUser && loggedInUser?.first_name && loggedInUser.first_name.toUpperCase()}</span>
+
           <span><DownOutlined style={{ fontSize: 'smaller' }} /></span>
         </div>
       </Dropdown>

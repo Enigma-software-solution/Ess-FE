@@ -12,6 +12,7 @@ import { StyledBadge } from "./styled";
 import Loader from "src/components/Loader";
 import { Link, useNavigate } from "react-router-dom";
 import { routes } from "src/constant/routes";
+import { capitalize } from "lodash";
 
 const UserTable = () => {
 
@@ -87,7 +88,7 @@ const UserTable = () => {
             title: "Name",
             dataIndex: "firstname",
             key: "firstname",
-            render: (text, record) => `${record?.first_name} ${record?.last_name}`
+            render: (text, record) => capitalize(record?.first_name) + ' ' + capitalize(record?.last_name),
         },
         {
             title: "Email",

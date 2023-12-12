@@ -1,6 +1,6 @@
 import React from 'react'
 import TextArea from "antd/es/input/TextArea";
-import Avatar from 'src/assets/avatar.jpg'
+import Avatar from 'src/assets/avatar1.jpg'
 import { CardImage, CardWrapper } from './styled';
 import { ImageWrapper } from '../styled';
 import Form from 'antd/es/form/Form';
