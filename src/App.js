@@ -68,23 +68,23 @@ function App() {
 
                   <Route path={routes.PROFILE_SETTINGS} element={<ProfileSettings />} />
 
-                <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.SALES_EXECUTIVE, ROLES.USER]} />} >
-                  <Route index element={<Dashobard />} />
-                  <Route path={routes.USERS} element={<UsersPage />} />
-                  {/* <Route path={routes.NEW_UPDATE} element={<ProjectDailyUpdate />} />
+                  <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.SALES_EXECUTIVE, ROLES.USER]} />} >
+                    <Route index element={<Dashobard />} />
+                    <Route path={routes.USERS} element={<UsersPage />} />
+                    {/* <Route path={routes.NEW_UPDATE} element={<ProjectDailyUpdate />} />
                   <Route path={routes.UPDATE_HISTORY} element={<UpdateProjectTable/>} />  */}
-                </Route>
+                  </Route>
 
-                {/* ATTENDANCE PROTECTED ROUTES  */}
-                <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.HR]} />}>
-                  <Route path={routes.ATTENDANCE_DASHBOARD} element={<AttendanceDashboard />} />
-                  <Route path={routes.ATTENDANCE_SUBMISSION} element={<MarkAttendance />} />
-                  <Route path={routes.ATTENDANCE_REPORTS} element={<AttendanceReports />} />
-                  <Route path={routes.USER_ATTENDANCE_COUNT} element={<UsersAttendanceCount />} />
-                </Route>
-                
-                {/* ATTENDANCE FREE ROUTES  */}
-                <Route path={`${routes.USER_ATTENDANCE_DETAILS}/:id?`} element={<AttendenceDetails />} />
+                  {/* ATTENDANCE PROTECTED ROUTES  */}
+                  <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.HR]} />}>
+                    <Route path={routes.ATTENDANCE_DASHBOARD} element={<AttendanceDashboard />} />
+                    <Route path={routes.ATTENDANCE_SUBMISSION} element={<MarkAttendance />} />
+                    <Route path={routes.ATTENDANCE_REPORTS} element={<AttendanceReports />} />
+                    <Route path={routes.USER_ATTENDANCE_COUNT} element={<UsersAttendanceCount />} />
+                  </Route>
+
+                  {/* ATTENDANCE FREE ROUTES  */}
+                  <Route path={`${routes.USER_ATTENDANCE_DETAILS}/:id?`} element={<AttendenceDetails />} />
 
                   <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.SALES_EXECUTIVE]} />}>
                     <Route path={routes.USERS} element={<UsersPage />} />
@@ -97,10 +97,10 @@ function App() {
                     <Route path={routes.CLIENT} element={<ClientPage />} />
                   </Route>
 
-                   {/* PROJECT UPDATE ROUTES */}
+                  {/* PROJECT UPDATE ROUTES */}
                   <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.HR, ROLES.SALES_EXECUTIVE, ROLES.USER]} />}>
-                    <Route path={routes.NEW_UPDATE} element={<NewUpdate/>} />
-                    <Route path={routes.UPDATE_HISTORY} element={<UpdateProjectTable/>} /> 
+                    <Route path={routes.NEW_UPDATE} element={<NewUpdate />} />
+                    <Route path={routes.UPDATE_HISTORY} element={<UpdateProjectTable />} />
                   </Route>
 
                 </Route>
