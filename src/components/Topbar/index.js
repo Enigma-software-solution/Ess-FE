@@ -12,7 +12,7 @@ const Topbar = ({ setCollapsed, collapsed }) => {
   const loggedInUser = useSelector(getLogedInUser)
   const navigate = useNavigate();
   const handleButtonClick = (loggedInUser) => {
-    navigate(`${routes.USER_ATTENDANCE_DETAILS}/${loggedInUser?.id}`);
+    navigate(`${routes?.USER_ATTENDANCE_DETAILS}/${loggedInUser?.id}`);
   };
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -22,7 +22,7 @@ const Topbar = ({ setCollapsed, collapsed }) => {
   const menu = (
     <Menu>
       <Menu.Item key="1">
-        <Link to={routes.PROFILE_SETTINGS}>Settings</Link>
+        <Link to={routes?.PROFILE_SETTINGS}>Settings</Link>
       </Menu.Item>
       <Menu.Item key="2" onClick={() => handleButtonClick(loggedInUser)}>
         Attendance
