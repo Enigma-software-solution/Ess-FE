@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Form, Row, Col, Input, Select, Space, Drawer, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProfilesApi } from 'src/store/slices/profielSlice/apis';
-import { getAllProfiles} from 'src/store/slices/profielSlice/selectors';
+import { getAllProfiles } from 'src/store/slices/profielSlice/selectors';
 import { createClientApi, updateClientApi } from 'src/store/slices/clientSlice/apis';
 import qs from "qs";
 import { format } from "date-fns";
@@ -46,7 +46,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                 email: selectedClient?.email,
                 phoneNumber: selectedClient?.phoneNumber,
                 clientName: selectedClient?.clientName,
-                apply: selectedClient?.apply.positionToApply,
+                apply: selectedClient?.apply?.positionToApply,
                 projectManager: selectedClient?.projectManager?.first_name,
                 name: selectedClient?.name,
             });
@@ -55,12 +55,12 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                 email: initialFormValues?.email,
                 phoneNumber: initialFormValues?.phoneNumber,
                 clientName: initialFormValues?.clientName,
-                apply: initialFormValues?.apply.positionToApply,
+                apply: initialFormValues?.apply?.positionToApply,
                 projectManager: initialFormValues?.projectManager?.first_name,
                 name: initialFormValues?.name,
             });
-        }   
-                
+        }
+
     }, [selectedClient, form]);
 
 
