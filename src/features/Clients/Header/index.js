@@ -1,15 +1,18 @@
-import React, { useState } from "react";
-import { Select } from "antd";
-import CustomSearchField from "src/components/SearchField";
+import React from "react";
 import AddButton from "src/components/buttons/AddButton";
 import CreateClientDrawer from "../CreateClientDrawer";
+import { useDispatch } from "react-redux";
+import { setSelectedClient } from "src/store/slices/clientSlice";
 
-const Header = () => {
+const Header = ({isOpen ,setIsOpen}) => {
 
-    const [isOpen, setIsOpen] = useState(false);
+    const dispatch = useDispatch()
+
 
     const handleDrawer = () => {
         setIsOpen(!isOpen);
+        dispatch(setSelectedClient(null));
+
     };
 
     return (
