@@ -14,7 +14,6 @@ const ApplyCard = ({ data }) => {
         <div className="user_info">
           <span>{data?.profileName}</span>
           <p>
-            <UserDropdown />
             <strong>Today Applies: </strong>
             {data?.count}
           </p>
