@@ -67,16 +67,16 @@ const DailyProjectNewUpdate = () => {
             <div className="d-flex justify-content-between">
                 <DatePicker
                     disabled
-                    value={formData.date}
+                    value={formData?.date}
                 />
                 <Select
                     style={{ width: '180px' }}
                     placeholder="Select a project"
                     onChange={handleChangeProject}
                 >
-                    {projects.map((p, index) => (
-                        <Option key={index} value={p.project}>
-                            {p.project}
+                    {projects?.map((p, index) => (
+                        <Option key={index} value={p?.project}>
+                            {p?.project}
                         </Option>
                     ))}
                 </Select>

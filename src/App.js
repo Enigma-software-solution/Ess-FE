@@ -35,16 +35,15 @@ import Policy from "./pages/Policy";
 import { enUS, fr } from 'date-fns/locale';
 import { ROLES } from "./constant/roles";
 import MarkAttendance from "./pages/Attendance/MarkAttendance";
-import ProjectDailyUpdate from "./pages/ProjectDailyUpdate"
 import AttendenceDetails from "./features/AttendanceFeature/SingleUserAttendanceDetails";
 import SignUpPage from "./pages/Auth/SignUp";
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import NewUpdate from "./features/ProjectDailyUpdate/ProjectDailyUpdateTabs/DailyProjectNewUpdate";
 import UpdateProjectTable from "./features/ProjectDailyUpdate/ProjectDailyUpdateTabs/DailyProjectUpdateHistory";
 
 import ErrorBoundary from "./components/ErrorBoundary";
+import DailyProjectNewUpdate from "./features/ProjectDailyUpdate/ProjectDailyUpdateTabs/DailyProjectNewUpdate";
 
 function App() {
   const dispatch = useDispatch();
@@ -71,8 +70,6 @@ function App() {
                   <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.SALES_EXECUTIVE, ROLES.USER]} />} >
                     <Route index element={<Dashobard />} />
                     <Route path={routes.USERS} element={<UsersPage />} />
-                    {/* <Route path={routes.NEW_UPDATE} element={<ProjectDailyUpdate />} />
-                  <Route path={routes.UPDATE_HISTORY} element={<UpdateProjectTable/>} />  */}
                   </Route>
 
                   {/* ATTENDANCE PROTECTED ROUTES  */}
@@ -99,7 +96,7 @@ function App() {
 
                   {/* PROJECT UPDATE ROUTES */}
                   <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.HR, ROLES.SALES_EXECUTIVE, ROLES.USER]} />}>
-                    <Route path={routes.NEW_UPDATE} element={<NewUpdate />} />
+                    <Route path={routes.NEW_UPDATE} element={<DailyProjectNewUpdate />} />
                     <Route path={routes.UPDATE_HISTORY} element={<UpdateProjectTable />} />
                   </Route>
 

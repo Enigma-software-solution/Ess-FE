@@ -24,9 +24,9 @@ const ProjectDailyUpdateTabs = () => {
   useEffect(() => {
     // Find the key based on the current URL
     const foundKey =
-      items.find((item) => location.pathname.includes(item.key))?.key || "1";
+      items?.find((item) => location.pathname.includes(item?.key))?.key || "1";
     setActiveKey(foundKey);
-  }, [location.pathname, items]);
+  }, [location?.pathname, items]);
 
   const onChange = (key) => {
     navigate(key);
@@ -39,8 +39,8 @@ const ProjectDailyUpdateTabs = () => {
         activeKey={activeKey}
         onChange={onChange}
       >
-        {items.map((item) => (
-          <Tabs.TabPane key={item.key} tab={item.label} />
+        {items?.map((item) => (
+          <Tabs.TabPane key={item?.key} tab={item?.label} />
         ))}
       </Tabs>
     </div>

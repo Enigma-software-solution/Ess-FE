@@ -1,11 +1,11 @@
 
 import React from 'react'
-import NewUpdate from './ProjectDailyUpdateTabs/DailyProjectNewUpdate'
+import DailyProjectNewUpdate from './ProjectDailyUpdateTabs/DailyProjectNewUpdate'
 
 const index = () => {
   return (
     <div>
-      <NewUpdate/>
+      <DailyProjectNewUpdate/>
     </div>
   )
 }
