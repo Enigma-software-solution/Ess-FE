@@ -9,9 +9,8 @@ import { getLogedInUser } from "src/store/slices/authSlice/selectors";
 import { ROLES } from "src/constant/roles";
 import { isEmpty } from "lodash";
 import ess from "src/assets/ess.jpeg";
-import { Layout } from 'antd';
+import { FooterWrapper } from "./styled";
 
-const { Footer } = Layout;
 const PolicyContent = ({ policyList }) => {
     const [isModalOpen, setIsModalOpen] = useState(false)
     const selectedPolicy = useSelector(getSelectedPolicy);
@@ -45,13 +44,7 @@ const PolicyContent = ({ policyList }) => {
                 )}
             </Flex>
             <PolicyModal open={isModalOpen} handleClose={() => setIsModalOpen(false)} />
-            <Footer style={{
-                textAlign: 'center',
-                marginTop: 'auto',
-                position: isEmpty(policyList) ? 'fixed' : 'static',
-                bottom: '0',
-                width: '100%'
-            }}>Enigma Software Solution ©2023</Footer>
+            <FooterWrapper>Enigma Software Solution ©2023</FooterWrapper>
         </div>
     );
 };
