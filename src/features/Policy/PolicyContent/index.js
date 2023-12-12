@@ -23,7 +23,8 @@ const PolicyContent = ({ policyList }) => {
         <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
             <Flex vertical style={{ flex: '1 0 auto' }}>
                 <Flex justify="space-between" className="p-3">
-                    <img src={ess} alt="confirmation_Image" draggable={false} width={"70px"} style={{ marginLeft: '25px' }} />
+                    <img src={ess} alt="ess" draggable={false} width={"70px"} style={{ marginLeft: '25px' }} />
+
                     {isAuthForActions &&
                         <AddButton text='Create new policy' onClick={() => setIsModalOpen(true)} />
                     }
@@ -34,7 +35,7 @@ const PolicyContent = ({ policyList }) => {
                     </Flex>
                 ) : (
                     <div style={{ flex: '1', padding: '0px 40px 50px' }}>
-                        <h2>Terms of Services</h2>
+                        <h2 style={{ marginTop: '40px' }}>Terms of Services</h2>
                         <h4 style={{ textTransform: 'capitalize', padding: '12px 0px', marginTop: '10px' }}>{selectedPolicy?.title}</h4>
 
                         <Watermark content="ENIGMA SOFTWARE SOLUTION" offset={[400, 300]} gap={[300, 550]}>
