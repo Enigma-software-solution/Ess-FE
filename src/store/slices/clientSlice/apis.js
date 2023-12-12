@@ -30,7 +30,7 @@ export const updateClientApi = createAsyncThunk(
     "client/patch-client",
     async (data, { rejectWithValue }) => {
       try {
-        const response = await api.patch(`/client/${data.id}`, data.data);
+        const response = await api.patch(`/client/${data?.id}`, data?.data);
         toast.success("Client Updated Successfully")
   
         return response;
