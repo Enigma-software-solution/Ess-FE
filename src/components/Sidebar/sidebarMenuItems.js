@@ -122,11 +122,11 @@ export const sidebarMenuItems = [
         path: routes.POLICIES,
         roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.HR, ROLES.USER],
     },
-    {
-        key: routes.NEW_UPDATE,
-        title: 'Project Update',
-        icon: <FormOutlined />,
-        path: routes.NEW_UPDATE,
-        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.HR, ROLES.USER,ROLES.SALES_EXECUTIVE],
-    },
+    // {
+    //     key: routes.NEW_UPDATE,
+    //     title: 'Project Update',
+    //     icon: <FormOutlined />,
+    //     path: routes.NEW_UPDATE,
+    //     roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.HR, ROLES.USER,ROLES.SALES_EXECUTIVE],
+    // },
 ];

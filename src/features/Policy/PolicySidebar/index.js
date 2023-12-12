@@ -12,7 +12,7 @@ import { FiMoreVertical } from "react-icons/fi";
 import { ROLES } from 'src/constant/roles';
 import { getLogedInUser } from 'src/store/slices/authSlice/selectors';
 
-const PolicySidebar = ({policyList}) => {
+const PolicySidebar = ({ policyList }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
 
@@ -82,14 +82,14 @@ const PolicySidebar = ({policyList}) => {
             <PolicyTitleWrapper>
                 {policyList?.map((item, index) => (
                     <Flex justify='space-between' align='center' key={index} className={` ${selectedPolicy === item ? 'selected' : ''}`}>
-                    <div className='w-100'> 
-                        <p
-                            key={index}
-                            className={`m-1 ${selectedPolicy === item ? 'selected' : ''}`}
-                            onClick={() => handlePolicyClick(item)}
-                        >
-                            {`${index + 1}.  ${item?.title}`}
-                        </p>
+                        <div className='w-100'>
+                            <p
+                                key={index}
+                                className={`m-1 ${selectedPolicy === item ? 'selected' : ''}`}
+                                onClick={() => handlePolicyClick(item)}
+                            >
+                                {`${index + 1}.  ${item?.title}`}
+                            </p>
                         </div>
                         {
                             isAuthForActions && <Dropdown overlay={() => menu(item)} trigger={['click']} >
