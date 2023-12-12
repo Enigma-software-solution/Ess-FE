@@ -2,12 +2,16 @@ import React, { useEffect, useState } from 'react';
 import { Form, Row, Col, Input, Select, Space, Drawer, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { getProfilesApi } from 'src/store/slices/profielSlice/apis';
-import { getAllProfiles } from 'src/store/slices/profielSlice/selectors';
-import { createClientApi } from 'src/store/slices/clientSlice/apis';
+import { getAllProfiles} from 'src/store/slices/profielSlice/selectors';
+import { createClientApi, updateClientApi } from 'src/store/slices/clientSlice/apis';
 import qs from "qs";
 import { format } from "date-fns";
 import { getApplyBySearchApi } from 'src/store/slices/agendaSlice/apis';
 import { toast } from 'react-toastify';
+import { getAllUsers } from 'src/store/slices/userSlice/selectors';
+import { getAllUsersApi } from 'src/store/slices/userSlice/apis';
+import UserDropdown from 'src/components/UserDropdown';
+import { getSelectedClient, selectedClient } from 'src/store/slices/clientSlice/selectors';
 
 
 const { Option } = Select;
@@ -16,7 +20,9 @@ const initialFormValues = {
     email: '',
     phoneNumber: '',
     clientName: '',
-    apply: ""
+    apply: "",
+    projectManager: '',
+    name: "",
 };
 
 const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
@@ -26,15 +32,43 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
 
 
     const dispatch = useDispatch();
-    const allProfiles = useSelector(getAllProfiles);
+    const allUsers = useSelector(getAllUsers)
 
+    const selectedClient = useSelector(getSelectedClient)
     const [form] = Form.useForm();
 
+
+
+
     useEffect(() => {
-        if (!allProfiles.length) {
-            dispatch(getProfilesApi());
+        if (selectedClient) {
+            form.setFieldsValue({
+                email: selectedClient?.email,
+                phoneNumber: selectedClient?.phoneNumber,
+                clientName: selectedClient?.clientName,
+                apply: selectedClient?.apply.positionToApply,
+                projectManager: selectedClient?.projectManager?.first_name,
+                name: selectedClient?.name,
+            });
+        } else {
+            form.setFieldsValue({
+                email: initialFormValues?.email,
+                phoneNumber: initialFormValues?.phoneNumber,
+                clientName: initialFormValues?.clientName,
+                apply: initialFormValues?.apply.positionToApply,
+                projectManager: initialFormValues?.projectManager?.first_name,
+                name: initialFormValues?.name,
+            });
+        }   
+                
+    }, [selectedClient, form]);
+
+
+    useEffect(() => {
+        if (!allUsers || allUsers?.length === 0) {
+            dispatch(getAllUsersApi())
         }
-    }, []);
+    })
 
     const fetchApplyData = async (searchText) => {
         const d = {
@@ -56,16 +90,17 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
             const data = {
                 ...values
             };
-
-            dispatch(createClientApi(data));
-
+            if (selectedClient) {
+                dispatch(updateClientApi({ data, id: selectedClient?._id }))
+            } else {
+                dispatch(createClientApi(data));
+            }
             form.setFieldsValue(initialFormValues);
             handleDrawer();
         } catch (error) {
             toast.error(error.message)
         }
     };
-
 
     return (
         <Drawer open={isOpen} onClose={handleDrawer} width={800}
@@ -86,7 +121,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                     <Col span={12}>
                         <Form.Item
                             name="phoneNumber"
-                            label="Company Phone Number"
+                            label="Client Phone Number"
                             rules={[{ required: true, message: 'Please enter Client Phone Number' }]}
                         >
                             <Input placeholder="Please enter Client Phone Number" />
@@ -118,7 +153,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                                 onChange={(value) => setApplyId(value)}
                             >
                                 {applies?.map((apply) => (
-                                    <Option key={apply._id} value={apply._id}>
+                                    <Option key={apply?._id} value={apply?._id}>
                                         {apply?.clientName}{" "}
                                         {apply?.clientJobPosition && ` -  ${apply?.clientJobPosition} `}
                                         <span
@@ -129,7 +164,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                                                 justifyContent: "flex-end",
                                             }}
                                         >
-                                            {format(new Date(apply.createdAt), "dd-MM-yyyy")}
+                                            {format(new Date(apply?.createdAt), "dd-MM-yyyy")}
                                         </span>
                                     </Option>
                                 ))}
@@ -139,6 +174,19 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                     </Col>
 
                 </Row>
+                <Row gutter={16}>
+                    <Col span={12}>
+
+                        <UserDropdown
+                            name='projectManager'
+                            label="Project manger"
+                            placeholder="Select a Project Manager"
+                            allUsers={allUsers}
+                            form={form}
+                        />
+                    </Col>
+                </Row>
+
 
                 <Form.Item>
                     <Space>

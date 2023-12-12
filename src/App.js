@@ -40,7 +40,10 @@ import SignUpPage from "./pages/Auth/SignUp";
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
+import UpdateProjectTable from "./features/ProjectDailyUpdate/ProjectDailyUpdateTabs/DailyProjectUpdateHistory";
+
 import ErrorBoundary from "./components/ErrorBoundary";
+import DailyProjectNewUpdate from "./features/ProjectDailyUpdate/ProjectDailyUpdateTabs/DailyProjectNewUpdate";
 
 function App() {
   const dispatch = useDispatch();
@@ -64,7 +67,7 @@ function App() {
 
                   <Route path={routes.PROFILE_SETTINGS} element={<ProfileSettings />} />
 
-                  <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.SALES_EXECUTIVE, ROLES.HR]} />} >
+                  <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.SALES_EXECUTIVE, ROLES.USER]} />} >
                     <Route index element={<Dashobard />} />
                     <Route path={routes.USERS} element={<UsersPage />} />
                   </Route>
@@ -76,6 +79,7 @@ function App() {
                     <Route path={routes.ATTENDANCE_REPORTS} element={<AttendanceReports />} />
                     <Route path={routes.USER_ATTENDANCE_COUNT} element={<UsersAttendanceCount />} />
                   </Route>
+
                   {/* ATTENDANCE FREE ROUTES  */}
                   <Route path={`${routes.USER_ATTENDANCE_DETAILS}/:id?`} element={<AttendenceDetails />} />
 
@@ -89,7 +93,15 @@ function App() {
                     <Route path={routes.AGENDA} element={<Agenda />} />
                     <Route path={routes.CLIENT} element={<ClientPage />} />
                   </Route>
+
+                  {/* PROJECT UPDATE ROUTES */}
+                  <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.HR, ROLES.SALES_EXECUTIVE, ROLES.USER]} />}>
+                    <Route path={routes.NEW_UPDATE} element={<DailyProjectNewUpdate />} />
+                    <Route path={routes.UPDATE_HISTORY} element={<UpdateProjectTable />} />
+                  </Route>
+
                 </Route>
+
               </Route>
 
               {/* Auth ROUTES */}
@@ -115,3 +127,5 @@ function App() {
 }
 
 export default App;
+
+

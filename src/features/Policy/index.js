@@ -16,9 +16,10 @@ const Policy = () => {
     const isLoading = useSelector(getLoading)
 
     useEffect(() => {
-        dispatch(getPolicyApi())
+        if (!policyList) {
+            dispatch(getPolicyApi())
+        }
     }, [])
-
 
     if (isLoading) return <Loader />
 

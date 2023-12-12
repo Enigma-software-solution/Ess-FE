@@ -5,7 +5,7 @@ import DeleteButton from "src/components/buttons/DeleteButton";
 import Header from "../Header";
 import { useDispatch, useSelector } from "react-redux";
 import { getdailyAppliesApi, deteleDailyAppliesApi } from "src/store/slices/dailyApplySlice/apis";
-import { getAllDailyApplies,  isDailyAppliesLoading, } from "src/store/slices/dailyApplySlice/selectors";
+import { getAllDailyApplies, isDailyAppliesLoading, } from "src/store/slices/dailyApplySlice/selectors";
 import CreateDailyApplyDrawer from "../Drawers/CreateDrawer";
 import { setSelectedApply } from "src/store/slices/dailyApplySlice";
 import qs from "qs";
@@ -144,10 +144,6 @@ const CreateDailyAppliesTable = () => {
         dispatch(getdailyAppliesApi(queryStringResult));
     }
 
-    if (isLoading) {
-        return <Loader />
-    }
-
 
     return (
         <>
@@ -160,6 +156,7 @@ const CreateDailyAppliesTable = () => {
                 dataSource={dailyAppliesData.daily_applies}
                 size="small"
                 columns={columns}
+                loading={isLoading}
             />
             {dailyAppliesData?.paginator && dailyAppliesData.daily_applies.length ? (
                 <Pagination

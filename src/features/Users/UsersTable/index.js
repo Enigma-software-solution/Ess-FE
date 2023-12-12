@@ -12,10 +12,16 @@ import { StyledBadge } from "./styled";
 import Loader from "src/components/Loader";
 import { Link, useNavigate } from "react-router-dom";
 import { routes } from "src/constant/routes";
+import { capitalize } from "lodash";
 
 const UserTable = () => {
 
     const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const handleSearch = (value) => {
+        setSearchQuery(value);
+    };
 
 
     const dispatch = useDispatch();
@@ -70,6 +76,11 @@ const UserTable = () => {
         }
     };
 
+    const filteredClients = clients.filter((client) => {
+        const fullName = `${client?.first_name} ${client?.last_name}`.toLowerCase();
+        return fullName.includes(searchQuery.toLowerCase());
+    });
+
 
 
     const columns = [
@@ -77,7 +88,7 @@ const UserTable = () => {
             title: "Name",
             dataIndex: "firstname",
             key: "firstname",
-            render: (text, record) => `${record?.first_name} ${record?.last_name}`
+            render: (text, record) => capitalize(record?.first_name) + ' ' + capitalize(record?.last_name),
         },
         {
             title: "Email",
@@ -149,8 +160,8 @@ const UserTable = () => {
     return (
         <>
             <div>
-                <Header />
-                <Table dataSource={clients} columns={columns} />
+                <Header onSearch={handleSearch} />
+                <Table dataSource={filteredClients} columns={columns} />
             </div>
             <CreateUserDrawer isOpen={isEditDrawerOpen} handleDrawer={handleDrawer} />
         </>
