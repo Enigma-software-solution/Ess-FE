@@ -10,20 +10,15 @@ import { DownOutlined } from "@ant-design/icons";
 
 const Topbar = ({ setCollapsed, collapsed }) => {
   const loggedInUser = useSelector(getLogedInUser)
-
   const navigate = useNavigate();
-
-
   const handleButtonClick = (loggedInUser) => {
     navigate(`${routes.USER_ATTENDANCE_DETAILS}/${loggedInUser?.id}`);
   };
-
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("refresh_token");
     navigate("/login");
   };
-
   const menu = (
     <Menu>
       <Menu.Item key="1">
@@ -61,7 +56,7 @@ const Topbar = ({ setCollapsed, collapsed }) => {
             style={{ border: "1px solid lightgray" }}
           />
           <span>{loggedInUser && loggedInUser?.first_name}</span>
-          <span><DownOutlined /></span>
+          <span><DownOutlined style={{ fontSize: 'smaller' }} /></span>
         </div>
       </Dropdown>
     </div>
