@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteClientApi, deteleClientApi, getAllClientsApi } from "src/store/slices/clientSlice/apis";
 import { getAllClientsSelector, isClientLoading } from "src/store/slices/clientSlice/selectors";
@@ -7,9 +7,12 @@ import Header from "../Header";
 import EditButton from "src/components/buttons/EditButton";
 import DeleteButton from "src/components/buttons/DeleteButton";
 import Loader from "src/components/Loader";
+import { setSelectedClient } from "src/store/slices/clientSlice";
 
 const ClientTable = () => {
     const dispatch = useDispatch();
+    const [isOpen, setIsOpen] = useState(false);
+
 
     const isLoading = useSelector(isClientLoading);
     const clients = useSelector(getAllClientsSelector);
@@ -25,6 +28,13 @@ const ClientTable = () => {
     const handleConfirmDelete = (recordToDelete, e) => {
         e.stopPropagation();
         dispatch(deleteClientApi(recordToDelete._id));
+    };
+
+    const handleEdit = (record, e) => {
+        e.stopPropagation();
+        dispatch(setSelectedClient(record));
+        setIsOpen(true);
+        console.log(record)
     };
 
     const columns = [
@@ -62,7 +72,7 @@ const ClientTable = () => {
             dataIndex: "action",
             render: (text, record) => (
                 <div className="d-flex gap-1">
-                    <EditButton />
+                    <EditButton onClick={(e) => handleEdit(record, e)} />
                     <Popconfirm
                         title="Are you sure to delete this client?"
                         onConfirm={(e) => handleConfirmDelete(record, e)}
@@ -83,7 +93,7 @@ const ClientTable = () => {
 
     return (
         <div>
-            <Header />
+            <Header isOpen={isOpen} setIsOpen={setIsOpen} />
             <Table dataSource={clients} columns={columns} />
         </div>
     );
