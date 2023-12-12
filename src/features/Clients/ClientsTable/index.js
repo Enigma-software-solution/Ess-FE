@@ -32,7 +32,7 @@ const ClientTable = () => {
             title: "Client Name",
             dataIndex: "clientName",
             key: "clientName",
-            render: (text, record) => record?.apply?.clientName || record?.clientName,
+            render: (text, record) => ((record?.apply?.clientName || record?.clientName || '').split(' ').map((name, index) => index === 0 || index === 1 ? name.charAt(0).toUpperCase() + name.slice(1).toLowerCase() : name).join(' '))
         },
         {
             title: "Status",
