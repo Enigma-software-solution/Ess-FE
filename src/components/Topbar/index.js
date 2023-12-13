@@ -8,6 +8,8 @@ import { useSelector } from "react-redux";
 import { getLogedInUser } from "src/store/slices/authSlice/selectors";
 import { DownOutlined } from "@ant-design/icons";
 import { capitalize } from "lodash";
+import AvatarPic from 'src/assets/avatar1.jpg'
+
 
 const Topbar = ({ setCollapsed, collapsed }) => {
   const loggedInUser = useSelector(getLogedInUser)
@@ -53,7 +55,7 @@ const Topbar = ({ setCollapsed, collapsed }) => {
           style={{ cursor: 'pointer' }}>
           <Avatar
             size="large"
-            src="https://joesch.moe/api/v1/random"
+            src={loggedInUser?.profile_pic ?? AvatarPic}
             style={{ border: "1px solid lightgray" }}
           />
           <span style={{ fontWeight: 'bold' }}>{loggedInUser && loggedInUser?.first_name && capitalize(loggedInUser.first_name)}</span>

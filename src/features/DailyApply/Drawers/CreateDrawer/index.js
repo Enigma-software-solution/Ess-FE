@@ -60,7 +60,6 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
 
   const handleSubmit = async (values) => {
     try {
-      localStorage.setItem('link', values?.link || '');
       localStorage.setItem('platform', values?.platform || 'glassdoor');
 
       const data = {
