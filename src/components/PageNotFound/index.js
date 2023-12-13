@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 const NotFound = () => {
   const navigate = useNavigate();
   const goToDashboard = () => {
-    navigate('/dashboard/attendance/dashboard');
+    navigate("/");
   };
   return (
     <Result
