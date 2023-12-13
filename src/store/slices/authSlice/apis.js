@@ -45,9 +45,10 @@ export const ResetPasswordApi = createAsyncThunk("auth/reset-password", async (d
 export const loginUser = createAsyncThunk("auth/login", async (data, { rejectWithValue }) => {
   try {
     const response = await api.post("login", data);
+    toast.success(response.message);
     return response;
   } catch (error) {
-    toast.warn(error?.message)
+    toast.error(error.message)
     return rejectWithValue(error);
 
   }
@@ -59,16 +60,23 @@ export const refresh = createAsyncThunk("auth/refresh", async (refreshToken, { r
     const response = await api.post("/refresh_token", { refreshToken: refreshToken });
     return response;
   } catch (error) {
+    toast.error(error.message)
     return rejectWithValue(error);
   }
 });
 
 
-export const updateUser = createAsyncThunk("auth/update-user", async (data, { rejectWithValue }) => {
+export const updateUser = createAsyncThunk("auth/update-user", async (formData, { rejectWithValue }) => {
   try {
-    const response = await api.put(`/user/${data?.userId}`, data?.user);
+    const response = await api.patch(`/user/${formData.get('userId')}`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+    toast.success(response.message);
     return response;
   } catch (error) {
+    toast.error(error.message)
     return rejectWithValue(error);
   }
 });

@@ -9,7 +9,7 @@ import { getLogedInUser } from "src/store/slices/authSlice/selectors";
 
 const Wrapper = styled.div`
   max-width: 600px;
-  margin:40px auto;
+  margin: 40px auto;
   padding: 20px;
   border: 1px solid #d9d9d9;
   border-radius: 4px;
@@ -18,10 +18,12 @@ const Wrapper = styled.div`
 
 const ProfileSettings = () => {
   const [form] = Form.useForm();
-  const [profilePic, setProfilePic] = useState('');
+  const [profilePic, setProfilePic] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState('');
   const dispatch = useDispatch();
 
   const loggedInUser = useSelector(getLogedInUser)
+  console.log(loggedInUser, 'loggendinuser=====')
 
   useEffect(() => {
     const initialValuesData = {
@@ -31,51 +33,40 @@ const ProfileSettings = () => {
       role: loggedInUser?.role,
     };
     form.setFieldsValue(initialValuesData);
+    setPreviewUrl(loggedInUser?.profile_pic)
+
   }, [loggedInUser, form]);
 
-  const fileToBase64 = (file) => {
-    return new Promise((resolve, reject) => {
-      if (!file) {
-        reject(new Error("No file provided"));
-        return;
-      }
+  const handleProfilePicChange = (e) => {
+    const file = e.target.files[0];
+    setProfilePic(file);
 
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        resolve(reader.result);
-      };
-
-      reader.onerror = () => {
-        reject(new Error("Error reading file"));
-      };
-
-      reader.readAsDataURL(file);
-    });
-  };
-
-  const handleProfilePicChange = async (e) => {
-    try {
-      const file = e.target.files[0];
-      if (file) {
-        const base64String = await fileToBase64(file);
-        setProfilePic(base64String);
-      }
-    } catch (error) {
-      console.error("Error converting file to base64:", error.message);
-    }
-  };
-
-  const saveChanges = (values) => {
-
-    const data = {
-      userId: loggedInUser?.id,
-      user: {
-        first_name: values.firstName,
-        last_name: values.lastName,
-        profile_pic: profilePic,
-      },
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPreviewUrl(reader.result);
     };
-    dispatch(updateUser(data));
+    reader.readAsDataURL(file);
+  };
+
+  const saveChanges = async (values) => {
+    const formData = new FormData();
+
+    // Append the profile picture to the formData if it exists
+    if (profilePic) {
+      formData.append('file', profilePic); // Use the correct field name expected by multer
+    }
+
+    // Append other user data to the formData
+    formData.append('userId', loggedInUser?.id);
+    formData.append('user[first_name]', values.firstName);
+    formData.append('user[last_name]', values.lastName);
+
+    try {
+      const response = await dispatch(updateUser(formData));
+      // Handle the response if needed
+    } catch (error) {
+      // Handle errors if needed
+    }
   };
 
   if (!loggedInUser?.id) return <h1>Loading...</h1>
@@ -85,12 +76,12 @@ const ProfileSettings = () => {
       <label htmlFor="avatar-upload">
         <Avatar
           size={100}
-          src={profilePic}
           icon={<UserOutlined />}
+          src={previewUrl || undefined} // Use the preview URL if available
           style={{ cursor: "pointer" }}
         />
       </label>
-      <Input
+      <input
         id="avatar-upload"
         type="file"
         accept="image/*"
