@@ -134,7 +134,7 @@ const ClientEventDrawer = ({ selectedDate }) => {
         labelCol={{ span: 8 }}
         wrapperCol={{ span: 16 }}
       >
-        <div className="d-flex justify-content-end align-items-end flex-column mb-4">
+        <div className="d-flex justify-content-end align-items-end flex-column mb-3 ">
           <p>Date: {formatDate(selectedDate?.start)}</p>
           <p>
             Time: {formatTime(selectedDate?.start)} -{" "}
@@ -159,6 +159,7 @@ const ClientEventDrawer = ({ selectedDate }) => {
         <CustomInput
           label="Number of Guests"
           name="numOfGuests"
+          rules={[{ required: true }]}
           type="number"
         />
         <CustomInput
@@ -181,7 +182,7 @@ const ClientEventDrawer = ({ selectedDate }) => {
           options={CallTypeDropdown}
           placeholder="Select Call type"
         />
-        <CustomInput label="Call Mode" name="callMode" component={Select}>
+        <CustomInput label="Call Mode" name="callMode" component={Select} rules={[{ required: true }]}>
           <Option value="voice">Voice</Option>
           <Option value="video">Video</Option>
           <Option value="other">Other</Option>

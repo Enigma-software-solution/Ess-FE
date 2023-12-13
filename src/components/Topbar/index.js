@@ -1,5 +1,5 @@
 import React from "react";
-import { FaAngleRight, FaAngleLeft } from "react-icons/fa";
+import { FaAngleRight, FaAngleLeft, FaAngleDown } from "react-icons/fa";
 import { Avatar, Dropdown, Menu } from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { ToggleButton } from "./styled";
@@ -7,6 +7,7 @@ import { routes } from "src/constant/routes";
 import { useSelector } from "react-redux";
 import { getLogedInUser } from "src/store/slices/authSlice/selectors";
 import { DownOutlined } from "@ant-design/icons";
+import { capitalize } from "lodash";
 
 const Topbar = ({ setCollapsed, collapsed }) => {
   const loggedInUser = useSelector(getLogedInUser)
@@ -55,9 +56,9 @@ const Topbar = ({ setCollapsed, collapsed }) => {
             src="https://joesch.moe/api/v1/random"
             style={{ border: "1px solid lightgray" }}
           />
-      <span>{loggedInUser && loggedInUser?.first_name && loggedInUser.first_name.toUpperCase()}</span>
+          <span style={{ fontWeight: 'bold' }}>{loggedInUser && loggedInUser?.first_name && capitalize(loggedInUser.first_name)}</span>
 
-          <span><DownOutlined style={{ fontSize: 'smaller' }} /></span>
+          <FaAngleDown fontSize={'18px'} />
         </div>
       </Dropdown>
     </div>
