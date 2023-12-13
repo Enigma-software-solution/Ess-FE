@@ -7,6 +7,10 @@ export const StyledCard = styled(Card)`
   cursor: pointer;
   position: relative;
   overflow: hidden;
+  border-radius:10px;
+  background: #fff;
+  box-shadow: 4px 2px 20px -7px  rgba(0,0,0,0.2);
+ 
 
   .user_avatar {
     background-color: ${(props) => props.theme.token.colorPrimary};
