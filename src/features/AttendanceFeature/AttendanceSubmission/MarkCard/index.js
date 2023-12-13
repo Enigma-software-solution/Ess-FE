@@ -49,7 +49,7 @@ const MarkCard = ({ user, isLoading, handleSubmit }) => {
     return (
         <CardWrapper>
             <ImageWrapper>
-                <CardImage src={Avatar} alt="Avatar" />
+                <CardImage src={user?.profile_pic ?? Avatar} alt="Avatar" />
             </ImageWrapper>
 
             <h5 className="text-center pt-3 pb-4">
