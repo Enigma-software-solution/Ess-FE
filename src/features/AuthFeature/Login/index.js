@@ -23,11 +23,7 @@ const LoginForm = () => {
         navigate("/");
       }
       setIsLoading(false);
-
-      toast.success("User successfully logged in");
     } catch (err) {
-      // toast.error(err?.message)
-      console.log(err.message);
     } finally {
       setIsLoading(false);
     }
