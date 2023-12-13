@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { updateUser } from "src/store/slices/authSlice/apis";
 import { getLogedInUser } from "src/store/slices/authSlice/selectors";
+import Loader from "src/components/Loader";
 
 const Wrapper = styled.div`
   max-width: 600px;
@@ -69,7 +70,7 @@ const ProfileSettings = () => {
     }
   };
 
-  if (!loggedInUser?.id) return <h1>Loading...</h1>
+  if (!loggedInUser?.id) return <Loader />
 
   return (
     <Wrapper>
