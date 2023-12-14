@@ -23,10 +23,12 @@ export const ApplyHistory = () => {
 
   return (
     <>
-      <h5 className="mb-3">Daily Applies History</h5>
-      <h5>
-        <b>Today Total Applies</b> :
-        {stats?.todayTotalApplies}
+      <h5 style={{ color: '#4154F1', marginBottom: '10px', fontsize: '20px', fontWeight: 'bold' }}>Daily Applies History</h5>
+      <h5 style={{ color: '#899BBD', fontSize: '18px' }}>
+        Today Total Applies:{" "}
+        <span style={{ fontWeight: 'normal' }}>
+          {stats?.todayTotalApplies}
+        </span>
       </h5>
       <br />
       <Row gutter={8}>
@@ -38,7 +40,8 @@ export const ApplyHistory = () => {
           );
         })}
       </Row>
-      <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '20px' }}>
+
+      {/* <div style={{ display: 'flex', justifyContent: 'flex-end', padding: '20px' }}>
         <PendingUsersCard
           title='Pending Approval Users'>
           <Flex justify="space-between" align="center">
@@ -54,7 +57,7 @@ export const ApplyHistory = () => {
             <p className="mt-3">date</p>
           </Flex>
         </PendingUsersCard>
-      </div>
+      </div> */}
     </>
   );
 };
