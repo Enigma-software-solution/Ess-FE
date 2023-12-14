@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Table, Select, Space, DatePicker, Button, Flex, Pagination, Tag, Tooltip } from 'antd';
 import { ExportOutlined } from '@ant-design/icons';
-import { CSVLink } from 'react-csv';
 import { useDispatch, useSelector } from 'react-redux';
-import { format } from 'date-fns';
 import qs from 'qs';
 import { getAllAttendanceApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api';
 import { StyledDiv, StyledPage } from './styled';
@@ -18,10 +16,10 @@ const { Option } = Select;
 const AttendanceReport = () => {
     const [reports, setReports] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
-    const [selectedPagination, setSelectedPagination] = useState({
-        page: 1,
-        pageSize: 10
-    });
+    // const [selectedPagination, setSelectedPagination] = useState({
+    //     page: 1,
+    //     pageSize: 10
+    // });
     const [selectedFilters, setSelectedFilters] = useState({
         status: null,
         userId: null,
@@ -50,10 +48,10 @@ const AttendanceReport = () => {
 
 
 
-        if (selectedPagination) {
-            params.page = selectedPagination?.page;
-            params.pageSize = selectedPagination?.pageSize;
-        }
+        // if (selectedPagination) {
+        //     params.page = selectedPagination?.page;
+        //     params.pageSize = selectedPagination?.pageSize;
+        // }
 
         const queryString = qs.stringify(params);
         try {
@@ -101,19 +99,19 @@ const AttendanceReport = () => {
             userId: null,
             dateRange: []
         })
-        setSelectedPagination()
+        // setSelectedPagination()
         getAttendanceReports();
 
     };
 
-    const { totalItems, pageSize, totalPages, page } = reports?.paginator ?? {};
+    // const { totalItems, pageSize, totalPages, page } = reports?.paginator ?? {};
 
-    const onPaginationChange = (page, pageSize) => {
-        setSelectedPagination({
-            page,
-            pageSize,
-        });
-    };
+    // const onPaginationChange = (page, pageSize) => {
+    //     setSelectedPagination({
+    //         page,
+    //         pageSize,
+    //     });
+    // };
 
     useEffect(() => {
         if (!users?.length) {
@@ -124,7 +122,7 @@ const AttendanceReport = () => {
 
     useEffect(() => {
         getAttendanceReports(selectedFilters);
-    }, [selectedPagination]);
+    }, []);
 
     return (
         <StyledPage>
@@ -178,8 +176,8 @@ const AttendanceReport = () => {
             </StyledDiv>
 
 
-            {reports && <AttendanceHistory reports={reports?.attendance} isLoading={isLoading}/>}
-            {reports?.paginator && reports?.attendance.length ? (
+            {reports && <AttendanceHistory reports={reports?.attendance} isLoading={isLoading} />}
+            {/* {reports?.paginator && reports?.attendance.length ? (
                 <Pagination
                     style={{ padding: '10px', display: 'flex', justifyContent: 'flex-end' }}
                     total={totalItems}
@@ -194,7 +192,7 @@ const AttendanceReport = () => {
                         onPaginationChange(1, 1);
                     }}
                 />
-            ) : null}
+            ) : null} */}
         </StyledPage>
 
     );

@@ -89,6 +89,7 @@ const AttendanceHistory = ({ reports, isLoading }) => {
                 expandedRowRender,
             }}
             dataSource={groupedData}
+            pagination={false}
         />
     );
 };
