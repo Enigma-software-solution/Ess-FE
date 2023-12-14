@@ -10,61 +10,12 @@ import { StyledDiv, StyledPage } from './styled';
 import { getAllUsers } from 'src/store/slices/userSlice/selectors';
 import { getAllUsersApi } from 'src/store/slices/userSlice/apis';
 import { CheckAttendanceStatusColor } from 'src/components/Utils/checkAttendanceStatusColor';
+import AttendanceHistory from './Table';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 
-const columns = [
-    {
-        title: 'Date',
-        dataIndex: 'date',
-        key: 'date',
-        render: (text, record) => (text ? format(new Date(text), 'dd MMM yyyy') : 'N/A'),
-    },
-    {
-        title: 'Employee Name',
-        dataIndex: 'user.first_name',
-        render: (text, record) => `${record?.user?.first_name} ${record?.user?.last_name}`,
-    },
-    {
-        title: 'Check In Time',
-        dataIndex: 'checkInTime',
-        key: 'checkInTime',
-        render: (text) => (text ? format(new Date(text), 'p') : 'N/A'),
-    },
-    {
-        title: 'Check Out Time',
-        dataIndex: 'checkOutTime',
-        key: 'checkOutTime',
-        render: (text) => (text ? format(new Date(text), 'p') : 'N/A'),
-    },
-
-    {
-        title: 'Notes',
-        dataIndex: 'notes',
-        ellipsis: true,
-        render: (text, record) => (
-            <Tooltip title={text} placement="topLeft" arrowPointAtCenter>
-                <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                    {text}
-                </div>
-            </Tooltip>
-        ),
-    },
-    {
-        title: 'Status',
-        dataIndex: 'status',
-        key: 'status',
-        render: (text) => {
-            return (
-                <Tag color={CheckAttendanceStatusColor(text)}>{text}</Tag>
-            );
-        },
-    },
-];
-
 const AttendanceReport = () => {
-    const [exportData, setExportData] = useState([]);
     const [reports, setReports] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
     const [selectedPagination, setSelectedPagination] = useState({
@@ -96,10 +47,7 @@ const AttendanceReport = () => {
             params.endDate = new Date(filters?.dateRange[1]);
         }
 
-        if (!filters?.dateRange.length > 0) {
-            params.date = new Date()
 
-        }
 
 
         if (selectedPagination) {
@@ -158,16 +106,6 @@ const AttendanceReport = () => {
 
     };
 
-    const handleExport = () => {
-        const csvData = reports?.map((item) => ({
-            date: item?.date,
-            employeeName: `${item?.user?.first_name} ${item?.user?.last_name}`,
-            checkInTime: item?.checkInTime,
-            status: item.status,
-        }));
-        setExportData(csvData);
-    };
-
     const { totalItems, pageSize, totalPages, page } = reports?.paginator ?? {};
 
     const onPaginationChange = (page, pageSize) => {
@@ -192,11 +130,6 @@ const AttendanceReport = () => {
         <StyledPage>
             <Flex justify="space-between" className="mb-3">
                 <h5 className="p-2">Attendance Reports</h5>
-                <CSVLink data={exportData} filename={'attendance-report.csv'}>
-                    <Button type="primary" icon={<ExportOutlined />} onClick={handleExport}>
-                        Export to CSV
-                    </Button>
-                </CSVLink>
             </Flex>
             <StyledDiv>
                 <Flex justify="space-between" align="center" className="mb-2">
@@ -244,8 +177,8 @@ const AttendanceReport = () => {
                 </Flex>
             </StyledDiv>
 
-            <Table columns={columns} dataSource={reports?.attendance} loading={isLoading} pagination={false} />
 
+            {reports && <AttendanceHistory reports={reports?.attendance} isLoading={isLoading}/>}
             {reports?.paginator && reports?.attendance.length ? (
                 <Pagination
                     style={{ padding: '10px', display: 'flex', justifyContent: 'flex-end' }}
@@ -263,6 +196,7 @@ const AttendanceReport = () => {
                 />
             ) : null}
         </StyledPage>
+
     );
 };
 
