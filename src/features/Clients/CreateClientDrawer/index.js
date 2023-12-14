@@ -12,6 +12,7 @@ import { getAllUsers } from 'src/store/slices/userSlice/selectors';
 import { getAllUsersApi } from 'src/store/slices/userSlice/apis';
 import UserDropdown from 'src/components/UserDropdown';
 import { getSelectedClient, selectedClient } from 'src/store/slices/clientSlice/selectors';
+import { setSelectedEvent } from 'src/store/slices/agendaSlice';
 
 
 const { Option } = Select;
@@ -106,7 +107,11 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
         <Drawer open={isOpen} onClose={handleDrawer} width={800}
             title={"Create Client"}
         >
-
+            <div className="d-flex w-100 gap-1 mb-4">
+                <Button type="primary" >
+                    Add Notes
+                </Button>
+            </div>
             <Form form={form} layout="vertical" hideRequiredMark onFinish={handleSubmit} >
                 <Row gutter={16}>
                     <Col span={12}>
