@@ -20,10 +20,10 @@ const DetailsDailyApplyDrawer = ({ isOpen, handleDetailsDrawer, selectedRecord }
     ];
 
     const data = [
-        { key: '1', property: 'Client Job Position', value: selectedRecord?.clientJobPosition },
-        { key: '2', property: 'Company Name Name', value: selectedRecord?.companyName },
-        { key: '3', property: 'Platform', value: selectedRecord?.platform },
-        { key: '4', property: 'Position To Apply', value: selectedRecord?.positionToApply },
+        { key: '1', property: 'Client Job Position :', value: selectedRecord?.clientJobPosition },
+        { key: '2', property: 'Company Name Name :', value: selectedRecord?.companyName },
+        { key: '3', property: 'Platform :', value: selectedRecord?.platform },
+        { key: '4', property: 'Position To Apply :', value: selectedRecord?.positionToApply },
         // Add more rows as needed
     ];
 
@@ -41,8 +41,9 @@ const DetailsDailyApplyDrawer = ({ isOpen, handleDetailsDrawer, selectedRecord }
                     <Card
                         className="w-100"
                         style={{
-                            boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)',
+                            boxShadow: '4px 2px 20px -7px rgba(0, 0, 0, 0.2)',
                             borderRadius: '8px',
+                            margin: '20px 0'
                         }}
                     >
                         <Table
@@ -58,7 +59,7 @@ const DetailsDailyApplyDrawer = ({ isOpen, handleDetailsDrawer, selectedRecord }
             )}
 
             {selectedRecord && selectedRecord.createdAt && (
-                <div className="w-100 d-flex flex-column align-items-end" style={{ marginTop: '20px' }}>
+                <div className="w-100 d-flex flex-column align-items-end px-4" style={{ marginTop: '20px' }}>
                     <div>
                         <EventLabel>Date:</EventLabel>
                         <EventValue style={{ marginLeft: '10px' }}>

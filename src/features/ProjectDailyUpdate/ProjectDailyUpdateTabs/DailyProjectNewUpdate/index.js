@@ -1,7 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, DatePicker, Select } from 'antd';
 import moment from 'moment';
 import ReactQuill from 'react-quill';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllClientsSelector } from 'src/store/slices/clientSlice/selectors';
+import { getAllClientsApi } from 'src/store/slices/clientSlice/apis';
+import { getUserId } from 'src/store/slices/authSlice/selectors';
+import { createDailyProjectUpdateApi } from 'src/store/slices/projectDailyUpdates/apis';
 
 const { Option } = Select;
 
@@ -9,28 +14,42 @@ const DailyProjectNewUpdate = () => {
 
     const [content, setContent] = useState('');
     const [formData, setFormData] = useState({
+        user: "",
         date: moment(),
-        project: ''
+        project: '',
+        content: ""
     });
 
-    const projects = [
-        {
-            project: 'project 1',
-        },
-        {
-            project: 'project 2',
-        },
-        {
-            project: 'project 3',
-        },
-    ];
+    const dispatch= useDispatch()
+
+    const projects = useSelector(getAllClientsSelector)
+    const userId = useSelector(getUserId);
+    formData.user = userId;
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                    // Assuming dispatch returns a promise, you can await it
+                    await dispatch(getAllClientsApi());
+            } catch (error) {
+                // Handle the error here
+                console.error('Error fetching data:', error);
+            }
+        };
+    
+        fetchData();
+    
+    }, []);
 
     const handleChangeProject = (value) => {
         setFormData((prevData) => ({ ...prevData, project: value }));
     };
 
-    const handleClick = () => {
-        
+    const handleSave = () => {
+        formData.content = content;
+
+        dispatch(createDailyProjectUpdateApi(formData))
+
     };
 
     const format = [
@@ -57,7 +76,6 @@ const DailyProjectNewUpdate = () => {
             ['clean'],
             [{ size: ['small', false, 'large', 'huge'] }], // Add font size option
             [{ color: [] }],
-
         ],
     };
 
@@ -75,8 +93,8 @@ const DailyProjectNewUpdate = () => {
                     onChange={handleChangeProject}
                 >
                     {projects?.map((p, index) => (
-                        <Option key={index} value={p?.project}>
-                            {p?.project}
+                        <Option key={index} value={p?._id}>
+                            {p?.clientName}
                         </Option>
                     ))}
                 </Select>
@@ -92,7 +110,7 @@ const DailyProjectNewUpdate = () => {
                 onChange={setContent} // Update content on change
             />
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <Button onClick={handleClick} className='mt-4' type="primary">
+                <Button onClick={handleSave} className='mt-4' type="primary">
                     SAVE
                 </Button>
             </div>

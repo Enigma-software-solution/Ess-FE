@@ -36,6 +36,8 @@ const NotesDrawer = () => {
     }
   };
 
+  console.log(value)
+
 
   useEffect(() => {
     if (selectedEvent?.notes) {
