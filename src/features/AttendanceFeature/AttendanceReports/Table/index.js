@@ -2,10 +2,12 @@ import React from 'react';
 import { Table, Tag, Tooltip } from 'antd';
 import { format } from 'date-fns';
 import { CheckAttendanceStatusColor } from 'src/components/Utils/checkAttendanceStatusColor';
+import { StyledTable } from './styled';
+
 
 const AttendanceHistory = ({ reports, isLoading }) => {
 
-    // Grouping the reports by employee name
+
     const groupedReports = reports?.reduce((acc, report) => {
         const fullName = `${report.user.first_name} ${report.user.last_name}`;
         if (!acc[fullName]) {
@@ -15,7 +17,6 @@ const AttendanceHistory = ({ reports, isLoading }) => {
         return acc;
     }, {});
 
-    // Transforming groupedReports into an array for Table dataSource
     const groupedData = Object.keys(groupedReports).map((name) => ({
         employeeName: name,
         attendanceRecords: groupedReports[name],
@@ -82,7 +83,7 @@ const AttendanceHistory = ({ reports, isLoading }) => {
     ];
 
     return (
-        <Table
+        <StyledTable
             isLoading={isLoading}
             columns={columns}
             expandable={{
