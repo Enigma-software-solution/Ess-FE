@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Table, Tag, Tooltip } from 'antd';
 import { format } from 'date-fns';
 import { CheckAttendanceStatusColor } from 'src/components/Utils/checkAttendanceStatusColor';
 import { StyledTable } from './styled';
 
-
 const AttendanceHistory = ({ reports, isLoading }) => {
+    const [expandedRowKeys, setExpandedRowKeys] = useState([]);
 
+    const handleExpand = (expanded, record) => {
+        const keys = expanded ? [record.employeeName] : [];
+        setExpandedRowKeys(keys);
+    };
 
     const groupedReports = reports?.reduce((acc, report) => {
         const fullName = `${report.user.first_name} ${report.user.last_name}`;
@@ -18,6 +22,7 @@ const AttendanceHistory = ({ reports, isLoading }) => {
     }, {});
 
     const groupedData = Object.keys(groupedReports).map((name) => ({
+        key: name,
         employeeName: name,
         attendanceRecords: groupedReports[name],
     }));
@@ -88,6 +93,9 @@ const AttendanceHistory = ({ reports, isLoading }) => {
             columns={columns}
             expandable={{
                 expandedRowRender,
+                expandedRowKeys,
+                onExpand: handleExpand,
+                rowExpandable: () => true,
             }}
             dataSource={groupedData}
             pagination={false}
