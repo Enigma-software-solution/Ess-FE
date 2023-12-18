@@ -6,27 +6,23 @@ import { StyledTable } from './styled';
 
 const AttendanceHistory = ({ reports, isLoading }) => {
     const [expandedRowKeys, setExpandedRowKeys] = useState([]);
-
     const handleExpand = (expanded, record) => {
         const keys = expanded ? [record.employeeName] : [];
         setExpandedRowKeys(keys);
     };
-
     const groupedReports = reports?.reduce((acc, report) => {
-        const fullName = `${report.user.first_name} ${report.user.last_name}`;
+        const fullName = `${report?.user.first_name} ${report?.user.last_name}`;
         if (!acc[fullName]) {
             acc[fullName] = [];
         }
         acc[fullName].push(report);
         return acc;
     }, {});
-
     const groupedData = Object.keys(groupedReports).map((name) => ({
         key: name,
         employeeName: name,
         attendanceRecords: groupedReports[name],
     }));
-
     const expandedRowRender = (record) => {
         const columns = [
             {
@@ -70,11 +66,10 @@ const AttendanceHistory = ({ reports, isLoading }) => {
                 },
             },
         ];
-
         return (
             <Table
                 columns={columns}
-                dataSource={record.attendanceRecords}
+                dataSource={record?.attendanceRecords}
                 pagination={false}
             />
         );
