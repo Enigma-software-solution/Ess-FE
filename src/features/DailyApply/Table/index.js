@@ -36,7 +36,12 @@ const CreateDailyAppliesTable = () => {
         dispatch(deteleDailyAppliesApi(recordToDelete._id));
     };
 
-    const handleRowClick = (record) => {
+    const handleRowClick = (record, e) => {
+
+        if (e && e.target && e.target.tagName.toLowerCase() === 'a') {
+            return;
+        }
+
         setSelectedRecord(record); // Set the selected record
         setIsDetailsDrawerOpen(true);
     };
