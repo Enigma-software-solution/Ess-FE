@@ -9,6 +9,7 @@ import clientReducer from "./slices/clientSlice";
 import attendanceReducer from "./slices/attendanceSlice/GetAttendanceSlice";
 import { attendanceStatsReducer } from "./slices/attendanceSlice/GetAttendanceSlice";
 import policyReducer from "./slices/policySlice";
+import projectDailyUpdatesReducer from "./slices/projectDailyUpdates";
 
 const store = configureStore({
   reducer: {
@@ -22,6 +23,7 @@ const store = configureStore({
     attendance: attendanceReducer,
     attendanceStats: attendanceStatsReducer,
     policy: policyReducer,
+    projectDailyUpdates: projectDailyUpdatesReducer,
 
   },
   middleware: [

@@ -21,8 +21,6 @@ const Header = ({ pageSize, onSearch }) => {
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [selectedDateRange, setSelectedDateRange] = useState(null);
 
-  console.log(allProfiles, "qewqweqweqwewq")
-
   const allProfilesData = allProfiles.map(profile => ({
     value: profile._id,
     label: profile.name
