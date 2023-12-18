@@ -30,7 +30,7 @@ const AttendanceReport = () => {
     const users = useSelector(getAllUsers)
 
     const getAttendanceReports = async (filters) => {
-        const params = { type: filters?.type || 'date'};
+        const params = {};
 
         if (filters?.status !== null) {
             params.status = filters?.status;
