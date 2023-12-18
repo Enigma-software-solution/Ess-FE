@@ -7,7 +7,6 @@ import { getAllAttendanceApi } from 'src/store/slices/attendanceSlice/GetAttenda
 import { StyledDiv, StyledPage } from './styled';
 import { getAllUsers } from 'src/store/slices/userSlice/selectors';
 import { getAllUsersApi } from 'src/store/slices/userSlice/apis';
-import { CheckAttendanceStatusColor } from 'src/components/Utils/checkAttendanceStatusColor';
 import AttendanceHistory from './Table';
 
 const { RangePicker } = DatePicker;
@@ -16,6 +15,7 @@ const { Option } = Select;
 const AttendanceReport = () => {
     const [reports, setReports] = useState(null);
     const [isLoading, setIsLoading] = useState(false);
+    const [type, setType] = useState('date');
     // const [selectedPagination, setSelectedPagination] = useState({
     //     page: 1,
     //     pageSize: 10
@@ -30,7 +30,7 @@ const AttendanceReport = () => {
     const users = useSelector(getAllUsers)
 
     const getAttendanceReports = async (filters) => {
-        const params = {};
+        const params = { type: filters?.type || 'date'};
 
         if (filters?.status !== null) {
             params.status = filters?.status;
@@ -80,14 +80,14 @@ const AttendanceReport = () => {
         }));
     };
 
-    const handleRangePicker = (dates) => {
-        if (dates && dates.length === 2) {
-            setSelectedFilters(prevFilters => ({
-                ...prevFilters,
-                dateRange: dates
-            }));
-        }
-    };
+    // const handleRangePicker = (dates) => {
+    //     if (dates && dates.length === 2) {
+    //         setSelectedFilters(prevFilters => ({
+    //             ...prevFilters,
+    //             dateRange: dates
+    //         }));
+    //     }
+    // };
 
     const handleSubmit = () => {
         getAttendanceReports(selectedFilters);
@@ -98,8 +98,9 @@ const AttendanceReport = () => {
             status: null,
             userId: null,
             dateRange: []
-        })
+        });
         // setSelectedPagination()
+        setType('date');
         getAttendanceReports();
 
     };
@@ -123,6 +124,13 @@ const AttendanceReport = () => {
     useEffect(() => {
         getAttendanceReports(selectedFilters);
     }, []);
+
+    const PickerWithType = ({ type, onChange }) => {
+        if (type === 'date') return <DatePicker onChange={onChange} />;
+        if (type === 'month') return <DatePicker picker="month" onChange={onChange} />;
+        if (type === 'dateRange') return <RangePicker onChange={onChange} />;
+        return null;
+    };
 
     return (
         <StyledPage>
@@ -158,7 +166,19 @@ const AttendanceReport = () => {
                                 <Option value="half-day">Half-day</Option>
                                 <Option value="late">Late</Option>
                             </Select>
-                            <RangePicker onChange={handleRangePicker} value={selectedFilters.dateRange} />
+                            <Space>
+                            <Select
+                              onChange={setType}
+                            //   placeholder="Select"
+                              style={{ minWidth: '120px', width: '200px' }}
+                              value={type}
+                            >
+                              <Option value="date">Date</Option>
+                              <Option value="month">Month</Option>
+                              <Option value="dateRange">Date Range</Option>
+                            </Select>
+                            <PickerWithType type={type} />
+                          </Space>
 
                         </Space>
                     </Flex>
