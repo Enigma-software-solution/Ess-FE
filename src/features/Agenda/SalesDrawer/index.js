@@ -143,31 +143,11 @@ const ClientEventDrawer = ({ selectedDate }) => {
         </div>
 
         <CustomInput
-          label="Call duration"
-          name="callDuration"
-          rules={[{ required: true }]}
-          type="text"
-        />
-
-        <CustomInput
           label="Call With"
           name="callWith"
-          rules={[{ required: true }]}
           type="text"
         />
 
-        <CustomInput
-          label="Number of Guests"
-          name="numOfGuests"
-          rules={[{ required: true }]}
-          type="number"
-        />
-        <CustomInput
-          label="Mail Link"
-          name="mailLink"
-          rules={[{ required: true }]}
-          type="text"
-        />
         <CustomInput
           label="Call Link"
           name="callLink"
@@ -187,14 +167,13 @@ const ClientEventDrawer = ({ selectedDate }) => {
           <Option value="video">Video</Option>
           <Option value="other">Other</Option>
         </CustomInput>
-        <CustomInput
+        {/* <CustomInput
           label="Call Platform"
           name="callPlatform"
-          rules={[{ required: true }]}
           component={CustomSelect}
           options={CallPlatformDropdown}
           placeholder="Select call platform"
-        />
+        /> */}
 
         <CustomInput
           label="Apply"
@@ -204,11 +183,11 @@ const ClientEventDrawer = ({ selectedDate }) => {
           onSelect={(value) => form.setFieldsValue({ apply: value })}
         />
 
-        <CustomInput
+        {/* <CustomInput
           label="Company Information"
           name="companyInformation"
           type="textArea"
-        />
+        /> */}
       </Form>
     </Drawer>
   );

@@ -118,10 +118,10 @@ const SalesCallDetailsDrawer = () => {
                     <th className="fw-bold">Call Duration :</th>
                     <td>{selectedEvent?.callDuration} seconds</td>
                   </tr>
-                  <tr>
+                  {/* <tr>
                     <th className="fw-bold">Number of Guests :</th>
                     <td>{selectedEvent?.numOfGuests}</td>
-                  </tr>
+                  </tr> */}
                   <tr>
                     <th className="fw-bold">Call Type :</th>
                     <td>{selectedEvent?.callType}</td>
@@ -134,16 +134,16 @@ const SalesCallDetailsDrawer = () => {
                     <th className="fw-bold">Apply Platform :</th>
                     <td>{selectedEvent?.apply?.platform}</td>
                   </tr>
-                  <tr>
+                  {/* <tr>
                     <th className="fw-bold">Call Platform :</th>
                     <td>{selectedEvent?.callPlatform}</td>
-                  </tr>
-                  <tr>
+                  </tr> */}
+                  {/* <tr>
                     <th className="fw-bold">Mail Link :</th>
                     <td>
                       <a href={selectedEvent?.mailLink}>Mail</a>
                     </td>
-                  </tr>
+                  </tr> */}
                   <tr>
                     <th className="fw-bold">Call Link :</th>
                     <td>
