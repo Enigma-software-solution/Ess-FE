@@ -15,11 +15,11 @@ const projectDailyUpdatesSlice = createSlice({
     name: "projectDailyUpdates",
     initialState,
 
-    // reducers: {
-    //     setSelectedClient(state, action) {
-    //         state.selectedClient = action.payload;
-    //     },
-    // },
+    reducers: {
+        setSelectedProjectDailyUpdate(state, action) {
+            state.selectedproject = action.payload;
+        },
+    },
 
     extraReducers(builder) {
         builder.addCase(getDailyProjectUpdateApi.pending, (state, action) => {
@@ -60,6 +60,6 @@ const projectDailyUpdatesSlice = createSlice({
 
 });
 
-// export const { setSelectedClient } = clientSlice.actions;
+export const { setSelectedProjectDailyUpdate } = projectDailyUpdatesSlice.actions;
 
 export default projectDailyUpdatesSlice.reducer;
