@@ -79,7 +79,8 @@ const TodaySubmittedTable = ({ todayAllAttendance }) => {
                 <div className="d-flex gap-1">
                     <EditButton onClick={(e) => handleEdit(record, e)} />
                     <Popconfirm
-                        title="Are you sure to delete this task?"
+                        title="Are you sure you want to delete
+                                   this user attendance?"
                         onConfirm={(e) => handleConfirmDelete(record, e)}
                         onCancel={(e) => e.stopPropagation()}
                         okText="Yes"

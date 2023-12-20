@@ -122,7 +122,7 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
               label="Profile"
               name="profile"
               placeholder="Please select profile "
-              rules={[{ required: true, message: 'Please enter link' }]}
+              rules={[{ required: true, message: 'Please enter profile' }]}
               component={CustomSelect}
               options={allProfiles}
               valueField='_id'
@@ -158,7 +158,7 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
               name="clientJobPosition"
               label="Client Job Position"
               placeholder="Please enter Client Job"
-              rules={[{ required: true, message: 'Please enter link' }]}
+              rules={[{ required: true, message: 'Please enter client Job ' }]}
               type="text"
             />
           </Col>

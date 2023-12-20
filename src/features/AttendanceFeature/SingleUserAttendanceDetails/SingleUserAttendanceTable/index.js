@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Spin, DatePicker, Tag } from 'antd';
+import { Table, Spin, DatePicker, Tag, Tooltip } from 'antd';
 import styled from 'styled-components';
 import { useDispatch } from 'react-redux';
 import { format } from 'date-fns';
 import qs from 'qs';
 import { getAllAttendanceApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api';
 import { CheckAttendanceStatusColor } from 'src/components/Utils/checkAttendanceStatusColor';
+import { StyleNotesText } from './styled';
 
 const { RangePicker, MonthPicker, YearPicker } = DatePicker;
 
@@ -40,6 +41,18 @@ const columns = [
         dataIndex: 'checkOutTime',
         key: 'checkOutTime',
         render: (text) => (text ? format(new Date(text), 'p') : 'N/A'),
+    },
+    {
+        title: 'Notes',
+        dataIndex: 'notes',
+        ellipsis: true,
+        render: (text, record) => (
+            <Tooltip title={text} placement="topLeft" arrowPointAtCenter>
+                <StyleNotesText >
+                    {text}
+                </StyleNotesText>
+            </Tooltip>
+        ),
     },
     {
         title: 'Status',
