@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Select, Space, DatePicker, Button, Flex, Pagination, Tag, Tooltip, ConfigProvider } from 'antd';
-import { ExportOutlined } from '@ant-design/icons';
+import { Select, Space, DatePicker, Button, Flex, Dropdown, Menu } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
 import { useDispatch, useSelector } from 'react-redux';
 import qs from 'qs';
 import { getAllAttendanceApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api';
@@ -9,21 +9,14 @@ import { getAllUsers } from 'src/store/slices/userSlice/selectors';
 import { getAllUsersApi } from 'src/store/slices/userSlice/apis';
 import AttendanceHistory from './Table';
 import { format } from 'date-fns';
-import locale from 'antd/locale/en_US';
-import dayjs from 'dayjs';
-import 'dayjs/locale/zh-cn';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
+const { SubMenu } = Menu;
 
 const AttendanceReport = () => {
     const [reports, setReports] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    const [type, setType] = useState('date');
-    const [selectedMonth, setSelectedMonth] = useState(null);
-    const [selectedRange, setSelectedRange] = useState(null);
-
-
 
     const [selectedFilters, setSelectedFilters] = useState({
         status: null,
@@ -44,16 +37,13 @@ const AttendanceReport = () => {
             params.status = filters?.status;
         }
 
-
         if (filters?.date !== null) {
             const selectedDate = new Date(filters?.date);
-            params.date = selectedDate.toLocaleDateString('en-US', { day: '2-digit' });
-
-            // params.date = filters?.date;
+            params.date = selectedDate.toLocaleDateString('en-US');
         }
 
         if (filters?.month !== null) {
-            params.month = format(new Date(selectedMonth), 'MMM')
+            params.month = format(new Date(filters?.month), 'MMM')
         }
 
         if (filters?.userId !== null) {
@@ -68,7 +58,6 @@ const AttendanceReport = () => {
             params.startDate = format(new Date(filters?.dateRange[0]), 'yyyy-MM-dd');
             params.endDate = format(new Date(filters?.dateRange[1]), 'yyyy-MM-dd');
         }
-
 
         const queryString = qs.stringify(params);
         try {
@@ -104,19 +93,16 @@ const AttendanceReport = () => {
     };
 
     const handleRangePicker = (dates) => {
-        setSelectedRange(dates)
         if (dates) {
             setSelectedFilters(prevFilters => ({
                 ...prevFilters,
                 dateRange: dates,
-
             }));
         }
     };
 
     const handleMonthChange = (month) => {
         if (month) {
-            setSelectedMonth(month)
             setSelectedFilters(prevFilters => ({
                 ...prevFilters,
                 month: month,
@@ -126,16 +112,7 @@ const AttendanceReport = () => {
 
     const handleSubmit = () => {
         getAttendanceReports(selectedFilters);
-        setSelectedFilters({
-            status: null,
-            userId: null,
-            date: null,
-            dateRange: [],
-            pageSize: 1000,
-            month: null,
-        })
-        setSelectedMonth(null)
-        setSelectedRange(null)
+        handleReset();
     };
 
     const handleReset = () => {
@@ -145,11 +122,7 @@ const AttendanceReport = () => {
             dateRange: [],
             date: null,
             month: null,
-
         });
-        // setSelectedPagination()
-        setType('date');
-        // getAttendanceReports();
 
     };
 
@@ -164,12 +137,22 @@ const AttendanceReport = () => {
         getAttendanceReports(selectedFilters);
     }, []);
 
-    const PickerWithType = ({ type }) => {
-        if (type === 'date') return <DatePicker name='date' defaultValue={dayjs()} onChange={handleDateChange} />;
-        if (type === 'month') return <DatePicker picker="month" onChange={handleMonthChange} value={selectedMonth} />;
-        if (type === 'dateRange') return <RangePicker onChange={handleRangePicker} value={selectedRange} />;
-        return null;
-    };
+    const typeMenu = (
+        <Menu
+            mode="vertical"
+            style={{ width: '200px' }}
+        >
+            <SubMenu key="date" title="Date">
+                <DatePicker value={selectedFilters.date} onChange={handleDateChange} />
+            </SubMenu>
+            <SubMenu key="month" title="Month">
+                <DatePicker value={selectedFilters.month} picker="month" onChange={handleMonthChange} />
+            </SubMenu>
+            <SubMenu key="range" title="Date Range">
+                <RangePicker value={selectedFilters.dateRange} onChange={handleRangePicker} />
+            </SubMenu>
+        </Menu>
+    );
 
     return (
         <StyledPage>
@@ -206,18 +189,10 @@ const AttendanceReport = () => {
                                 <Option value="late">Late</Option>
                             </Select>
                             <Space>
-                                <Select
-                                    onChange={setType}
-                                    style={{ minWidth: '120px', width: '200px' }}
-                                    value={type}
-                                >
-                                    <Option value="date">Date</Option>
-                                    <Option value="month">Month</Option>
-                                    <Option value="dateRange">Date Range</Option>
-                                </Select>
-                                <ConfigProvider locale={locale}>
-                                    <PickerWithType type={type} />
-                                </ConfigProvider>
+                                <Dropdown overlay={typeMenu}>
+
+                                    <Button onClick={(e) => e.preventDefault()}> Select Type    <DownOutlined />  </Button>
+                                </Dropdown>
                             </Space>
 
                         </Space>
@@ -234,7 +209,6 @@ const AttendanceReport = () => {
                     </Flex>
                 </Flex>
             </StyledDiv>
-
 
             {<AttendanceHistory reports={reports?.attendance ?? []} isLoading={isLoading} />}
             {/* {reports?.paginator && reports?.attendance.length ? (
