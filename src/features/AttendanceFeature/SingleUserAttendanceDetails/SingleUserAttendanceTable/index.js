@@ -6,6 +6,7 @@ import { format } from 'date-fns';
 import qs from 'qs';
 import { getAllAttendanceApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api';
 import { CheckAttendanceStatusColor } from 'src/components/Utils/checkAttendanceStatusColor';
+import { StyleNotesText } from './styled';
 
 const { RangePicker, MonthPicker, YearPicker } = DatePicker;
 
@@ -47,9 +48,9 @@ const columns = [
         ellipsis: true,
         render: (text, record) => (
             <Tooltip title={text} placement="topLeft" arrowPointAtCenter>
-                <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                <StyleNotesText >
                     {text}
-                </div>
+                </StyleNotesText>
             </Tooltip>
         ),
     },

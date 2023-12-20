@@ -7,6 +7,7 @@ import Form from 'antd/es/form/Form';
 import format from 'date-fns/format';
 import { Button, Select } from 'antd';
 import { toast } from 'react-toastify';
+import { capitalize } from 'lodash';
 
 const STATUS_OPTIONS = [
     { value: 'present', label: 'Present' },
@@ -18,9 +19,7 @@ const STATUS_OPTIONS = [
 ];
 const MarkCard = ({ user, isLoading, handleSubmit }) => {
     const [form] = Form.useForm();
-    const capitalizeFirstLetter = (name) => {
-        return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-    };
+
     const onSubmit = async (values) => {
         if (!values.status) {
             return toast.warn('Status is required');
@@ -40,14 +39,14 @@ const MarkCard = ({ user, isLoading, handleSubmit }) => {
             console.log(err);
         }
     };
-    const formattedName = `${capitalizeFirstLetter(user?.first_name)} ${capitalizeFirstLetter(user?.last_name)}`;
+
     return (
         <CardWrapper>
             <ImageWrapper>
                 <CardImage src={user?.profile_pic ?? Avatar} alt="Avatar" />
             </ImageWrapper>
             <h5 className="text-center pt-3 pb-4">
-                {formattedName}
+                {capitalize(user?.first_name) + ' ' + capitalize(user?.last_name)}
             </h5>
             <Form form={form} onFinish={onSubmit}>
                 <Form.Item name="status" >
