@@ -46,7 +46,7 @@ const AttendanceReport = () => {
 
 
         if (filters?.date !== null) {
-            const selectedDate = new Date(filters.date);
+            const selectedDate = new Date(filters?.date);
             params.date = selectedDate.toLocaleDateString('en-US', { day: '2-digit' });
 
             // params.date = filters?.date;
@@ -126,17 +126,30 @@ const AttendanceReport = () => {
 
     const handleSubmit = () => {
         getAttendanceReports(selectedFilters);
+        setSelectedFilters({
+            status: null,
+            userId: null,
+            date: null,
+            dateRange: [],
+            pageSize: 1000,
+            month: null,
+        })
+        setSelectedMonth(null)
+        setSelectedRange(null)
     };
 
     const handleReset = () => {
         setSelectedFilters({
             status: null,
             userId: null,
-            dateRange: []
+            dateRange: [],
+            date: null,
+            month: null,
+
         });
         // setSelectedPagination()
         setType('date');
-        getAttendanceReports();
+        // getAttendanceReports();
 
     };
 
