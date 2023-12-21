@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Select, Space, DatePicker, Button, Flex, Dropdown, Menu } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
+import { Select, Space, DatePicker, Button, Flex, ConfigProvider } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import qs from 'qs';
 import { getAllAttendanceApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api';
@@ -9,14 +8,18 @@ import { getAllUsers } from 'src/store/slices/userSlice/selectors';
 import { getAllUsersApi } from 'src/store/slices/userSlice/apis';
 import AttendanceHistory from './Table';
 import { format } from 'date-fns';
+import locale from 'antd/locale/en_US';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
-const { SubMenu } = Menu;
 
 const AttendanceReport = () => {
     const [reports, setReports] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
+    const [type, setType] = useState("Select Type");
+    const [selectedMonth, setSelectedMonth] = useState(null);
+    const [selectedRange, setSelectedRange] = useState(null);
+    const [selectedDate, setSelectedDate] = useState(null);
 
     const [selectedFilters, setSelectedFilters] = useState({
         status: null,
@@ -43,7 +46,7 @@ const AttendanceReport = () => {
         }
 
         if (filters?.month !== null) {
-            params.month = format(new Date(filters?.month), 'MMM')
+            params.month = format(new Date(selectedMonth), 'MMM')
         }
 
         if (filters?.userId !== null) {
@@ -72,6 +75,7 @@ const AttendanceReport = () => {
     };
 
     const handleDateChange = (value) => {
+        setSelectedDate(value)
         setSelectedFilters(prevFilters => ({
             ...prevFilters,
             date: value
@@ -93,16 +97,19 @@ const AttendanceReport = () => {
     };
 
     const handleRangePicker = (dates) => {
+        setSelectedRange(dates)
         if (dates) {
             setSelectedFilters(prevFilters => ({
                 ...prevFilters,
                 dateRange: dates,
+
             }));
         }
     };
 
     const handleMonthChange = (month) => {
         if (month) {
+            setSelectedMonth(month)
             setSelectedFilters(prevFilters => ({
                 ...prevFilters,
                 month: month,
@@ -123,6 +130,10 @@ const AttendanceReport = () => {
             date: null,
             month: null,
         });
+        setSelectedDate(null);
+        setSelectedMonth(null);
+        setSelectedRange(null);
+        setType('Select Type');
 
     };
 
@@ -137,22 +148,12 @@ const AttendanceReport = () => {
         getAttendanceReports(selectedFilters);
     }, []);
 
-    const typeMenu = (
-        <Menu
-            mode="vertical"
-            style={{ width: '200px' }}
-        >
-            <SubMenu key="date" title="Date">
-                <DatePicker value={selectedFilters.date} onChange={handleDateChange} />
-            </SubMenu>
-            <SubMenu key="month" title="Month">
-                <DatePicker value={selectedFilters.month} picker="month" onChange={handleMonthChange} />
-            </SubMenu>
-            <SubMenu key="range" title="Date Range">
-                <RangePicker value={selectedFilters.dateRange} onChange={handleRangePicker} />
-            </SubMenu>
-        </Menu>
-    );
+    const PickerWithType = ({ type }) => {
+        if (type === 'date') return <DatePicker name='date' value={selectedDate} onChange={handleDateChange} />;
+        if (type === 'month') return <DatePicker picker="month" onChange={handleMonthChange} value={selectedMonth} />;
+        if (type === 'dateRange') return <RangePicker onChange={handleRangePicker} value={selectedRange} />;
+        return null;
+    };
 
     return (
         <StyledPage>
@@ -189,10 +190,18 @@ const AttendanceReport = () => {
                                 <Option value="late">Late</Option>
                             </Select>
                             <Space>
-                                <Dropdown overlay={typeMenu}>
-
-                                    <Button onClick={(e) => e.preventDefault()}> Select Type    <DownOutlined />  </Button>
-                                </Dropdown>
+                                <Select
+                                    onChange={setType}
+                                    style={{ minWidth: '120px', width: '200px' }}
+                                    value={type}
+                                >
+                                    <Option value="date">Date</Option>
+                                    <Option value="month">Month</Option>
+                                    <Option value="dateRange">Date Range</Option>
+                                </Select>
+                                <ConfigProvider locale={locale}>
+                                    <PickerWithType type={type} />
+                                </ConfigProvider>
                             </Space>
 
                         </Space>
