@@ -7,6 +7,7 @@ import { format } from "date-fns";
 import { DatePicker, Flex } from "antd";
 import dayjs from "dayjs";
 import { AttendanceStatusColor } from "src/constant/colors";
+import Loader from "src/components/Loader";
 
 const BarChart = () => {
     const [allStats, setAllStats] = useState(null);
@@ -34,7 +35,7 @@ const BarChart = () => {
     }, []);
 
     if (isLoading || !allStats) {
-        return <div>Loading...</div>;
+        return <Loader />
     }
 
     const months = allStats ? Object.keys(allStats) : [];
