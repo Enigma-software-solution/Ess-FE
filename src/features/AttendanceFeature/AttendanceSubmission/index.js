@@ -79,7 +79,7 @@ const MarkAttendance = () => {
           enterButton="Search"
           size="large"
           onChange={handleSearch}
-          style={{ width: "300px", marginBottom: "40px" }}
+          style={{ width: "300px" }}
         />
       </Flex>
 

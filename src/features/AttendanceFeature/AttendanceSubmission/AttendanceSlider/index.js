@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { submitAttendanceApi } from "src/store/slices/attendanceSlice/GetAttendanceSlice/api";
 import MarkCard from "../MarkCard";
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Pagination } from "swiper/modules";
 
 
 
@@ -30,21 +31,23 @@ const AttendanceSlider = ({ users, attendanceDate }) => {
 
   return (
     <Swiper
+      pagination={{ clickable: true }}
+      modules={[Pagination]}
       slidesPerView={4}
       spaceBetween={10}
       grabCursor={true}
-      style={{ padding: '20px' }}
+      style={{ padding: '30px', marginBottom: '40px' }}
     >
       {users?.filter((user) => user.status === "active").map((user) => (
-        <SwiperSlide>
-          <MarkCard
-            key={user?._id}
-            user={user}
-            handleSubmit={handleSubmit}
-            isLoading={isLoading}
-          />
-        </SwiperSlide>
-      ))}
+          <SwiperSlide>
+            <MarkCard
+              key={user?._id}
+              user={user}
+              handleSubmit={handleSubmit}
+              isLoading={isLoading}
+            />
+          </SwiperSlide>
+        ))}
     </Swiper>
   );
 };

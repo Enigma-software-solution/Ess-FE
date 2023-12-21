@@ -106,9 +106,9 @@ const SingleUserAttendancTable = ({ userId }) => {
     };
 
     useEffect(() => {
-        getAttendanceReports();
+        getAttendanceReports();    
     }, [userId]);
-
+   
     return (
         <StyledPage>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
