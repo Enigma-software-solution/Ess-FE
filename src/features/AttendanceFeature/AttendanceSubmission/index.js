@@ -5,11 +5,12 @@ import { getAllUsersApi } from "src/store/slices/userSlice/apis";
 import { getAllUsers, isUserLoading } from "src/store/slices/userSlice/selectors";
 import AttendanceSlider from "./AttendanceSlider";
 import qs from "qs";
-import { Flex, Input } from "antd";
+import { DatePicker, Flex, Input, Space } from "antd";
 import { format } from "date-fns";
 import TodaySubmittedTable from "./TodaySubmittedTable";
 import { getAllAttendance } from "src/store/slices/attendanceSlice/GetAttendanceSlice/selectors";
 import Loader from "src/components/Loader";
+import dayjs from "dayjs";
 
 const MarkAttendance = () => {
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -24,7 +25,7 @@ const MarkAttendance = () => {
 
   const getTodayAllSubmittedAttendance = async () => {
     const params = qs.stringify({
-      date: format(new Date(), "yyyy-MM-dd"),
+      date: format(selectedDate, "yyyy-MM-dd"),
       pageSize: 200
     });
 
@@ -64,29 +65,34 @@ const MarkAttendance = () => {
   useEffect(() => {
     dispatch(getAllUsersApi());
     getTodayAllSubmittedAttendance();
-  }, [dispatch]);
+  }, [dispatch, selectedDate]);
 
-  if (userLoading || !todayAllAttendance) {
-    return <Loader />
+  const handleDateChange = (e) => {
+    setSelectedDate(new Date(e))
   }
 
   return (
     <>
-      <Flex justify="space-between" className="mt-2">
+      <Flex justify="space-between" align="center" >
+        <DatePicker onChange={handleDateChange} allowClear={false} value={dayjs(selectedDate)} defaultValue={dayjs()} />
         <Search
           placeholder="Input search text"
           allowClear
           enterButton="Search"
           size="large"
           onChange={handleSearch}
-          style={{ width: "300px", marginBottom: "40px" }}
+          style={{ width: "300px" }}
         />
       </Flex>
+      {
+        userLoading || !todayAllAttendance
+          ? <Loader />
+          : <div>
+            <AttendanceSlider users={filteredUsers} attendanceDate={selectedDate} />
+            <TodaySubmittedTable todayAllAttendance={todayAllAttendance} />
+          </div>
 
-      <div>
-        <AttendanceSlider users={filteredUsers} attendanceDate={selectedDate} />
-        <TodaySubmittedTable todayAllAttendance={todayAllAttendance} />
-      </div>
+      }
     </>
   );
 };

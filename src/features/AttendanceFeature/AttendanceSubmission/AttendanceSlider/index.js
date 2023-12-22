@@ -41,6 +41,7 @@ const AttendanceSlider = ({ users, attendanceDate }) => {
             key={user?._id}
             user={user}
             handleSubmit={handleSubmit}
+            attendanceDate={attendanceDate}
             isLoading={isLoading}
           />
         </SwiperSlide>

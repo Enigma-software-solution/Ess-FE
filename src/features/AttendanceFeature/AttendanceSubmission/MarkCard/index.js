@@ -17,18 +17,18 @@ const STATUS_OPTIONS = [
     { value: 'half-day', label: 'Half-day' },
     { value: 'vacation', label: 'Vacation' },
 ];
-const MarkCard = ({ user, isLoading, handleSubmit }) => {
+const MarkCard = ({ user, isLoading, handleSubmit, attendanceDate }) => {
     const [form] = Form.useForm();
 
     const onSubmit = async (values) => {
         if (!values.status) {
             return toast.warn('Status is required');
         }
-        const attendanceDate = format(new Date(), 'yyyy-MM-dd');
+        const date = format(attendanceDate, 'yyyy-MM-dd');
         const attendanceTime = new Date();
         const data = {
             user: user?._id,
-            date: attendanceDate,
+            date: date,
             status: values?.status,
             checkInTime: ['late', 'present', 'half-day'].includes(values?.status) ? attendanceTime : null,
             notes: values?.notes,
