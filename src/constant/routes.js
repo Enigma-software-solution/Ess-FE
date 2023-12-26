@@ -23,6 +23,8 @@ export const routes = {
   //Policy
   POLICIES: "/policies",
 
-  NEW_UPDATE : "/project-daily-updates/newUpdate",
-  UPDATE_HISTORY: "/project-daily-updates/history"
+  //Project Daily Updates ROUTES
+  NEW_UPDATE: "/project-daily-updates/newUpdate",
+  UPDATE_HISTORY: "/project-daily-updates/history",
+  PROJECT_DAILY_UPDATE_SUBMISSION: "/project-daily-updates/user_update_submission"
 };

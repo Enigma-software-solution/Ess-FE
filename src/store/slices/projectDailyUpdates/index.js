@@ -41,11 +41,11 @@ const projectDailyUpdatesSlice = createSlice({
 
         builder.addCase(createDailyProjectUpdateApi.fulfilled, (state, action) => {
             state.status = "succeeded";
-            state.data = [action?.payload?.data, ...state.data];
+            state.data.dailyUpdates = [...state.data.dailyUpdates, action.payload.data]
         });
 
         // builder.addCase(updateClientApi.fulfilled, (state, action) => {
-        //     state.data = state?.data?.map(client => {
+        //     state.data.dailyUpdates = state?.data.dailyUpdates?.map(client => {
         //         if (client?._id === action?.payload?.data?._id) {
         //             return action?.payload?.data
         //         }
@@ -54,7 +54,7 @@ const projectDailyUpdatesSlice = createSlice({
         // });
 
         builder.addCase(deteleDailyProjectUpdatesApi.fulfilled, (state, action) => {
-            state.data = state?.data?.filter((projectDailyUpdate) => projectDailyUpdate?._id !== action?.payload?.projectDailyUpdateId)
+            state.data.dailyUpdates = state?.data.dailyUpdates?.filter((projectDailyUpdate) => projectDailyUpdate?._id !== action?.payload?.projectDailyUpdateId)
         });
     },
 

@@ -2,9 +2,9 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import api from "src/helpers/api";
 
-export const getDailyProjectUpdateApi = createAsyncThunk("user-daily-updates/get-user-daily-updates", async () => {
+export const getDailyProjectUpdateApi = createAsyncThunk("user-daily-updates/get-user-daily-updates", async (params) => {
   try {
-    const response = await api.get("/user-daily-updates");
+    const response = await api.get(`/user-daily-updates?${params}`);
     return response;
   } catch (error) {
     throw error;
@@ -20,7 +20,7 @@ export const createDailyProjectUpdateApi = createAsyncThunk(
       toast.success(response?.message)
       return response;
     } catch (error) {
-      toast.warn(error.response.data.message || error?.message)
+      toast.error(error?.message)
       return rejectWithValue(error.response?.data || "An error occurred");
     }
   }

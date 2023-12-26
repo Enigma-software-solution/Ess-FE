@@ -43,7 +43,7 @@ import 'swiper/css/navigation';
 import UpdateProjectTable from "./features/ProjectDailyUpdate/ProjectDailyUpdateTabs/DailyProjectUpdateHistory";
 
 import ErrorBoundary from "./components/ErrorBoundary";
-import DailyProjectNewUpdate from "./features/ProjectDailyUpdate/ProjectDailyUpdateTabs/DailyProjectNewUpdate";
+import ProjectDailyUpdateSubmission from "./features/ProjectDailyUpdate/ProjectDailyUpdateTabs/ProjectDailyUpdateSubmission";
 
 function App() {
   const dispatch = useDispatch();
@@ -96,7 +96,7 @@ function App() {
 
                   {/* PROJECT UPDATE ROUTES */}
                   <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.HR, ROLES.SALES_EXECUTIVE, ROLES.USER]} />}>
-                    <Route path={routes.NEW_UPDATE} element={<DailyProjectNewUpdate />} />
+                    <Route path={routes.NEW_UPDATE} element={<ProjectDailyUpdateSubmission />} />
                     <Route path={routes.UPDATE_HISTORY} element={<UpdateProjectTable />} />
                   </Route>
 
