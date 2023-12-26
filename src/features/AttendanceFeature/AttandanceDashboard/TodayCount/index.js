@@ -5,11 +5,10 @@ import { useDispatch } from 'react-redux'
 import { toast } from 'react-toastify'
 import qs from 'qs'
 import { format } from 'date-fns'
-
 import { getAllStatsApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api'
 import dayjs from 'dayjs'
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination, Navigation } from 'swiper/modules';
+import { Pagination} from 'swiper/modules';
 
 const TodayCount = () => {
     const [isLoading, setIsLoading] = useState(false)
