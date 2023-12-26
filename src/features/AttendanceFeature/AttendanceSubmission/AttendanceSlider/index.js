@@ -39,15 +39,16 @@ const AttendanceSlider = ({ users, attendanceDate }) => {
       style={{ padding: '30px', marginBottom: '40px' }}
     >
       {users?.filter((user) => user.status === "active").map((user) => (
-          <SwiperSlide>
-            <MarkCard
-              key={user?._id}
-              user={user}
-              handleSubmit={handleSubmit}
-              isLoading={isLoading}
-            />
-          </SwiperSlide>
-        ))}
+        <SwiperSlide>
+          <MarkCard
+            key={user?._id}
+            user={user}
+            handleSubmit={handleSubmit}
+            attendanceDate={attendanceDate}
+            isLoading={isLoading}
+          />
+        </SwiperSlide>
+      ))}
     </Swiper>
   );
 };
