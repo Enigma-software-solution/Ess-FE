@@ -149,25 +149,27 @@ const ClientEventDrawer = ({ selectedDate }) => {
           type="text"
         />
 
-        <CustomInput
+        {/* <CustomInput
           label="Call With"
           name="callWith"
           rules={[{ required: true }]}
           type="text"
-        />
-
+        /> */}
+        {/* 
         <CustomInput
           label="Number of Guests"
           name="numOfGuests"
           rules={[{ required: true }]}
           type="number"
-        />
-        <CustomInput
+        /> */}
+
+        {/* <CustomInput
           label="Mail Link"
           name="mailLink"
           rules={[{ required: true }]}
           type="text"
-        />
+        /> */}
+
         <CustomInput
           label="Call Link"
           name="callLink"
@@ -182,19 +184,20 @@ const ClientEventDrawer = ({ selectedDate }) => {
           options={CallTypeDropdown}
           placeholder="Select Call type"
         />
-        <CustomInput label="Call Mode" name="callMode" component={Select} rules={[{ required: true }]}>
+        {/* <CustomInput label="Call Mode" name="callMode" component={Select} rules={[{ required: true }]}>
           <Option value="voice">Voice</Option>
           <Option value="video">Video</Option>
           <Option value="other">Other</Option>
-        </CustomInput>
-        <CustomInput
+        </CustomInput> */}
+
+        {/* <CustomInput
           label="Call Platform"
           name="callPlatform"
           rules={[{ required: true }]}
           component={CustomSelect}
           options={CallPlatformDropdown}
           placeholder="Select call platform"
-        />
+        /> */}
 
         <CustomInput
           label="Apply"
