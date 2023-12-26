@@ -24,7 +24,6 @@ const ProfileSettings = () => {
   const dispatch = useDispatch();
 
   const loggedInUser = useSelector(getLogedInUser)
-  console.log(loggedInUser, 'loggendinuser=====')
 
   useEffect(() => {
     const initialValuesData = {

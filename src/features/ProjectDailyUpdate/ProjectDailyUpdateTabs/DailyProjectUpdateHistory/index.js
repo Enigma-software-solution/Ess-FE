@@ -1,59 +1,63 @@
-import { Popconfirm, Table } from 'antd';
-import React from 'react'
-import DeleteButton from 'src/components/buttons/DeleteButton';
-import EditButton from 'src/components/buttons/EditButton';
+import { Table } from 'antd';
+import React, { useEffect } from 'react'
+import { useDispatch, useSelector } from 'react-redux';
+import { getDailyProjectUpdateApi } from 'src/store/slices/projectDailyUpdates/apis';
+import { getAllProjectDailyUpdates } from 'src/store/slices/projectDailyUpdates/selectors';
+import format from 'date-fns/format';
 
 const UpdateProjectTable = () => {
 
-    const dataSource = [
-        {
-            key: '1',
-            Project: 'Project 1',
-            Update: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor illo repellat eos iste',
-            Date: '12/8/23',
-        },
-        {
-            key: '2',
-            Project: 'Project 2',
-            Update: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolor illo repellat eos iste ',
-            Date: '12/8/23',
-        },
-    ];
+    const dispatch = useDispatch()
+    const allProjectsDailyUpdatesData = useSelector(getAllProjectDailyUpdates)
+
+    const dailyUpdates = allProjectsDailyUpdatesData?.dailyUpdates
+
+    useEffect(() => {
+        dispatch(getDailyProjectUpdateApi())
+    }, [])
 
     const columns = [
         {
-            title: 'Project',
-            dataIndex: 'Project',
+            title: 'Project Name',
+            dataIndex: 'project',
             key: 'Project',
+            render: (text, record) => record?.project?.clientName || 'No client name',
+        },
+        {
+            title: 'Project Manager',
+            dataIndex: 'Project Manager',
+            key: 'Project Manager',
+            render: (text, record) => {
+                const projectManager = record.project?.projectManager;
+                if (projectManager && projectManager?.first_name && projectManager?.last_name) {
+                    return `${projectManager?.first_name} ${projectManager?.last_name}`;
+                } else {
+                    return 'No project manager';
+                }
+            },
         },
         {
             title: 'Update',
-            dataIndex: 'Update',
+            dataIndex: 'content',
             key: 'Update',
+            render: (text, record) => (
+                <span dangerouslySetInnerHTML={{ __html: record?.content }} />
+            ),
         },
         {
             title: 'Date',
-            dataIndex: 'Date',
+            dataIndex: 'date',
             key: 'Date',
-        },
-        {
-            key: "action",
-            title: "Action",
-            dataIndex: "action",
-            render: (text, record) => (
-                <div className='d-flex gap-1'>
-                    <EditButton />
-                    <Popconfirm>
-                        <DeleteButton>Delete</DeleteButton>
-                    </Popconfirm>
-                </div>
-            )
+            render: (text, record) => {
+                const formattedDate = format(new Date(record?.date), 'MM/dd/yyyy');
+                return formattedDate;
+            },
         },
     ];
 
     return (
         <div>
-            <Table className='mt-4 px-5' dataSource={dataSource} columns={columns} />;
+            <Table className='mt-4 px-5' dataSource={dailyUpdates} columns={columns} />;
         </div>
     )
 }
