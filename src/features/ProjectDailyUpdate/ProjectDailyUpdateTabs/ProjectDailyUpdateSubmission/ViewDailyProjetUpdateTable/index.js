@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, } from 'react';
 import { Popconfirm, Table, Modal, Form, Select, DatePicker, Button, Flex } from 'antd';
 import format from 'date-fns/format';
 import { useDispatch, useSelector } from 'react-redux';
@@ -13,16 +13,19 @@ import { toast } from 'react-toastify';
 import dayjs from 'dayjs';
 import { createDailyAppliesApi } from 'src/store/slices/dailyApplySlice/apis';
 import { getAllClientsSelector } from 'src/store/slices/clientSlice/selectors';
+import moment from 'moment';
 
 const ViewDailyProjectUpdateTable = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
-    const allClients = useSelector(getAllClientsSelector)
+
+    const [editData, setEditData] = useState(null);
+    const allClients = useSelector(getAllClientsSelector);
     const todayAllUpdates = useSelector(getAllProjectDailyUpdates)
     const filteredUpdatesId = todayAllUpdates?.dailyUpdates?.map((update) => update?.project?._id);
     const { Option } = Select;
-    const [form] = Form.useForm();
     const dispatch = useDispatch();
     const userId = useSelector(getUserId);
+    const [form] = Form.useForm();
     const onFinish = async (values) => {
         try {
             if (!values.content || values.content === "<p><br></p>") {
@@ -32,11 +35,34 @@ const ViewDailyProjectUpdateTable = () => {
                 ...values,
                 user: userId,
             };
-            dispatch(createDailyAppliesApi(formData));
+
+            if (editData) {
+
+                formData.id = editData._id;
+
+            } else {
+
+                dispatch(createDailyAppliesApi(formData));
+            }
             form.resetFields();
+            setEditData(null);
         } catch (error) {
             toast.error(error.message);
         }
+    };
+    const handleEdit = (record) => {
+        const projectByName = allClients.find(client => client.clientName === record.project?.clientName);
+
+        form.setFieldsValue({
+            date: moment(record.date),
+            project: projectByName?.clientName,
+        });
+        form.setFieldsValue({
+            content: record.content,
+        });
+
+        setEditData(record);
+        handleModalOpen();
     };
     const handleModalOpen = () => {
         setIsModalVisible(true);
@@ -44,13 +70,20 @@ const ViewDailyProjectUpdateTable = () => {
     const handleModalClose = () => {
         setIsModalVisible(false);
     };
-    const authUser = useSelector(getLogedInUser)
+    const authUser = useSelector(getLogedInUser);
     const handleConfirmDelete = (recordToDelete, e) => {
-        dispatch(deteleDailyProjectUpdatesApi(recordToDelete?._id))
+        dispatch(deteleDailyProjectUpdatesApi(recordToDelete?._id));
     };
-    const handleClick = (record, e, handleModalOpen) => {
+    const handelClick = (record, e, handleModalOpen) => {
         handleModalOpen();
     }
+    useEffect(() => {
+        const params = qs.stringify({
+            date: new Date(),
+            user: authUser?.id,
+        });
+        dispatch(getDailyProjectUpdateApi(params));
+    }, [dispatch, authUser]);
     const columns = [
         {
             title: 'Project Name',
@@ -94,7 +127,7 @@ const ViewDailyProjectUpdateTable = () => {
             dataIndex: 'action',
             render: (text, record) => (
                 <div className='d-flex gap-1'>
-                    <EditButton onClick={(e) => handleClick(record, e, handleModalOpen)} />
+                    <EditButton onClick={() => handleEdit(record)} />
                     <Popconfirm
                         title="Are you sure to delete this update?"
                         onConfirm={(e) => handleConfirmDelete(record, e)}
@@ -108,13 +141,6 @@ const ViewDailyProjectUpdateTable = () => {
             ),
         },
     ];
-    useEffect(() => {
-        const params = qs.stringify({
-            date: new Date(),
-            user: authUser?.id
-        })
-        dispatch(getDailyProjectUpdateApi(params))
-    }, [])
     return (
         <>
             <Modal
@@ -156,7 +182,6 @@ const ViewDailyProjectUpdateTable = () => {
                     >
                         <RichTextEditor />
                     </Form.Item>
-
                     <Form.Item>
                         <Button htmlType="submit" className="mt-4" type="primary">
                             SAVE
