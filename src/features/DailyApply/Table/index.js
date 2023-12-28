@@ -50,7 +50,12 @@ const CreateDailyAppliesTable = () => {
         {
             title: "No",
             dataIndex: "serialNo",
-            render: (text, record, index) => index + 1,
+            render: (text, record, index) => {  
+                const currentPage = selectPagination?.page || 1;
+                const itemsPerPage = selectPagination?.pageSize || pageSize;
+                const adjustedIndex = (currentPage - 1) * itemsPerPage + index + 1;
+                return adjustedIndex;
+            },
             width: '40px'
         },
         {
