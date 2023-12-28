@@ -86,7 +86,11 @@ const CreateDailyAppliesTable = () => {
             title: "Link",
             dataIndex: "link",
             ellipsis: true,
-            render: (text) => <a href={text} style={{ textDecoration: "none" }}>{text}</a>,
+            render: (text) => (
+                <a href={text} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+                  {text}
+                </a>
+              ),
         },
         {
             key: "action",
