@@ -41,7 +41,7 @@ const CustomToolbar = ({ label, onNavigate, onView }) => {
       </Space>
 
       <Space>
-        <Select size='large' defaultValue="month" onChange={handleViewChange} style={{ minWidth: '120px' }}>
+        <Select size='large' defaultValue="week" onChange={handleViewChange} style={{ minWidth: '120px' }}>
           <Option value="day">Day</Option>
           <Option value="week">Week</Option>
           <Option value="work_week">Work Week</Option>
