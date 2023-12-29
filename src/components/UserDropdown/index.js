@@ -1,21 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
 import { Form, Select } from 'antd';
-import { getAllUsersApi } from 'src/store/slices/userSlice/apis';
-import { getAllUsers } from 'src/store/slices/userSlice/selectors';
 
 const { Option } = Select;
 
-const UserDropdown = ({ placeholder, form, value, onChange, name, label }) => {
-    const dispatch = useDispatch();
-    const allUsers = useSelector(getAllUsers);
+const UserDropdown = ({ placeholder, form, value, onChange, name, label, options }) => {
     const [selectedUserId, setSelectedUserId] = useState(value || null);
-
-    useEffect(() => {
-        if (!allUsers || allUsers.length === 0) {
-            dispatch(getAllUsersApi());
-        }
-    }, [dispatch, allUsers]);
 
     const handleUserChange = (value) => {
         setSelectedUserId(value);
@@ -37,9 +26,12 @@ const UserDropdown = ({ placeholder, form, value, onChange, name, label }) => {
         <Form.Item
             name={name}
             label={label}
-            rules={[{
-                required: true, message: { placeholder }
-            }]}
+            rules={[
+                {
+                    required: true,
+                    message: placeholder ? placeholder : 'Please select an option'
+                }
+            ]}
         >
             <Select
                 style={{ width: '100%' }}
@@ -47,9 +39,9 @@ const UserDropdown = ({ placeholder, form, value, onChange, name, label }) => {
                 onChange={handleUserChange}
                 value={selectedUserId}
             >
-                {allUsers && allUsers?.map(user => (
-                    <Option key={user?._id} value={user?._id}>
-                        {`${user?.first_name} ${user?.last_name}`}
+                {options && options?.map(option => (
+                    <Option key={option} >
+                        {option}
                     </Option>
                 ))}
             </Select>

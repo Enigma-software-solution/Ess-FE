@@ -49,18 +49,6 @@ const ClientTable = () => {
             dataIndex: "active",
         },
         {
-            title: "Platform",
-            dataIndex: "apply?.platform",
-            render: (text, record) => record?.apply?.platform,
-
-        },
-        {
-            title: "Position",
-            dataIndex: "apply?.positionToApply",
-            render: (text, record) => record?.apply?.positionToApply,
-
-        },
-        {
             title: "Project Manager",
             dataIndex: "projectManager?.first_name",
             render: (text, record) => record?.projectManager?.first_name,

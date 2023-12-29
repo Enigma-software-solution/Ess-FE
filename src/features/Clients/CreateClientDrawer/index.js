@@ -1,45 +1,48 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { Form, Row, Col, Input, Select, Space, Drawer, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
-import { getProfilesApi } from 'src/store/slices/profielSlice/apis';
-import { getAllProfiles } from 'src/store/slices/profielSlice/selectors';
 import { createClientApi, updateClientApi } from 'src/store/slices/clientSlice/apis';
-import qs from "qs";
-import { format } from "date-fns";
-import { getApplyBySearchApi } from 'src/store/slices/agendaSlice/apis';
 import { toast } from 'react-toastify';
 import { getAllUsers } from 'src/store/slices/userSlice/selectors';
 import { getAllUsersApi } from 'src/store/slices/userSlice/apis';
 import UserDropdown from 'src/components/UserDropdown';
-import { getSelectedClient, selectedClient } from 'src/store/slices/clientSlice/selectors';
-import { setSelectedEvent } from 'src/store/slices/agendaSlice';
+import { getSelectedClient } from 'src/store/slices/clientSlice/selectors';
+import { ROLES } from 'src/constant/roles';
+import { timeZone } from 'src/constant/timeZones';
+import { paymentCycle } from 'src/constant/paymentCycle';
 
-
-const { Option } = Select;
 
 const initialFormValues = {
     email: '',
     phoneNumber: '',
     clientName: '',
-    apply: "",
+    // apply: '',
     projectManager: '',
-    name: "",
+    name: '',
+    companyName: '',
+    contractType: '',
+    clientLocation: '',
+    clientTimeZone: '',
+    profileTimeZone: '',
+    teamLeadName: '',
+    developer: '',
+    paymentCycle: '',
 };
 
 const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
-
-    const [applies, setApplies] = useState([]);
-    const [applyId, setApplyId] = useState("");
-
-
     const dispatch = useDispatch();
-    const allUsers = useSelector(getAllUsers)
+    const allUsers = useSelector(getAllUsers);
+    const selectedClient = useSelector(getSelectedClient);
 
-    const selectedClient = useSelector(getSelectedClient)
     const [form] = Form.useForm();
 
+    const usersWithProjectManagerRole = allUsers
+        .filter(user => user.role === ROLES?.PROJECT_MANAGER)
+        .map(user => `${user?.first_name} ${user?.last_name}`);
 
-
+    const usersWithDeveloperRole = allUsers
+        .filter(user => user.role === ROLES?.USER)
+        .map(user => `${user?.first_name} ${user?.last_name}`);
 
     useEffect(() => {
         if (selectedClient) {
@@ -47,23 +50,38 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                 email: selectedClient?.email,
                 phoneNumber: selectedClient?.phoneNumber,
                 clientName: selectedClient?.clientName,
-                apply: selectedClient?.apply?.positionToApply,
+                // apply: selectedClient?.apply?.positionToApply,
                 projectManager: selectedClient?.projectManager?.first_name,
                 name: selectedClient?.name,
+                companyName: selectedClient?.companyName || '',
+                contractType: selectedClient?.contractType || '',
+                clientLocation: selectedClient?.clientLocation || '',
+                clientTimeZone: selectedClient?.clientTimeZone || '',
+                profileTimeZone: selectedClient?.profileTimeZone || '',
+                teamLeadName: selectedClient?.teamLeadName || '',
+                developer: selectedClient?.developer || '',
+                paymentCycle: selectedClient?.paymentCycle || ''
             });
         } else {
             form.setFieldsValue({
                 email: initialFormValues?.email,
                 phoneNumber: initialFormValues?.phoneNumber,
                 clientName: initialFormValues?.clientName,
-                apply: initialFormValues?.apply?.positionToApply,
+                // apply: initialFormValues?.apply?.positionToApply,
                 projectManager: initialFormValues?.projectManager?.first_name,
                 name: initialFormValues?.name,
+                companyName: initialFormValues?.companyName,
+                contractType: initialFormValues?.contractType,
+                clientLocation: initialFormValues?.clientLocation,
+                clientTimeZone: initialFormValues?.clientTimeZone,
+                profileTimeZone: initialFormValues?.profileTimeZone,
+                teamLeadName: initialFormValues?.teamLeadName,
+                developer: initialFormValues?.developer,
+                paymentCycle: initialFormValues?.paymentCycle,
+
             });
         }
-
     }, [selectedClient, form]);
-
 
     useEffect(() => {
         if (!allUsers || allUsers?.length === 0) {
@@ -71,49 +89,50 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
         }
     })
 
-    const fetchApplyData = async (searchText) => {
-        const d = {
-            search: searchText,
-        };
-        const params = qs.stringify(d);
-
+    const handleSubmit = async () => {
         try {
-            const res = await dispatch(getApplyBySearchApi(params)).unwrap();
-            setApplies(res.data?.daily_applies || []);
-        } catch (error) {
-            console.error("Error fetching applies:", error);
-        }
-    };
+            const values = await form.validateFields();
 
-
-    const handleSubmit = async (values) => {
-        try {
-            const data = {
-                ...values
-            };
+            const data = { ...values };
             if (selectedClient) {
-                dispatch(updateClientApi({ data, id: selectedClient?._id }))
+                dispatch(updateClientApi({ data, id: selectedClient?._id }));
             } else {
                 dispatch(createClientApi(data));
             }
+
             form.setFieldsValue(initialFormValues);
             handleDrawer();
         } catch (error) {
-            toast.error(error.message)
+            console.error('Please fill in all required fields.');
         }
     };
 
     return (
-        <Drawer open={isOpen} onClose={handleDrawer} width={800}
-            title={"Create Client"}
-        >
+        <Drawer open={isOpen} onClose={handleDrawer} width={800} title={"Create Client"}>
+            {/* <Form form={form} layout="vertical" onFinish={handleSubmit}></Form>
             <div className="d-flex w-100 gap-1 mb-4">
-                <Button type="primary" >
-                    Add Notes
-                </Button>
-            </div>
-            <Form form={form} layout="vertical" hideRequiredMark onFinish={handleSubmit} >
+                <Button type="primary">Add Notes</Button>
+            </div> */}
+            <Form form={form} layout="vertical" onFinish={handleSubmit}>
                 <Row gutter={16}>
+                    <Col span={12}>
+                        <Form.Item
+                            name="companyname"
+                            label="Company Name"
+                            rules={[{ required: true, message: 'Please enter Company Name' }]}
+                        >
+                            <Input placeholder="Please enter Company Name" />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item
+                            name="clientName"
+                            label="Client Name"
+                            rules={[{ required: true, message: 'Please enter Client Name' }]}
+                        >
+                            <Input placeholder="Please enter Client Name" />
+                        </Form.Item>
+                    </Col>
                     <Col span={12}>
                         <Form.Item
                             name="email"
@@ -121,6 +140,63 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                             rules={[{ required: true, message: 'Please enter Client Email' }]}
                         >
                             <Input placeholder="Please enter Client Email" />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <UserDropdown
+                            name='projectManager'
+                            label="Project Manager"
+                            placeholder="Select a Project Manager"
+                            options={usersWithProjectManagerRole}
+                            form={form}
+                        />
+                    </Col>
+
+                    <Col span={12}>
+                        <UserDropdown
+                            name='developer'
+                            label="Developer"
+                            placeholder="Select a developer"
+                            options={usersWithDeveloperRole}
+                            form={form}
+                        />
+                    </Col>
+
+                    <Col span={12}>
+                        <UserDropdown
+                            name='clientTimeZone'
+                            label="Client Time Zone"
+                            placeholder="Please select Client Time zone"
+                            options={timeZone}
+                            form={form}
+                        />
+
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item
+                            name="clientTeamLeadName"
+                            label="Client Team Lead Name"
+                            rules={[{ required: true, message: 'Please enter Client Team Lead Name' }]}
+                        >
+                            <Input placeholder="Please enter Client Team Lead Name" />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item
+                            name="contractType"
+                            label="Contract Type"
+                            rules={[{ required: true, message: 'Please enter Contract Type' }]}
+                        >
+                            <Input placeholder="Please enter Contract Type" />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item
+                            name="clientLocation"
+                            label="Client Location"
+                            rules={[{ required: true, message: 'Please enter Client Location' }]}
+                        >
+                            <Input placeholder="Please enter Client Location" />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
@@ -132,21 +208,27 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                             <Input placeholder="Please enter Client Phone Number" />
                         </Form.Item>
                     </Col>
-
-                </Row>
-
-                <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item
-                            name="clientName"
-                            label="Client Name"
-                            rules={[{ required: true, message: 'Please enter Client Name' }]}
+                            name="profileTimeZone"
+                            label="Profile Time zone"
+                            rules={[{ required: true, message: 'Please enter Profile Time zone' }]}
                         >
-                            <Input placeholder="Please enter Client Name" />
+                            <Input placeholder="Please enter Profile Time zone" />
                         </Form.Item>
                     </Col>
-
                     <Col span={12}>
+
+                        <UserDropdown
+                            name='clientPaymentCycle'
+                            label="Client Payment Cycle"
+                            placeholder="Please select Client Payment "
+                            options={paymentCycle}
+                            form={form}
+                        />
+                    </Col>
+
+                    {/* <Col span={12}>
                         <Form.Item name="apply" label="Apply" >
                             <Select
                                 style={{ width: "100%" }}
@@ -176,26 +258,12 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                             </Select>
                         </Form.Item>
 
-                    </Col>
+                    </Col> */}
 
                 </Row>
-                <Row gutter={16}>
-                    <Col span={12}>
-
-                        <UserDropdown
-                            name='projectManager'
-                            label="Project manger"
-                            placeholder="Select a Project Manager"
-                            allUsers={allUsers}
-                            form={form}
-                        />
-                    </Col>
-                </Row>
-
-
                 <Form.Item>
                     <Space>
-                        <Button onClick={handleDrawer} >Cancel</Button>
+                        <Button onClick={handleDrawer}>Cancel</Button>
                         <Button type="primary" htmlType="submit">
                             Submit
                         </Button>
