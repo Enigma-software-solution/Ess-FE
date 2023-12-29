@@ -26,6 +26,21 @@ export const createDailyProjectUpdateApi = createAsyncThunk(
   }
 );
 
+export const updateDailyUpdate = createAsyncThunk(
+  "dailyUpdate/patch-dailyUpdate",
+  async (data, { rejectWithValue }) => {
+      try {
+          const response = await api.patch(`/user-daily-updates/${data?.id}`, data?.data);
+          toast.success("daily update Updated Successfully")
+
+          return response;
+      } catch (error) {
+          toast.error(error.message)
+          return rejectWithValue(error?.response?.data || "An error occurred");
+      }
+  }
+);
+
 export const deteleDailyProjectUpdatesApi = createAsyncThunk(
   "user-daily-updates/delete-user-daily-updates",
   async (projectDailyUpdateId, { rejectWithValue }) => {
