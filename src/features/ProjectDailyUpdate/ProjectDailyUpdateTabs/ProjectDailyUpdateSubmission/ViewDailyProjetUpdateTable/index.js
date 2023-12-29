@@ -92,6 +92,7 @@ const ViewDailyProjectUpdateTable = () => {
 
 
     return (
+
         <Table className='mt-4 px-5' dataSource={todayAllUpdates?.dailyUpdates} columns={columns} />
     )
 }

@@ -8,18 +8,20 @@ import { createDailyProjectUpdateApi } from "src/store/slices/projectDailyUpdate
 import { toast } from "react-toastify";
 import RichTextEditor from "src/components/RichTextEditor";
 import dayjs from "dayjs";
-import { getAllProjectDailyUpdates } from "src/store/slices/projectDailyUpdates/selectors";
+import { getAllProjectDailyUpdates, getSelectedProjectDailyUpdates, getmodalVisible } from "src/store/slices/projectDailyUpdates/selectors";
+import { setModalVisible } from "src/store/slices/projectDailyUpdates";
+import ReactQuill from "react-quill";
 
 const { Option } = Select;
 
-const AddProjectDailyUpdateModal = () => {
-    const [modalVisible, setModalVisible] = useState(false);
+const AddProjectDailyUpdateModal = ({ open, handleClose, selectedProject }) => {
+ 
 
     const allClients = useSelector(getAllClientsSelector)
     const todayAllUpdates = useSelector(getAllProjectDailyUpdates)
     const filteredUpdatesId = todayAllUpdates?.dailyUpdates?.map((update) => update?.project?._id);
-
     const [form] = Form.useForm();
+    const [content, setContent] = useState('');
     const dispatch = useDispatch();
 
     const userId = useSelector(getUserId);
@@ -35,18 +37,32 @@ const AddProjectDailyUpdateModal = () => {
             };
             dispatch(createDailyProjectUpdateApi(formData));
             form.resetFields();
+            handleClose(true);
         } catch (error) {
             toast.error(error.message);
         }
     };
 
-    const showModal = () => {
-        setModalVisible(true);
-    };
 
     const handleCancel = () => {
-        setModalVisible(false);
+        form.resetFields();
+        handleClose(false)
     };
+
+    const stripHtmlTags = (htmlString) => {
+        if (!htmlString) {
+            return "";
+        }
+        const doc = new DOMParser().parseFromString(htmlString, 'text/html');
+        return doc.body.textContent || "";
+    };
+    useEffect(() => {
+        form.setFieldsValue({
+            date: dayjs(),
+            project: selectedProject?.project?.clientName || undefined,
+            content: stripHtmlTags(selectedProject?.content),
+        });
+    }, [selectedProject]);
 
     useEffect(() => {
         dispatch(getAllClientsApi())
@@ -54,12 +70,10 @@ const AddProjectDailyUpdateModal = () => {
 
     return (
         <div>
-            <Button onClick={showModal} type="primary">
-                ADD PROJECT UPDATE
-            </Button>
+          
             <Modal
                 title="Daily Project Update"
-                open={modalVisible}
+                open={open}
                 onCancel={handleCancel}
                 footer={null}
                 width={"50%"}
@@ -67,9 +81,8 @@ const AddProjectDailyUpdateModal = () => {
                 <Form
                     form={form}
                     initialValues={{
-                        user: userId,
-                        date: dayjs(),
-                        content: "",
+                        content: selectedProject?.content,
+                        project: selectedProject?.project?.clientName,
                     }}
                     onFinish={onFinish}
                 >
@@ -96,13 +109,21 @@ const AddProjectDailyUpdateModal = () => {
                         name="content"
                         rules={[{ required: true, message: "Please input content" }]}
                     >
-                        <RichTextEditor />
+                          <ReactQuill
+                            style={{ height: '200px' }}
+                            theme="snow"
+                            value={content}
+                            onChange={setContent}
+                            />
                     </Form.Item>
 
                     <Form.Item>
-                        <Button htmlType="submit" className="mt-4" type="primary">
-                            SAVE
+                    <Flex justify="end" gap={4} className='mt-5'>
+                        <Button onClick={handleCancel}>Cancel</Button>
+                        <Button type="primary" htmlType="submit">
+                            {selectedProject ? "Update" : 'Save'}
                         </Button>
+                    </Flex>
                     </Form.Item>
                 </Form>
             </Modal>

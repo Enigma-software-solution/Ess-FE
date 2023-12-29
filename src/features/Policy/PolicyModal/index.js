@@ -119,7 +119,7 @@ const PolicyModal = ({ open, handleClose, selectedPolicy }) => {
                         modules={module}
                         formats={format}
                         value={content}
-                        onChange={setContent} // Update content on change
+                        onChange={setContent}
                     />
                 </Form.Item>
 
