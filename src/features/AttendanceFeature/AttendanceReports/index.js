@@ -1,29 +1,33 @@
 import React, { useEffect, useState } from 'react';
-import { Table, Select, Space, DatePicker, Button, Flex, Pagination, Tag, Tooltip } from 'antd';
-import { ExportOutlined } from '@ant-design/icons';
+import { Select, Space, DatePicker, Button, Flex, ConfigProvider } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import qs from 'qs';
 import { getAllAttendanceApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api';
 import { StyledDiv, StyledPage } from './styled';
 import { getAllUsers } from 'src/store/slices/userSlice/selectors';
 import { getAllUsersApi } from 'src/store/slices/userSlice/apis';
-import { CheckAttendanceStatusColor } from 'src/components/Utils/checkAttendanceStatusColor';
 import AttendanceHistory from './Table';
+import { format } from 'date-fns';
+import locale from 'antd/locale/en_US';
 
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 
 const AttendanceReport = () => {
-    const [reports, setReports] = useState(null);
+    const [reports, setReports] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
-    // const [selectedPagination, setSelectedPagination] = useState({
-    //     page: 1,
-    //     pageSize: 10
-    // });
+    const [type, setType] = useState("Select Type");
+    const [selectedMonth, setSelectedMonth] = useState(null);
+    const [selectedRange, setSelectedRange] = useState(null);
+    const [selectedDate, setSelectedDate] = useState(null);
+
     const [selectedFilters, setSelectedFilters] = useState({
         status: null,
         userId: null,
-        dateRange: []
+        date: null,
+        dateRange: [],
+        pageSize: 1000,
+        month: null,
     })
 
     const dispatch = useDispatch();
@@ -36,22 +40,27 @@ const AttendanceReport = () => {
             params.status = filters?.status;
         }
 
+        if (filters?.date !== null) {
+            const selectedDate = new Date(filters?.date);
+            params.date = selectedDate.toLocaleDateString('en-US');
+        }
+
+        if (filters?.month !== null) {
+            params.month = format(new Date(selectedMonth), 'MMM')
+        }
+
         if (filters?.userId !== null) {
             params.userId = filters?.userId;
         }
 
-        if (filters?.dateRange.length > 0) {
-            params.startDate = new Date(filters?.dateRange[0]);
-            params.endDate = new Date(filters?.dateRange[1]);
+        if (filters?.pageSize !== null) {
+            params.pageSize = filters?.pageSize;
         }
 
-
-
-
-        // if (selectedPagination) {
-        //     params.page = selectedPagination?.page;
-        //     params.pageSize = selectedPagination?.pageSize;
-        // }
+        if (filters?.dateRange.length > 0) {
+            params.startDate = format(new Date(filters?.dateRange[0]), 'yyyy-MM-dd');
+            params.endDate = format(new Date(filters?.dateRange[1]), 'yyyy-MM-dd');
+        }
 
         const queryString = qs.stringify(params);
         try {
@@ -65,6 +74,13 @@ const AttendanceReport = () => {
         }
     };
 
+    const handleDateChange = (value) => {
+        setSelectedDate(value)
+        setSelectedFilters(prevFilters => ({
+            ...prevFilters,
+            date: value
+        }));
+    };
 
     const handleStatusChange = (value) => {
         setSelectedFilters(prevFilters => ({
@@ -81,37 +97,45 @@ const AttendanceReport = () => {
     };
 
     const handleRangePicker = (dates) => {
-        if (dates && dates.length === 2) {
+        setSelectedRange(dates)
+        if (dates) {
             setSelectedFilters(prevFilters => ({
                 ...prevFilters,
-                dateRange: dates
+                dateRange: dates,
+
             }));
         }
     };
 
+    const handleMonthChange = (month) => {
+        if (month) {
+            setSelectedMonth(month)
+            setSelectedFilters(prevFilters => ({
+                ...prevFilters,
+                month: month,
+            }))
+        }
+    }
+
     const handleSubmit = () => {
         getAttendanceReports(selectedFilters);
+        handleReset();
     };
 
     const handleReset = () => {
         setSelectedFilters({
             status: null,
             userId: null,
-            dateRange: []
-        })
-        // setSelectedPagination()
-        getAttendanceReports();
+            dateRange: [],
+            date: null,
+            month: null,
+        });
+        setSelectedDate(null);
+        setSelectedMonth(null);
+        setSelectedRange(null);
+        setType('Select Type');
 
     };
-
-    // const { totalItems, pageSize, totalPages, page } = reports?.paginator ?? {};
-
-    // const onPaginationChange = (page, pageSize) => {
-    //     setSelectedPagination({
-    //         page,
-    //         pageSize,
-    //     });
-    // };
 
     useEffect(() => {
         if (!users?.length) {
@@ -123,6 +147,13 @@ const AttendanceReport = () => {
     useEffect(() => {
         getAttendanceReports(selectedFilters);
     }, []);
+
+    const PickerWithType = ({ type }) => {
+        if (type === 'date') return <DatePicker name='date' value={selectedDate} onChange={handleDateChange} />;
+        if (type === 'month') return <DatePicker picker="month" onChange={handleMonthChange} value={selectedMonth} />;
+        if (type === 'dateRange') return <RangePicker onChange={handleRangePicker} value={selectedRange} />;
+        return null;
+    };
 
     return (
         <StyledPage>
@@ -158,7 +189,20 @@ const AttendanceReport = () => {
                                 <Option value="half-day">Half-day</Option>
                                 <Option value="late">Late</Option>
                             </Select>
-                            <RangePicker onChange={handleRangePicker} value={selectedFilters.dateRange} />
+                            <Space>
+                                <Select
+                                    onChange={setType}
+                                    style={{ minWidth: '120px', width: '200px' }}
+                                    value={type}
+                                >
+                                    <Option value="date">Date</Option>
+                                    <Option value="month">Month</Option>
+                                    <Option value="dateRange">Date Range</Option>
+                                </Select>
+                                <ConfigProvider locale={locale}>
+                                    <PickerWithType type={type} />
+                                </ConfigProvider>
+                            </Space>
 
                         </Space>
                     </Flex>
@@ -175,8 +219,7 @@ const AttendanceReport = () => {
                 </Flex>
             </StyledDiv>
 
-
-            {reports && <AttendanceHistory reports={reports?.attendance} isLoading={isLoading} />}
+            {<AttendanceHistory reports={reports?.attendance ?? []} isLoading={isLoading} />}
             {/* {reports?.paginator && reports?.attendance.length ? (
                 <Pagination
                     style={{ padding: '10px', display: 'flex', justifyContent: 'flex-end' }}
