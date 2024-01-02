@@ -19,7 +19,6 @@ const UpdateProjectTable = () => {
 
     const dispatch = useDispatch()
     const allProjects = useSelector(getAllClientsSelector)
-    console.log(allProjects, "selector")
     const allUsers = useSelector(getAllUsers)
 
     const [isLoading, setIsLoading] = useState(false);
