@@ -9,6 +9,8 @@ import Users from './../../../Users/index';
 import { getAllUsersApi } from 'src/store/slices/userSlice/apis';
 import { getAllUsers } from 'src/store/slices/userSlice/selectors';
 import Loader from 'src/components/Loader';
+import { getAllClientsSelector } from 'src/store/slices/clientSlice/selectors';
+import { getAllClientsApi } from 'src/store/slices/clientSlice/apis';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
@@ -16,7 +18,8 @@ const { RangePicker } = DatePicker;
 const UpdateProjectTable = () => {
 
     const dispatch = useDispatch()
-    const allProjectsDailyUpdatesData = useSelector(getAllProjectDailyUpdates)
+    const allProjects = useSelector(getAllClientsSelector)
+    console.log(allProjects, "selector")
     const allUsers = useSelector(getAllUsers)
 
     const [isLoading, setIsLoading] = useState(false);
@@ -31,6 +34,7 @@ const UpdateProjectTable = () => {
 
     useEffect(() => {
         dispatch(getAllUsersApi())
+        dispatch(getAllClientsApi())
     }, [])
 
     const columns = [
@@ -138,7 +142,12 @@ const UpdateProjectTable = () => {
 
     const handleSubmit = () => {
         getUpdateHistory(selectedFilters);
-        handleReset();
+        setSelectedFilters({
+            clientName: null,
+            projectManager: null,
+            user: null,
+            dateRange: [],
+        })
     };
 
     const handleReset = () => {
@@ -148,16 +157,13 @@ const UpdateProjectTable = () => {
             user: null,
             dateRange: [],
         })
-        // getUpdateHistory();
+        getUpdateHistory();
     };
 
     useEffect(() => {
         dispatch(getDailyProjectUpdateApi());
         getUpdateHistory(selectedFilters);
-
     }, []);
-
-
 
     return (
         <>
@@ -167,16 +173,14 @@ const UpdateProjectTable = () => {
                         placeholder="Project Name"
                         onChange={handleClientChange}
                         style={{ minWidth: '120px', width: "200px" }}
-                        value={selectedFilters.clientName}
+                        value={selectedFilters?.clientName}
                     >
-                        {allProjectsDailyUpdatesData?.dailyUpdates?.map(user => (
-                            <Option key={user._id} value={user._id}>
-                                {`${user?.project?.clientName} `}
+                        {allProjects?.map((project, index) => (
+                            <Option key={index} value={project?._id}>
+                                {`${project?.clientName} `}
                             </Option>
                         ))}
                     </Select>
-
-
 
                     <Select
                         placeholder="User"
