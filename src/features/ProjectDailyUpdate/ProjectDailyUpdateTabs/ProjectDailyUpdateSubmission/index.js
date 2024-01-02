@@ -1,8 +1,8 @@
-import React, { useState } from 'react'
+import React from 'react'
 import AddProjectDailyUpdateModal from './AddProjectUpdateModal'
 import ViewDailyProjectUpdateTable from './ViewDailyProjetUpdateTable'
 import ProjectDailyUpdateCards from './ProjectDailyUpdateCards'
-import { Button } from 'antd'
+import { Button  } from 'antd'
 import { useDispatch, useSelector } from 'react-redux'
 import { setModalVisible } from 'src/store/slices/projectDailyUpdates'
 import { getSelectedProjectDailyUpdates, getmodalVisible } from 'src/store/slices/projectDailyUpdates/selectors'
@@ -13,7 +13,7 @@ const ProjectDailyUpdateSubmission = () => {
     const selectedProject = useSelector(getSelectedProjectDailyUpdates)
     const showModal = () => {
         dispatch(setModalVisible(true));
-    };
+        };
 
     return (
         <>
@@ -21,7 +21,6 @@ const ProjectDailyUpdateSubmission = () => {
                 ADD PROJECT UPDATE
             </Button>
             {modalVisible && <AddProjectDailyUpdateModal open={modalVisible} handleClose={() => dispatch(setModalVisible(false))} selectedProject={selectedProject} />}
-            {/* <AddProjectDailyUpdateModal /> */}
             <ProjectDailyUpdateCards />
             <ViewDailyProjectUpdateTable />
         </>

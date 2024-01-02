@@ -1,20 +1,23 @@
 import { Table } from 'antd';
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getDailyProjectUpdateApi } from 'src/store/slices/projectDailyUpdates/apis';
 import { getAllProjectDailyUpdates } from 'src/store/slices/projectDailyUpdates/selectors';
 import format from 'date-fns/format';
+import UpdateHistory from './Table';
 
 const UpdateProjectTable = () => {
 
     const dispatch = useDispatch()
     const allProjectsDailyUpdatesData = useSelector(getAllProjectDailyUpdates)
-
     const dailyUpdates = allProjectsDailyUpdatesData?.dailyUpdates
+
 
     useEffect(() => {
         dispatch(getDailyProjectUpdateApi())
     }, [])
+
+
 
     const columns = [
         {
@@ -55,9 +58,12 @@ const UpdateProjectTable = () => {
         },
     ];
 
+
     return (
-        <div>
-            <Table className='mt-4 px-5' dataSource={dailyUpdates} columns={columns} />;
+        <div className='mt-4 px-5'>
+            {dailyUpdates && <UpdateHistory reports={dailyUpdates}  />}
+            <br /> <br /> <br />
+            <Table dataSource={dailyUpdates} columns={columns} />;
         </div>
     )
 }

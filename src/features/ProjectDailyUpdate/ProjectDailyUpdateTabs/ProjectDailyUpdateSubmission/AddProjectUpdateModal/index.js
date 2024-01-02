@@ -4,12 +4,10 @@ import { useDispatch, useSelector } from "react-redux";
 import { getAllClientsSelector } from "src/store/slices/clientSlice/selectors";
 import { getAllClientsApi } from "src/store/slices/clientSlice/apis";
 import { getUserId } from "src/store/slices/authSlice/selectors";
-import { createDailyProjectUpdateApi } from "src/store/slices/projectDailyUpdates/apis";
+import { createDailyProjectUpdateApi, updateDailyUpdate } from "src/store/slices/projectDailyUpdates/apis";
 import { toast } from "react-toastify";
-import RichTextEditor from "src/components/RichTextEditor";
 import dayjs from "dayjs";
-import { getAllProjectDailyUpdates, getSelectedProjectDailyUpdates, getmodalVisible } from "src/store/slices/projectDailyUpdates/selectors";
-import { setModalVisible } from "src/store/slices/projectDailyUpdates";
+import { getAllProjectDailyUpdates,  } from "src/store/slices/projectDailyUpdates/selectors";
 import ReactQuill from "react-quill";
 
 const { Option } = Select;
@@ -28,20 +26,37 @@ const AddProjectDailyUpdateModal = ({ open, handleClose, selectedProject }) => {
 
     const onFinish = async (values) => {
         try {
-            if (!values.content || values.content === "<p><br></p>") {
-                throw new Error("Please input all fields");
-            }
             const formData = {
                 ...values,
-                user: userId,
+                content,
             };
-            dispatch(createDailyProjectUpdateApi(formData));
-            form.resetFields();
-            handleClose(true);
+    
+            if (!content) {
+                toast.error('Content cannot be empty');
+                return;
+            }
+    
+            if (selectedProject) {
+
+                const res = await dispatch(updateDailyUpdate({ id: userId, formData })).unwrap();
+                if (res.status === 200) {
+                    form.resetFields();
+                    handleClose(false);
+                }
+            } else {
+                formData.user = userId;
+                const res = await dispatch(createDailyProjectUpdateApi(formData)).unwrap();
+                if (res.status === 201) {
+                    form.resetFields();
+                    handleClose(false);
+                }
+            }
+    
         } catch (error) {
-            toast.error(error.message);
+            console.error("An error occurred:", error);
         }
     };
+    
 
 
     const handleCancel = () => {

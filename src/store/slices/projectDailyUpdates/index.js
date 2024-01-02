@@ -2,7 +2,6 @@ import {
     createSlice,
 } from "@reduxjs/toolkit";
 import { createDailyProjectUpdateApi, deteleDailyProjectUpdatesApi, getDailyProjectUpdateApi, updateDailyUpdate } from "./apis";
-import { updateClientApi } from "../clientSlice/apis";
 
 const initialState = {
     status: "idle",
@@ -52,16 +51,16 @@ const projectDailyUpdatesSlice = createSlice({
             state.status = "succeeded";
             state.data.dailyUpdates = [...state.data.dailyUpdates, action.payload.data]
         });
-
+     
         builder.addCase(updateDailyUpdate.fulfilled, (state, action) => {
-            state.data.dailyUpdates = state?.data.dailyUpdates?.map(dailyUpdate => {
-                if (dailyUpdate?._id === action?.payload?.data?._id) {
-                    return action?.payload?.data
-                }
-                return dailyUpdate
-            })
-        });
-
+            state.data.dailyUpdates = state?.data.dailyUpdates?.map((dailyUpdate) => {
+              if (dailyUpdate?._id === action?.payload?.data?._id) {
+                return action?.payload?.data;
+              }
+              return dailyUpdate;
+            });
+          });
+          
         builder.addCase(deteleDailyProjectUpdatesApi.fulfilled, (state, action) => {
             state.data.dailyUpdates = state?.data.dailyUpdates?.filter((projectDailyUpdate) => projectDailyUpdate?._id !== action?.payload?.projectDailyUpdateId)
         });
