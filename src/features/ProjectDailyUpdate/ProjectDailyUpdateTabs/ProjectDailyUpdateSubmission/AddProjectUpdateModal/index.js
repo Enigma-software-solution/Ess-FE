@@ -35,6 +35,7 @@ const AddProjectDailyUpdateModal = () => {
             };
             dispatch(createDailyProjectUpdateApi(formData));
             form.resetFields();
+            handleCancel();
         } catch (error) {
             toast.error(error.message);
         }

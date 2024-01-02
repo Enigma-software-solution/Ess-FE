@@ -34,7 +34,6 @@ const ClientTable = () => {
         e.stopPropagation();
         dispatch(setSelectedClient(record));
         setIsOpen(true);
-        console.log(record)
     };
 
     const columns = [
