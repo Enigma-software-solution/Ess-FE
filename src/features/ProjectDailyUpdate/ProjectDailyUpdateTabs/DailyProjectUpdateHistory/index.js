@@ -1,10 +1,10 @@
 import { Table } from 'antd';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { getDailyProjectUpdateApi } from 'src/store/slices/projectDailyUpdates/apis';
 import { getAllProjectDailyUpdates } from 'src/store/slices/projectDailyUpdates/selectors';
 import format from 'date-fns/format';
-import UpdateHistory from './Table';
+import ProjectUpdateCard from './Card';
 
 const UpdateProjectTable = () => {
 
@@ -61,7 +61,7 @@ const UpdateProjectTable = () => {
 
     return (
         <div className='mt-4 px-5'>
-            {dailyUpdates && <UpdateHistory reports={dailyUpdates}  />}
+            {dailyUpdates &&   <ProjectUpdateCard record={dailyUpdates} />}
             <br /> <br /> <br />
             <Table dataSource={dailyUpdates} columns={columns} />;
         </div>

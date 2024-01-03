@@ -40,7 +40,7 @@ const ProjectDailyUpdateCards = () => {
 
     const handleSaveEdit = (record) => {
 
-        dispatch(setSelectedProjectDailyUpdate(null));
+        dispatch(setSelectedProjectDailyUpdate(record._id));
     };
 
     useEffect(() => {
@@ -65,7 +65,7 @@ const ProjectDailyUpdateCards = () => {
                 pagination={{ clickable: true }}
                 modules={[Pagination]}
                 slidesPerView={4}
-                spaceBetween={10}
+                spaceBetween={20}
                 grabCursor={true}
                 style={{ padding: '30px', marginBottom: '40px' }}
             >
@@ -99,11 +99,11 @@ const ProjectDailyUpdateCards = () => {
                                 </Form.Item>
                                 {selectedProject === record && (
                                     <>
-                                        <Flex align='center' justify='end' className='mb-0'>
-                                            <Button onClick={() => handleSaveEdit(record)} type='primary'>
+                                        <Flex align='center' justify='start' className='mb-0'>
+                                            <Button onClick={() => handleSaveEdit(record)} type='primary' size='small'>
                                                 Submit
                                             </Button>
-                                            <Button onClick={() => handleCancelEdit(record)} type='default'>
+                                            <Button onClick={() => handleCancelEdit(record)} type='default' size='small'>
                                                 Cancel
                                             </Button>
                                         </Flex>

@@ -3,14 +3,19 @@ import styled from "styled-components";
 
 export const CardWrapper = styled(Card)`
   width: 100%;
-  border-radius: 10px;
+  border-radius: 16px;
   overflow: hidden;
-  box-shadow: 4px 2px 20px -7px  rgba(0,0,0,0.2);
-  transition: all.5s;
-  height:250px;
+  box-shadow: 4px 2px 20px -7px  rgba(0,0,0,0.5);
+  transition: box-shadow 0.3s ease-in-out;
+  height:300px;
+  background-color:  #fafafa;
+  padding: 10px;
 
   &:hover {
     cursor: pointer;
-    box-shadow: 4px 2px 20px -7px  rgba(0,0,0,0.7);
+    box-shadow: 4px 2px 20px -7px  rgba(0,0,0,0.4);
+    background-color: white;
   }
 `;
+
+

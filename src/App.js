@@ -67,7 +67,7 @@ function App() {
 
                   <Route path={routes.PROFILE_SETTINGS} element={<ProfileSettings />} />
 
-                  <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.SALES_EXECUTIVE, ROLES.USER]} />} >
+                  <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.SALES_EXECUTIVE, ROLES.USER,ROLES.PROJECT_MANAGER]} />} >
                     <Route index element={<Dashobard />} />
                     <Route path={routes.USERS} element={<UsersPage />} />
                   </Route>
@@ -95,7 +95,7 @@ function App() {
                   </Route>
 
                   {/* PROJECT UPDATE ROUTES */}
-                  <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.HR, ROLES.SALES_EXECUTIVE, ROLES.USER]} />}>
+                  <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.HR, ROLES.SALES_EXECUTIVE, ROLES.USER, ROLES.PROJECT_MANAGER]} />}>
                     <Route path={routes.NEW_UPDATE} element={<ProjectDailyUpdateSubmission />} />
                     <Route path={routes.UPDATE_HISTORY} element={<UpdateProjectTable />} />
                   </Route>
