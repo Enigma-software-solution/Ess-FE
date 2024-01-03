@@ -1,3 +1,3 @@
 export const paymentCycle = [
-    "Weekly", "Biweekly", "Monthly"
+    "Hourly", "Weekly", "Biweekly", "Monthly"
 ];

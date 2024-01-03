@@ -8,15 +8,30 @@ import EditButton from "src/components/buttons/EditButton";
 import DeleteButton from "src/components/buttons/DeleteButton";
 import Loader from "src/components/Loader";
 import { setSelectedClient } from "src/store/slices/clientSlice";
+import { updateUserApi } from "src/store/slices/userSlice/apis";
+import { StyledBadge } from "./styled";
 
 const ClientTable = () => {
     const dispatch = useDispatch();
     const [isOpen, setIsOpen] = useState(false);
-
-
     const isLoading = useSelector(isClientLoading);
     const clients = useSelector(getAllClientsSelector);
+    const handleChangeStatus = (e, record) => {
+        e.stopPropagation();
+        if (record._id) {
+            const data = {
+                userId: record._id,
+                user: {
+                    ...record,
+                    status: record?.status === "active" ? 'inactive' : 'active'
+                }
 
+            };
+            dispatch(updateUserApi(data));
+        } else {
+            console.error("User record does not have a valid _id");
+        }
+    };
     useEffect(() => {
         try {
             dispatch(getAllClientsApi());
@@ -47,6 +62,25 @@ const ClientTable = () => {
         {
             title: "Status",
             dataIndex: "active",
+            render: (text, record) => {
+                const isActive = text === "active";
+
+
+                return (
+                    <div className="d-flex gap-1">
+                        <Popconfirm
+                            title={`Are you sure to ${isActive ? "deactivate" : "activate"} this User?`}
+                            onConfirm={(e) => handleChangeStatus(e, record)}
+                            okText="Yes"
+                            cancelText="No"
+                        >
+                            <StyledBadge onClick={(e) => e.stopPropagation()} status={text}>
+                                {text}
+                            </StyledBadge>
+                        </Popconfirm>
+                    </div >
+                );
+            }
         },
         {
             title: "Project Manager",

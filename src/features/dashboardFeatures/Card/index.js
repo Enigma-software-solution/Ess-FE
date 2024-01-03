@@ -1,6 +1,6 @@
 import React from "react";
 import { StyledCard } from "./styled";
-import UserDropdown from "src/components/UserDropdown";
+import UserDropdown from "src/components/CustomDropdown";
 
 const ApplyCard = ({ data }) => {
   const avatarInitial = data?.profileName?.charAt(0);

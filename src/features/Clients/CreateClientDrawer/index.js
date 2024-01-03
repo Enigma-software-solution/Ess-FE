@@ -5,11 +5,13 @@ import { createClientApi, updateClientApi } from 'src/store/slices/clientSlice/a
 import { toast } from 'react-toastify';
 import { getAllUsers } from 'src/store/slices/userSlice/selectors';
 import { getAllUsersApi } from 'src/store/slices/userSlice/apis';
-import UserDropdown from 'src/components/UserDropdown';
+import UserDropdown from 'src/components/CustomDropdown';
 import { getSelectedClient } from 'src/store/slices/clientSlice/selectors';
 import { ROLES } from 'src/constant/roles';
 import { timeZone } from 'src/constant/timeZones';
 import { paymentCycle } from 'src/constant/paymentCycle';
+import CustomDropdown from 'src/components/CustomDropdown';
+import { contractType } from 'src/constant/contracttype';
 
 
 const initialFormValues = {
@@ -115,15 +117,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
             </div> */}
             <Form form={form} layout="vertical" onFinish={handleSubmit}>
                 <Row gutter={16}>
-                    <Col span={12}>
-                        <Form.Item
-                            name="companyname"
-                            label="Company Name"
-                            rules={[{ required: true, message: 'Please enter Company Name' }]}
-                        >
-                            <Input placeholder="Please enter Company Name" />
-                        </Form.Item>
-                    </Col>
+
                     <Col span={12}>
                         <Form.Item
                             name="clientName"
@@ -143,9 +137,10 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <UserDropdown
+                        <CustomDropdown
                             name='projectManager'
                             label="Project Manager"
+                            required={true}
                             placeholder="Select a Project Manager"
                             options={usersWithProjectManagerRole}
                             form={form}
@@ -153,9 +148,10 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                     </Col>
 
                     <Col span={12}>
-                        <UserDropdown
+                        <CustomDropdown
                             name='developer'
                             label="Developer"
+                            required={true}
                             placeholder="Select a developer"
                             options={usersWithDeveloperRole}
                             form={form}
@@ -163,12 +159,13 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                     </Col>
 
                     <Col span={12}>
-                        <UserDropdown
+                        <CustomDropdown
                             name='clientTimeZone'
                             label="Client Time Zone"
                             placeholder="Please select Client Time zone"
                             options={timeZone}
                             form={form}
+
                         />
 
                     </Col>
@@ -176,54 +173,48 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                         <Form.Item
                             name="clientTeamLeadName"
                             label="Client Team Lead Name"
-                            rules={[{ required: true, message: 'Please enter Client Team Lead Name' }]}
+                            rules={[{ message: 'Please enter Client Team Lead Name' }]}
                         >
                             <Input placeholder="Please enter Client Team Lead Name" />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <Form.Item
-                            name="contractType"
+                        <CustomDropdown
+                            name='contract type'
                             label="Contract Type"
-                            rules={[{ required: true, message: 'Please enter Contract Type' }]}
-                        >
-                            <Input placeholder="Please enter Contract Type" />
-                        </Form.Item>
+                            placeholder="Please select Contract Type"
+                            options={contractType}
+                            form={form}
+
+                        />
                     </Col>
                     <Col span={12}>
                         <Form.Item
                             name="clientLocation"
                             label="Client Location"
-                            rules={[{ required: true, message: 'Please enter Client Location' }]}
+                            rules={[{ message: 'Please enter Client Location' }]}
                         >
                             <Input placeholder="Please enter Client Location" />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <Form.Item
-                            name="phoneNumber"
-                            label="Client Phone Number"
-                            rules={[{ required: true, message: 'Please enter Client Phone Number' }]}
-                        >
-                            <Input placeholder="Please enter Client Phone Number" />
-                        </Form.Item>
-                    </Col>
-                    <Col span={12}>
-                        <Form.Item
-                            name="profileTimeZone"
-                            label="Profile Time zone"
-                            rules={[{ required: true, message: 'Please enter Profile Time zone' }]}
-                        >
-                            <Input placeholder="Please enter Profile Time zone" />
-                        </Form.Item>
+                        <CustomDropdown
+                            name='profile time zone'
+                            label="Profile Time Zone"
+                            placeholder="Please select profile Time zone"
+                            options={timeZone}
+                            form={form}
+
+                        />
                     </Col>
                     <Col span={12}>
 
-                        <UserDropdown
+                        <CustomDropdown
                             name='clientPaymentCycle'
                             label="Client Payment Cycle"
                             placeholder="Please select Client Payment "
                             options={paymentCycle}
+                            required={true}
                             form={form}
                         />
                     </Col>
