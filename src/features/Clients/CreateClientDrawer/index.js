@@ -184,6 +184,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                             label="Contract Type"
                             placeholder="Please select Contract Type"
                             options={contractType}
+                            required={true}
                             form={form}
 
                         />
