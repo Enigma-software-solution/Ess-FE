@@ -98,7 +98,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
         }
     })
     const isEditMode = !!selectedClient;
-    console.log(selectedClient, "testtsts")
+
 
     const handleSubmit = async () => {
         try {
