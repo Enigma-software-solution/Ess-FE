@@ -40,8 +40,8 @@ const CustomDropdown = ({ placeholder, form, value, onChange, name, label, optio
                 value={selectedUserId}
             >
                 {options && options?.map(option => (
-                    <Option key={option} >
-                        {option}
+                    <Option key={option?.id} value={option?._id} >
+                        {option?.name}
                     </Option>
                 ))}
             </Select>

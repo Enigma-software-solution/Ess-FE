@@ -1,24 +1,23 @@
 import React, { useEffect } from 'react';
-import { Form, Row, Col, Input, Select, Space, Drawer, Button } from 'antd';
+import { Form, Row, Col, Input, Space, Drawer, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { createClientApi, updateClientApi } from 'src/store/slices/clientSlice/apis';
-import { toast } from 'react-toastify';
 import { getAllUsers } from 'src/store/slices/userSlice/selectors';
 import { getAllUsersApi } from 'src/store/slices/userSlice/apis';
-import UserDropdown from 'src/components/CustomDropdown';
 import { getSelectedClient } from 'src/store/slices/clientSlice/selectors';
 import { ROLES } from 'src/constant/roles';
-import { timeZone } from 'src/constant/timeZones';
-import { paymentCycle } from 'src/constant/paymentCycle';
+import { timeZoneDropdown } from 'src/constant/timeZones';
+import { paymentCycleDropdown } from 'src/constant/paymentCycle';
 import CustomDropdown from 'src/components/CustomDropdown';
-import { contractType } from 'src/constant/contracttype';
+import { ContractTypeDropdown } from 'src/constant/contracttype';
+import CustomInput from 'src/components/formElements/CustomInput';
+import CustomSelect from 'src/components/formElements/CustomSelect';
 
 
 const initialFormValues = {
     email: '',
     phoneNumber: '',
     clientName: '',
-    // apply: '',
     projectManager: '',
     name: '',
     companyName: '',
@@ -40,11 +39,18 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
 
     const usersWithProjectManagerRole = allUsers
         .filter(user => user.role === ROLES?.PROJECT_MANAGER)
-        .map(user => `${user?.first_name} ${user?.last_name}`);
+        .map(user => ({
+            id: user._id,
+            name: `${user?.first_name} ${user?.last_name}`
+        }));
 
     const usersWithDeveloperRole = allUsers
         .filter(user => user.role === ROLES?.USER)
-        .map(user => `${user?.first_name} ${user?.last_name}`);
+        .map(user => ({
+            id: user._id,
+            name: `${user?.first_name} ${user?.last_name}`
+        }));
+
 
     useEffect(() => {
         if (selectedClient) {
@@ -85,11 +91,14 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
         }
     }, [selectedClient, form]);
 
+
     useEffect(() => {
         if (!allUsers || allUsers?.length === 0) {
             dispatch(getAllUsersApi())
         }
     })
+    const isEditMode = !!selectedClient;
+    console.log(selectedClient, "testtsts")
 
     const handleSubmit = async () => {
         try {
@@ -110,12 +119,10 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
     };
 
     return (
-        <Drawer open={isOpen} onClose={handleDrawer} width={800} title={"Create Client"}>
-            {/* <Form form={form} layout="vertical" onFinish={handleSubmit}></Form>
-            <div className="d-flex w-100 gap-1 mb-4">
-                <Button type="primary">Add Notes</Button>
-            </div> */}
+        <Drawer open={isOpen} onClose={handleDrawer} width={800} title={isEditMode ? "Update Client" : "Create Client"}>
+
             <Form form={form} layout="vertical" onFinish={handleSubmit}>
+
                 <Row gutter={16}>
 
                     <Col span={12}>
@@ -159,34 +166,36 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                     </Col>
 
                     <Col span={12}>
-                        <CustomDropdown
-                            name='clientTimeZone'
-                            label="Client Time Zone"
-                            placeholder="Please select Client Time zone"
-                            options={timeZone}
-                            form={form}
 
+                        <CustomInput
+                            label="Client Time Zone "
+                            name='clientTimeZone'
+                            rules={[{ required: true }]}
+                            component={CustomSelect}
+                            placeholder="Please select Client Time Zone "
+                            options={timeZoneDropdown}
+                            form={form}
                         />
 
                     </Col>
                     <Col span={12}>
                         <Form.Item
-                            name="clientTeamLeadName"
-                            label="Client Team Lead Name"
-                            rules={[{ message: 'Please enter Client Team Lead Name' }]}
+                            name="clientTeamLead"
+                            label="Client Team Lead "
+                            rules={[{ message: 'Please enter Client Team Lead ' }]}
                         >
-                            <Input placeholder="Please enter Client Team Lead Name" />
+                            <Input placeholder="Please enter Client Team Lead " />
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <CustomDropdown
-                            name='contract type'
+                        <CustomInput
                             label="Contract Type"
+                            name='contractType'
+                            rules={[{ required: true }]}
+                            component={CustomSelect}
                             placeholder="Please select Contract Type"
-                            options={contractType}
-                            required={true}
+                            options={ContractTypeDropdown}
                             form={form}
-
                         />
                     </Col>
                     <Col span={12}>
@@ -199,23 +208,26 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-                        <CustomDropdown
-                            name='profile time zone'
-                            label="Profile Time Zone"
-                            placeholder="Please select profile Time zone"
-                            options={timeZone}
-                            form={form}
 
+                        <CustomInput
+                            label="Profile Time Zone"
+                            name='profileTimeZone'
+                            component={CustomSelect}
+                            placeholder="Please select Profile Time Zone"
+                            options={timeZoneDropdown}
+                            form={form}
                         />
                     </Col>
                     <Col span={12}>
 
-                        <CustomDropdown
-                            name='clientPaymentCycle'
+
+                        <CustomInput
                             label="Client Payment Cycle"
-                            placeholder="Please select Client Payment "
-                            options={paymentCycle}
-                            required={true}
+                            name='clientPaymentCycle'
+                            component={CustomSelect}
+                            placeholder="Please select Client Payment"
+                            options={paymentCycleDropdown}
+                            rules={[{ required: true }]}
                             form={form}
                         />
                     </Col>

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { deleteClientApi, deteleClientApi, getAllClientsApi } from "src/store/slices/clientSlice/apis";
+import { deleteClientApi, getAllClientsApi, updateClientApi } from "src/store/slices/clientSlice/apis";
 import { getAllClientsSelector, isClientLoading } from "src/store/slices/clientSlice/selectors";
 import { Popconfirm, Table } from "antd";
 import Header from "../Header";
@@ -8,7 +8,6 @@ import EditButton from "src/components/buttons/EditButton";
 import DeleteButton from "src/components/buttons/DeleteButton";
 import Loader from "src/components/Loader";
 import { setSelectedClient } from "src/store/slices/clientSlice";
-import { updateUserApi } from "src/store/slices/userSlice/apis";
 import { StyledBadge } from "./styled";
 
 const ClientTable = () => {
@@ -16,20 +15,21 @@ const ClientTable = () => {
     const [isOpen, setIsOpen] = useState(false);
     const isLoading = useSelector(isClientLoading);
     const clients = useSelector(getAllClientsSelector);
+
     const handleChangeStatus = (e, record) => {
         e.stopPropagation();
         if (record._id) {
             const data = {
-                userId: record._id,
-                user: {
+                id: record._id,
+                data: {
                     ...record,
-                    status: record?.status === "active" ? 'inactive' : 'active'
+                    active: record?.active === "active" ? 'inactive' : 'active'
                 }
 
             };
-            dispatch(updateUserApi(data));
+            dispatch(updateClientApi(data));
         } else {
-            console.error("User record does not have a valid _id");
+            console.error("Client record does not have a valid _id");
         }
     };
     useEffect(() => {
@@ -53,11 +53,17 @@ const ClientTable = () => {
     };
 
     const columns = [
+
         {
             title: "Client Name",
             dataIndex: "clientName",
             key: "clientName",
             render: (text, record) => ((record?.apply?.clientName || record?.clientName || '').split(' ').map((name, index) => index === 0 || index === 1 ? name.charAt(0).toUpperCase() + name.slice(1).toLowerCase() : name).join(' '))
+        },
+        {
+            title: "Email",
+            dataIndex: "email",
+            key: "email",
         },
         {
             title: "Status",
@@ -69,7 +75,7 @@ const ClientTable = () => {
                 return (
                     <div className="d-flex gap-1">
                         <Popconfirm
-                            title={`Are you sure to ${isActive ? "deactivate" : "activate"} this User?`}
+                            title={`Are you sure to ${isActive ? "deactivate" : "activate"} this Client?`}
                             onConfirm={(e) => handleChangeStatus(e, record)}
                             okText="Yes"
                             cancelText="No"
@@ -88,6 +94,32 @@ const ClientTable = () => {
             render: (text, record) => record?.projectManager?.first_name,
 
         },
+        {
+            title: "Client Time Zone",
+            dataIndex: "clientTimeZone",
+            render: (text, record) => record?.clientTimeZone,
+
+        },
+
+        {
+            title: "Developer",
+            dataIndex: "developer?.first_name",
+            render: (text, record) => record?.developer?.first_name,
+
+        },
+        {
+            title: "Contract Type",
+            dataIndex: "contractType",
+            render: (text, record) => record?.contractType,
+
+        },
+        {
+            title: "Client Payment Cycle",
+            dataIndex: "clientPaymentCycle",
+            render: (text, record) => record?.clientPaymentCycle,
+
+        },
+
         {
             key: "action",
             title: "Action",
