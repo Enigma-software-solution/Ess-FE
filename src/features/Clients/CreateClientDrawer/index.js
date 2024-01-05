@@ -118,8 +118,13 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
         }
     };
 
+    const handleReset = () => {
+        form.setFieldsValue(initialFormValues);
+        handleDrawer()
+    }
+
     return (
-        <Drawer open={isOpen} onClose={handleDrawer} width={800} title={isEditMode ? "Update Client" : "Create Client"}>
+        <Drawer open={isOpen} onClose={handleReset} width={800} title={isEditMode ? "Update Client" : "Create Client"}>
 
             <Form form={form} layout="vertical" onFinish={handleSubmit}>
 
@@ -267,7 +272,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                 </Row>
                 <Form.Item>
                     <Space>
-                        <Button onClick={handleDrawer}>Cancel</Button>
+                        <Button onClick={handleReset}>Cancel</Button>
                         <Button type="primary" htmlType="submit">
                             Submit
                         </Button>
