@@ -119,7 +119,7 @@ function App() {
               <Route path="*" element={<NotFound />} />
             </Routes>
           </ConfigProvider>
-          <ToastContainer />
+          <ToastContainer autoClose={2000} />
         </ThemeProvider>
       </ErrorBoundary>
     </div>
