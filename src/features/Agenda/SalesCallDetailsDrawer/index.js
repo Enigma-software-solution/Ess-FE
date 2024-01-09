@@ -58,7 +58,7 @@ const SalesCallDetailsDrawer = () => {
   return (
     <div className="mb-1">
       <Drawer
-        title="Call information"
+        title="Call Information"
         placement="right"
         closable={true}
         onClose={onClose}
