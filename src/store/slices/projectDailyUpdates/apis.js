@@ -27,10 +27,11 @@ export const createDailyProjectUpdateApi = createAsyncThunk(
 );
 
 export const updateDailyUpdate = createAsyncThunk(
-  "user-daily-updates/user-daily-updates-newchanges",
+  "user-daily-updates/user-daily-updates",
   async (data, { rejectWithValue }) => {
       try {
-          const response = await api.patch(`/user-daily-updates/${data?.id}`, data?.data);
+        console.log(data)
+          const response = await api.patch(`/user-daily-updates/${data?._id}`, { content: data.content });
           toast.success("daily update Updated Successfully")
 
           return response;

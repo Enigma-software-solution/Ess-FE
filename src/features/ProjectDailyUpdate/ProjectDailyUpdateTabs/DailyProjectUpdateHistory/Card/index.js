@@ -7,7 +7,8 @@ import { Pagination } from 'swiper/modules';
 import { CardWrapper } from './styled';
 import TextArea from 'antd/es/input/TextArea';
 
-const ProjectUpdateCard = ({ record }) => {
+const ProjectUpdateCard = ({ dataSource }) => {
+
     const stripHtmlTags = (htmlString) => {
         if (!htmlString) {
             return "";
@@ -26,29 +27,30 @@ const ProjectUpdateCard = ({ record }) => {
                 spaceBetween={10}
                 style={{ padding: '30px', marginBottom: '40px' }}
             >
-                {record.map((record) => (
-
+                {dataSource.map((records) => (
+                   
                     <SwiperSlide>
                         <CardWrapper>
                             <Flex style={{ fontSize: '18px', fontWeight: '500' }}>
-                                 {record.project?.clientName || 'No client name'}
+                                 {records.project?.clientName || 'No client name'}
                             </Flex>
                             <hr />
                             <h6 className='text-center pb-2'>
-                                {record.project?.projectManager?.first_name} {record.project?.projectManager?.last_name || 'No project manager'}
+                                {records.project?.projectManager?.first_name} {records.project?.projectManager?.last_name || 'No project manager'}
                             </h6>
-                            <Form initialValues={{ content: stripHtmlTags(record?.content) }}>
+                            <Form initialValues={{ content: stripHtmlTags(records?.content) }}>
                                 <Form.Item name='content' rules={[{ required: true, message: 'Please enter an update.' }]}>
                                     <TextArea rows={2} placeholder='Update' readOnly="true" />
                                 </Form.Item>
                                 <Flex align='center' justify='end' className='mb-0'>
                                     <Form.Item name="date">
-                                        {format(new Date(record?.date), 'MM/dd/yyyy')}
+                                        {format(new Date(records?.date), 'MM/dd/yyyy')}
                                     </Form.Item>
                                 </Flex>
                             </Form>
                         </CardWrapper>
                     </SwiperSlide>
+                    
                 ))}
             </Swiper>
 

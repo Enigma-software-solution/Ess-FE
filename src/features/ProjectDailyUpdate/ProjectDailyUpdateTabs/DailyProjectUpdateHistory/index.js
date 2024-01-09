@@ -61,7 +61,7 @@ const UpdateProjectTable = () => {
 
     return (
         <div className='mt-4 px-5'>
-            {dailyUpdates &&   <ProjectUpdateCard record={dailyUpdates} />}
+            {dailyUpdates &&   <ProjectUpdateCard dataSource={dailyUpdates} />}
             <br /> <br /> <br />
             <Table dataSource={dailyUpdates} columns={columns} />;
         </div>

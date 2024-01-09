@@ -1,30 +1,26 @@
-import { Button, Flex, Popconfirm, } from 'antd';
+import { Button, Flex, Popconfirm } from 'antd';
 import format from 'date-fns/format';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import DeleteButton from 'src/components/buttons/DeleteButton';
 import EditButton from 'src/components/buttons/EditButton';
 import { deteleDailyProjectUpdatesApi, getDailyProjectUpdateApi, updateDailyUpdate } from 'src/store/slices/projectDailyUpdates/apis';
-import { getAllProjectDailyUpdates, getSelectedProjectDailyUpdates, getmodalVisible } from 'src/store/slices/projectDailyUpdates/selectors';
+import { getAllProjectDailyUpdates, getSelectedProjectDailyUpdates } from 'src/store/slices/projectDailyUpdates/selectors';
 import qs from 'qs';
 import { getLogedInUser } from 'src/store/slices/authSlice/selectors';
-import { useForm } from 'antd/es/form/Form';
-import Form from 'antd/es/form/Form';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from "swiper/modules";
 import { setSelectedProjectDailyUpdate } from 'src/store/slices/projectDailyUpdates';
 import TextArea from 'antd/es/input/TextArea';
 import { CardWrapper } from './styled';
 
-
-
 const ProjectDailyUpdateCards = () => {
     const dispatch = useDispatch();
-
     const authUser = useSelector(getLogedInUser);
     const todayAllUpdates = useSelector(getAllProjectDailyUpdates);
     const selectedProject = useSelector(getSelectedProjectDailyUpdates);
-    const [form] = useForm();
+
+    const [editedContentMap, setEditedContentMap] = useState({});
 
     const handleConfirmDelete = (recordToDelete, e) => {
         dispatch(deteleDailyProjectUpdatesApi(recordToDelete?._id));
@@ -39,9 +35,15 @@ const ProjectDailyUpdateCards = () => {
     };
 
     const handleSaveEdit = (record) => {
-
-        dispatch(setSelectedProjectDailyUpdate(record._id));
+        const newcontent = editedContentMap[record._id] || '';     
+        if (newcontent.trim() !== '') {
+            dispatch(updateDailyUpdate({ ...record, content: newcontent }));
+        }
+    
+        setEditedContentMap((prevMap) => ({ ...prevMap, [record._id]: '' })); 
+        dispatch(setSelectedProjectDailyUpdate(null));
     };
+    
 
     useEffect(() => {
         const params = qs.stringify({
@@ -49,7 +51,7 @@ const ProjectDailyUpdateCards = () => {
             user: authUser?.id,
         });
         dispatch(getDailyProjectUpdateApi(params));
-    }, []);
+    }, [authUser, dispatch]);
 
     const stripHtmlTags = (htmlString) => {
         if (!htmlString) {
@@ -58,6 +60,11 @@ const ProjectDailyUpdateCards = () => {
         const doc = new DOMParser().parseFromString(htmlString, 'text/html');
         return doc.body.textContent || '';
     };
+
+    const handleTextAreaChange = (recordId, value) => {
+        setEditedContentMap((prevMap) => ({...prevMap , [recordId]: value }))
+    };
+    console.log(editedContentMap,"@edited")
 
     return (
         <>
@@ -93,26 +100,28 @@ const ProjectDailyUpdateCards = () => {
                             <h6 className='text-center pb-2'>
                                 {record.project?.projectManager?.first_name} {record.project?.projectManager?.last_name || 'No project manager'}
                             </h6>
-                            <Form form={form[record._id]} initialValues={{ content: stripHtmlTags(record?.content) }}>
-                                <Form.Item name='content' rules={[{ required: true, message: 'Please enter an update.' }]}>
-                                    <TextArea rows={2} placeholder='Update' readOnly={selectedProject !== record} />
-                                </Form.Item>
-                                {selectedProject === record && (
-                                    <>
-                                        <Flex align='center' justify='start' className='mb-0'>
-                                            <Button onClick={() => handleSaveEdit(record)} type='primary' size='small'>
-                                                Submit
-                                            </Button>
-                                            <Button onClick={() => handleCancelEdit(record)} type='default' size='small'>
-                                                Cancel
-                                            </Button>
-                                        </Flex>
-                                    </>
-                                )}
-                                <Flex align='center' justify='end' className='mb-0'>
-                                    <Form.Item name='date'>{format(new Date(record?.date), 'MM/dd/yyyy')}</Form.Item>
-                                </Flex>
-                            </Form>
+                            <TextArea
+                                rows={7}
+                                placeholder='Update'
+                                readOnly={selectedProject !== record}
+                                defaultValue={editedContentMap[record._id] || stripHtmlTags(record?.content)}
+                                onChange={(e) => handleTextAreaChange(record._id, e.target.value)}
+                            />
+                            {selectedProject === record && (
+                                <>
+                                    <Flex align='center' justify='start' className='mb-1 mt-2'>
+                                        <Button onClick={() => handleSaveEdit(record)} type='primary' size='small'>
+                                            Submit
+                                        </Button>
+                                        <Button onClick={() => handleCancelEdit(record)} type='default' size='small'>
+                                            Cancel
+                                        </Button>
+                                    </Flex>
+                                </>
+                            )}
+                            <Flex align='center' justify='end' className='mt-4'>
+                                {format(new Date(record?.date), 'MM/dd/yyyy')}
+                            </Flex>
                         </CardWrapper>
                     </SwiperSlide>
                 ))}
@@ -122,5 +131,3 @@ const ProjectDailyUpdateCards = () => {
 };
 
 export default ProjectDailyUpdateCards;
-
-
