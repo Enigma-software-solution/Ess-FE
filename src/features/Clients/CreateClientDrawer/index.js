@@ -12,6 +12,7 @@ import CustomDropdown from 'src/components/CustomDropdown';
 import { ContractTypeDropdown } from 'src/constant/contracttype';
 import CustomInput from 'src/components/formElements/CustomInput';
 import CustomSelect from 'src/components/formElements/CustomSelect';
+import { getAllProfiles } from 'src/store/slices/profielSlice/selectors';
 
 
 const initialFormValues = {
@@ -34,7 +35,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
     const dispatch = useDispatch();
     const allUsers = useSelector(getAllUsers);
     const selectedClient = useSelector(getSelectedClient);
-
+    const allProfiles = useSelector(getAllProfiles);
     const [form] = Form.useForm();
 
     const usersWithProjectManagerRole = allUsers
@@ -68,7 +69,8 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                 profileTimeZone: selectedClient?.profileTimeZone || '',
                 teamLeadName: selectedClient?.teamLeadName || '',
                 developer: selectedClient?.developer || '',
-                paymentCycle: selectedClient?.paymentCycle || ''
+                paymentCycle: selectedClient?.paymentCycle || '',
+                profile: selectedClient?.profile?._id,
             });
         } else {
             form.setFieldsValue({
@@ -86,6 +88,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                 teamLeadName: initialFormValues?.teamLeadName,
                 developer: initialFormValues?.developer,
                 paymentCycle: initialFormValues?.paymentCycle,
+                profile: initialFormValues.profile,
 
             });
         }
@@ -231,6 +234,22 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                             form={form}
                         />
                     </Col>
+                    <Col span={12}>
+
+
+
+                        <CustomInput
+                            label="Profile"
+                            name="profile"
+                            placeholder="Please select profile "
+                            rules={[{ required: true, message: 'Please enter profile' }]}
+                            component={CustomSelect}
+                            options={allProfiles}
+                            valueField='_id'
+                            labelField='name'
+                        />
+                    </Col>
+
 
                     {/* <Col span={12}>
                         <Form.Item name="apply" label="Apply" >
