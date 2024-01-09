@@ -20,7 +20,7 @@ const ProfileTable = () => {
 
     const profileData = useSelector(getAllProfiles)
 
-    console.log(profileData, "testing")
+  
 
     const handleEdit = (record, e) => {
         e.stopPropagation();
