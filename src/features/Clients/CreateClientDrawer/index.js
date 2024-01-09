@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Row, Col, Input, Space, Drawer, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { createClientApi, updateClientApi } from 'src/store/slices/clientSlice/apis';
@@ -36,6 +36,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
     const allUsers = useSelector(getAllUsers);
     const selectedClient = useSelector(getSelectedClient);
     const allProfiles = useSelector(getAllProfiles);
+    const [fieldsEdited, setFieldsEdited] = useState(false);
     const [form] = Form.useForm();
 
     const usersWithProjectManagerRole = allUsers
@@ -52,7 +53,10 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
             name: `${user?.first_name} ${user?.last_name}`
         }));
 
-
+    useEffect(() => {
+        const isFormEdited = form.isFieldsTouched();
+        setFieldsEdited(isFormEdited);
+    }, [form]);
     useEffect(() => {
         if (selectedClient) {
             form.setFieldsValue({
@@ -102,7 +106,11 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
     })
     const isEditMode = !!selectedClient;
 
-
+    const handleCancel = () => {
+        form.resetFields(); // Reset form fields
+        setFieldsEdited(false); // Reset fieldsEdited state
+        handleDrawer();
+    };
     const handleSubmit = async () => {
         try {
             const values = await form.validateFields();
@@ -115,6 +123,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
             }
 
             form.setFieldsValue(initialFormValues);
+            setFieldsEdited(false);
             handleDrawer();
         } catch (error) {
             console.error('Please fill in all required fields.');
@@ -122,9 +131,9 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
     };
 
     return (
-        <Drawer open={isOpen} onClose={handleDrawer} width={800} title={isEditMode ? "Update Client" : "Create Client"}>
+        <Drawer open={isOpen} onClose={handleCancel} width={800} title={isEditMode ? "Update Client" : "Create Client"}>
 
-            <Form form={form} layout="vertical" onFinish={handleSubmit}>
+            <Form form={form} layout="vertical" onValuesChange={() => setFieldsEdited(true)}>
 
                 <Row gutter={16}>
 
@@ -286,9 +295,13 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                 </Row>
                 <Form.Item>
                     <Space>
-                        <Button onClick={handleDrawer}>Cancel</Button>
-                        <Button type="primary" htmlType="submit">
-                            Submit
+                        <Button onClick={handleCancel}>Cancel</Button>
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            disabled={!fieldsEdited && !!selectedClient}
+                        >
+                            {selectedClient ? 'Update' : 'Save'}
                         </Button>
                     </Space>
                 </Form.Item>
