@@ -118,6 +118,12 @@ const ClientTable = () => {
             render: (text, record) => record?.clientPaymentCycle,
 
         },
+        {
+            title: "Profile",
+            dataIndex: "profile",
+            render: (text, record) => record?.profile,
+
+        },
 
         {
             key: "action",
