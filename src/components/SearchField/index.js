@@ -1,6 +1,7 @@
 import React from 'react'
 import debounce from 'lodash/debounce';
 import Search from 'antd/es/input/Search';
+import { Input } from 'antd';
 
 const CustomSearchField = ({ onChange = () => { }, debounceTime = 1000 }) => {
 
@@ -8,7 +9,7 @@ const CustomSearchField = ({ onChange = () => { }, debounceTime = 1000 }) => {
 
     return (
         <div>
-            <Search size='large' placeholder="input search text" onChange={debouncedOnChange}  enterButton />
+            <Input size='large' style={{ width: '250px', borderRadius: "10px" }} placeholder="input search text" onChange={debouncedOnChange} enterButton />
         </div>
     )
 }
