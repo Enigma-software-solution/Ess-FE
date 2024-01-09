@@ -130,7 +130,7 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
                 <Form.Item>
                     <Space>
                         <Button onClick={handleDrawer}>Cancel</Button>
-                        <Button type="primary" htmlType="submit">
+                        <Button type="primary" htmlType="submit ">
                             Submit
                         </Button>
                     </Space>
