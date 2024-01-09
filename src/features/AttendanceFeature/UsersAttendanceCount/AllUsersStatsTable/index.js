@@ -59,7 +59,11 @@ const AllUsersStatsTable = () => {
             sorter: (a, b) => a.user.first_name.localeCompare(b.user.first_name),
             render: (text, record) => `${record?.user?.first_name} ${record?.user?.last_name}`,
         },
-
+        {
+            title: 'Present',
+            dataIndex: 'present',
+            key: 'present',
+        },
         {
             title: 'Absent',
             dataIndex: 'absent',
@@ -91,21 +95,23 @@ const AllUsersStatsTable = () => {
     const handleExport = () => {
         if (allStats) {
             const dataForExport = allStats.map((item) => ({
-                UserName: `${item?.user?.first_name} ${item?.user?.last_name}`,
+                Name: `${item?.user?.first_name} ${item?.user?.last_name}`,
                 Absent: item.absent,
-                Leave: item.leave,
-                'Half-Day': item.halfDay,
-                Vacation: item.vacation,
+                Present: item.present,
+                // Leave: item.leave,
+                // 'Half-Day': item.halfDay,
+                // Vacation: item.vacation,
                 Total: item.absent + item.leave + item.halfDay + item.vacation,
             }));
 
             // Calculate the total for the entire sheet
             const totalRow = {
-                UserName: 'Total',
+                Name: 'Total',
                 Absent: allStats.reduce((acc, item) => acc + item.absent, 0),
-                Leave: allStats.reduce((acc, item) => acc + item.leave, 0),
-                'Half-Day': allStats.reduce((acc, item) => acc + item.halfDay, 0),
-                Vacation: allStats.reduce((acc, item) => acc + item.vacation, 0),
+                Present: allStats.reduce((acc, item) => acc + item.present, 0),
+                // Leave: allStats.reduce((acc, item) => acc + item.leave, 0),
+                // 'Half-Day': allStats.reduce((acc, item) => acc + item.halfDay, 0),
+                // Vacation: allStats.reduce((acc, item) => acc + item.vacation, 0),
                 Total: allStats.reduce((acc, item) => acc + item.absent + item.leave + item.halfDay + item.vacation, 0),
             };
 
@@ -117,7 +123,7 @@ const AllUsersStatsTable = () => {
     };
     const disabledDate = (current) => {
         return current && current > dayjs().endOf('day');
-      };
+    };
 
     return (
         <StyledReportCount>
@@ -128,7 +134,7 @@ const AllUsersStatsTable = () => {
                 </Button>
             </Flex>
             <Space size={6} className='p-3 mb-3' style={{ boxShadow: '0px 8px 24px rgba(149,157,165,0.2)' }}>
-                <DatePicker picker='month' onChange={handleMonthChange} value={selectedMonth}  disabledDate={disabledDate}  />
+                <DatePicker picker='month' onChange={handleMonthChange} value={selectedMonth} disabledDate={disabledDate} />
                 <DatePicker picker='year' onChange={handleYearChange} value={selectedYear} disabledDate={disabledDate} />
             </Space>
 
