@@ -30,7 +30,7 @@ export const updateProfileApi = createAsyncThunk(
   "profile/patch-profile",
   async (data, { rejectWithValue }) => {
     try {
-      const response = await api.patch(`/profile/${data.id}`, data.data);
+      const response = await api.patch(`/profile/${data.id}`, data?.data);
       toast.success("Profile Updated Successfully")
 
       return response;
@@ -39,6 +39,8 @@ export const updateProfileApi = createAsyncThunk(
     }
   }
 );
+
+
 
 
 export const deteleProfileApi = createAsyncThunk(
