@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Row, Col, Input, Space, Drawer, Button } from 'antd';
+import { Form, Row, Col, Space, Drawer, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { createDailyAppliesApi, updateDailyAppliesApi } from 'src/store/slices/dailyApplySlice/apis';
 import { getProfilesApi } from 'src/store/slices/profielSlice/apis';

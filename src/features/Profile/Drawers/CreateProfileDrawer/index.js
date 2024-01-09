@@ -68,7 +68,6 @@ const CreateProfileDrawer = ({ isOpen, handleDrawer }) => {
         >
             <Form form={form}
                 layout="vertical"
-
                 onValuesChange={() => setFieldsEdited(true)}
             >
                 <Row gutter={16}>

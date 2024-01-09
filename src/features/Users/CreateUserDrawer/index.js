@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Form, Row, Col, Input, Select, Space, Drawer, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { getSelectedUser } from 'src/store/slices/userSlice/selectors';
@@ -20,12 +20,14 @@ const initialFormValues = {
 };
 
 const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
-    const authUser = useSelector(getLogedInUser)
-    const loggedInUserRole = authUser.role
+    const authUser = useSelector(getLogedInUser);
+    const loggedInUserRole = authUser.role;
     const dispatch = useDispatch();
     const selectedUser = useSelector(getSelectedUser);
 
     const [form] = Form.useForm();
+    const [fieldsEdited, setFieldsEdited] = useState(false);
+    const isEditMode = !!selectedUser;
 
     useEffect(() => {
         if (selectedUser) {
@@ -39,32 +41,38 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
             form.setFieldsValue(initialFormValues);
         }
     }, [selectedUser, form]);
-
-    const isEditMode = !!selectedUser;
-
+    useEffect(() => {
+        const isFormEdited = form.isFieldsTouched();
+        setFieldsEdited(isFormEdited);
+    }, [form]);
     const handleSubmit = async (values) => {
         try {
             const user = { ...values };
             if (isEditMode) {
                 dispatch(updateUserApi({ user, userId: selectedUser?._id }));
-            } else {
-                dispatch(registerUser(user));
+                form.setFieldsValue(initialFormValues);
+                setFieldsEdited(false);
+                handleDrawer();
             }
-            form.setFieldsValue(initialFormValues);
-            handleDrawer();
         } catch (error) {
             console.error('Form submission error:', error);
         }
     };
 
+    const handleCancel = () => {
+        form.setFieldsValue(initialFormValues);
+        setFieldsEdited(false);
+        handleDrawer();
+    };
+
     return (
         <Drawer
             open={isOpen}
-            onClose={handleDrawer}
+            onClose={handleCancel}
             width={800}
             title={isEditMode ? "Update User" : "Create User"}
         >
-            <Form form={form} layout="vertical" hideRequiredMark onFinish={handleSubmit}>
+            <Form form={form} layout="vertical" hideRequiredMark onFinish={handleSubmit} onValuesChange={() => setFieldsEdited(true)}>
                 <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item
@@ -129,10 +137,16 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
                 </Col>
                 <Form.Item>
                     <Space>
-                        <Button onClick={handleDrawer}>Cancel</Button>
-                        <Button type="primary" htmlType="submit ">
-                            Submit
-                        </Button>
+                        <Button onClick={handleCancel}>Cancel</Button>
+                        {!isEditMode ? (
+                            <Button type="primary" htmlType="submit">
+                                Save
+                            </Button>
+                        ) : (
+                            <Button type="primary" htmlType="submit" disabled={!fieldsEdited}>
+                                Update
+                            </Button>
+                        )}
                     </Space>
                 </Form.Item>
             </Form>

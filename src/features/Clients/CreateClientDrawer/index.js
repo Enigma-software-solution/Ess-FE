@@ -107,8 +107,8 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
     const isEditMode = !!selectedClient;
 
     const handleCancel = () => {
-        form.resetFields(); // Reset form fields
-        setFieldsEdited(false); // Reset fieldsEdited state
+        form.resetFields(); 
+        setFieldsEdited(false); 
         handleDrawer();
     };
     const handleSubmit = async () => {
