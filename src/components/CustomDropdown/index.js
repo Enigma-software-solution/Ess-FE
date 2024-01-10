@@ -3,7 +3,7 @@ import { Form, Select } from 'antd';
 
 const { Option } = Select;
 
-const UserDropdown = ({ placeholder, form, value, onChange, name, label, options }) => {
+const CustomDropdown = ({ placeholder, form, value, onChange, name, label, options, required = false }) => {
     const [selectedUserId, setSelectedUserId] = useState(value || null);
 
     const handleUserChange = (value) => {
@@ -28,7 +28,7 @@ const UserDropdown = ({ placeholder, form, value, onChange, name, label, options
             label={label}
             rules={[
                 {
-                    required: true,
+                    required: required,
                     message: placeholder ? placeholder : 'Please select an option'
                 }
             ]}
@@ -40,8 +40,8 @@ const UserDropdown = ({ placeholder, form, value, onChange, name, label, options
                 value={selectedUserId}
             >
                 {options && options?.map(option => (
-                    <Option key={option} >
-                        {option}
+                    <Option key={option?.id} value={option?._id} >
+                        {option?.name}
                     </Option>
                 ))}
             </Select>
@@ -49,4 +49,4 @@ const UserDropdown = ({ placeholder, form, value, onChange, name, label, options
     );
 };
 
-export default UserDropdown;
+export default CustomDropdown;

@@ -5,6 +5,7 @@ import { format } from "date-fns";
 import {
   checkEventDrawer,
   checkNotesDrawer,
+  getAllEvents,
   getSelectedEvent,
 } from "src/store/slices/agendaSlice/selector";
 import NotesDrawer from "../NotesDrawer";
@@ -25,6 +26,9 @@ const SalesCallDetailsDrawer = () => {
   const isEventDrawer = useSelector(checkEventDrawer);
   const isNotesDrawer = useSelector(checkNotesDrawer);
   const selectedEvent = useSelector(getSelectedEvent);
+  const event = useSelector(getAllEvents);
+
+  console.log(event, "eventssss")
 
   const handleNotesDrawer = () => {
     dispatch(showNotesDrawer());
@@ -48,6 +52,8 @@ const SalesCallDetailsDrawer = () => {
   const handleUpdate = () => {
     dispatch(showSalesDrawer());
   };
+
+  console.log(selectedEvent, "selecteddfdd")
 
   return (
     <div className="mb-1">
@@ -106,10 +112,10 @@ const SalesCallDetailsDrawer = () => {
                     <th className="fw-bold">Company Name :</th>
                     <td>{selectedEvent?.apply?.companyName}</td>
                   </tr>
-                  <tr>
+                  {/* <tr>
                     <th className="fw-bold">Call With :</th>
                     <td>{selectedEvent?.callWith}</td>
-                  </tr>
+                  </tr> */}
                   <tr>
                     <th className="fw-bold">Job Title :</th>
                     <td>{selectedEvent?.apply?.positionToApply}</td>
@@ -118,42 +124,42 @@ const SalesCallDetailsDrawer = () => {
                     <th className="fw-bold">Call Duration :</th>
                     <td>{selectedEvent?.callDuration} seconds</td>
                   </tr>
-                  <tr>
+                  {/* <tr>
                     <th className="fw-bold">Number of Guests :</th>
                     <td>{selectedEvent?.numOfGuests}</td>
-                  </tr>
+                  </tr> */}
                   <tr>
                     <th className="fw-bold">Call Type :</th>
                     <td>{selectedEvent?.callType}</td>
                   </tr>
-                  <tr>
+                  {/* <tr>
                     <th className="fw-bold">Call Mode :</th>
                     <td>{selectedEvent?.callMode}</td>
-                  </tr>
+                  </tr> */}
                   <tr>
                     <th className="fw-bold">Apply Platform :</th>
                     <td>{selectedEvent?.apply?.platform}</td>
                   </tr>
-                  <tr>
+                  {/* <tr>
                     <th className="fw-bold">Call Platform :</th>
                     <td>{selectedEvent?.callPlatform}</td>
-                  </tr>
-                  <tr>
+                  </tr> */}
+                  {/* <tr>
                     <th className="fw-bold">Mail Link :</th>
                     <td>
                       <a href={selectedEvent?.mailLink}>Mail</a>
                     </td>
-                  </tr>
+                  </tr> */}
                   <tr>
                     <th className="fw-bold">Call Link :</th>
                     <td>
-                      <a href={selectedEvent?.callLink}>Call</a>
+                      <a href={selectedEvent?.callLink} target="_blank">Call</a>
                     </td>
                   </tr>
                   <tr>
                     <th className="fw-bold">Apply Link :</th>
                     <td>
-                      <a href={selectedEvent?.apply?.link}>Apply Link</a>
+                      <a href={selectedEvent?.apply?.link} target="_blank">Apply Link</a>
                     </td>
                   </tr>
                   <tr>

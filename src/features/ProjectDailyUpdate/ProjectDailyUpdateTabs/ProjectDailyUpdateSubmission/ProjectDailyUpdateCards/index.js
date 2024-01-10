@@ -119,7 +119,7 @@ const ProjectDailyUpdateCards = () => {
                                     </Flex>
                                 </>
                             )}
-                            <Flex align='center' justify='end' className='mt-4'>
+                            <Flex align='center' justify='end' className='mt-2'>
                                 {format(new Date(record?.date), 'MM/dd/yyyy')}
                             </Flex>
                         </CardWrapper>

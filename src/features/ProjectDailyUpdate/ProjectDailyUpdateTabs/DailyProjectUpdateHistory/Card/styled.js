@@ -7,9 +7,9 @@ export const CardWrapper = styled(Card)`
   overflow: hidden;
   box-shadow: 4px 2px 20px -7px  rgba(0,0,0,0.5);
   transition: box-shadow 0.3s ease-in-out;
-  height:300px;
+  min-height:320px;
   background-color:  #fafafa;
-  padding: 10px;
+  padding: 5px;
 
   &:hover {
     cursor: pointer;

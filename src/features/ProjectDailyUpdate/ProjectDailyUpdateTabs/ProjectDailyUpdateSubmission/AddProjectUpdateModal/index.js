@@ -52,6 +52,9 @@ const AddProjectDailyUpdateModal = ({ open, handleClose, selectedProject }) => {
                 }
             }
     
+            dispatch(createDailyProjectUpdateApi(formData));
+            form.resetFields();
+            handleCancel();
         } catch (error) {
             console.error("An error occurred:", error);
         }
@@ -133,7 +136,7 @@ const AddProjectDailyUpdateModal = ({ open, handleClose, selectedProject }) => {
                     </Form.Item>
 
                     <Form.Item>
-                    <Flex justify="end" gap={4} className='mt-5'>
+                    <Flex justify="end" gap={4} className='mt-3'>
                         <Button onClick={handleCancel}>Cancel</Button>
                         <Button type="primary" htmlType="submit">
                             {selectedProject ? "Update" : 'Save'}

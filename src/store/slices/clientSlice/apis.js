@@ -20,6 +20,7 @@ export const createClientApi = createAsyncThunk(
             return response;
         } catch (error) {
             toast.warn(error.response.data.message || error?.message)
+            toast.warn(error?.message)
             return rejectWithValue(error.response?.data || "An error occurred");
         }
     }
@@ -29,18 +30,18 @@ export const createClientApi = createAsyncThunk(
 export const updateClientApi = createAsyncThunk(
     "client/patch-client",
     async (data, { rejectWithValue }) => {
-      try {
-        const response = await api.patch(`/client/${data?.id}`, data?.data);
-        toast.success("Client Updated Successfully")
-  
-        return response;
-      } catch (error) {
-        toast.error(error?.message)
-        return rejectWithValue(error.response?.data || "An error occurred");
-      }
+        try {
+            const response = await api.patch(`/client/${data?.id}`, data?.data);
+            toast.success("Client Updated Successfully")
+
+            return response;
+        } catch (error) {
+            toast.error(error?.message)
+            return rejectWithValue(error.response?.data || "An error occurred");
+        }
     }
-  );
-  
+);
+
 
 
 export const deleteClientApi = createAsyncThunk(

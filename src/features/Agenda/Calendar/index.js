@@ -135,7 +135,7 @@ const CustomCalendar = () => {
         popup
         eventPropGetter={getEventStyle}
         onView={onView}
-        defaultView={Views.MONTH}
+        defaultView={Views.WEEK}
         views={["day", "week", "work_week", "month", "agenda"]}
         min={new Date(0, 0, 0, workDayStartHour)}
         max={new Date(0, 0, 0, workDayEndHour)}
