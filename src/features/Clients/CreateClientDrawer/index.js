@@ -13,6 +13,7 @@ import { ContractTypeDropdown } from 'src/constant/contracttype';
 import CustomInput from 'src/components/formElements/CustomInput';
 import CustomSelect from 'src/components/formElements/CustomSelect';
 import { getAllProfiles } from 'src/store/slices/profielSlice/selectors';
+import { getProfilesApi } from 'src/store/slices/profielSlice/apis';
 
 
 const initialFormValues = {
@@ -57,6 +58,13 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
         const isFormEdited = form.isFieldsTouched();
         setFieldsEdited(isFormEdited);
     }, [form]);
+
+    useEffect(() => {
+        if (!allProfiles?.length) {
+            dispatch(getProfilesApi());
+        }
+    }, []);
+
     useEffect(() => {
         if (selectedClient) {
             form.setFieldsValue({
@@ -98,6 +106,9 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
         }
     }, [selectedClient, form]);
 
+    // useEffect(() => {
+    //     dispatch(getAllProfiles())
+    // })
 
     useEffect(() => {
         if (!allUsers || allUsers?.length === 0) {
@@ -107,8 +118,8 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
     const isEditMode = !!selectedClient;
 
     const handleCancel = () => {
-        form.resetFields(); 
-        setFieldsEdited(false); 
+        form.resetFields();
+        setFieldsEdited(false);
         handleDrawer();
     };
     const handleSubmit = async () => {
@@ -133,7 +144,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
     return (
         <Drawer open={isOpen} onClose={handleCancel} width={800} title={isEditMode ? "Update Client" : "Create Client"}>
 
-            <Form form={form} layout="vertical" onValuesChange={() => setFieldsEdited(true)}>
+            <Form form={form} layout="vertical" onFinish={handleSubmit} onValuesChange={() => setFieldsEdited(true)}>
 
                 <Row gutter={16}>
 
@@ -234,8 +245,8 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
 
 
                         <CustomInput
-                            label="Client Payment Cycle"
                             name='clientPaymentCycle'
+                            label="Client Payment Cycle"
                             component={CustomSelect}
                             placeholder="Please select Client Payment"
                             options={paymentCycleDropdown}

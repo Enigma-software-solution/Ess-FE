@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Row, Col, Input, Select, Space, Drawer, Button } from 'antd';
+import { Form, Row, Col, Input, Select, Space, Drawer, Button, DatePicker } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { getSelectedUser } from 'src/store/slices/userSlice/selectors';
 import { updateUserApi } from 'src/store/slices/userSlice/apis';
@@ -7,6 +7,7 @@ import { registerUser } from 'src/store/slices/authSlice/apis';
 import CustomInput from 'src/components/formElements/CustomInput';
 import { ROLES, rolesDropdown } from 'src/constant/roles';
 import CustomSelect from 'src/components/formElements/CustomSelect';
+import dayjs from 'dayjs'
 import { getLogedInUser } from 'src/store/slices/authSlice/selectors';
 
 const { Option } = Select;
@@ -24,7 +25,7 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
     const loggedInUserRole = authUser.role;
     const dispatch = useDispatch();
     const selectedUser = useSelector(getSelectedUser);
-
+    const [selectedDate, setSelectedDate] = useState(new Date())
     const [form] = Form.useForm();
     const [fieldsEdited, setFieldsEdited] = useState(false);
     const isEditMode = !!selectedUser;
@@ -45,6 +46,15 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
         const isFormEdited = form.isFieldsTouched();
         setFieldsEdited(isFormEdited);
     }, [form]);
+
+    // const isEditMode = !!selectedUser;
+    const onChange = (date, dateString) => {
+        setSelectedDate(date)
+    };
+    const disabledDate = (current) => {
+        return current && current > dayjs().endOf('day');
+    };
+
     const handleSubmit = async (values) => {
         try {
             const user = { ...values };
@@ -91,9 +101,7 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
                         >
                             <Input placeholder="Please enter Last Name" />
                         </Form.Item>
-
                     </Col>
-
                 </Row>
 
                 {!isEditMode && (
@@ -120,21 +128,40 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
                         </Row>
                     </>
                 )}
-                <Col>
 
-                    <Form.Item>
-                        <CustomInput
-                            disabled={loggedInUserRole !== ROLES.ADMIN}
+                <Row gutter={16}>
+                    <Col span={12}>
+                        <Form.Item
+                            label="Joining Date"
+                            name="joining_date"
+                            rules={[{ required: true, message: 'Please select Joining Date' }]}
+                        >
+                            <DatePicker
+                                onChange={onChange}
+                                allowClear={false}
+                                defaultValue={dayjs()}
+                                disabledDate={disabledDate}
+                                style={{ width: '100%' }}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item
                             label="Roles"
                             name="role"
                             rules={[{ required: true }]}
-                            component={CustomSelect}
-                            placeholder="Select Role"
-                            options={rolesDropdown}
-                            style={{ width: "200px" }}
-                        />
-                    </Form.Item>
-                </Col>
+                        >
+                            <CustomInput
+                                disabled={loggedInUserRole !== ROLES.ADMIN}
+                                component={CustomSelect}
+                                placeholder="Select Role"
+                                options={rolesDropdown}
+                                style={{ width: '100%' }}
+                            />
+                        </Form.Item>
+                    </Col>
+                </Row>
+
                 <Form.Item>
                     <Space>
                         <Button onClick={handleCancel}>Cancel</Button>

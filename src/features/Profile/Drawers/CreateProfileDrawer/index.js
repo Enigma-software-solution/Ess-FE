@@ -38,8 +38,8 @@ const CreateProfileDrawer = ({ isOpen, handleDrawer }) => {
     }, [form]);
 
     const handleCancel = () => {
-        form.resetFields(); 
-        setFieldsEdited(false); 
+        form.resetFields();
+        setFieldsEdited(false);
         handleDrawer();
     };
 
@@ -69,6 +69,7 @@ const CreateProfileDrawer = ({ isOpen, handleDrawer }) => {
             <Form form={form}
                 layout="vertical"
                 onValuesChange={() => setFieldsEdited(true)}
+                onFinish={handleSubmit}
             >
                 <Row gutter={16}>
                     <Col span={12}>
