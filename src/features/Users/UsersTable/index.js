@@ -96,6 +96,11 @@ const UserTable = () => {
             key: "email",
         },
         {
+            title: "Joining Date",
+            dataIndex: "joiningdate",
+            key: "joiningdate",
+        },
+        {
             title: "Role",
             dataIndex: "role",
         },

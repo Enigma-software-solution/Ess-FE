@@ -9,6 +9,7 @@ import DeleteButton from "src/components/buttons/DeleteButton";
 import Loader from "src/components/Loader";
 import { setSelectedClient } from "src/store/slices/clientSlice";
 import { StyledBadge } from "./styled";
+import { toast } from 'react-toastify';
 
 const ClientTable = () => {
     const dispatch = useDispatch();
@@ -39,12 +40,15 @@ const ClientTable = () => {
             console.log(err);
         }
     }, []);
-
     const handleConfirmDelete = (recordToDelete, e) => {
         e.stopPropagation();
         dispatch(deleteClientApi(recordToDelete._id));
     };
 
+    const handleDisabledDeleteClick = (e) => {
+        e.stopPropagation();
+        toast.warn('Active clients cannot be deleted.');
+    };
     const handleEdit = (record, e) => {
         e.stopPropagation();
         dispatch(setSelectedClient(record));
@@ -118,27 +122,42 @@ const ClientTable = () => {
             render: (text, record) => record?.clientPaymentCycle,
 
         },
-
         {
             key: "action",
             title: "Action",
             dataIndex: "action",
-            render: (text, record) => (
-                <div className="d-flex gap-1">
-                    <EditButton onClick={(e) => handleEdit(record, e)} />
-                    <Popconfirm
-                        title="Are you sure to delete this client?"
-                        onConfirm={(e) => handleConfirmDelete(record, e)}
-                        onCancel={(e) => e.stopPropagation()}
-                        okText="Yes"
-                        cancelText="No"
-                    >
-                        <DeleteButton onClick={(e) => e.stopPropagation()}>Delete</DeleteButton>
-                    </Popconfirm>
-                </div>
-            ),
+            render: (text, record) => {
+                const isClientActive = record.active === 'active';
+
+                return (
+                    <div className="d-flex gap-1">
+                        <EditButton onClick={(e) => handleEdit(record, e)} />
+                        {isClientActive ? (
+                            <DeleteButton disabled onClick={(e) => handleDisabledDeleteClick(e)}>
+                                Delete (Active)
+                            </DeleteButton>
+                        ) : (
+                            <Popconfirm
+                                title="Are you sure to delete this client?"
+                                onConfirm={(e) => handleConfirmDelete(record, e)}
+                                onCancel={(e) => e.stopPropagation()}
+                                okText="Yes"
+                                cancelText="No"
+                                disabled={isClientActive}
+                            >
+                                <DeleteButton onClick={(e) => e.stopPropagation()}>
+                                    Delete
+                                </DeleteButton>
+                            </Popconfirm>
+                        )}
+                    </div>
+                );
+            },
         },
     ];
+
+
+
 
     if (isLoading) {
         return <Loader />
