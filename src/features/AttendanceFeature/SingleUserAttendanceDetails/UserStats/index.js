@@ -7,6 +7,7 @@ import { format } from 'date-fns';
 import { StyledStatusCard } from './styled';
 import qs from 'qs';
 import { DatePicker } from 'antd';
+import dayjs from 'dayjs';
 
 const { MonthPicker, YearPicker } = DatePicker;
 
@@ -76,8 +77,8 @@ const UserStats = ({ userId }) => {
         <div>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <MonthPicker onChange={handleMonthChange} placeholder="Select month" value={selectedMonth} />
-                    <YearPicker onChange={handleYearChange} placeholder='Select Year' value={selectedYear} />
+                    <MonthPicker onChange={handleMonthChange} placeholder="Select month" defaultValue={dayjs()} />
+                    <YearPicker onChange={handleYearChange} placeholder='Select Year' defaultValue={dayjs()} />
                 </div>
             </div>
             <Card title="Attendance Stats" style={{ width: 300, color: '#4154F1' }}>
