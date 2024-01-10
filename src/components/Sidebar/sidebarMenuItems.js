@@ -113,14 +113,14 @@ export const sidebarMenuItems = [
         title: 'Users',
         icon: <UserSwitchOutlined />,
         path: routes.USERS,
-        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.HR],
+        roles: [ROLES.SUPER_ADMIN, ROLES.HR, ROLES.ADMIN],
     },
     {
         key: routes.NEW_UPDATE,
         title: 'Project Update',
         icon: <ProjectOutlined />,
         path: routes.NEW_UPDATE,
-        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.HR, ROLES.USER, ROLES.SALES_EXECUTIVE],
+        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.HR, ROLES.USER],
     },
     {
         key: routes.POLICIES,
