@@ -13,6 +13,7 @@ import { ContractTypeDropdown } from 'src/constant/contracttype';
 import CustomInput from 'src/components/formElements/CustomInput';
 import CustomSelect from 'src/components/formElements/CustomSelect';
 import { getAllProfiles } from 'src/store/slices/profielSlice/selectors';
+import { getProfilesApi } from 'src/store/slices/profielSlice/apis';
 
 
 const initialFormValues = {
@@ -93,7 +94,11 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
             });
         }
     }, [selectedClient, form]);
-
+    useEffect(() => {
+        if (!allProfiles?.length) {
+            dispatch(getProfilesApi());
+        }
+    }, []);
 
     useEffect(() => {
         if (!allUsers || allUsers?.length === 0) {
