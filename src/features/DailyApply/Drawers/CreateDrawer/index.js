@@ -26,7 +26,6 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
   const userId = useSelector(getUserId);
   const allProfiles = useSelector(getAllProfiles);
   const selectedApply = useSelector(getSelectedApply);
-
   const [form] = Form.useForm();
 
   useEffect(() => {
@@ -90,7 +89,6 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
     <Drawer open={isOpen} onClose={handleDrawer} width={800}
       title={selectedApply ? 'Update Daily Apply' : 'Create Daily Apply'}
     >
-
       <Form form={form}
         layout="vertical"
         onFinish={handleSubmit}
@@ -114,7 +112,6 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
               type="text"
             />
           </Col>
-
         </Row>
         <Row gutter={16}>
           <Col span={12}>
@@ -129,7 +126,6 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
               labelField='name'
             />
           </Col>
-
           <Col span={12}>
             <CustomInput
               name="platform"
@@ -153,7 +149,6 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
             />
           </Col>
           <Col span={12}>
-
             <CustomInput
               name="clientJobPosition"
               label="Client Job Position"
@@ -163,7 +158,6 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
             />
           </Col>
         </Row>
-
         <Form.Item>
           <Space>
             <Button onClick={handleDrawer}>Cancel</Button>

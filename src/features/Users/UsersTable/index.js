@@ -13,6 +13,7 @@ import Loader from "src/components/Loader";
 import { Link, useNavigate } from "react-router-dom";
 import { routes } from "src/constant/routes";
 import { capitalize } from "lodash";
+import dayjs from "dayjs";
 
 const UserTable = () => {
 
@@ -97,8 +98,10 @@ const UserTable = () => {
         },
         {
             title: "Joining Date",
-            dataIndex: "joiningdate",
-            key: "joiningdate",
+            dataIndex: "joining_date",
+            key: "joining_date",
+            width: 150,
+            render: (text, record) => dayjs(record?.joining_date).format('YYYY-MM-DD'),
         },
         {
             title: "Role",
