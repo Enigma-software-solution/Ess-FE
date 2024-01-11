@@ -127,8 +127,14 @@ const ClientTable = () => {
             title: "Client Payment Cycle",
             dataIndex: "clientPaymentCycle",
             render: (text, record) => record?.clientPaymentCycle,
+        },
+        {
+            title: "Profile",
+            dataIndex: "profile?.name",
+            render: (text, record) => record?.profile?.name,
 
         },
+
         {
             key: "action",
             title: "Action",

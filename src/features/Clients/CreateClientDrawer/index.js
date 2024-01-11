@@ -12,6 +12,8 @@ import CustomDropdown from 'src/components/CustomDropdown';
 import { ContractTypeDropdown } from 'src/constant/contracttype';
 import CustomInput from 'src/components/formElements/CustomInput';
 import CustomSelect from 'src/components/formElements/CustomSelect';
+import { getAllProfiles } from 'src/store/slices/profielSlice/selectors';
+import { getProfilesApi } from 'src/store/slices/profielSlice/apis';
 import dayjs from 'dayjs'
 
 const initialFormValues = {
@@ -28,12 +30,14 @@ const initialFormValues = {
     teamLeadName: '',
     developer: '',
     paymentCycle: '',
+    profile: ''
 };
 
 const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
     const dispatch = useDispatch();
     const allUsers = useSelector(getAllUsers);
     const selectedClient = useSelector(getSelectedClient);
+    const allProfiles = useSelector(getAllProfiles);
     const [selectedDate, setSelectedDate] = useState(new Date())
 
     const [form] = Form.useForm();
@@ -68,7 +72,8 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                 profileTimeZone: selectedClient?.profileTimeZone || '',
                 teamLeadName: selectedClient?.teamLeadName || '',
                 developer: selectedClient?.developer || '',
-                paymentCycle: selectedClient?.paymentCycle || ''
+                paymentCycle: selectedClient?.paymentCycle || '',
+                profile: selectedClient?.profile?._id,
             });
         } else {
             form.setFieldsValue({
@@ -86,16 +91,24 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                 teamLeadName: initialFormValues?.teamLeadName,
                 developer: initialFormValues?.developer,
                 paymentCycle: initialFormValues?.paymentCycle,
+                profile: initialFormValues.profile,
 
             });
         }
     }, [selectedClient, form]);
 
     useEffect(() => {
+        if (!allProfiles?.length) {
+            dispatch(getProfilesApi());
+        }
+    }, []);
+
+    useEffect(() => {
         if (!allUsers || allUsers?.length === 0) {
             dispatch(getAllUsersApi())
         }
     })
+
     const isEditMode = !!selectedClient;
 
     const onChange = (date, dateString) => {
@@ -230,6 +243,21 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                         />
                     </Col>
                     <Col span={12}>
+
+
+
+                        <CustomInput
+                            label="Profile"
+                            name="profile"
+                            placeholder="Please select profile "
+                            rules={[{ required: true, message: 'Please enter profile' }]}
+                            component={CustomSelect}
+                            options={allProfiles}
+                            valueField='_id'
+                            labelField='name'
+                        />
+                    </Col >
+                    <Col span={12}>
                         <Form.Item
                             label="Created On"
                             name="createdOn"
@@ -280,7 +308,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
 
                     </Col> */}
 
-                </Row>
+                </Row >
                 <Form.Item>
                     <Space>
                         <Button onClick={handleDrawer}>Cancel</Button>
@@ -289,7 +317,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                         </Button>
                     </Space>
                 </Form.Item>
-            </Form>
+            </Form >
         </Drawer >
     );
 };
