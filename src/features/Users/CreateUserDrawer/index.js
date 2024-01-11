@@ -11,7 +11,6 @@ import dayjs from 'dayjs'
 import { getLogedInUser } from 'src/store/slices/authSlice/selectors';
 
 const { Option } = Select;
-
 const initialFormValues = {
     email: '',
     first_name: '',
@@ -40,7 +39,6 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
             form.setFieldsValue(initialFormValues);
         }
     }, [selectedUser, form]);
-
     const isEditMode = !!selectedUser;
     const onChange = (date, dateString) => {
         setSelectedDate(date)
@@ -48,7 +46,6 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
     const disabledDate = (current) => {
         return current && current > dayjs().endOf('day');
     };
-
     const handleSubmit = async (values) => {
         try {
             const user = { ...values };
@@ -150,7 +147,6 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
                         </Form.Item>
                     </Col>
                 </Row>
-
                 <Form.Item>
                     <Space>
                         <Button onClick={handleDrawer}>Cancel</Button>

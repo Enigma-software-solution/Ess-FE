@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Form, Row, Col, Input, Space, Drawer, Button } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Form, Row, Col, Input, Space, Drawer, Button, DatePicker } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { createClientApi, updateClientApi } from 'src/store/slices/clientSlice/apis';
 import { getAllUsers } from 'src/store/slices/userSlice/selectors';
@@ -12,7 +12,7 @@ import CustomDropdown from 'src/components/CustomDropdown';
 import { ContractTypeDropdown } from 'src/constant/contracttype';
 import CustomInput from 'src/components/formElements/CustomInput';
 import CustomSelect from 'src/components/formElements/CustomSelect';
-
+import dayjs from 'dayjs'
 
 const initialFormValues = {
     email: '',
@@ -34,6 +34,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
     const dispatch = useDispatch();
     const allUsers = useSelector(getAllUsers);
     const selectedClient = useSelector(getSelectedClient);
+    const [selectedDate, setSelectedDate] = useState(new Date())
 
     const [form] = Form.useForm();
 
@@ -50,7 +51,6 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
             id: user._id,
             name: `${user?.first_name} ${user?.last_name}`
         }));
-
 
     useEffect(() => {
         if (selectedClient) {
@@ -91,7 +91,6 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
         }
     }, [selectedClient, form]);
 
-
     useEffect(() => {
         if (!allUsers || allUsers?.length === 0) {
             dispatch(getAllUsersApi())
@@ -99,6 +98,12 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
     })
     const isEditMode = !!selectedClient;
 
+    const onChange = (date, dateString) => {
+        setSelectedDate(date)
+    };
+    const disabledDate = (current) => {
+        return current && current > dayjs().endOf('day');
+    };
 
     const handleSubmit = async () => {
         try {
@@ -120,11 +125,8 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
 
     return (
         <Drawer open={isOpen} onClose={handleDrawer} width={800} title={isEditMode ? "Update Client" : "Create Client"}>
-
             <Form form={form} layout="vertical" onFinish={handleSubmit}>
-
                 <Row gutter={16}>
-
                     <Col span={12}>
                         <Form.Item
                             name="clientName"
@@ -153,7 +155,6 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                             form={form}
                         />
                     </Col>
-
                     <Col span={12}>
                         <CustomDropdown
                             name='developer'
@@ -164,9 +165,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                             form={form}
                         />
                     </Col>
-
                     <Col span={12}>
-
                         <CustomInput
                             label="Client Time Zone "
                             name='clientTimeZone'
@@ -208,7 +207,6 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-
                         <CustomInput
                             label="Profile Time Zone"
                             name='profileTimeZone'
@@ -230,6 +228,24 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                             rules={[{ required: true }]}
                             form={form}
                         />
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item
+                            label="Created On"
+                            name="createdOn"
+                            rules={[{ required: true, message: 'Please select Created On Date' }]}
+                        >
+                            <DatePicker
+                                onChange={onChange}
+                                allowClear={false}
+                                defaultValue={dayjs()}
+                                disabledDate={disabledDate}
+                                style={{ width: '100%' }}
+                                showTime={false}
+                                picker='date'
+
+                            />
+                        </Form.Item>
                     </Col>
 
                     {/* <Col span={12}>
