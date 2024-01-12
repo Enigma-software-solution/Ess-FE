@@ -10,13 +10,14 @@ import Loader from "src/components/Loader";
 import { setSelectedClient } from "src/store/slices/clientSlice";
 import { StyledBadge } from "./styled";
 import { toast } from 'react-toastify';
+import dayjs from 'dayjs';
+
 
 const ClientTable = () => {
     const dispatch = useDispatch();
     const [isOpen, setIsOpen] = useState(false);
     const isLoading = useSelector(isClientLoading);
     const clients = useSelector(getAllClientsSelector);
-
     const handleChangeStatus = (e, record) => {
         e.stopPropagation();
         if (record._id) {
@@ -98,12 +99,18 @@ const ClientTable = () => {
 
         },
         {
+            title: "Created On",
+            dataIndex: "createdOn",
+            key: "createdOn",
+            width: 150,
+            render: (text, record) => dayjs(record?.createdOn).format('YYYY-MM-DD'),
+        },
+        {
             title: "Client Time Zone",
             dataIndex: "clientTimeZone",
             render: (text, record) => record?.clientTimeZone,
 
         },
-
         {
             title: "Developer",
             dataIndex: "developer?.first_name",
@@ -120,12 +127,11 @@ const ClientTable = () => {
             title: "Client Payment Cycle",
             dataIndex: "clientPaymentCycle",
             render: (text, record) => record?.clientPaymentCycle,
-
         },
         {
             title: "Profile",
-            dataIndex: "profile",
-            render: (text, record) => record?.profile,
+            dataIndex: "profile?.name",
+            render: (text, record) => record?.profile?.name,
 
         },
 
@@ -162,9 +168,6 @@ const ClientTable = () => {
             },
         },
     ];
-
-
-
 
     if (isLoading) {
         return <Loader />

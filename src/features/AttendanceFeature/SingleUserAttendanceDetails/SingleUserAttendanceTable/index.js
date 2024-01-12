@@ -7,6 +7,7 @@ import qs from 'qs';
 import { getAllAttendanceApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api';
 import { CheckAttendanceStatusColor } from 'src/components/Utils/checkAttendanceStatusColor';
 import { StyleNotesText } from './styled';
+import dayjs from 'dayjs';
 
 const { RangePicker, MonthPicker, YearPicker } = DatePicker;
 
@@ -55,12 +56,19 @@ const columns = [
         ),
     },
     {
-        title: 'Status',
-        dataIndex: 'status',
-        key: 'status',
+        title: "Status",
+        dataIndex: "status",
         render: (text) => {
+            const tagStyle = {
+                width: '60px',
+                display: 'inline-block',
+                textAlign: 'center',
+            };
+
             return (
-                <Tag color={CheckAttendanceStatusColor(text)}>{text}</Tag>
+                <Tag color={CheckAttendanceStatusColor(text)} style={tagStyle}>
+                    {text}
+                </Tag>
             );
         },
     },
@@ -106,15 +114,22 @@ const SingleUserAttendancTable = ({ userId }) => {
     };
 
     useEffect(() => {
-        getAttendanceReports();    
+        const currentDate = dayjs();
+        const month = currentDate.format('MMM');
+        const startDate = currentDate.subtract(6, 'days').format('YYYY-MM-DD');
+        const endDate = currentDate.format('YYYY-MM-DD');
+
+        getAttendanceReports(month, startDate, endDate);
     }, [userId]);
-   
+
+    const defaultStartDate = dayjs().subtract(6, 'days');
+    const defaultEndDate = dayjs();
     return (
         <StyledPage>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: "20px" }}>
-                    <MonthPicker onChange={handleMonthChange} placeholder="Select month" />
-                    <RangePicker onChange={handleRangePicker} />
+                    <MonthPicker onChange={handleMonthChange} placeholder="Select month" defaultValue={dayjs()} />
+                    <RangePicker onChange={handleRangePicker} defaultValue={[defaultStartDate, defaultEndDate]} />
                 </div>
 
             </div>

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Row, Col, Input, Space, Drawer, Button } from 'antd';
+import { Form, Row, Col, Input, Space, Drawer, Button, DatePicker } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { createClientApi, updateClientApi } from 'src/store/slices/clientSlice/apis';
 import { getAllUsers } from 'src/store/slices/userSlice/selectors';
@@ -14,7 +14,7 @@ import CustomInput from 'src/components/formElements/CustomInput';
 import CustomSelect from 'src/components/formElements/CustomSelect';
 import { getAllProfiles } from 'src/store/slices/profielSlice/selectors';
 import { getProfilesApi } from 'src/store/slices/profielSlice/apis';
-
+import dayjs from 'dayjs'
 
 const initialFormValues = {
     email: '',
@@ -30,6 +30,7 @@ const initialFormValues = {
     teamLeadName: '',
     developer: '',
     paymentCycle: '',
+    profile: ''
 };
 
 const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
@@ -38,6 +39,8 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
     const selectedClient = useSelector(getSelectedClient);
     const allProfiles = useSelector(getAllProfiles);
     const [fieldsEdited, setFieldsEdited] = useState(false);
+    const [selectedDate, setSelectedDate] = useState(new Date())
+
     const [form] = Form.useForm();
 
     const usersWithProjectManagerRole = allUsers
@@ -79,9 +82,9 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                 clientLocation: selectedClient?.clientLocation || '',
                 clientTimeZone: selectedClient?.clientTimeZone || '',
                 profileTimeZone: selectedClient?.profileTimeZone || '',
-                teamLeadName: selectedClient?.teamLeadName || '',
-                developer: selectedClient?.developer || '',
-                paymentCycle: selectedClient?.paymentCycle || '',
+                clientTeamLead: selectedClient?.clientTeamLead || '',
+                developer: selectedClient?.developer?._id || '',
+                clientPaymentCycle: selectedClient?.clientPaymentCycle || '',
                 profile: selectedClient?.profile?._id,
             });
         } else {
@@ -97,24 +100,21 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                 clientLocation: initialFormValues?.clientLocation,
                 clientTimeZone: initialFormValues?.clientTimeZone,
                 profileTimeZone: initialFormValues?.profileTimeZone,
-                teamLeadName: initialFormValues?.teamLeadName,
-                developer: initialFormValues?.developer,
-                paymentCycle: initialFormValues?.paymentCycle,
+                clientTeamLead: initialFormValues?.clientTeamLead,
+                developer: initialFormValues?.developer || '',
+                clientPaymentCycle: initialFormValues?.clientPaymentCycle,
                 profile: initialFormValues.profile,
 
             });
         }
     }, [selectedClient, form]);
 
-    // useEffect(() => {
-    //     dispatch(getAllProfiles())
-    // })
-
     useEffect(() => {
         if (!allUsers || allUsers?.length === 0) {
             dispatch(getAllUsersApi())
         }
     })
+
     const isEditMode = !!selectedClient;
 
     const handleCancel = () => {
@@ -122,6 +122,14 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
         setFieldsEdited(false);
         handleDrawer();
     };
+
+    const onChange = (date, dateString) => {
+        setSelectedDate(date)
+    };
+    const disabledDate = (current) => {
+        return current && current < dayjs().startOf('day');
+    };
+
     const handleSubmit = async () => {
         try {
             const values = await form.validateFields();
@@ -134,6 +142,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
             }
 
             form.setFieldsValue(initialFormValues);
+            form.resetFields();
             setFieldsEdited(false);
             handleDrawer();
         } catch (error) {
@@ -147,7 +156,6 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
             <Form form={form} layout="vertical" onFinish={handleSubmit} onValuesChange={() => setFieldsEdited(true)}>
 
                 <Row gutter={16}>
-
                     <Col span={12}>
                         <Form.Item
                             name="clientName"
@@ -176,20 +184,17 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                             form={form}
                         />
                     </Col>
-
                     <Col span={12}>
                         <CustomDropdown
                             name='developer'
                             label="Developer"
                             required={true}
-                            placeholder="Select a developer"
+                            placeholder="Select a Developer"
                             options={usersWithDeveloperRole}
                             form={form}
                         />
                     </Col>
-
                     <Col span={12}>
-
                         <CustomInput
                             label="Client Time Zone "
                             name='clientTimeZone'
@@ -231,7 +236,6 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                         </Form.Item>
                     </Col>
                     <Col span={12}>
-
                         <CustomInput
                             label="Profile Time Zone"
                             name='profileTimeZone'
@@ -268,8 +272,25 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                             valueField='_id'
                             labelField='name'
                         />
-                    </Col>
+                    </Col >
+                    <Col span={12}>
+                        <Form.Item
+                            label="Created On"
+                            name="createdOn"
+                            rules={[{ required: true, message: 'Please select Created On Date' }]}
+                        >
+                            <DatePicker
+                                onChange={onChange}
+                                allowClear={false}
+                                defaultValue={dayjs()}
+                                disabledDate={disabledDate}
+                                style={{ width: '100%' }}
+                                showTime={false}
+                                picker='date'
 
+                            />
+                        </Form.Item>
+                    </Col>
 
                     {/* <Col span={12}>
                         <Form.Item name="apply" label="Apply" >
@@ -303,7 +324,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
 
                     </Col> */}
 
-                </Row>
+                </Row >
                 <Form.Item>
                     <Space>
                         <Button onClick={handleCancel}>Cancel</Button>
@@ -316,7 +337,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                         </Button>
                     </Space>
                 </Form.Item>
-            </Form>
+            </Form >
         </Drawer >
     );
 };

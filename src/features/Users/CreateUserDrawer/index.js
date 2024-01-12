@@ -11,7 +11,6 @@ import dayjs from 'dayjs'
 import { getLogedInUser } from 'src/store/slices/authSlice/selectors';
 
 const { Option } = Select;
-
 const initialFormValues = {
     email: '',
     first_name: '',
@@ -42,28 +41,30 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
             form.setFieldsValue(initialFormValues);
         }
     }, [selectedUser, form]);
+
     useEffect(() => {
         const isFormEdited = form.isFieldsTouched();
         setFieldsEdited(isFormEdited);
     }, [form]);
 
-    // const isEditMode = !!selectedUser;
     const onChange = (date, dateString) => {
         setSelectedDate(date)
     };
     const disabledDate = (current) => {
-        return current && current > dayjs().endOf('day');
+        return current && current < dayjs().startOf('day');
     };
-
     const handleSubmit = async (values) => {
         try {
             const user = { ...values };
             if (isEditMode) {
                 dispatch(updateUserApi({ user, userId: selectedUser?._id }));
-                form.setFieldsValue(initialFormValues);
-                setFieldsEdited(false);
-                handleDrawer();
+            } else {
+                dispatch(registerUser(user));
             }
+
+            form.setFieldsValue(initialFormValues);
+            setFieldsEdited(false);
+            handleDrawer();
         } catch (error) {
             console.error('Form submission error:', error);
         }
@@ -161,7 +162,6 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
                         </Form.Item>
                     </Col>
                 </Row>
-
                 <Form.Item>
                     <Space>
                         <Button onClick={handleCancel}>Cancel</Button>
