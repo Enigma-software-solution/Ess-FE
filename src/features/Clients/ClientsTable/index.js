@@ -66,7 +66,7 @@ const ClientTable = () => {
         },
         {
             title: "Status",
-            dataIndex: "status",
+            dataIndex: "active",
             render: (text, record) => {
                 const isActive = text === "active";
 
