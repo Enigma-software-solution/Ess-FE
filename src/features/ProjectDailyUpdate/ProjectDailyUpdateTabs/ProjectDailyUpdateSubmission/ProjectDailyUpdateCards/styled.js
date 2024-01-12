@@ -7,7 +7,7 @@ export const CardWrapper = styled(Card)`
   overflow: hidden;
   box-shadow: 4px 2px 10px -7px rgba(0, 0, 0, 0.5);
   transition: box-shadow 0.3s ease-in-out;
-  height: 350px;
+  height: 400px;
   background-color:  #fafafa;
   padding: 5px;
 

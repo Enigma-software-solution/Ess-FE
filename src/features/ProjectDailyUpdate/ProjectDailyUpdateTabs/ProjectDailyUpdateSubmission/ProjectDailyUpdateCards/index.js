@@ -14,10 +14,10 @@ import { setSelectedProjectDailyUpdate } from 'src/store/slices/projectDailyUpda
 import TextArea from 'antd/es/input/TextArea';
 import { CardWrapper } from './styled';
 
-const ProjectDailyUpdateCards = () => {
+const ProjectDailyUpdateCards = ({todayAllUpdates}) => {
     const dispatch = useDispatch();
     const authUser = useSelector(getLogedInUser);
-    const todayAllUpdates = useSelector(getAllProjectDailyUpdates);
+
     const selectedProject = useSelector(getSelectedProjectDailyUpdates);
 
     const [editedContentMap, setEditedContentMap] = useState({});
@@ -64,7 +64,6 @@ const ProjectDailyUpdateCards = () => {
     const handleTextAreaChange = (recordId, value) => {
         setEditedContentMap((prevMap) => ({...prevMap , [recordId]: value }))
     };
-    console.log(editedContentMap,"@edited")
 
     return (
         <>
@@ -76,7 +75,7 @@ const ProjectDailyUpdateCards = () => {
                 grabCursor={true}
                 style={{ padding: '30px', marginBottom: '40px' }}
             >
-                {todayAllUpdates?.dailyUpdates?.map((record) => (
+                {todayAllUpdates?.map((record) => (
                     <SwiperSlide key={record._id}>
                         <CardWrapper>
                             <Flex justify='space-between'>

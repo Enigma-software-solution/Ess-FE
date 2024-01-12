@@ -3,7 +3,7 @@ import { Button, DatePicker, Flex, Form, Modal, Select } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllClientsSelector } from "src/store/slices/clientSlice/selectors";
 import { getAllClientsApi } from "src/store/slices/clientSlice/apis";
-import { getUserId } from "src/store/slices/authSlice/selectors";
+import { getLogedInUser, getUserId } from "src/store/slices/authSlice/selectors";
 import { createDailyProjectUpdateApi, updateDailyUpdate } from "src/store/slices/projectDailyUpdates/apis";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
@@ -16,8 +16,13 @@ const AddProjectDailyUpdateModal = ({ open, handleClose, selectedProject }) => {
  
 
     const allClients = useSelector(getAllClientsSelector)
-    const todayAllUpdates = useSelector(getAllProjectDailyUpdates)
+
+       const todayAllUpdates = useSelector(getAllProjectDailyUpdates);
     const filteredUpdatesId = todayAllUpdates?.dailyUpdates?.map((update) => update?.project?._id);
+    const loggedInUser = useSelector(getLogedInUser);
+    const userrole = loggedInUser.role;
+    const filteredClients = userrole==="admin"?allClients: allClients.filter(client => client.developer._id === loggedInUser.id);
+    
     const [form] = Form.useForm();
     const [content, setContent] = useState('');
     const dispatch = useDispatch();
@@ -52,9 +57,7 @@ const AddProjectDailyUpdateModal = ({ open, handleClose, selectedProject }) => {
                 }
             }
     
-            dispatch(createDailyProjectUpdateApi(formData));
-            form.resetFields();
-            handleCancel();
+         
         } catch (error) {
             console.error("An error occurred:", error);
         }
@@ -113,7 +116,7 @@ const AddProjectDailyUpdateModal = ({ open, handleClose, selectedProject }) => {
                             rules={[{ required: true, message: "Please select a project" }]}
                         >
                             <Select style={{ width: "180px" }} placeholder="Select a project">
-                                {allClients?.filter((client) => client?.active === "active" && !filteredUpdatesId?.includes(client?._id))
+                                {filteredClients?.filter((client) => client?.active === "active" && !filteredUpdatesId?.includes(client?._id))
                                     .map((project) => (
                                         <Option key={project?._id} value={project?._id}>
                                             {project?.clientName}

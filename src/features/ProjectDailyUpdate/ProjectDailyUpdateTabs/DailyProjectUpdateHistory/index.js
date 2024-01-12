@@ -172,7 +172,6 @@ const UpdateProjectTable = () => {
         <>  <ProjectUpdateCard dataSource={updateHistory?.dailyUpdates} />
             <Flex justify="space-between" align="center" className="mb-2">
           
-            {/* {console.log(updateHistory)} */}
                 <Space size={6}>
                     <Select
                         placeholder="Project Name"
