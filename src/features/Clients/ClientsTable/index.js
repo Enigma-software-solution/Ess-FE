@@ -9,13 +9,15 @@ import DeleteButton from "src/components/buttons/DeleteButton";
 import Loader from "src/components/Loader";
 import { setSelectedClient } from "src/store/slices/clientSlice";
 import { StyledBadge } from "./styled";
+import { toast } from 'react-toastify';
+import dayjs from 'dayjs';
+
 
 const ClientTable = () => {
     const dispatch = useDispatch();
     const [isOpen, setIsOpen] = useState(false);
     const isLoading = useSelector(isClientLoading);
     const clients = useSelector(getAllClientsSelector);
-
     const handleChangeStatus = (e, record) => {
         e.stopPropagation();
         if (record._id) {
@@ -39,12 +41,15 @@ const ClientTable = () => {
             console.log(err);
         }
     }, []);
-
     const handleConfirmDelete = (recordToDelete, e) => {
         e.stopPropagation();
         dispatch(deleteClientApi(recordToDelete._id));
     };
 
+    const handleDisabledDeleteClick = (e) => {
+        e.stopPropagation();
+        toast.warn('Active clients cannot be deleted.');
+    };
     const handleEdit = (record, e) => {
         e.stopPropagation();
         dispatch(setSelectedClient(record));
@@ -94,12 +99,18 @@ const ClientTable = () => {
 
         },
         {
+            title: "Created On",
+            dataIndex: "createdOn",
+            key: "createdOn",
+            width: 150,
+            render: (text, record) => dayjs(record?.createdOn).format('YYYY-MM-DD'),
+        },
+        {
             title: "Client Time Zone",
             dataIndex: "clientTimeZone",
             render: (text, record) => record?.clientTimeZone,
 
         },
-
         {
             title: "Developer",
             dataIndex: "developer?.first_name",
@@ -116,6 +127,11 @@ const ClientTable = () => {
             title: "Client Payment Cycle",
             dataIndex: "clientPaymentCycle",
             render: (text, record) => record?.clientPaymentCycle,
+        },
+        {
+            title: "Profile",
+            dataIndex: "profile?.name",
+            render: (text, record) => record?.profile?.name,
 
         },
 
@@ -123,20 +139,33 @@ const ClientTable = () => {
             key: "action",
             title: "Action",
             dataIndex: "action",
-            render: (text, record) => (
-                <div className="d-flex gap-1">
-                    <EditButton onClick={(e) => handleEdit(record, e)} />
-                    <Popconfirm
-                        title="Are you sure to delete this client?"
-                        onConfirm={(e) => handleConfirmDelete(record, e)}
-                        onCancel={(e) => e.stopPropagation()}
-                        okText="Yes"
-                        cancelText="No"
-                    >
-                        <DeleteButton onClick={(e) => e.stopPropagation()}>Delete</DeleteButton>
-                    </Popconfirm>
-                </div>
-            ),
+            render: (text, record) => {
+                const isClientActive = record.active === 'active';
+
+                return (
+                    <div className="d-flex gap-1">
+                        <EditButton onClick={(e) => handleEdit(record, e)} />
+                        {isClientActive ? (
+                            <DeleteButton disabled onClick={(e) => handleDisabledDeleteClick(e)}>
+                                Delete (Active)
+                            </DeleteButton>
+                        ) : (
+                            <Popconfirm
+                                title="Are you sure to delete this client?"
+                                onConfirm={(e) => handleConfirmDelete(record, e)}
+                                onCancel={(e) => e.stopPropagation()}
+                                okText="Yes"
+                                cancelText="No"
+                                disabled={isClientActive}
+                            >
+                                <DeleteButton onClick={(e) => e.stopPropagation()}>
+                                    Delete
+                                </DeleteButton>
+                            </Popconfirm>
+                        )}
+                    </div>
+                );
+            },
         },
     ];
 

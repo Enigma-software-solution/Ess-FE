@@ -67,7 +67,7 @@ function App() {
 
                   <Route path={routes.PROFILE_SETTINGS} element={<ProfileSettings />} />
 
-                  <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.SALES_EXECUTIVE, ROLES.USER]} />} >
+                  <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.SALES_EXECUTIVE, ROLES.USER, ROLES.HR]} />} >
                     <Route index element={<Dashobard />} />
                     <Route path={routes.USERS} element={<UsersPage />} />
                   </Route>
@@ -95,7 +95,7 @@ function App() {
                   </Route>
 
                   {/* PROJECT UPDATE ROUTES */}
-                  <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.HR, ROLES.SALES_EXECUTIVE, ROLES.USER]} />}>
+                  <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.HR, ROLES.USER]} />}>
                     <Route path={routes.NEW_UPDATE} element={<ProjectDailyUpdateSubmission />} />
                     <Route path={routes.UPDATE_HISTORY} element={<UpdateProjectTable />} />
                   </Route>
@@ -106,7 +106,7 @@ function App() {
 
               {/* Auth ROUTES */}
               <Route path="/login" element={<Login />} />
-              <Route path="/Signup" element={<SignUpPage />} />
+              {/* <Route path="/Signup" element={<SignUpPage />} /> this is not mendatory */}
               <Route path={`${routes.AfterConfirmationEmail}/confirm-email/:token`} element={<AfterConfirmationEmail />} />
               <Route path={routes.FORGOT_PASSWORD} element={<ForgotPassword />} />
               <Route path={`${routes.RESET_PASSWORD}/:token`} element={<ResetPassword />} />
@@ -119,7 +119,7 @@ function App() {
               <Route path="*" element={<NotFound />} />
             </Routes>
           </ConfigProvider>
-          <ToastContainer />
+          <ToastContainer autoClose={2000} />
         </ThemeProvider>
       </ErrorBoundary>
     </div>

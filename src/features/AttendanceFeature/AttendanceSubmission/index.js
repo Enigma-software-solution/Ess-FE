@@ -11,6 +11,7 @@ import TodaySubmittedTable from "./TodaySubmittedTable";
 import { getAllAttendance } from "src/store/slices/attendanceSlice/GetAttendanceSlice/selectors";
 import Loader from "src/components/Loader";
 import dayjs from "dayjs";
+import CustomSearchField from "src/components/SearchField";
 
 const MarkAttendance = () => {
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -75,13 +76,8 @@ const MarkAttendance = () => {
     <>
       <Flex justify="space-between" align="center" >
         <DatePicker onChange={handleDateChange} allowClear={false} value={dayjs(selectedDate)} defaultValue={dayjs()} />
-        <Search
-          placeholder="Input search text"
-          allowClear
-          enterButton="Search"
-          size="large"
+        <CustomSearchField
           onChange={handleSearch}
-          style={{ width: "300px" }}
         />
       </Flex>
       {
