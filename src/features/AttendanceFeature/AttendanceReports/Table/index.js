@@ -56,12 +56,19 @@ const AttendanceHistory = ({ reports, isLoading }) => {
                 ),
             },
             {
-                title: 'Status',
-                dataIndex: 'status',
-                key: 'status',
+                title: "Status",
+                dataIndex: "status",
                 render: (text) => {
+                    const tagStyle = {
+                        width: '60px',
+                        display: 'inline-block',
+                        textAlign: 'center',
+                    };
+    
                     return (
-                        <Tag color={CheckAttendanceStatusColor(text)}>{text}</Tag>
+                        <Tag color={CheckAttendanceStatusColor(text)} style={tagStyle}>
+                            {text}
+                        </Tag>
                     );
                 },
             },
