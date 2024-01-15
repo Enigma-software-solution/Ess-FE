@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Drawer, Form, Button, Select } from "antd";
+import { Drawer, Form, Button, Select, DatePicker, TimePicker, Space } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import CustomInput from "src/components/formElements/CustomInput";
 import CustomSelect from "src/components/formElements/CustomSelect";
 import { formatDate, formatTime } from "src/utils/formatsOfDate";
 import { getLogedInUser } from "src/store/slices/authSlice/selectors";
+import moment from 'moment';
 import {
   UpdateEventsApi,
   createEventsApi,
@@ -18,6 +19,7 @@ import {
 } from "src/store/slices/agendaSlice/selector";
 import { closeSalesDrawer } from "src/store/slices/agendaSlice";
 import { differenceInMinutes } from "date-fns";
+import dayjs from "dayjs";
 
 const { Option } = Select;
 
@@ -135,11 +137,25 @@ const ClientEventDrawer = ({ selectedDate }) => {
         wrapperCol={{ span: 16 }}
       >
         <div className="d-flex justify-content-end align-items-end flex-column mb-3 ">
-          <p>Date: {formatDate(selectedDate?.start)}</p>
-          <p>
-            Time: {formatTime(selectedDate?.start)} -{" "}
-            {formatTime(selectedDate?.end)}
-          </p>
+          <DatePicker
+            defaultValue={selectedDate ? dayjs(selectedDate.start) : null}
+            format="DD/MM/YYYY"
+          />
+
+          <div className="mt-2 ">
+            Time:{" "}
+            <Space>
+              <TimePicker
+                defaultValue={moment(formatTime(selectedDate?.start), "HH:mm")}
+                format="HH:mm"
+              />
+              -
+              <TimePicker
+                defaultValue={moment(formatTime(selectedDate?.end), "HH:mm")}
+                format="HH:mm"
+              />
+            </Space>
+          </div>
         </div>
 
         <CustomInput
