@@ -135,7 +135,7 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
                         <Form.Item
                             label="Joining Date"
                             name="joining_date"
-                            rules={[{ required: true, message: 'Please select Joining Date' }]}
+                            rules={[{ required: false }]}
                         >
                             <DatePicker
                                 onChange={onChange}
