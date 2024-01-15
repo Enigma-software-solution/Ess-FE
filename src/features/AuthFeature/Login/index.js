@@ -29,9 +29,9 @@ const LoginForm = () => {
     }
   };
 
-  const handleSignUpClick = () => {
-    navigate("/signup");
-  };
+  // const handleSignUpClick = () => {
+  //   navigate("/signup");
+  // };
 
   const handleForgotPassword = () => {
     navigate(routes.FORGOT_PASSWORD);
@@ -77,9 +77,9 @@ const LoginForm = () => {
             </Button>
           </Form.Item>
         </Form>
-        <Button type="default" block onClick={handleSignUpClick}>
+        {/* <Button type="default" block onClick={handleSignUpClick}>
           Don't have account? Signup
-        </Button>
+        </Button> */}
       </FormContainer>
     </Wrapper>
   );
