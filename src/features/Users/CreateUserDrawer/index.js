@@ -16,7 +16,8 @@ const initialFormValues = {
     first_name: '',
     last_name: '',
     role: "",
-    password: ""
+    password: "",
+    joining_date: dayjs()
 };
 
 const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
