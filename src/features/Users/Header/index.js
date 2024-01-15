@@ -22,7 +22,7 @@ const Header = ({ onSearch }) => {
     return (
         <div>
             <Flex justify="space-between" className="mb-3">
-                <CustomSearchField onChange={handleSearchChange} />
+                <CustomSearchField onChange={handleSearchChange} text="Search User" />
                 <AddButton onClick={handleDrawer} text="New User" />
             </Flex>
             <CreateUserDrawer isOpen={isOpen} handleDrawer={handleDrawer} />
