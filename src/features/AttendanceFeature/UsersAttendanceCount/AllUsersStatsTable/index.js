@@ -37,19 +37,31 @@ const AllUsersStatsTable = () => {
 
     const handleMonthChange = (date) => {
         setSelectedMonth(date)
-        setSelectdYear(null)
     }
 
     const handleYearChange = (date) => {
         setSelectdYear(date)
-        setSelectedMonth(null)
-
     }
+
+    const handleSubmit = () => {
+        const queryParams = qs.stringify({
+            month: selectedMonth ? format(new Date(selectedMonth), 'MMM') : undefined,
+            year: selectedYear ? format(new Date(selectedYear), 'yyyy') : undefined,
+        });
+
+        getAllStats(queryParams);
+        handleReset()
+    };
+
+    const handleReset = () => {
+        setSelectedMonth(null);
+        setSelectdYear(null);
+    };
 
 
     useEffect(() => {
         getAllStats()
-    }, [selectedMonth, selectedYear])
+    }, [])
 
     const columns = [
         {
@@ -125,6 +137,8 @@ const AllUsersStatsTable = () => {
         return current && current > dayjs().endOf('day');
     };
 
+
+
     return (
         <StyledReportCount>
             <Flex justify='space-between' className='m-2'>
@@ -133,10 +147,20 @@ const AllUsersStatsTable = () => {
                     Export
                 </Button>
             </Flex>
-            <Space size={6} className='p-3 mb-3' style={{ boxShadow: '0px 8px 24px rgba(149,157,165,0.2)' }}>
+            <Space size={20} className='p-3 mb-3' style={{ boxShadow: '0px 8px 24px rgba(149,157,165,0.2)' }}>
                 <DatePicker picker='month' onChange={handleMonthChange} value={selectedMonth} disabledDate={disabledDate} />
                 <DatePicker picker='year' onChange={handleYearChange} value={selectedYear} disabledDate={disabledDate} />
+                <div>
+
+                    <Button onClick={handleReset} style={{ marginLeft: 8 }}>
+                        Reset
+                    </Button>
+                    <Button type="primary" onClick={handleSubmit} style={{ marginLeft: 8 }}>
+                        Submit
+                    </Button>
+                </div>
             </Space>
+
 
             <Table columns={columns} dataSource={allStats} loading={isLoading} pagination={false} />
         </StyledReportCount>
