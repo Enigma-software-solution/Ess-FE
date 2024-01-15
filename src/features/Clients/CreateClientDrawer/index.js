@@ -22,6 +22,7 @@ const initialFormValues = {
     clientName: '',
     projectManager: '',
     name: '',
+    createdOn: dayjs(),
     companyName: '',
     contractType: '',
     clientLocation: '',
@@ -88,24 +89,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                 profile: selectedClient?.profile?._id,
             });
         } else {
-            form.setFieldsValue({
-                email: initialFormValues?.email,
-                phoneNumber: initialFormValues?.phoneNumber,
-                clientName: initialFormValues?.clientName,
-                // apply: initialFormValues?.apply?.positionToApply,
-                projectManager: initialFormValues?.projectManager?._id,
-                name: initialFormValues?.name,
-                companyName: initialFormValues?.companyName,
-                contractType: initialFormValues?.contractType,
-                clientLocation: initialFormValues?.clientLocation,
-                clientTimeZone: initialFormValues?.clientTimeZone,
-                profileTimeZone: initialFormValues?.profileTimeZone,
-                clientTeamLead: initialFormValues?.clientTeamLead,
-                developer: initialFormValues?.developer || '',
-                clientPaymentCycle: initialFormValues?.clientPaymentCycle,
-                profile: initialFormValues.profile,
-
-            });
+            form.setFieldsValue(initialFormValues);
         }
     }, [selectedClient, form]);
 
@@ -123,7 +107,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
         handleDrawer();
     };
 
-    const onChange = (date, dateString) => {
+    const onChange = (date) => {
         setSelectedDate(date)
     };
     const disabledDate = (current) => {
@@ -277,7 +261,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                         <Form.Item
                             label="Created On"
                             name="createdOn"
-                            rules={[{ required: true, message: 'Please select Created On Date' }]}
+                            rules={[{ required: false }]} 
                         >
                             <DatePicker
                                 onChange={onChange}
@@ -285,9 +269,6 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                                 defaultValue={dayjs()}
                                 disabledDate={disabledDate}
                                 style={{ width: '100%' }}
-                                showTime={false}
-                                picker='date'
-
                             />
                         </Form.Item>
                     </Col>
