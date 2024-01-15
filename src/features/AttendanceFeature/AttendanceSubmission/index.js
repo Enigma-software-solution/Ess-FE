@@ -78,6 +78,7 @@ const MarkAttendance = () => {
         <DatePicker onChange={handleDateChange} allowClear={false} value={dayjs(selectedDate)} defaultValue={dayjs()} />
         <CustomSearchField
           onChange={handleSearch}
+          text="Search User Card"
         />
       </Flex>
       {

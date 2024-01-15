@@ -73,7 +73,7 @@ const Header = ({ pageSize, onSearch }) => {
   return (
     <>
       <div className="d-flex justify-content-between mb-1">
-        <CustomSearchField onChange={search} />
+        <CustomSearchField onChange={search} text="Search Apply" />
         <AddButton onClick={handleDrawer} text="New Apply" />
       </div>
       <Wrapper>
