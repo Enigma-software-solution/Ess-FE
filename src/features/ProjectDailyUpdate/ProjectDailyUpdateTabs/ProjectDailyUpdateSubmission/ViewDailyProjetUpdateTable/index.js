@@ -5,16 +5,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import DeleteButton from 'src/components/buttons/DeleteButton';
 import EditButton from 'src/components/buttons/EditButton';
 import { deteleDailyProjectUpdatesApi, getDailyProjectUpdateApi } from 'src/store/slices/projectDailyUpdates/apis';
-import { getAllProjectDailyUpdates } from 'src/store/slices/projectDailyUpdates/selectors';
 import qs from 'qs'
 import { getLogedInUser } from 'src/store/slices/authSlice/selectors';
 
-const ViewDailyProjectUpdateTable = () => {
+const ViewDailyProjectUpdateTable = ({todayAllUpdates}) => {
 
     const dispatch = useDispatch()
 
     const authUser = useSelector(getLogedInUser)
-    const todayAllUpdates = useSelector(getAllProjectDailyUpdates)
 
     const handleConfirmDelete = (recordToDelete, e) => {
         dispatch(deteleDailyProjectUpdatesApi(recordToDelete?._id))
@@ -92,7 +90,8 @@ const ViewDailyProjectUpdateTable = () => {
 
 
     return (
-        <Table className='mt-4 px-5' dataSource={todayAllUpdates?.dailyUpdates} columns={columns} />
+
+        <Table className='mt-4 px-5' dataSource={todayAllUpdates} columns={columns} />
     )
 }
 

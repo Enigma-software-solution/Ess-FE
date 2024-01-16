@@ -36,7 +36,7 @@ import { enUS, fr } from 'date-fns/locale';
 import { ROLES } from "./constant/roles";
 import MarkAttendance from "./pages/Attendance/MarkAttendance";
 import AttendenceDetails from "./features/AttendanceFeature/SingleUserAttendanceDetails";
-import SignUpPage from "./pages/Auth/SignUp";
+// import SignUpPage from "./pages/Auth/SignUp";
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';

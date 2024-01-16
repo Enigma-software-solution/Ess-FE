@@ -42,6 +42,7 @@ const ProjectDailyUpdateTabs = () => {
           <Tabs.TabPane key={item?.key} tab={item?.label} />
         ))}
       </Tabs>
+      
     </div>
   );
 };
