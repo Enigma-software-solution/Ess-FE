@@ -7,7 +7,7 @@ import EditButton from 'src/components/buttons/EditButton';
 import { deteleDailyProjectUpdatesApi, getDailyProjectUpdateApi } from 'src/store/slices/projectDailyUpdates/apis';
 import { getAllProjectDailyUpdates } from 'src/store/slices/projectDailyUpdates/selectors';
 import qs from 'qs'
-import { capitalize } from "lodash";
+
 import { getLogedInUser } from 'src/store/slices/authSlice/selectors';
 
 const ViewDailyProjectUpdateTable = () => {
@@ -20,6 +20,11 @@ const ViewDailyProjectUpdateTable = () => {
     const handleClick = (record, e) => {
 
     }
+    const capitalize = (str) => {
+        if (!str) return '';
+        return str.replace(/\b\w/g, (match) => match.toUpperCase());
+    };
+
     const columns = [
         {
             title: 'Project Name',
@@ -45,9 +50,10 @@ const ViewDailyProjectUpdateTable = () => {
             dataIndex: 'content',
             key: 'Update',
             render: (text, record) => (
-                <span dangerouslySetInnerHTML={{ __html: capitalize(record?.content) }} />
+                <span dangerouslySetInnerHTML={{ __html: record && record.content ? capitalize(record.content) : '' }} />
             ),
         },
+
         {
             title: 'Date',
             dataIndex: 'date',
