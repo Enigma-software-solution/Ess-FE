@@ -7,23 +7,19 @@ import EditButton from 'src/components/buttons/EditButton';
 import { deteleDailyProjectUpdatesApi, getDailyProjectUpdateApi } from 'src/store/slices/projectDailyUpdates/apis';
 import { getAllProjectDailyUpdates } from 'src/store/slices/projectDailyUpdates/selectors';
 import qs from 'qs'
+import { capitalize } from "lodash";
 import { getLogedInUser } from 'src/store/slices/authSlice/selectors';
 
 const ViewDailyProjectUpdateTable = () => {
-
     const dispatch = useDispatch()
-
     const authUser = useSelector(getLogedInUser)
     const todayAllUpdates = useSelector(getAllProjectDailyUpdates)
-
     const handleConfirmDelete = (recordToDelete, e) => {
         dispatch(deteleDailyProjectUpdatesApi(recordToDelete?._id))
     };
-
     const handleClick = (record, e) => {
 
     }
-
     const columns = [
         {
             title: 'Project Name',
@@ -38,7 +34,7 @@ const ViewDailyProjectUpdateTable = () => {
             render: (text, record) => {
                 const projectManager = record.project?.projectManager;
                 if (projectManager && projectManager?.first_name && projectManager?.last_name) {
-                    return `${projectManager?.first_name} ${projectManager?.last_name}`;
+                    return `${capitalize(projectManager?.first_name)} ${capitalize(projectManager?.last_name)}`;
                 } else {
                     return 'No project manager';
                 }
@@ -49,7 +45,7 @@ const ViewDailyProjectUpdateTable = () => {
             dataIndex: 'content',
             key: 'Update',
             render: (text, record) => (
-                <span dangerouslySetInnerHTML={{ __html: record?.content }} />
+                <span dangerouslySetInnerHTML={{ __html: capitalize(record?.content) }} />
             ),
         },
         {

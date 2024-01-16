@@ -55,9 +55,9 @@ const TodaySubmittedTable = ({ todayAllAttendance }) => {
             dataIndex: 'notes',
             ellipsis: true,
             render: (text, record) => (
-                <Tooltip title={text} placement="topLeft" arrowPointAtCenter>
+                <Tooltip title={capitalize(text)} placement="topLeft" arrowPointAtCenter>
                     <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                        {text}
+                        {capitalize(text)}
                     </div>
                 </Tooltip>
             ),
@@ -74,7 +74,7 @@ const TodaySubmittedTable = ({ todayAllAttendance }) => {
 
                 return (
                     <Tag color={CheckAttendanceStatusColor(text)} style={tagStyle}>
-                        {text}
+                        {capitalize(text)}
                     </Tag>
                 );
             },

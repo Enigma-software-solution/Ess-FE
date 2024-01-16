@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { getAllUsersStatsApi } from 'src/store/slices/attendanceSlice/AllStatsSlice/api';
 import * as XLSX from 'xlsx';
 import { StyledReportCount } from './styled';
+import { capitalize } from "lodash";
 import dayjs from 'dayjs';
 
 const AllUsersStatsTable = () => {
@@ -68,8 +69,8 @@ const AllUsersStatsTable = () => {
             title: 'User Name',
             dataIndex: 'date',
             key: 'date',
-            sorter: (a, b) => a.user.first_name.localeCompare(b.user.first_name),
-            render: (text, record) => `${record?.user?.first_name} ${record?.user?.last_name}`,
+            sorter: (a, b) => capitalize(a.user.first_name).localeCompare(capitalize(b.user.first_name)),
+            render: (text, record) => capitalize(`${record?.user?.first_name} ${record?.user?.last_name}`),
         },
         {
             title: 'Present',
