@@ -120,7 +120,7 @@ export const sidebarMenuItems = [
         title: 'Project Update',
         icon: <ProjectOutlined />,
         path: routes.NEW_UPDATE,
-        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.HR, ROLES.USER, ROLES.PROJECT_MANAGER],
+        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.HR, ROLES.USER],
     },
     {
         key: routes.POLICIES,
