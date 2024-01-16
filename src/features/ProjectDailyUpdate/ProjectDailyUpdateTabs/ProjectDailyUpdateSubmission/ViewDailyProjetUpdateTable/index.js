@@ -25,7 +25,7 @@ const ViewDailyProjectUpdateTable = () => {
             title: 'Project Name',
             dataIndex: 'project',
             key: 'Project',
-            render: (text, record) => record.project?.clientName || 'No client name',
+            render: (text, record) => capitalize(record.project?.clientName || 'No client name',)
         },
         {
             title: 'Project Manager',
