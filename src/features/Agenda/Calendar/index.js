@@ -21,6 +21,7 @@ import CustomToolbar from "./CustomToolbar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Spin } from "antd";
 import Loader from "src/components/Loader";
+import SalesEventDrawer from "../SalesDrawer";
 
 
 const locales = { 'en-US': enUS }
@@ -73,7 +74,9 @@ const CustomCalendar = () => {
 
       setIsSelectEventTypeModal(true)
       setSelectedDate({ start: slot.start, end: slot.end });
+      console.log(slot.start, "ttt")
     }
+
   };
 
   const onEventClick = async (event) => {
@@ -150,8 +153,8 @@ const CustomCalendar = () => {
       <SelectEventTypeModal isOpen={isSelectEventTypeModal} handleClose={() => setIsSelectEventTypeModal(false)} />
       <ClientCallDetailsModal isOpen={isClientCallDetailsModal} handleClose={() => setIsClientCallDetailsModal(false)} />
 
-      <SalesDrawer selectedDate={selectedDate} />
-      <ClientEventDrawer selectedDate={selectedDate} />
+      <SalesEventDrawer selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+      <ClientEventDrawer selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
 
       <EventDetailsDrawer />
     </div>

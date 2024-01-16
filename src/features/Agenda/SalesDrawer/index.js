@@ -23,7 +23,7 @@ import dayjs from "dayjs";
 
 const { Option } = Select;
 
-const ClientEventDrawer = ({ selectedDate }) => {
+const SalesEventDrawer = ({ selectedDate, setSelectedDate }) => {
   const dispatch = useDispatch();
   const isDrawer = useSelector(isSalesDrawer);
   const loggedInUser = useSelector(getLogedInUser);
@@ -36,6 +36,24 @@ const ClientEventDrawer = ({ selectedDate }) => {
   const handleClose = () => {
     dispatch(closeSalesDrawer());
   };
+
+
+  const handleDateChange = (date, dateString) => {
+    const updatedDate = dayjs(date).format("ddd MMM DD YYYY HH:mm:ss [GMT]ZZ");
+    setSelectedDate({
+      // start: updatedDate
+    });
+  };
+
+  const handleTimeChange = (dates, dateString) => {
+    const updatedStartDate = dayjs(dates[0]).format("ddd MMM DD YYYY HH:mm:ss [GMT]ZZ");
+    const updatedEndDate = dayjs(dates[1]).format("ddd MMM DD YYYY HH:mm:ss [GMT]ZZ");
+    setSelectedDate({
+      start: updatedStartDate,
+      end: updatedEndDate,
+    });
+  };
+
 
   const handleSubmit = async (values) => {
     setLoading(true);
@@ -149,10 +167,12 @@ const ClientEventDrawer = ({ selectedDate }) => {
           <DatePicker
             defaultValue={selectedDate ? dayjs(selectedDate.start) : null}
             format="DD/MM/YYYY"
+            onChange={handleDateChange} // Add onChange to update the date
           />
 
           <div className="mt-2 ">
             <TimePicker.RangePicker
+              format="hh:mm A"
               defaultValue={
                 selectedDate
                   ? [
@@ -161,6 +181,7 @@ const ClientEventDrawer = ({ selectedDate }) => {
                   ]
                   : undefined
               }
+              onChange={handleTimeChange} // Add onChange to update the time
             />
           </div>
         </div>
@@ -240,4 +261,4 @@ const ClientEventDrawer = ({ selectedDate }) => {
   );
 };
 
-export default ClientEventDrawer;
+export default SalesEventDrawer;
