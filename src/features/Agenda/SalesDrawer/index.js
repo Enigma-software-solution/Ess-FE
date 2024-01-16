@@ -103,6 +103,15 @@ const ClientEventDrawer = ({ selectedDate }) => {
         ...initialValues,
         callDuration: durationInMinutes.toString() + "min",
       });
+
+      if (selectedDate?.start && selectedDate?.end) {
+        const startTime = dayjs(selectedDate.start);
+        const endTime = dayjs(selectedDate.end);
+
+        form.setFieldsValue({
+          timeRange: [startTime, endTime],
+        });
+      }
     }
   }, [form, selectedEvent, selectedDate]);
 
@@ -143,18 +152,16 @@ const ClientEventDrawer = ({ selectedDate }) => {
           />
 
           <div className="mt-2 ">
-            Time:{" "}
-            <Space>
-              <TimePicker
-                defaultValue={moment(formatTime(selectedDate?.start), "HH:mm")}
-                format="HH:mm"
-              />
-              -
-              <TimePicker
-                defaultValue={moment(formatTime(selectedDate?.end), "HH:mm")}
-                format="HH:mm"
-              />
-            </Space>
+            <TimePicker.RangePicker
+              defaultValue={
+                selectedDate
+                  ? [
+                    dayjs(selectedDate.start),
+                    dayjs(selectedDate.end),
+                  ]
+                  : undefined
+              }
+            />
           </div>
         </div>
 
