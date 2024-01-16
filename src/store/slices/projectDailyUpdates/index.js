@@ -1,7 +1,7 @@
 import {
     createSlice,
 } from "@reduxjs/toolkit";
-import { createDailyProjectUpdateApi, deteleDailyProjectUpdatesApi, getDailyProjectUpdateApi } from "./apis";
+import { createDailyProjectUpdateApi, deteleDailyProjectUpdatesApi, getDailyProjectUpdateApi, updateDailyUpdate } from "./apis";
 
 const initialState = {
     status: "idle",
@@ -9,6 +9,8 @@ const initialState = {
     selectedproject: undefined,
     data: [],
     loading: false,
+    modalVisible:false,
+  
 };
 
 const projectDailyUpdatesSlice = createSlice({
@@ -19,6 +21,12 @@ const projectDailyUpdatesSlice = createSlice({
         setSelectedProjectDailyUpdate(state, action) {
             state.selectedproject = action.payload;
         },
+        setModalVisible(state, action) {
+            state.modalVisible = action.payload;
+        },
+
+       
+
     },
 
     extraReducers(builder) {
@@ -43,16 +51,16 @@ const projectDailyUpdatesSlice = createSlice({
             state.status = "succeeded";
             state.data.dailyUpdates = [...state.data.dailyUpdates, action.payload.data]
         });
-
-        // builder.addCase(updateClientApi.fulfilled, (state, action) => {
-        //     state.data.dailyUpdates = state?.data.dailyUpdates?.map(client => {
-        //         if (client?._id === action?.payload?.data?._id) {
-        //             return action?.payload?.data
-        //         }
-        //         return client
-        //     })
-        // });
-
+     
+        builder.addCase(updateDailyUpdate.fulfilled, (state, action) => {
+            state.data.dailyUpdates = state?.data.dailyUpdates?.map((dailyUpdate) => {
+              if (dailyUpdate?._id === action?.payload?.data?._id) {
+                return action?.payload?.data;
+              }
+              return dailyUpdate;
+            });
+          });
+          
         builder.addCase(deteleDailyProjectUpdatesApi.fulfilled, (state, action) => {
             state.data.dailyUpdates = state?.data.dailyUpdates?.filter((projectDailyUpdate) => projectDailyUpdate?._id !== action?.payload?.projectDailyUpdateId)
         });
@@ -60,6 +68,6 @@ const projectDailyUpdatesSlice = createSlice({
 
 });
 
-export const { setSelectedProjectDailyUpdate } = projectDailyUpdatesSlice.actions;
+export const { setSelectedProjectDailyUpdate,setModalVisible } = projectDailyUpdatesSlice.actions;
 
 export default projectDailyUpdatesSlice.reducer;

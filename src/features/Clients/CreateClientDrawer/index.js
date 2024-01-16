@@ -22,6 +22,7 @@ const initialFormValues = {
     clientName: '',
     projectManager: '',
     name: '',
+    createdOn: dayjs(),
     companyName: '',
     contractType: '',
     clientLocation: '',
@@ -38,6 +39,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
     const allUsers = useSelector(getAllUsers);
     const selectedClient = useSelector(getSelectedClient);
     const allProfiles = useSelector(getAllProfiles);
+    const [fieldsEdited, setFieldsEdited] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date())
 
     const [form] = Form.useForm();
@@ -57,6 +59,17 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
         }));
 
     useEffect(() => {
+        const isFormEdited = form.isFieldsTouched();
+        setFieldsEdited(isFormEdited);
+    }, [form]);
+
+    useEffect(() => {
+        if (!allProfiles?.length) {
+            dispatch(getProfilesApi());
+        }
+    }, []);
+
+    useEffect(() => {
         if (selectedClient) {
             form.setFieldsValue({
                 email: selectedClient?.email,
@@ -70,38 +83,15 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                 clientLocation: selectedClient?.clientLocation || '',
                 clientTimeZone: selectedClient?.clientTimeZone || '',
                 profileTimeZone: selectedClient?.profileTimeZone || '',
-                teamLeadName: selectedClient?.teamLeadName || '',
-                developer: selectedClient?.developer || '',
-                paymentCycle: selectedClient?.paymentCycle || '',
+                clientTeamLead: selectedClient?.clientTeamLead || '',
+                developer: selectedClient?.developer?._id || '',
+                clientPaymentCycle: selectedClient?.clientPaymentCycle || '',
                 profile: selectedClient?.profile?._id,
             });
         } else {
-            form.setFieldsValue({
-                email: initialFormValues?.email,
-                phoneNumber: initialFormValues?.phoneNumber,
-                clientName: initialFormValues?.clientName,
-                // apply: initialFormValues?.apply?.positionToApply,
-                projectManager: initialFormValues?.projectManager?._id,
-                name: initialFormValues?.name,
-                companyName: initialFormValues?.companyName,
-                contractType: initialFormValues?.contractType,
-                clientLocation: initialFormValues?.clientLocation,
-                clientTimeZone: initialFormValues?.clientTimeZone,
-                profileTimeZone: initialFormValues?.profileTimeZone,
-                teamLeadName: initialFormValues?.teamLeadName,
-                developer: initialFormValues?.developer,
-                paymentCycle: initialFormValues?.paymentCycle,
-                profile: initialFormValues.profile,
-
-            });
+            form.setFieldsValue(initialFormValues);
         }
     }, [selectedClient, form]);
-
-    useEffect(() => {
-        if (!allProfiles?.length) {
-            dispatch(getProfilesApi());
-        }
-    }, []);
 
     useEffect(() => {
         if (!allUsers || allUsers?.length === 0) {
@@ -111,11 +101,17 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
 
     const isEditMode = !!selectedClient;
 
-    const onChange = (date, dateString) => {
+    const handleCancel = () => {
+        form.resetFields();
+        setFieldsEdited(false);
+        handleDrawer();
+    };
+
+    const onChange = (date) => {
         setSelectedDate(date)
     };
     const disabledDate = (current) => {
-        return current && current > dayjs().endOf('day');
+        return current && current < dayjs().startOf('day');
     };
 
     const handleSubmit = async () => {
@@ -130,6 +126,8 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
             }
 
             form.setFieldsValue(initialFormValues);
+            form.resetFields();
+            setFieldsEdited(false);
             handleDrawer();
         } catch (error) {
             console.error('Please fill in all required fields.');
@@ -137,8 +135,10 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
     };
 
     return (
-        <Drawer open={isOpen} onClose={handleDrawer} width={800} title={isEditMode ? "Update Client" : "Create Client"}>
-            <Form form={form} layout="vertical" onFinish={handleSubmit}>
+        <Drawer open={isOpen} onClose={handleCancel} width={800} title={isEditMode ? "Update Client" : "Create Client"}>
+
+            <Form form={form} layout="vertical" onFinish={handleSubmit} onValuesChange={() => setFieldsEdited(true)}>
+
                 <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item
@@ -173,7 +173,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                             name='developer'
                             label="Developer"
                             required={true}
-                            placeholder="Select a developer"
+                            placeholder="Select a Developer"
                             options={usersWithDeveloperRole}
                             form={form}
                         />
@@ -233,8 +233,8 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
 
 
                         <CustomInput
-                            label="Client Payment Cycle"
                             name='clientPaymentCycle'
+                            label="Client Payment Cycle"
                             component={CustomSelect}
                             placeholder="Please select Client Payment"
                             options={paymentCycleDropdown}
@@ -261,7 +261,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                         <Form.Item
                             label="Created On"
                             name="createdOn"
-                            rules={[{ required: true, message: 'Please select Created On Date' }]}
+                            rules={[{ required: false }]} 
                         >
                             <DatePicker
                                 onChange={onChange}
@@ -269,9 +269,6 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                                 defaultValue={dayjs()}
                                 disabledDate={disabledDate}
                                 style={{ width: '100%' }}
-                                showTime={false}
-                                picker='date'
-
                             />
                         </Form.Item>
                     </Col>
@@ -311,9 +308,13 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                 </Row >
                 <Form.Item>
                     <Space>
-                        <Button onClick={handleDrawer}>Cancel</Button>
-                        <Button type="primary" htmlType="submit">
-                            Submit
+                        <Button onClick={handleCancel}>Cancel</Button>
+                        <Button
+                            type="primary"
+                            htmlType="submit"
+                            disabled={!fieldsEdited && !!selectedClient}
+                        >
+                            {selectedClient ? 'Update' : 'Save'}
                         </Button>
                     </Space>
                 </Form.Item>
