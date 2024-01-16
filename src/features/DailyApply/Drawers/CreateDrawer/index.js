@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Form, Row, Col, Input, Space, Drawer, Button } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Form, Row, Col, Space, Drawer, Button } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { createDailyAppliesApi, updateDailyAppliesApi } from 'src/store/slices/dailyApplySlice/apis';
 import { getProfilesApi } from 'src/store/slices/profielSlice/apis';
@@ -27,6 +27,7 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
   const allProfiles = useSelector(getAllProfiles);
   const selectedApply = useSelector(getSelectedApply);
   const [form] = Form.useForm();
+  const [fieldsEdited, setFieldsEdited] = useState(false);
 
   useEffect(() => {
     if (!allProfiles?.length) {
@@ -43,19 +44,22 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
         profile: selectedApply?.profile?._id,
         platform: selectedApply?.platform,
         positionToApply: selectedApply?.positionToApply,
-
       });
     } else {
-      form.setFieldsValue({
-        clientJobPosition: initialFormValues.clientJobPosition,
-        companyName: initialFormValues.companyName,
-        link: initialFormValues.link,
-        profile: initialFormValues.profile,
-        platform: initialFormValues.platform,
-        positionToApply: initialFormValues.positionToApply,
-      });
+      form.setFieldsValue(initialFormValues);
     }
   }, [selectedApply, form]);
+
+  useEffect(() => {
+    const isFormEdited = form.isFieldsTouched();
+    setFieldsEdited(isFormEdited);
+  }, [form]);
+
+  const handleCancel = () => {
+    form.resetFields(); 
+    setFieldsEdited(false); 
+    handleDrawer();
+  };
 
   const handleSubmit = async (values) => {
     try {
@@ -80,18 +84,21 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
 
       form.setFieldsValue(initialFormValues);
       handleDrawer();
+      setFieldsEdited(false);
     } catch (error) {
       console.error('Form submission error:', error);
     }
   };
 
+
   return (
-    <Drawer open={isOpen} onClose={handleDrawer} width={800}
+    <Drawer open={isOpen} onClose={handleCancel} width={800}
       title={selectedApply ? 'Update Daily Apply' : 'Create Daily Apply'}
     >
       <Form form={form}
         layout="vertical"
         onFinish={handleSubmit}
+        onValuesChange={() => setFieldsEdited(true)}
       >
         <Row gutter={16}>
           <Col span={12}>
@@ -160,8 +167,12 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
         </Row>
         <Form.Item>
           <Space>
-            <Button onClick={handleDrawer}>Cancel</Button>
-            <Button type="primary" htmlType="submit">
+            <Button onClick={handleCancel}>Cancel</Button>
+            <Button
+              type="primary"
+              htmlType="submit"
+              disabled={!fieldsEdited && !!selectedApply}
+            >
               {selectedApply ? 'Update' : 'Save'}
             </Button>
           </Space>
