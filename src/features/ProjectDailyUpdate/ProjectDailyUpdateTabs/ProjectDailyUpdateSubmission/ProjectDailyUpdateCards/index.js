@@ -78,7 +78,7 @@ const ProjectDailyUpdateCards = ({todayAllUpdates}) => {
                 {todayAllUpdates?.map((record) => (
                     <SwiperSlide key={record._id}>
                         <CardWrapper>
-                            <Flex justify='space-between'>
+                            <Flex justify='space-between' gap={10}>
                                 <div style={{ fontSize: '18px', fontWeight: '500' }}>
                                     {record.project?.clientName || 'No client name'}
                                 </div>

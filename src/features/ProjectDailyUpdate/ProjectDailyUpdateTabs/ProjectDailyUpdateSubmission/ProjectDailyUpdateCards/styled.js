@@ -9,12 +9,10 @@ export const CardWrapper = styled(Card)`
   transition: box-shadow 0.3s ease-in-out;
   height: 400px;
   background-color:  #fafafa;
-  padding: 5px;
 
   &:hover {
     cursor: pointer;
-    box-shadow: 4px 2px 20px -7px rgba(0, 0, 0, 0.4);
-    background-color: white;
+    box-shadow: 0 0px 8px gray;
   }
 
 

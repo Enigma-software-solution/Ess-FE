@@ -1,233 +1,241 @@
-import { Button, DatePicker, Flex, Select, Space, Spin, Table } from 'antd';
+import { Button, DatePicker, Flex, Select, Space, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDailyProjectUpdateApi } from 'src/store/slices/projectDailyUpdates/apis';
-import { getAllProjectDailyUpdates } from 'src/store/slices/projectDailyUpdates/selectors';
 import format from 'date-fns/format';
-import ProjectUpdateCard from './Card';
 import qs from 'qs';
-import Users from './../../../Users/index';
 import { getAllUsersApi } from 'src/store/slices/userSlice/apis';
 import { getAllUsers } from 'src/store/slices/userSlice/selectors';
 import Loader from 'src/components/Loader';
 import { getAllClientsSelector } from 'src/store/slices/clientSlice/selectors';
 import { getAllClientsApi } from 'src/store/slices/clientSlice/apis';
+import { getLogedInUser } from 'src/store/slices/authSlice/selectors';
 
 const { Option } = Select;
 const { RangePicker } = DatePicker;
 
 const UpdateProjectTable = () => {
+  const dispatch = useDispatch();
+  const allProjects = useSelector(getAllClientsSelector);
+  const allUsers = useSelector(getAllUsers);
+  const loggedInUser = useSelector(getLogedInUser);
+  const [isLoading, setIsLoading] = useState(false);
+  const [updateHistory, setUpdateHistory] = useState(null);
 
-    const dispatch = useDispatch()
-    const allProjects = useSelector(getAllClientsSelector)
-    const allUsers = useSelector(getAllUsers)
+  const initialFilters = {
+    admin: {
+      clientName: null,
+      projectManager: null,
+      user: null,
+      dateRange: [],
+    },
+    project_manager: {
+      clientName: null,
+      projectManager: loggedInUser?.id,
+      user: null,
+      dateRange: [],
+    },
+    defaultUser: {
+      clientName: null,
+      projectManager: null,
+      user: loggedInUser?.id,
+      dateRange: [],
+    },
+  };
 
-    const [isLoading, setIsLoading] = useState(false);
-    const [updateHistory, setUpdateHistory] = useState(null);
+  const [selectedFilters, setSelectedFilters] = useState(
+    initialFilters[loggedInUser?.role]
+  );
 
-    const [selectedFilters, setSelectedFilters] = useState({
-        clientName: null,
-        projectManager: null,
-        user: null,
-        dateRange: [],
-    })
+  useEffect(() => {
+    dispatch(getAllUsersApi());
+    dispatch(getAllClientsApi());
+  }, [dispatch]);
 
+  const columns = [
+    {
+      title: 'Project Name',
+      dataIndex: 'project',
+      key: 'Project',
+      render: (text, record) =>
+        record?.project?.clientName || 'No client name',
+    },
+    {
+      title: 'Project Manager',
+      dataIndex: 'Project Manager',
+      key: 'Project Manager',
+      render: (text, record) => {
+        const projectManager = record.project?.projectManager;
+        return (
+          projectManager &&
+          projectManager?.first_name &&
+          projectManager?.last_name
+            ? `${projectManager?.first_name} ${projectManager?.last_name}`
+            : 'No project manager'
+        );
+      },
+    },
+    {
+      title: 'Update',
+      dataIndex: 'content',
+      key: 'Update',
+      render: (text, record) => (
+        <span dangerouslySetInnerHTML={{ __html: record?.content }} />
+      ),
+    },
+    {
+      title: 'Date',
+      dataIndex: 'date',
+      key: 'Date',
+      render: (text, record) => {
+        const formattedDate = format(
+          new Date(record?.date),
+          'MM/dd/yyyy'
+        );
+        return formattedDate;
+      },
+    },
+  ];
 
-    useEffect(() => {
-        dispatch(getAllUsersApi())
-        dispatch(getAllClientsApi())
-    }, [])
+  const getUpdateHistory = async (filters) => {
+    const params = {};
 
+    switch (loggedInUser?.role) {
+      case 'admin':
+        break;
 
+      case 'project_manager':
+        params.projectManager = loggedInUser?.id;
+        break;
 
-    const columns = [
-        {
-            title: 'Project Name',
-            dataIndex: 'project',
-            key: 'Project',
-            render: (text, record) => record?.project?.clientName || 'No client name',
-        },
-        {
-            title: 'Project Manager',
-            dataIndex: 'Project Manager',
-            key: 'Project Manager',
-            render: (text, record) => {
-                const projectManager = record.project?.projectManager;
-                if (projectManager && projectManager?.first_name && projectManager?.last_name) {
-                    return `${projectManager?.first_name} ${projectManager?.last_name}`;
-                } else {
-                    return 'No project manager';
-                }
-            },
-        },
-        {
-            title: 'Update',
-            dataIndex: 'content',
-            key: 'Update',
-            render: (text, record) => (
-                <span dangerouslySetInnerHTML={{ __html: record?.content }} />
-            ),
-        },
-        {
-            title: 'Date',
-            dataIndex: 'date',
-            key: 'Date',
-            render: (text, record) => {
-                const formattedDate = format(new Date(record?.date), 'MM/dd/yyyy');
-                return formattedDate;
-            },
-        },
-    ];
+      default:
+        params.user = loggedInUser?.id;
+        break;
+    }
 
+    if (filters?.clientName !== null) {
+      params.project = filters?.clientName;
+    }
 
+    if (filters?.dateRange.length > 0) {
+      params.startDate = new Date(filters?.dateRange[0]);
+      params.endDate = new Date(filters?.dateRange[1]);
+    }
 
-    const getUpdateHistory = async (filters) => {
-        const params = {};
+    const queryString = qs.stringify(params);
+    try {
+      setIsLoading(true);
+      const res = await dispatch(
+        getDailyProjectUpdateApi(queryString)
+      ).unwrap();
+      setUpdateHistory(res?.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
-        if (filters?.projectManager !== null) {
-            params.projectManager = filters?.projectManager;
-        }
+  const handleClientChange = (value) => {
+    setSelectedFilters((prevFilters) => ({
+      ...prevFilters,
+      clientName: value,
+    }));
+  };
 
-        if (filters?.user !== null) {
-            params.user = filters?.user;
-        }
+  const handleUserChange = (value) => {
+    setSelectedFilters((prevFilters) => ({
+      ...prevFilters,
+      user: value,
+    }));
+  };
 
-        if (filters?.clientName !== null) {
-            params.project = filters?.clientName;
-        }
+  const handleRangePicker = (dates) => {
+    if (dates && dates.length === 2) {
+      setSelectedFilters((prevFilters) => ({
+        ...prevFilters,
+        dateRange: dates,
+      }));
+    }
+  };
 
-        if (filters?.dateRange.length > 0) {
-            params.startDate = new Date(filters?.dateRange[0]);
-            params.endDate = new Date(filters?.dateRange[1]);
-        }
+  const handleSubmit = () => {
+    getUpdateHistory(selectedFilters);
+  };
 
-        const queryString = qs.stringify(params);
-        try {
-            setIsLoading(true);
-            const res = await dispatch(getDailyProjectUpdateApi(queryString)).unwrap();
-            setUpdateHistory(res?.data);
-        } catch (error) {
-            console.error('Error fetching data:', error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+  const handleReset = () => {
+    setSelectedFilters(initialFilters[loggedInUser?.role]);
+    getUpdateHistory(initialFilters[loggedInUser?.role]);
+  };
 
-    const handleClientChange = (value) => {
-        setSelectedFilters(prevFilters => ({
-            ...prevFilters,
-            clientName: value
-        }));
-    };
+  useEffect(() => {
+    getUpdateHistory(selectedFilters);
+  }, []);
 
-    // const handleProjectManager = (value) => {
-    //     setSelectedFilters(prevFilters => ({
-    //         ...prevFilters,
-    //         projectManager: value
-    //     }));
-    // };
+  return (
+    <>
+      <Flex justify="space-between" align="center" className="mb-2">
+        <Space size={6}>
+        {loggedInUser.role === 'admin' && (
+            <>
+                <Select
+                placeholder="Project Name"
+                onChange={handleClientChange}
+                style={{ minWidth: '120px', width: '200px' }}
+                value={selectedFilters?.clientName}
+                >
+                {allProjects?.map((project, index) => (
+                    <Option key={index} value={project?._id}>
+                    {`${project?.clientName} `}
+                    </Option>
+                ))}
+                </Select>
 
-    const handleUserChange = (value) => {
-        setSelectedFilters(prevFilters => ({
-            ...prevFilters,
-            user: value
-        }));
-    };
+                <Select
+                placeholder="User"
+                onChange={handleUserChange}
+                style={{ minWidth: '120px', width: '200px' }}
+                value={selectedFilters?.user}
+                >
+                {allUsers?.map((user) => (
+                    <Option key={user._id} value={user._id}>
+                    {`${user?.first_name} `}
+                    </Option>
+                ))}
+                </Select>
+            </>
+            )}
 
-    const handleRangePicker = (dates) => {
-        if (dates && dates.length === 2) {
-            setSelectedFilters(prevFilters => ({
-                ...prevFilters,
-                dateRange: dates
-            }));
-        }
-    };
+          <RangePicker
+            onChange={handleRangePicker}
+            value={selectedFilters?.dateRange}
+          />
+        </Space>
+        <Space size={6}>
+          <Button type="primary" onClick={handleSubmit}>
+            Submit
+          </Button>
+          <Button type="primary" danger onClick={handleReset}>
+            Reset
+          </Button>
+        </Space>
+      </Flex>
+      <div>
+        {isLoading ? (
+          <Loader />
+        ) : (
+          <div>
+            <Table
+              className="mt-4 px-5"
+              dataSource={updateHistory?.dailyUpdates}
+              loading={isLoading}
+              columns={columns}
+            />
+          </div>
+        )}
+      </div>
+    </>
+  );
+};
 
-    const handleSubmit = () => {
-        getUpdateHistory(selectedFilters);
-        setSelectedFilters({
-            clientName: null,
-            projectManager: null,
-            user: null,
-            dateRange: [],
-        })
-    };
-
-    const handleReset = () => {
-        setSelectedFilters({
-            clientName: null,
-            projectManager: null,
-            user: null,
-            dateRange: [],
-        })
-        getUpdateHistory();
-    };
-
-    useEffect(() => {
-        dispatch(getDailyProjectUpdateApi());
-        getUpdateHistory(selectedFilters);
-    }, []);
-
-    return (
-        <>  <ProjectUpdateCard dataSource={updateHistory?.dailyUpdates} />
-            <Flex justify="space-between" align="center" className="mb-2">
-          
-                <Space size={6}>
-                    <Select
-                        placeholder="Project Name"
-                        onChange={handleClientChange}
-                        style={{ minWidth: '120px', width: "200px" }}
-                        value={selectedFilters?.clientName}
-                    >
-                        {allProjects?.map((project, index) => (
-                            <Option key={index} value={project?._id}>
-                                {`${project?.clientName} `}
-                            </Option>
-                        ))}
-                    </Select>
-
-                    <Select
-                        placeholder="User"
-                        onChange={handleUserChange}
-                        style={{ minWidth: '120px', width: "200px" }}
-                        value={selectedFilters?.user}
-                    >
-                        {allUsers?.map(user => (
-                            <Option key={user._id} value={user._id}>
-                                {`${user?.first_name} `}
-                            </Option>
-                        ))}
-                    </Select>
-
-                    <RangePicker onChange={handleRangePicker} value={selectedFilters.dateRange} />
-                </Space>
-                <Space size={6}>
-                    <Button type="primary" onClick={handleSubmit}>
-                        Submit
-                    </Button>
-                    <Button type="primary" danger onClick={handleReset}>
-                        Reset
-                    </Button>
-                </Space>
-            </Flex>
-            <div>
-                {isLoading ? (
-                    <Loader />
-                ) : (
-                    <div>
-                    
-                    <Table
-                        className='mt-4 px-5'
-                        dataSource={updateHistory?.dailyUpdates}
-                        loading={isLoading}
-                        columns={columns}
-                    />
-
-                    </div>
-                )}
-            </div>
-        </>
-    )
-}
-
-export default UpdateProjectTable
+export default UpdateProjectTable;

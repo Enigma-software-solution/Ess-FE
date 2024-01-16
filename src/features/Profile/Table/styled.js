@@ -9,7 +9,7 @@ const getBackgroundColor = (status) => {
         case "inactive":
             return "red";
         default:
-            return "grey"; 
+            return "grey"; // Default to red if the status is not recognized
     }
 };
 

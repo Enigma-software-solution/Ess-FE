@@ -36,7 +36,7 @@ import { enUS, fr } from 'date-fns/locale';
 import { ROLES } from "./constant/roles";
 import MarkAttendance from "./pages/Attendance/MarkAttendance";
 import AttendenceDetails from "./features/AttendanceFeature/SingleUserAttendanceDetails";
-import SignUpPage from "./pages/Auth/SignUp";
+// import SignUpPage from "./pages/Auth/SignUp";
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
@@ -95,7 +95,7 @@ function App() {
                   </Route>
 
                   {/* PROJECT UPDATE ROUTES */}
-                  <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.HR, ROLES.SALES_EXECUTIVE, ROLES.USER, ROLES.PROJECT_MANAGER]} />}>
+                  <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.HR, ROLES.USER, ROLES.PROJECT_MANAGER]} />}>
                     <Route path={routes.NEW_UPDATE} element={<ProjectDailyUpdateSubmission />} />
                     <Route path={routes.UPDATE_HISTORY} element={<UpdateProjectTable />} />
                   </Route>
@@ -106,7 +106,7 @@ function App() {
 
               {/* Auth ROUTES */}
               <Route path="/login" element={<Login />} />
-              <Route path="/Signup" element={<SignUpPage />} />
+              {/* <Route path="/Signup" element={<SignUpPage />} /> this is not mendatory */}
               <Route path={`${routes.AfterConfirmationEmail}/confirm-email/:token`} element={<AfterConfirmationEmail />} />
               <Route path={routes.FORGOT_PASSWORD} element={<ForgotPassword />} />
               <Route path={`${routes.RESET_PASSWORD}/:token`} element={<ResetPassword />} />
@@ -119,7 +119,7 @@ function App() {
               <Route path="*" element={<NotFound />} />
             </Routes>
           </ConfigProvider>
-          <ToastContainer />
+          <ToastContainer autoClose={2000} />
         </ThemeProvider>
       </ErrorBoundary>
     </div>

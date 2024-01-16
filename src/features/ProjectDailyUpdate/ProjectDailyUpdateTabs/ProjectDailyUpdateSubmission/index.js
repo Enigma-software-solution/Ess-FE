@@ -39,9 +39,7 @@ const ProjectDailyUpdateSubmission = () => {
 
     }, [todayAllUpdates, loggedInUser]);
     
-useEffect(()=>{
-console.log(todayAllUpdates)
-},[todayAllUpdates])
+
 
 
     return (

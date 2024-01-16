@@ -20,15 +20,13 @@ const AddProjectDailyUpdateModal = ({ open, handleClose, selectedProject }) => {
        const todayAllUpdates = useSelector(getAllProjectDailyUpdates);
     const filteredUpdatesId = todayAllUpdates?.dailyUpdates?.map((update) => update?.project?._id);
     const loggedInUser = useSelector(getLogedInUser);
-    const userrole = loggedInUser.role;
-    const filteredClients = userrole==="admin"?allClients: allClients.filter(client => client.developer._id === loggedInUser.id);
+    const [filteredClients,setfilteredClients] = useState();
     
     const [form] = Form.useForm();
     const [content, setContent] = useState('');
     const dispatch = useDispatch();
 
     const userId = useSelector(getUserId);
-
     const onFinish = async (values) => {
         try {
             const formData = {
@@ -85,10 +83,30 @@ const AddProjectDailyUpdateModal = ({ open, handleClose, selectedProject }) => {
         });
     }, [selectedProject]);
 
-    useEffect(() => {
-        dispatch(getAllClientsApi())
-    }, [])
+ 
 
+    useEffect(() => {
+
+        switch (loggedInUser?.role) {
+            case "admin":
+                setfilteredClients(allClients);
+                break;
+
+            case "project_manager":
+                setfilteredClients(allClients?.filter(record => record?.projectManager?._id === loggedInUser?.id));
+                break;
+
+            default:
+                setfilteredClients(allClients?.filter(record => record?.developer?._id === loggedInUser?.id));
+                break;
+        }
+
+}, [todayAllUpdates, loggedInUser]);
+
+
+useEffect(()=>{
+    console.log(allClients,"@clients")
+},[allClients])
     return (
         <div>
           

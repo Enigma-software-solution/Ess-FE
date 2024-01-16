@@ -8,7 +8,7 @@ import { format } from 'date-fns'
 import { getAllStatsApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api'
 import dayjs from 'dayjs'
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Pagination} from 'swiper/modules';
+import { Pagination } from 'swiper/modules';
 
 const TodayCount = () => {
     const [isLoading, setIsLoading] = useState(false)
@@ -47,9 +47,9 @@ const TodayCount = () => {
     return (
         <>
             <Flex justify='space-between' align='center' className='mb-2'>
-                <h6 style={{ color: '#899BBD' }} className='mb-1'>
+                {/* <h6 style={{ color: '#899BBD' }} className='mb-1'>
                     {format(new Date(selectedDate), 'dd MMM yyyy')}
-                </h6>
+                </h6> */}
                 <DatePicker onChange={onChange} allowClear={false} defaultValue={dayjs()} disabledDate={disabledDate} />
 
             </Flex>
@@ -70,22 +70,22 @@ const TodayCount = () => {
                         <SwiperSlide>
                             <CountCard title='Present' day='Today' count={todayStats?.presentCount} />
                         </SwiperSlide>
-                        <SwiperSlide>
+                        {/* <SwiperSlide>
                             <CountCard title='Leave' day='Today' count={todayStats?.leave} />
-                        </SwiperSlide>
+                        </SwiperSlide> */}
                         <SwiperSlide>
                             <CountCard title='Absent' day='Today' count={todayStats?.absentCount} />
                         </SwiperSlide>
                         <SwiperSlide>
                             <CountCard title='Late' day='Today' count={todayStats?.lateCount} />
                         </SwiperSlide>
-                        <SwiperSlide>
+                        {/* <SwiperSlide>
                             <CountCard title='Half-day' day='Today' count={todayStats?.halfCount} />
-                        </SwiperSlide>
+                        </SwiperSlide> */}
 
-                        <SwiperSlide>
+                        {/* <SwiperSlide>
                             <CountCard title='Vacation' day='Today' count={todayStats?.vacation} />
-                        </SwiperSlide>
+                        </SwiperSlide> */}
                     </Swiper>
             }
         </>
