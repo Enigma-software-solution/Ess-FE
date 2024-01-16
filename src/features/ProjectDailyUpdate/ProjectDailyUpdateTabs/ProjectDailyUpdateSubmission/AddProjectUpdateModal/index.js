@@ -3,64 +3,116 @@ import { Button, DatePicker, Flex, Form, Modal, Select } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllClientsSelector } from "src/store/slices/clientSlice/selectors";
 import { getAllClientsApi } from "src/store/slices/clientSlice/apis";
-import { getUserId } from "src/store/slices/authSlice/selectors";
-import { createDailyProjectUpdateApi } from "src/store/slices/projectDailyUpdates/apis";
+import { getLogedInUser, getUserId } from "src/store/slices/authSlice/selectors";
+import { createDailyProjectUpdateApi, updateDailyUpdate } from "src/store/slices/projectDailyUpdates/apis";
 import { toast } from "react-toastify";
-import RichTextEditor from "src/components/RichTextEditor";
 import dayjs from "dayjs";
-import { getAllProjectDailyUpdates } from "src/store/slices/projectDailyUpdates/selectors";
+import { getAllProjectDailyUpdates,  } from "src/store/slices/projectDailyUpdates/selectors";
+import ReactQuill from "react-quill";
 
 const { Option } = Select;
 
-const AddProjectDailyUpdateModal = () => {
-    const [modalVisible, setModalVisible] = useState(false);
+const AddProjectDailyUpdateModal = ({ open, handleClose, selectedProject }) => {
+ 
 
     const allClients = useSelector(getAllClientsSelector)
-    const todayAllUpdates = useSelector(getAllProjectDailyUpdates)
-    const filteredUpdatesId = todayAllUpdates?.dailyUpdates?.map((update) => update?.project?._id);
 
+       const todayAllUpdates = useSelector(getAllProjectDailyUpdates);
+    const filteredUpdatesId = todayAllUpdates?.dailyUpdates?.map((update) => update?.project?._id);
+    const loggedInUser = useSelector(getLogedInUser);
+    const [filteredClients,setfilteredClients] = useState();
+    
     const [form] = Form.useForm();
+    const [content, setContent] = useState('');
     const dispatch = useDispatch();
 
     const userId = useSelector(getUserId);
-
     const onFinish = async (values) => {
         try {
-            if (!values.content || values.content === "<p><br></p>") {
-                throw new Error("Please input all fields");
-            }
             const formData = {
                 ...values,
-                user: userId,
+                content,
             };
-            dispatch(createDailyProjectUpdateApi(formData));
-            form.resetFields();
-            handleCancel();
+    
+            if (!content) {
+                toast.error('Content cannot be empty');
+                return;
+            }
+    
+            if (selectedProject) {
+
+                const res = await dispatch(updateDailyUpdate({ id: userId, formData })).unwrap();
+                if (res.status === 200) {
+                    form.resetFields();
+                    handleClose(false);
+                }
+            } else {
+                formData.user = userId;
+                const res = await dispatch(createDailyProjectUpdateApi(formData)).unwrap();
+                if (res.status === 201) {
+                    form.resetFields();
+                    handleClose(false);
+                }
+            }
+    
+         
         } catch (error) {
-            toast.error(error.message);
+            console.error("An error occurred:", error);
         }
     };
+    
 
-    const showModal = () => {
-        setModalVisible(true);
-    };
 
     const handleCancel = () => {
-        setModalVisible(false);
+        form.resetFields();
+        handleClose(false)
     };
 
+    const stripHtmlTags = (htmlString) => {
+        if (!htmlString) {
+            return "";
+        }
+        const doc = new DOMParser().parseFromString(htmlString, 'text/html');
+        return doc.body.textContent || "";
+    };
     useEffect(() => {
-        dispatch(getAllClientsApi())
-    }, [])
+        form.setFieldsValue({
+            date: dayjs(),
+            project: selectedProject?.project?.clientName || undefined,
+            content: stripHtmlTags(selectedProject?.content),
+        });
+    }, [selectedProject]);
 
+ 
+
+    useEffect(() => {
+
+        switch (loggedInUser?.role) {
+            case "admin":
+                setfilteredClients(allClients);
+                break;
+
+            case "project_manager":
+                setfilteredClients(allClients?.filter(record => record?.projectManager?._id === loggedInUser?.id));
+                break;
+
+            default:
+                setfilteredClients(allClients?.filter(record => record?.developer?._id === loggedInUser?.id));
+                break;
+        }
+
+}, [todayAllUpdates, loggedInUser]);
+
+
+useEffect(()=>{
+    console.log(allClients,"@clients")
+},[allClients])
     return (
         <div>
-            <Button onClick={showModal} type="primary">
-                ADD PROJECT UPDATE
-            </Button>
+          
             <Modal
                 title="Daily Project Update"
-                open={modalVisible}
+                open={open}
                 onCancel={handleCancel}
                 footer={null}
                 width={"50%"}
@@ -68,9 +120,8 @@ const AddProjectDailyUpdateModal = () => {
                 <Form
                     form={form}
                     initialValues={{
-                        user: userId,
-                        date: dayjs(),
-                        content: "",
+                        content: selectedProject?.content,
+                        project: selectedProject?.project?.clientName,
                     }}
                     onFinish={onFinish}
                 >
@@ -83,7 +134,7 @@ const AddProjectDailyUpdateModal = () => {
                             rules={[{ required: true, message: "Please select a project" }]}
                         >
                             <Select style={{ width: "180px" }} placeholder="Select a project">
-                                {allClients?.filter((client) => client?.active === "active" && !filteredUpdatesId?.includes(client?._id))
+                                {filteredClients?.filter((client) => client?.active === "active" && !filteredUpdatesId?.includes(client?._id))
                                     .map((project) => (
                                         <Option key={project?._id} value={project?._id}>
                                             {project?.clientName}
@@ -97,13 +148,21 @@ const AddProjectDailyUpdateModal = () => {
                         name="content"
                         rules={[{ required: true, message: "Please input content" }]}
                     >
-                        <RichTextEditor />
+                          <ReactQuill
+                            style={{ height: '200px' }}
+                            theme="snow"
+                            value={content}
+                            onChange={setContent}
+                            />
                     </Form.Item>
 
                     <Form.Item>
-                        <Button htmlType="submit" className="mt-4" type="primary">
-                            SAVE
+                    <Flex justify="end" gap={4} className='mt-3'>
+                        <Button onClick={handleCancel}>Cancel</Button>
+                        <Button type="primary" htmlType="submit">
+                            {selectedProject ? "Update" : 'Save'}
                         </Button>
+                    </Flex>
                     </Form.Item>
                 </Form>
             </Modal>

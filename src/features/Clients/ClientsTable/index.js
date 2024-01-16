@@ -57,6 +57,7 @@ const ClientTable = () => {
         setIsOpen(true);
     };
 
+
     const columns = [
 
         {
