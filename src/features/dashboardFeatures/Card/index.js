@@ -1,7 +1,7 @@
 import React from "react";
 import { StyledCard } from "./styled";
 import UserDropdown from "src/components/CustomDropdown";
-
+import { capitalize } from "lodash";
 const ApplyCard = ({ data }) => {
   const avatarInitial = data?.profileName?.charAt(0);
 
@@ -12,7 +12,7 @@ const ApplyCard = ({ data }) => {
           <p>{avatarInitial}</p>
         </div>
         <div className="user_info">
-          <span>{data?.profileName}</span>
+          <span>{capitalize(data?.profileName)}</span>
           <p>
             <strong>Today Applies: </strong>
             {data?.count}

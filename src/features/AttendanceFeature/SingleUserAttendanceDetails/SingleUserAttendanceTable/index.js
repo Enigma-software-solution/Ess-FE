@@ -7,6 +7,7 @@ import qs from 'qs';
 import { getAllAttendanceApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api';
 import { CheckAttendanceStatusColor } from 'src/components/Utils/checkAttendanceStatusColor';
 import { StyleNotesText } from './styled';
+import { capitalize } from "lodash";
 import dayjs from 'dayjs';
 
 const { RangePicker, MonthPicker, YearPicker } = DatePicker;
@@ -29,7 +30,7 @@ const columns = [
     {
         title: 'Employee Name',
         dataIndex: 'user.first_name',
-        render: (text, record) => `${record?.user?.first_name} ${record?.user?.last_name}`,
+        render: (text, record) => capitalize(`${record?.user?.first_name} ${record?.user?.last_name}`),
     },
     {
         title: 'Check In Time',
@@ -48,20 +49,27 @@ const columns = [
         dataIndex: 'notes',
         ellipsis: true,
         render: (text, record) => (
-            <Tooltip title={text} placement="topLeft" arrowPointAtCenter>
-                <StyleNotesText >
-                    {text}
+            <Tooltip title={capitalize(text)} placement="topLeft" arrowPointAtCenter>
+                <StyleNotesText>
+                    {capitalize(text)}
                 </StyleNotesText>
             </Tooltip>
         ),
     },
     {
-        title: 'Status',
-        dataIndex: 'status',
-        key: 'status',
+        title: "Status",
+        dataIndex: "status",
         render: (text) => {
+            const tagStyle = {
+                width: '60px',
+                display: 'inline-block',
+                textAlign: 'center',
+            };
+
             return (
-                <Tag color={CheckAttendanceStatusColor(text)}>{text}</Tag>
+                <Tag color={CheckAttendanceStatusColor(text)} style={tagStyle}>
+                    {capitalize(text)}
+                </Tag>
             );
         },
     },
@@ -111,18 +119,18 @@ const SingleUserAttendancTable = ({ userId }) => {
         const month = currentDate.format('MMM');
         const startDate = currentDate.subtract(6, 'days').format('YYYY-MM-DD');
         const endDate = currentDate.format('YYYY-MM-DD');
-    
-        getAttendanceReports(month, startDate, endDate);
-      }, [userId]);
 
-        const defaultStartDate = dayjs().subtract(6, 'days');
-        const defaultEndDate = dayjs();
+        getAttendanceReports(month, startDate, endDate);
+    }, [userId]);
+
+    const defaultStartDate = dayjs().subtract(6, 'days');
+    const defaultEndDate = dayjs();
     return (
         <StyledPage>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: "20px" }}>
                     <MonthPicker onChange={handleMonthChange} placeholder="Select month" defaultValue={dayjs()} />
-                    <RangePicker onChange={handleRangePicker}  defaultValue={[defaultStartDate, defaultEndDate]}/>
+                    <RangePicker onChange={handleRangePicker} defaultValue={[defaultStartDate, defaultEndDate]} />
                 </div>
 
             </div>
