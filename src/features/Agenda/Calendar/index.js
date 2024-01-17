@@ -74,7 +74,6 @@ const CustomCalendar = () => {
 
       setIsSelectEventTypeModal(true)
       setSelectedDate({ start: slot.start, end: slot.end });
-      console.log(slot.start, "ttt")
     }
 
   };
