@@ -10,6 +10,7 @@ import { setSelectedProfile } from "src/store/slices/profielSlice";
 import CreateProfileDrawer from "../Drawers/CreateProfileDrawer";
 import Loader from "src/components/Loader";
 import { StyledBadge } from "./styled";
+import { capitalize } from "lodash";
 
 const ProfileTable = () => {
     const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
@@ -20,7 +21,7 @@ const ProfileTable = () => {
 
     const profileData = useSelector(getAllProfiles)
 
-  
+
 
     const handleEdit = (record, e) => {
         e.stopPropagation();
@@ -59,6 +60,7 @@ const ProfileTable = () => {
             key: "name",
             title: "Profile Name",
             dataIndex: "name",
+            render: (text) => capitalize(text),
         },
         {
             key: "email",
@@ -75,8 +77,6 @@ const ProfileTable = () => {
             dataIndex: "status",
             render: (text, record) => {
                 const isActive = text === "active";
-
-
                 return (
                     <div className="d-flex gap-1">
                         <Popconfirm
@@ -86,7 +86,7 @@ const ProfileTable = () => {
                             cancelText="No"
                         >
                             <StyledBadge onClick={(e) => e.stopPropagation()} status={text}>
-                                {text}
+                                {capitalize(text)}
                             </StyledBadge>
                         </Popconfirm>
                     </div >

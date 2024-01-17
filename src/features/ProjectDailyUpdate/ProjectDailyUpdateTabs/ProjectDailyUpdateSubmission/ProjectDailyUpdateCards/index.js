@@ -12,9 +12,10 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination } from "swiper/modules";
 import { setSelectedProjectDailyUpdate } from 'src/store/slices/projectDailyUpdates';
 import TextArea from 'antd/es/input/TextArea';
+import { capitalize } from 'lodash';
 import { CardWrapper } from './styled';
 
-const ProjectDailyUpdateCards = ({todayAllUpdates}) => {
+const ProjectDailyUpdateCards = ({ todayAllUpdates }) => {
     const dispatch = useDispatch();
     const authUser = useSelector(getLogedInUser);
 
@@ -35,15 +36,15 @@ const ProjectDailyUpdateCards = ({todayAllUpdates}) => {
     };
 
     const handleSaveEdit = (record) => {
-        const newcontent = editedContentMap[record._id] || '';     
+        const newcontent = editedContentMap[record._id] || '';
         if (newcontent.trim() !== '') {
             dispatch(updateDailyUpdate({ ...record, content: newcontent }));
         }
-    
-        setEditedContentMap((prevMap) => ({ ...prevMap, [record._id]: '' })); 
+
+        setEditedContentMap((prevMap) => ({ ...prevMap, [record._id]: '' }));
         dispatch(setSelectedProjectDailyUpdate(null));
     };
-    
+
 
     useEffect(() => {
         const params = qs.stringify({
@@ -62,7 +63,7 @@ const ProjectDailyUpdateCards = ({todayAllUpdates}) => {
     };
 
     const handleTextAreaChange = (recordId, value) => {
-        setEditedContentMap((prevMap) => ({...prevMap , [recordId]: value }))
+        setEditedContentMap((prevMap) => ({ ...prevMap, [recordId]: value }))
     };
 
     return (
@@ -80,7 +81,7 @@ const ProjectDailyUpdateCards = ({todayAllUpdates}) => {
                         <CardWrapper>
                             <Flex justify='space-between' gap={10}>
                                 <div style={{ fontSize: '18px', fontWeight: '500' }}>
-                                    {record.project?.clientName || 'No client name'}
+                                    {capitalize(record.project?.clientName || 'No client name')}
                                 </div>
                                 <div className='d-flex gap-1'>
                                     <EditButton onClick={(e) => handleClick(record, e)} />
@@ -97,13 +98,13 @@ const ProjectDailyUpdateCards = ({todayAllUpdates}) => {
                             </Flex>
                             <hr />
                             <h6 className='text-center pb-2'>
-                                {record.project?.projectManager?.first_name} {record.project?.projectManager?.last_name || 'No project manager'}
+                                {capitalize(record.project?.projectManager?.first_name)} {capitalize(record.project?.projectManager?.last_name || 'No project manager')}
                             </h6>
                             <TextArea
                                 rows={7}
                                 placeholder='Update'
                                 readOnly={selectedProject !== record}
-                                defaultValue={editedContentMap[record._id] || stripHtmlTags(record?.content)}
+                                defaultValue={capitalize(editedContentMap[record._id] || stripHtmlTags(record?.content))}
                                 onChange={(e) => handleTextAreaChange(record._id, e.target.value)}
                             />
                             {selectedProject === record && (

@@ -10,6 +10,7 @@ import Loader from "src/components/Loader";
 import { setSelectedClient } from "src/store/slices/clientSlice";
 import { StyledBadge } from "./styled";
 import { toast } from 'react-toastify';
+import { capitalize } from "lodash";
 import dayjs from 'dayjs';
 
 
@@ -71,33 +72,32 @@ const ClientTable = () => {
             key: "email",
         },
         {
-            title: "Status",
-            dataIndex: "active",
+            title: 'Status',
+            dataIndex: 'active',
             render: (text, record) => {
-                const isActive = text === "active";
-
+                const capitalizedStatus = capitalize(text);
 
                 return (
                     <div className="d-flex gap-1">
                         <Popconfirm
-                            title={`Are you sure to ${isActive ? "deactivate" : "activate"} this Client?`}
+                            title={`Are you sure to ${capitalizedStatus === 'Active' ? 'deactivate' : 'activate'} this Client?`}
                             onConfirm={(e) => handleChangeStatus(e, record)}
                             okText="Yes"
                             cancelText="No"
                         >
                             <StyledBadge onClick={(e) => e.stopPropagation()} status={text}>
-                                {text}
+                                {capitalizedStatus}
                             </StyledBadge>
                         </Popconfirm>
-                    </div >
+                    </div>
                 );
-            }
+            },
         },
+
         {
             title: "Project Manager",
             dataIndex: "projectManager?.first_name",
-            render: (text, record) => record?.projectManager?.first_name,
-
+            render: (text, record) => capitalize(record?.projectManager?.first_name),
         },
         {
             title: "Created On",
@@ -115,7 +115,7 @@ const ClientTable = () => {
         {
             title: "Developer",
             dataIndex: "developer?.first_name",
-            render: (text, record) => record?.developer?.first_name,
+            render: (text, record) => capitalize(record?.developer?.first_name),
 
         },
         {
@@ -132,7 +132,7 @@ const ClientTable = () => {
         {
             title: "Profile",
             dataIndex: "profile?.name",
-            render: (text, record) => record?.profile?.name,
+            render: (text, record) => capitalize(record?.profile?.name,)
 
         },
 

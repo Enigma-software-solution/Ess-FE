@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { Table, Tag, Tooltip } from 'antd';
 import { format } from 'date-fns';
 import { CheckAttendanceStatusColor } from 'src/components/Utils/checkAttendanceStatusColor';
+import { capitalize } from "lodash";
 import { StyledTable } from './styled';
 
 const AttendanceHistory = ({ reports, isLoading }) => {
@@ -11,13 +12,14 @@ const AttendanceHistory = ({ reports, isLoading }) => {
         setExpandedRowKeys(keys);
     };
     const groupedReports = reports?.reduce((acc, report) => {
-        const fullName = `${report?.user?.first_name} ${report?.user?.last_name}`;
+        const fullName = `${capitalize(report?.user?.first_name)} ${capitalize(report?.user?.last_name)}`;
         if (!acc[fullName]) {
             acc[fullName] = [];
         }
         acc[fullName]?.push(report);
         return acc;
     }, {});
+
     const groupedData = Object.keys(groupedReports)?.map((name) => ({
         key: name,
         employeeName: name,
@@ -48,9 +50,9 @@ const AttendanceHistory = ({ reports, isLoading }) => {
                 dataIndex: 'notes',
                 ellipsis: true,
                 render: (text, record) => (
-                    <Tooltip title={text} placement="topLeft" arrowPointAtCenter>
+                    <Tooltip title={capitalize(text)} placement="topLeft" arrowPointAtCenter>
                         <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                            {text}
+                            {capitalize(text)}
                         </div>
                     </Tooltip>
                 ),
@@ -64,10 +66,10 @@ const AttendanceHistory = ({ reports, isLoading }) => {
                         display: 'inline-block',
                         textAlign: 'center',
                     };
-    
+
                     return (
                         <Tag color={CheckAttendanceStatusColor(text)} style={tagStyle}>
-                            {text}
+                            {capitalize(text)}
                         </Tag>
                     );
                 },
