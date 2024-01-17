@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import TextArea from 'antd/es/input/TextArea';
 import Avatar from 'src/assets/avatar1.jpg';
 import { CardImage, CardWrapper } from './styled';
@@ -26,7 +26,12 @@ const STATUS_OPTIONS = [
 const MarkCard = ({ user, isLoading, handleSubmit, attendanceDate }) => {
     const [form] = useForm();
     const [checkInTime, setCheckInTime] = useState(new Date());
+    const [selectOpen, setSelectOpen] = useState(false);
+    const selectRef = useRef(null);
 
+    const handleStatusClick = () => {
+        setSelectOpen(!selectOpen);
+    };
     const onSubmit = async (values) => {
         if (!values.status) {
             return toast.warn('Status is required');
@@ -74,12 +79,16 @@ const MarkCard = ({ user, isLoading, handleSubmit, attendanceDate }) => {
                 </Form.Item>
                 <Form.Item name="status">
                     <Select
+                        ref={selectRef}
                         placeholder="Select Status"
                         dropdownStyle={{ background: '#e4eefc', fontSize: '25px' }}
                         showSearch
                         size="large"
                         options={STATUS_OPTIONS}
                         rules={[{ required: true, message: 'Please select a status!' }]}
+                        onClick={handleStatusClick}
+                        onBlur={() => setSelectOpen(false)}
+                        open={selectOpen}
                     />
                 </Form.Item>
 

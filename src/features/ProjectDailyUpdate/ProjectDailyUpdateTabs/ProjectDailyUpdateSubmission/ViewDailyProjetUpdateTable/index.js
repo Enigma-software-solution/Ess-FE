@@ -6,28 +6,30 @@ import DeleteButton from 'src/components/buttons/DeleteButton';
 import EditButton from 'src/components/buttons/EditButton';
 import { deteleDailyProjectUpdatesApi, getDailyProjectUpdateApi } from 'src/store/slices/projectDailyUpdates/apis';
 import qs from 'qs'
+
 import { getLogedInUser } from 'src/store/slices/authSlice/selectors';
 
 const ViewDailyProjectUpdateTable = ({todayAllUpdates}) => {
 
     const dispatch = useDispatch()
-
     const authUser = useSelector(getLogedInUser)
-
     const handleConfirmDelete = (recordToDelete, e) => {
         dispatch(deteleDailyProjectUpdatesApi(recordToDelete?._id))
     };
-
     const handleClick = (record, e) => {
 
     }
+    const capitalize = (str) => {
+        if (!str) return '';
+        return str.replace(/\b\w/g, (match) => match.toUpperCase());
+    };
 
     const columns = [
         {
             title: 'Project Name',
             dataIndex: 'project',
             key: 'Project',
-            render: (text, record) => record.project?.clientName || 'No client name',
+            render: (text, record) => capitalize(record.project?.clientName || 'No client name',)
         },
         {
             title: 'Project Manager',
@@ -36,7 +38,7 @@ const ViewDailyProjectUpdateTable = ({todayAllUpdates}) => {
             render: (text, record) => {
                 const projectManager = record.project?.projectManager;
                 if (projectManager && projectManager?.first_name && projectManager?.last_name) {
-                    return `${projectManager?.first_name} ${projectManager?.last_name}`;
+                    return `${capitalize(projectManager?.first_name)} ${capitalize(projectManager?.last_name)}`;
                 } else {
                     return 'No project manager';
                 }
@@ -47,9 +49,10 @@ const ViewDailyProjectUpdateTable = ({todayAllUpdates}) => {
             dataIndex: 'content',
             key: 'Update',
             render: (text, record) => (
-                <span dangerouslySetInnerHTML={{ __html: record?.content }} />
+                <span dangerouslySetInnerHTML={{ __html: record && record.content ? capitalize(record.content) : '' }} />
             ),
         },
+
         {
             title: 'Date',
             dataIndex: 'date',

@@ -82,8 +82,6 @@ const UserTable = () => {
         return fullName.includes(searchQuery.toLowerCase());
     });
 
-
-
     const columns = [
         {
             title: "Name",
@@ -106,6 +104,7 @@ const UserTable = () => {
         {
             title: "Role",
             dataIndex: "role",
+            render: (text, record) => capitalize(text),
         },
         {
             title: "Status",
@@ -123,7 +122,7 @@ const UserTable = () => {
                             cancelText="No"
                         >
                             <StyledBadge onClick={(e) => e.stopPropagation()} status={text}>
-                                {text}
+                                {capitalize(text)}
                             </StyledBadge>
                         </Popconfirm>
                     </div >

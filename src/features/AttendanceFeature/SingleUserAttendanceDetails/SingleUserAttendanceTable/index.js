@@ -7,6 +7,7 @@ import qs from 'qs';
 import { getAllAttendanceApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api';
 import { CheckAttendanceStatusColor } from 'src/components/Utils/checkAttendanceStatusColor';
 import { StyleNotesText } from './styled';
+import { capitalize } from "lodash";
 import dayjs from 'dayjs';
 
 const { RangePicker, MonthPicker, YearPicker } = DatePicker;
@@ -29,7 +30,7 @@ const columns = [
     {
         title: 'Employee Name',
         dataIndex: 'user.first_name',
-        render: (text, record) => `${record?.user?.first_name} ${record?.user?.last_name}`,
+        render: (text, record) => capitalize(`${record?.user?.first_name} ${record?.user?.last_name}`),
     },
     {
         title: 'Check In Time',
@@ -48,9 +49,9 @@ const columns = [
         dataIndex: 'notes',
         ellipsis: true,
         render: (text, record) => (
-            <Tooltip title={text} placement="topLeft" arrowPointAtCenter>
-                <StyleNotesText >
-                    {text}
+            <Tooltip title={capitalize(text)} placement="topLeft" arrowPointAtCenter>
+                <StyleNotesText>
+                    {capitalize(text)}
                 </StyleNotesText>
             </Tooltip>
         ),
@@ -67,7 +68,7 @@ const columns = [
 
             return (
                 <Tag color={CheckAttendanceStatusColor(text)} style={tagStyle}>
-                    {text}
+                    {capitalize(text)}
                 </Tag>
             );
         },
