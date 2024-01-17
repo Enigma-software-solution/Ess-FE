@@ -9,13 +9,14 @@ import * as XLSX from 'xlsx';
 import { StyledReportCount } from './styled';
 import { capitalize } from "lodash";
 import dayjs from 'dayjs';
+import CustomSearchField from 'src/components/SearchField';
 
 const AllUsersStatsTable = () => {
     const [allStats, setAllStats] = useState(null)
     const [isLoading, setIsLoading] = useState(true)
-    const [selectedMonth, setSelectedMonth] = useState(null)
-    const [selectedYear, setSelectdYear] = useState(null)
-
+    const [selectedMonth, setSelectedMonth] = useState(dayjs())
+    const [selectedYear, setSelectdYear] = useState(dayjs())
+    const [searchQuery, setSearchQuery] = useState("");
     const dispatch = useDispatch()
 
     const getAllStats = async () => {
@@ -139,18 +140,31 @@ const AllUsersStatsTable = () => {
     };
 
 
+    const handleSearchChange = (e) => {
+        const searchValue = e.target.value;
+        setSearchQuery(searchValue);
+
+    }
+    const filteredStats = allStats?.filter((data) => {
+        const fullName = `${data?.user?.first_name} ${data?.user?.last_name}`.toLowerCase();
+        return fullName.includes(searchQuery.toLowerCase());
+    });
 
     return (
         <StyledReportCount>
-            <Flex justify='space-between' className='m-2'>
+            <Flex justify='space-between' className='m-'>
                 <h5>Reports Count</h5>
+               
                 <Button type="primary" icon={<ExportOutlined />} onClick={handleExport}>
                     Export
                 </Button>
             </Flex>
-            <Space size={20} className='p-3 mb-3' style={{ boxShadow: '0px 8px 24px rgba(149,157,165,0.2)' }}>
-                <DatePicker picker='month' onChange={handleMonthChange} value={selectedMonth} disabledDate={disabledDate} />
-                <DatePicker picker='year' onChange={handleYearChange} value={selectedYear} disabledDate={disabledDate} />
+            <CustomSearchField onChange={handleSearchChange} text={"Search User"} />
+            <Space size={20} className='p-3 mb-3 mt-2'  style={{width:'100%', boxShadow: '0px 8px 24px rgba(149,157,165,0.2)' }}>
+            
+                
+                <DatePicker picker='month' onChange={handleMonthChange} defaultValue={selectedMonth} disabledDate={disabledDate} />
+                <DatePicker picker='year' onChange={handleYearChange} defaultValue={selectedYear} disabledDate={disabledDate} />
                 <div>
 
                     <Button onClick={handleReset} style={{ marginLeft: 8 }}>
@@ -163,7 +177,7 @@ const AllUsersStatsTable = () => {
             </Space>
 
 
-            <Table columns={columns} dataSource={allStats} loading={isLoading} pagination={false} />
+            <Table columns={columns} dataSource={filteredStats} loading={isLoading} pagination={false} />
         </StyledReportCount>
     )
 }
