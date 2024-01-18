@@ -1,12 +1,13 @@
 import React from 'react';
+import { Wrapper, Heading, TeamImage } from './styled';
 import hirarchy from '../../assets/hirearchy.png';
 
 const TeamStructure = () => {
     return (
-        <div >
-            <h4>Team Structure</h4>
-            <img src={hirarchy} style={{ width: "100%" }} alt="Team Hierarchy" />
-        </div >
+        <Wrapper>
+            <Heading>Team Structure</Heading>
+            <TeamImage src={hirarchy} alt="Team Hierarchy" />
+        </Wrapper>
     );
 }
 
