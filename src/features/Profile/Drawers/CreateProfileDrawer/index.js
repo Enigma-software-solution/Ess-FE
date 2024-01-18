@@ -27,6 +27,7 @@ const CreateProfileDrawer = ({ isOpen, handleDrawer }) => {
                 name: selectedProfile?.name,
                 phoneNumber: selectedProfile?.phoneNumber,
                 status: selectedProfile?.status,
+                state: selectedProfile?.state,
             });
         } else {
             form.setFieldsValue(initialFormValues);
