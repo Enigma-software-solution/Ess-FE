@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Calendar, Views, dateFnsLocalizer } from "react-big-calendar";
+import { Calendar, Views, dateFnsLocalizer, } from "react-big-calendar";
 import format from "date-fns/format";
 import parse from "date-fns/parse";
 import startOfWeek from "date-fns/startOfWeek";
@@ -12,7 +12,7 @@ import { getAllEvents, isEventLaoding } from "src/store/slices/agendaSlice/selec
 import { CallType } from "src/constant/callTypes";
 import { toast } from "react-toastify";
 import SalesDrawer from "../SalesDrawer";
-import EventDetailsDrawer from "../SalesCallDetailsDrawer";
+import SalesCallDetailsDrawer from "../SalesCallDetailsDrawer";
 import CustomEvent from "./CustomEvent";
 import ClientEventDrawer from "../ClientEventDrawer";
 import SelectEventTypeModal from "../SelectEventTypeModal";
@@ -32,7 +32,6 @@ const localizer = dateFnsLocalizer({
   startOfWeek,
   getDay,
   locales,
-  timeZone: 'America/New_York',
 });
 
 
@@ -69,13 +68,9 @@ const CustomCalendar = () => {
       toast.warn("Cannot create events on past dates.");
       return;
     }
-    if (currentView !== "month") {
       dispatch(setSelectedEvent(null))
-
       setIsSelectEventTypeModal(true)
       setSelectedDate({ start: slot.start, end: slot.end });
-    }
-
   };
 
   const onEventClick = async (event) => {
@@ -88,7 +83,6 @@ const CustomCalendar = () => {
     dispatch(setSelectedEvent(event));
     dispatch(showEventDrawer());
   };
-
   const getEventStyle = (event) => {
     const colorMap = {
       [CallType.Initial]: "#3498db",
@@ -155,7 +149,7 @@ const CustomCalendar = () => {
       <SalesEventDrawer selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
       <ClientEventDrawer selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
 
-      <EventDetailsDrawer />
+      <SalesCallDetailsDrawer />
     </div>
   );
 };

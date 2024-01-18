@@ -58,7 +58,7 @@ function App() {
     <div className="App">
       <ErrorBoundary>
         <ThemeProvider theme={theme} >
-          <ConfigProvider theme={theme} locale={enUS}>
+          <ConfigProvider theme={theme} >
 
             <GlobalStyles />
             <Routes>

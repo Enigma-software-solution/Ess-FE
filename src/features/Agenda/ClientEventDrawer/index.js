@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Drawer, Form, Button } from "antd";
+import { Drawer, Form, Button, TimePicker } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import CustomInput from "src/components/formElements/CustomInput";
 import CustomSelect from "src/components/formElements/CustomSelect";
@@ -13,8 +13,9 @@ import { createEventsApi } from "src/store/slices/agendaSlice/apis";
 import { getAllClientsSelector } from "src/store/slices/clientSlice/selectors";
 import { getAllClientsApi } from "src/store/slices/clientSlice/apis";
 import { CallType, CallTypeDropdown, ClientCallTypeDropdown } from "src/constant/callTypes";
+import dayjs from "dayjs";
 
-const ClientEventDrawer = ({ selectedDate }) => {
+const ClientEventDrawer = ({ selectedDate, setSelectedDate }) => {
     const dispatch = useDispatch();
     const isDrawer = useSelector(isClientEventDrawer);
     const loggedInUser = useSelector(getLogedInUser);
@@ -26,6 +27,15 @@ const ClientEventDrawer = ({ selectedDate }) => {
 
     const handleClose = () => {
         dispatch(closeClientEventDrawer());
+    };
+
+    const handleTimeChange = (dates, dateString) => {
+        const updatedStartDate = dayjs(dates[0]).format("ddd MMM DD YYYY HH:mm:ss [GMT]ZZ");
+        const updatedEndDate = dayjs(dates[1]).format("ddd MMM DD YYYY HH:mm:ss [GMT]ZZ");
+        setSelectedDate({
+            start: updatedStartDate,
+            end: updatedEndDate,
+        });
     };
 
     const handleSubmit = async (values) => {
@@ -92,10 +102,21 @@ const ClientEventDrawer = ({ selectedDate }) => {
             >
                 <div className="d-flex justify-content-end align-items-end flex-column mb-3">
                     <p>Date: {formatDate(selectedDate?.start)}</p>
-                    <p>
-                        Time: {formatTime(selectedDate.start)} -{" "}
-                        {formatTime(selectedDate.end)}
-                    </p>
+                    <div className="mt-2 ">
+                        <span>Time :  </span>
+                        <TimePicker.RangePicker
+                            format="hh:mm A"
+                            defaultValue={
+                                selectedDate
+                                    ? [
+                                        dayjs(selectedDate.start),
+                                        dayjs(selectedDate.end),
+                                    ]
+                                    : undefined
+                            }
+                            onChange={handleTimeChange} // Add onChange to update the time
+                        />
+                    </div>
                 </div>
 
                 <CustomInput
