@@ -58,6 +58,7 @@ const AllUsersStatsTable = () => {
     const handleReset = () => {
         setSelectedMonth(null);
         setSelectdYear(null);
+        getAllStats()
     };
 
 
@@ -166,13 +167,14 @@ const AllUsersStatsTable = () => {
                 <DatePicker picker='month' onChange={handleMonthChange} defaultValue={selectedMonth} disabledDate={disabledDate} />
                 <DatePicker picker='year' onChange={handleYearChange} defaultValue={selectedYear} disabledDate={disabledDate} />
                 <div>
+                    <Button type="primary" onClick={handleSubmit} style={{ marginLeft: 8 }} disabled={selectedMonth === null && selectedYear === null}>
+                        Submit
+                    </Button>
 
                     <Button onClick={handleReset} style={{ marginLeft: 8 }}>
                         Reset
                     </Button>
-                    <Button type="primary" onClick={handleSubmit} style={{ marginLeft: 8 }}>
-                        Submit
-                    </Button>
+
                 </div>
             </Space>
 

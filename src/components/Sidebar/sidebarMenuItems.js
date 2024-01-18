@@ -127,6 +127,14 @@ export const sidebarMenuItems = [
         title: 'Policy',
         icon: <FormOutlined />,
         path: routes.POLICIES,
-        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.HR, ROLES.USER,ROLES.PROJECT_MANAGER],
+        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.HR, ROLES.USER, ROLES.PROJECT_MANAGER],
+    },
+
+    {
+        key: routes.TEAM_STRUCTURE,
+        title: 'Team Structure',
+        icon: <FormOutlined />,
+        path: routes.TEAM_STRUCTURE,
+        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.HR, ROLES.USER, ROLES.PROJECT_MANAGER, ROLES.SALES_EXECUTIVE],
     },
 ];
