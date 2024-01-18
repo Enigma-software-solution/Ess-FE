@@ -11,35 +11,35 @@ export const ROLES = {
 
 export const rolesDropdown = [
   {
-    label: "SUPER ADMIN",
+    label: "Super Admin",
     value: ROLES.SUPER_ADMIN
   },
   {
-    label: "ADMIN",
+    label: "Admin",
     value: ROLES.ADMIN
   },
   {
-    label: "USER",
+    label: "User",
     value: ROLES.USER
   },
   {
-    label: "MANAGER",
+    label: "Manager",
     value: ROLES.MANAGER
   },
   {
-    label: "SALES",
+    label: "Sales",
     value: ROLES.SALES_EXECUTIVE
   },
   {
-    label: "PROJECT MANAGER",
+    label: "Project Manager",
     value: ROLES.PROJECT_MANAGER
   },
   {
-    label: "TEAM LEAD",
+    label: "Team Lead",
     value: ROLES.TEAM_LEAD
   },
   {
-    label: "HR",
+    label: "Hr",
     value: ROLES.HR
   }
 ];

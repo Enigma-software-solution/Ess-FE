@@ -56,7 +56,11 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
     };
     const handleSubmit = async (values) => {
         try {
-            const user = { ...values };
+            const user = {
+                ...values,
+                role: values.role.charAt(0).toUpperCase() + values.role.slice(1).toLowerCase()
+            };
+
             if (isEditMode) {
                 dispatch(updateUserApi({ user, userId: selectedUser?._id }));
             } else {

@@ -11,6 +11,7 @@ const initialFormValues = {
     name: '',
     phoneNumber: '',
     status: '',
+    state: '',
 };
 
 const CreateProfileDrawer = ({ isOpen, handleDrawer }) => {
@@ -26,6 +27,7 @@ const CreateProfileDrawer = ({ isOpen, handleDrawer }) => {
                 name: selectedProfile?.name,
                 phoneNumber: selectedProfile?.phoneNumber,
                 status: selectedProfile?.status,
+                state: selectedProfile?.state,
             });
         } else {
             form.setFieldsValue(initialFormValues);
@@ -106,7 +108,17 @@ const CreateProfileDrawer = ({ isOpen, handleDrawer }) => {
                         <CustomInput
                             name="status"
                             label="status"
+                            placeholder="Please select the Status"
                             rules={[{ required: true, message: 'Please select the Status' }]}
+                            type="text"
+                        />
+                    </Col>
+                    <Col span={12}>
+                        <CustomInput
+                            name="state"
+                            label="City or State"
+                            placeholder="Please select the City or State"
+                            rules={[{ required: true, message: 'Please select the City or State' }]}
                             type="text"
                         />
                     </Col>

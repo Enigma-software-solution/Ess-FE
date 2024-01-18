@@ -73,6 +73,11 @@ const ProfileTable = () => {
             dataIndex: "phoneNumber",
         },
         {
+            key: "state",
+            title: "City or State",
+            dataIndex: "state",
+        },
+        {
             title: "Status",
             dataIndex: "status",
             render: (text, record) => {
