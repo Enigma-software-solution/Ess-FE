@@ -13,6 +13,16 @@ import locale from 'antd/locale/en_US';
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 
+
+const STATUS_OPTIONS = [
+    { value: 'present', label: 'Present' },
+    { value: 'absent', label: 'Absent' },
+    { value: 'late', label: 'Late' },
+    { value: 'leave', label: 'Leave' },
+    { value: 'half-day', label: 'Half-day' },
+    { value: 'vacation', label: 'Vacation' },
+];
+
 const AttendanceReport = () => {
     const [reports, setReports] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
@@ -135,7 +145,16 @@ const AttendanceReport = () => {
         setSelectedRange(null);
         setType('Select Type');
 
+        getAttendanceReports({
+            status: null,
+            userId: null,
+            dateRange: [],
+            date: null,
+            month: null,
+            pageSize: 1000,
+        });
     };
+
 
     useEffect(() => {
         if (!users?.length) {
@@ -167,8 +186,12 @@ const AttendanceReport = () => {
                             <Select
                                 placeholder="Select user"
                                 onChange={handleUserChange}
+                                showSearch
                                 style={{ minWidth: '120px', width: "200px" }}
                                 value={selectedFilters.userId}
+                                filterOption={(input, option) =>
+                                    option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                }
                             >
                                 {users.map(user => (
                                     <Option key={user._id} value={user._id}>
@@ -179,15 +202,11 @@ const AttendanceReport = () => {
                             <Select
                                 placeholder="Select attendance status"
                                 onChange={handleStatusChange}
+                                options={STATUS_OPTIONS}
+                                showSearch
                                 style={{ minWidth: '120px', width: "200px" }}
                                 value={selectedFilters.status}
                             >
-                                <Option value="present">Present</Option>
-                                <Option value="absent">Absent</Option>
-                                <Option value="leave">Leave</Option>
-                                <Option value="vacation">Vacation</Option>
-                                <Option value="half-day">Half-day</Option>
-                                <Option value="late">Late</Option>
                             </Select>
                             <Space>
                                 <Select
