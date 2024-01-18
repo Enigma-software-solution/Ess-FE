@@ -1,4 +1,4 @@
-import { ContainerOutlined, CalendarOutlined, DashboardOutlined, CheckSquareOutlined, ProfileOutlined, UserSwitchOutlined, UsergroupAddOutlined, FormOutlined, ProjectOutlined } from '@ant-design/icons';
+import { ContainerOutlined, CalendarOutlined, DashboardOutlined, CheckSquareOutlined, ProfileOutlined, UserSwitchOutlined, UsergroupAddOutlined, FormOutlined, ProjectOutlined, TeamOutlined } from '@ant-design/icons';
 import { ROLES } from 'src/constant/roles';
 import { routes } from 'src/constant/routes';
 
@@ -133,7 +133,7 @@ export const sidebarMenuItems = [
     {
         key: routes.TEAM_STRUCTURE,
         title: 'Team Structure',
-        icon: <FormOutlined />,
+        icon: <TeamOutlined />,
         path: routes.TEAM_STRUCTURE,
         roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.HR, ROLES.USER, ROLES.PROJECT_MANAGER, ROLES.SALES_EXECUTIVE],
     },
