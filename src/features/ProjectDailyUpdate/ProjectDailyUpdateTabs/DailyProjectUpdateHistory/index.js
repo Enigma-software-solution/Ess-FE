@@ -1,4 +1,4 @@
-import { Button, DatePicker, Flex, Select, Space, Table } from 'antd';
+import { Button, DatePicker, Flex, Pagination, Select, Space, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDailyProjectUpdateApi } from 'src/store/slices/projectDailyUpdates/apis';
@@ -21,7 +21,8 @@ const UpdateProjectTable = () => {
   const loggedInUser = useSelector(getLogedInUser);
   const [isLoading, setIsLoading] = useState(false);
   const [updateHistory, setUpdateHistory] = useState(null);
-
+  const [selectPagination, setSelectedPagination] = useState(null)
+  const { totalItems, pageSize, totalPages, page } = updateHistory?.paginator ?? {};
   const initialFilters = {
     admin: {
       clientName: null,
@@ -68,8 +69,8 @@ const UpdateProjectTable = () => {
         const projectManager = record.project?.projectManager;
         return (
           projectManager &&
-          projectManager?.first_name &&
-          projectManager?.last_name
+            projectManager?.first_name &&
+            projectManager?.last_name
             ? `${projectManager?.first_name} ${projectManager?.last_name}`
             : 'No project manager'
         );
@@ -97,6 +98,32 @@ const UpdateProjectTable = () => {
     },
   ];
 
+  const onPaginationChange = async (page, pageSize) => {
+    setSelectedPagination({
+      page: page,
+      pageSize: pageSize,
+    });
+
+    const params = {
+      page: page,
+      pageSize: pageSize,
+    };
+
+    const queryStringResult = qs.stringify(params);
+    try {
+      setIsLoading(true);
+      const res = await dispatch(
+        getDailyProjectUpdateApi(queryStringResult)
+      ).unwrap();
+      setUpdateHistory(res?.data);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+
   const getUpdateHistory = async (filters) => {
     const params = {};
 
@@ -117,10 +144,15 @@ const UpdateProjectTable = () => {
       params.project = filters?.clientName;
     }
 
+    if (filters?.user !== undefined) {
+      params.user = filters?.user;
+    }
+
     if (filters?.dateRange.length > 0) {
       params.startDate = new Date(filters?.dateRange[0]);
       params.endDate = new Date(filters?.dateRange[1]);
     }
+
 
     const queryString = qs.stringify(params);
     try {
@@ -176,35 +208,35 @@ const UpdateProjectTable = () => {
     <>
       <Flex justify="space-between" align="center" className="mb-2">
         <Space size={6}>
-        {loggedInUser.role === 'admin' && (
+          {loggedInUser.role === 'admin' && (
             <>
-                <Select
+              <Select
                 placeholder="Project Name"
                 onChange={handleClientChange}
                 style={{ minWidth: '120px', width: '200px' }}
                 value={selectedFilters?.clientName}
-                >
+              >
                 {allProjects?.map((project, index) => (
-                    <Option key={index} value={project?._id}>
+                  <Option key={index} value={project?._id}>
                     {`${project?.clientName} `}
-                    </Option>
+                  </Option>
                 ))}
-                </Select>
+              </Select>
 
-                <Select
+              <Select
                 placeholder="User"
                 onChange={handleUserChange}
                 style={{ minWidth: '120px', width: '200px' }}
                 value={selectedFilters?.user}
-                >
+              >
                 {allUsers?.map((user) => (
-                    <Option key={user._id} value={user._id}>
+                  <Option key={user._id} value={user._id}>
                     {`${user?.first_name} `}
-                    </Option>
+                  </Option>
                 ))}
-                </Select>
+              </Select>
             </>
-            )}
+          )}
 
           <RangePicker
             onChange={handleRangePicker}
@@ -221,18 +253,29 @@ const UpdateProjectTable = () => {
         </Space>
       </Flex>
       <div>
-        {isLoading ? (
-          <Loader />
-        ) : (
-          <div>
-            <Table
-              className="mt-4 px-5"
-              dataSource={updateHistory?.dailyUpdates}
-              loading={isLoading}
-              columns={columns}
+
+        <div>
+          <Table
+            className="mt-4 px-5"
+            dataSource={updateHistory?.dailyUpdates}
+            loading={isLoading}
+            columns={columns}
+            pagination={false}
+          />
+          {updateHistory?.paginator && updateHistory.dailyUpdates.length ? (
+            <Pagination
+              style={{ padding: '10px', display: 'flex', justifyContent: 'flex-end' }}
+              total={totalItems}
+              showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
+              defaultPageSize={pageSize}
+              defaultCurrent={page}
+              onChange={onPaginationChange} 
+              showSizeChanger
             />
-          </div>
-        )}
+
+          ) : null}
+        </div>
+
       </div>
     </>
   );
