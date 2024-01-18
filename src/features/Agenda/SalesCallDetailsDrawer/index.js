@@ -28,8 +28,6 @@ const SalesCallDetailsDrawer = () => {
   const selectedEvent = useSelector(getSelectedEvent);
   const event = useSelector(getAllEvents);
 
-  console.log(event, "eventssss")
-
   const handleNotesDrawer = () => {
     dispatch(showNotesDrawer());
   };
@@ -53,12 +51,10 @@ const SalesCallDetailsDrawer = () => {
     dispatch(showSalesDrawer());
   };
 
-  console.log(selectedEvent, "selecteddfdd")
-
   return (
     <div className="mb-1">
       <Drawer
-        title="Call Information"
+        title="Sales Call Details"
         placement="right"
         closable={true}
         onClose={onClose}
