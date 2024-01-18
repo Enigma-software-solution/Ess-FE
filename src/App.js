@@ -44,6 +44,7 @@ import UpdateProjectTable from "./features/ProjectDailyUpdate/ProjectDailyUpdate
 
 import ErrorBoundary from "./components/ErrorBoundary";
 import ProjectDailyUpdateSubmission from "./features/ProjectDailyUpdate/ProjectDailyUpdateTabs/ProjectDailyUpdateSubmission";
+import TeamStructurePage from "./pages/TeamStructure";
 
 function App() {
   const dispatch = useDispatch();
@@ -98,6 +99,10 @@ function App() {
                   <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.HR, ROLES.USER]} />}>
                     <Route path={routes.NEW_UPDATE} element={<ProjectDailyUpdateSubmission />} />
                     <Route path={routes.UPDATE_HISTORY} element={<UpdateProjectTable />} />
+                  </Route>
+
+                  <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.HR, ROLES.USER, ROLES.SALES_EXECUTIVE]} />}>
+                    <Route path={routes.TEAM_STRUCTURE} element={<TeamStructurePage />} />
                   </Route>
 
                 </Route>

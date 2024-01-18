@@ -26,5 +26,8 @@ export const routes = {
   //Project Daily Updates ROUTES
   NEW_UPDATE: "/project-daily-updates/newUpdate",
   UPDATE_HISTORY: "/project-daily-updates/history",
-  PROJECT_DAILY_UPDATE_SUBMISSION: "/project-daily-updates/user_update_submission"
+  PROJECT_DAILY_UPDATE_SUBMISSION: "/project-daily-updates/user_update_submission",
+
+  //Team structure ROUTES
+  TEAM_STRUCTURE: "/dashbaord/team-structure"
 };
