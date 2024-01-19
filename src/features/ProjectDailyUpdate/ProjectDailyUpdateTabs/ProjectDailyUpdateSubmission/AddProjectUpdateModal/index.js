@@ -101,12 +101,10 @@ const AddProjectDailyUpdateModal = ({ open, handleClose, selectedProject }) => {
                 break;
         }
 
-}, [todayAllUpdates, loggedInUser]);
+}, [loggedInUser]);
 
 
-useEffect(()=>{
-    console.log(allClients,"@clients")
-},[allClients])
+
     return (
         <div>
           

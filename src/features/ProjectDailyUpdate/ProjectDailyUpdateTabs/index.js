@@ -21,7 +21,6 @@ const ProjectDailyUpdateTabs = () => {
 
 
   useEffect(() => {
-    // Find the key based on the current URL
     const foundKey =
       items?.find((item) => location.pathname.includes(item?.key))?.key || "1";
     setActiveKey(foundKey);

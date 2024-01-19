@@ -104,7 +104,7 @@ const UserTable = () => {
         {
             title: "Role",
             dataIndex: "role",
-            render: (text, record) => capitalize(record?.first_name) + ' ' + capitalize(record?.last_name),
+            render: (text, record) => capitalize(record?.role) 
         },
         {
             title: "Status",
