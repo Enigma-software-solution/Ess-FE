@@ -32,7 +32,7 @@ const SalesEventDrawer = ({ selectedDate, setSelectedDate }) => {
 
   const selectedEvent = useSelector(getSelectedEvent);
 
-  const isEditable = !isEmpty(selectedEvent)
+  // const isEditable = !isEmpty(selectedEvent)
 
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
@@ -40,6 +40,9 @@ const SalesEventDrawer = ({ selectedDate, setSelectedDate }) => {
   const handleClose = () => {
     dispatch(closeSalesDrawer());
   };
+
+  let EditStartDate = null;
+  let EditEndDate = null;
 
   const handleTimeChange = (dates, dateString) => {
     const updatedStartDate = dayjs(dates[0]);
@@ -51,7 +54,10 @@ const SalesEventDrawer = ({ selectedDate, setSelectedDate }) => {
     );
 
     if (selectedEvent) {
-
+      console.log(updatedStartDate.$d, "ooo")
+      console.log(updatedEndDate.$d, "ooo")
+      EditStartDate = updatedStartDate.$d;
+      EditEndDate = updatedEndDate.$d;
       form.setFieldsValue({
         callDuration: durationInMinutes.toString() + "min",
       });
@@ -65,22 +71,20 @@ const SalesEventDrawer = ({ selectedDate, setSelectedDate }) => {
     }
   };
 
-
-
   const handleSubmit = async (values) => {
     setLoading(true);
 
     const CreateData = {
       createdBy: loggedInUser.id,
-      start:new Date(selectedDate.start).toString(),
-      end:new Date(selectedDate.end).toString(),
+      start: new Date(selectedDate.start).toString(),
+      end: new Date(selectedDate.end).toString(),
       ...values,
       eventType: "salesCall",
     };
     const updateData = {
       createdBy: loggedInUser.id,
-      start: selectedDate?.start,
-      end: selectedDate?.end,
+      start: EditStartDate,
+      end: EditEndDate,
       eventType: "salesCall",
       ...values,
     };
