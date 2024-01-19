@@ -47,12 +47,33 @@ const ProjectDailyUpdateCards = ({ todayAllUpdates }) => {
 
 
     useEffect(() => {
-        const params = qs.stringify({
-            date: new Date(),
-            user: authUser?.id,
-        });
+        let params;
+
+        switch (authUser.role) {
+            case "admin":
+                params = qs.stringify({
+                    date: new Date(),
+                    user: null,
+                });
+                break;
+
+            case "project_manager":
+                params = qs.stringify({
+                    date: new Date(),
+                    projectManager: authUser?.id,
+                });
+                break;
+
+            default:
+                params = qs.stringify({
+                    date: new Date(),
+                    user: authUser?.id,
+                });
+        }
+
         dispatch(getDailyProjectUpdateApi(params));
-    }, [authUser, dispatch]);
+    }, [authUser]);
+
 
     const stripHtmlTags = (htmlString) => {
         if (!htmlString) {
