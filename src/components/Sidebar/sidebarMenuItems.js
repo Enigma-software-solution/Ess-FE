@@ -85,7 +85,7 @@ export const sidebarMenuItems = [
         title: 'Agenda',
         icon: <CalendarOutlined />,
         path: routes.AGENDA,
-        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.SALES_EXECUTIVE],
+        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.SALES_EXECUTIVE, ROLES.HR],
     },
     {
         key: routes.PROFILE,
@@ -120,7 +120,7 @@ export const sidebarMenuItems = [
         title: 'Project Update',
         icon: <ProjectOutlined />,
         path: routes.NEW_UPDATE,
-        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.HR, ROLES.USER],
+        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.HR, ROLES.USER, ROLES.PROJECT_MANAGER],
     },
     {
         key: routes.POLICIES,
