@@ -21,7 +21,6 @@ const UpdateProjectTable = () => {
   const loggedInUser = useSelector(getLogedInUser);
   const [isLoading, setIsLoading] = useState(false);
   const [updateHistory, setUpdateHistory] = useState(null);
-  const [selectPagination, setSelectedPagination] = useState(null)
   const { totalItems, pageSize, totalPages, page } = updateHistory?.paginator ?? {};
   const initialFilters = {
     admin: {
@@ -99,10 +98,7 @@ const UpdateProjectTable = () => {
   ];
 
   const onPaginationChange = async (page, pageSize) => {
-    setSelectedPagination({
-      page: page,
-      pageSize: pageSize,
-    });
+
 
     const params = {
       page: page,
