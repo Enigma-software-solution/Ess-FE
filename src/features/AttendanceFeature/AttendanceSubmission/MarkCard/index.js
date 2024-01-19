@@ -27,6 +27,8 @@ const MarkCard = ({ user, isLoading, handleSubmit, attendanceDate }) => {
     const [form] = useForm();
     const [checkInTime, setCheckInTime] = useState(new Date());
     const [selectOpen, setSelectOpen] = useState(false);
+    const isTimeAfter930AM = checkInTime >= dayjs(attendanceDate).set('hour', 9).set('minute', 30);
+
     const selectRef = useRef(null);
 
     const handleStatusClick = () => {
@@ -37,7 +39,7 @@ const MarkCard = ({ user, isLoading, handleSubmit, attendanceDate }) => {
             return toast.warn('Status is required');
         }
         const date = format(attendanceDate, 'yyyy-MM-dd');
-        const time = format(new Date(checkInTime), 'HH:mm:ss'); // Extract time from checkInTime
+        const time = format(new Date(checkInTime), 'HH:mm:ss');
         const combinedCheckInTime = new Date(`${date}T${time}`);
 
         const data = {
@@ -84,15 +86,17 @@ const MarkCard = ({ user, isLoading, handleSubmit, attendanceDate }) => {
                         dropdownStyle={{ background: '#e4eefc', fontSize: '25px' }}
                         showSearch
                         size="large"
-                        options={STATUS_OPTIONS}
+                        options={STATUS_OPTIONS.map((option) => ({
+                            ...option,
+                            disabled: isTimeAfter930AM && option.value === 'present',
+                        }))}
                         rules={[{ required: true, message: 'Please select a status!' }]}
                         onClick={handleStatusClick}
                         onBlur={() => setSelectOpen(false)}
                         open={selectOpen}
                     />
                 </Form.Item>
-
-                <Form.Item name="notes">
+                 <Form.Item name="notes">
                     <TextArea rows={3} placeholder="Notes" />
                 </Form.Item>
                 <Button htmlType="submit" type="primary" disabled={isLoading}>
