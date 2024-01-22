@@ -11,6 +11,8 @@ import CustomSelect from "src/components/formElements/CustomSelect";
 import { Wrapper } from "./styled";
 import qs from "qs";
 import { ROLES } from "src/constant/roles";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Header = ({ pageSize, onSearch }) => {
   const dispatch = useDispatch();
@@ -21,9 +23,9 @@ const Header = ({ pageSize, onSearch }) => {
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [selectedDateRange, setSelectedDateRange] = useState(null);
 
-  const allProfilesData = allProfiles.map(profile => ({
+  const allProfilesData = allProfiles.map((profile) => ({
     value: profile._id,
-    label: profile.name
+    label: profile.name,
   }));
 
   const handleDrawer = () => {
@@ -31,6 +33,11 @@ const Header = ({ pageSize, onSearch }) => {
   };
 
   const handleSubmit = () => {
+    if (!selectedProfile && !selectedDateRange) {
+      toast.warn("Please fill all the filters before searching.");
+      return;
+    }
+
     const params = {};
 
     if (selectedProfile) {
@@ -72,6 +79,9 @@ const Header = ({ pageSize, onSearch }) => {
 
   return (
     <>
+   
+      <ToastContainer />
+
       <div className="d-flex justify-content-between mb-1">
         <CustomSearchField onChange={search} text="Search Apply" />
         <AddButton onClick={handleDrawer} text="New Apply" />

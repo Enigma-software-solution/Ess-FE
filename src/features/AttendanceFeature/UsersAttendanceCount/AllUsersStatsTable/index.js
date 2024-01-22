@@ -155,19 +155,19 @@ const AllUsersStatsTable = () => {
         <StyledReportCount>
             <Flex justify='space-between' className='m-'>
                 <h5>Reports Count</h5>
-               
+
                 <Button type="primary" icon={<ExportOutlined />} onClick={handleExport}>
                     Export
                 </Button>
             </Flex>
             <CustomSearchField onChange={handleSearchChange} text={"Search User"} />
-            <Space size={20} className='p-3 mb-3 mt-2'  style={{width:'100%', boxShadow: '0px 8px 24px rgba(149,157,165,0.2)' }}>
-            
-                
+            <Space size={20} className='p-3 mb-3 mt-2' style={{ width: '100%', boxShadow: '0px 8px 24px rgba(149,157,165,0.2)' }}>
+
+
                 <DatePicker picker='month' onChange={handleMonthChange} defaultValue={selectedMonth} disabledDate={disabledDate} />
                 <DatePicker picker='year' onChange={handleYearChange} defaultValue={selectedYear} disabledDate={disabledDate} />
                 <div>
-                    <Button type="primary" onClick={handleSubmit} style={{ marginLeft: 8 }} disabled={selectedMonth === null && selectedYear === null}>
+                    <Button type="primary" onClick={handleSubmit} style={{ marginLeft: 8 }}>
                         Submit
                     </Button>
 

@@ -25,7 +25,6 @@ const AttendanceTabs = () => {
   ];
 
   useEffect(() => {
-    // Find the key based on the current URL
     const foundKey =
       items.find((item) => location.pathname.includes(item.key))?.key || "1";
     setActiveKey(foundKey);
@@ -38,7 +37,7 @@ const AttendanceTabs = () => {
 
   const handleMarkAttendance = () => {
     navigate(routes.ATTENDANCE_SUBMISSION);
-    setActiveKey(routes.ATTENDANCE_SUBMISSION); // Update activeKey when "Mark Attendance" button is clicked
+    setActiveKey(routes.ATTENDANCE_SUBMISSION); 
     setMarkAttendanceDisabled(true);
 
   };

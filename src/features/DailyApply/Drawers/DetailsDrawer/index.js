@@ -23,7 +23,7 @@ const DetailsDailyApplyDrawer = ({ isOpen, handleDetailsDrawer, selectedRecord }
         { key: '1', property: 'Client Job Position :', value: selectedRecord?.clientJobPosition },
         { key: '2', property: 'Company Name Name :', value: selectedRecord?.companyName },
         { key: '3', property: 'Platform :', value: selectedRecord?.platform },
-        { key: '4', property: 'Position To Apply :', value: selectedRecord?.positionToApply },
+        { key: '4', property: 'Position To Apply :', value: selectedRecord?.positionToApply.split('_') },
         // Add more rows as needed
     ];
 
