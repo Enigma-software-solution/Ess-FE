@@ -32,7 +32,7 @@ const userSlice = createSlice({
         builder.addCase(getAllUsersApi.fulfilled, (state, action) => {
             state.status = "succeeded";
             state.loading = false;
-            state.data = action.payload.users;
+            state.data = action.payload.data;
         });
 
         builder.addCase(getAllUsersApi.rejected, (state, action) => {

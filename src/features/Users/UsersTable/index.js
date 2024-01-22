@@ -77,7 +77,7 @@ const UserTable = () => {
         }
     };
 
-    const filteredClients = clients.filter((client) => {
+    const filteredClients = clients?.filter((client) => {
         const fullName = `${client?.first_name} ${client?.last_name}`.toLowerCase();
         return fullName.includes(searchQuery.toLowerCase());
     });
