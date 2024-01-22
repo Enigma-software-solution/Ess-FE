@@ -44,18 +44,16 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
 
     const [form] = Form.useForm();
 
-    const usersWithProjectManagerRole = allUsers
-        .filter(user => user.role === ROLES?.PROJECT_MANAGER)
+    const usersWithProjectManagerRole = allUsers?.filter(user => user.Users?.role === ROLES?.PROJECT_MANAGER)
         .map(user => ({
-            id: user._id,
-            name: `${user?.first_name} ${user?.last_name}`
+            id: user.Users._id,
+            name: `${user?.Users?.first_name} ${user?.Users?.last_name}`
         }));
 
-    const usersWithDeveloperRole = allUsers
-        .filter(user => user.role === ROLES?.USER)
+    const usersWithDeveloperRole = allUsers?.filter(user => user?.Users?.role === ROLES?.USER)
         .map(user => ({
-            id: user._id,
-            name: `${user?.first_name} ${user?.last_name}`
+            id: user.Users._id,
+            name: `${user?.Users?.first_name} ${user?.Users?.last_name}`
         }));
 
     useEffect(() => {
