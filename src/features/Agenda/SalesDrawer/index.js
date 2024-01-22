@@ -54,8 +54,6 @@ const SalesEventDrawer = ({ selectedDate, setSelectedDate }) => {
     );
 
     if (selectedEvent) {
-      console.log(updatedStartDate.$d, "ooo")
-      console.log(updatedEndDate.$d, "ooo")
       EditStartDate = updatedStartDate.$d;
       EditEndDate = updatedEndDate.$d;
       form.setFieldsValue({
