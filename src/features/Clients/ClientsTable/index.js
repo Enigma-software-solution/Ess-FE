@@ -44,7 +44,7 @@ const ClientTable = () => {
     }, []);
     const handleConfirmDelete = (recordToDelete, e) => {
         e.stopPropagation();
-        dispatch(deleteClientApi(recordToDelete._id));
+        dispatch(deleteClientApi(recordToDelete?._id));
     };
 
     const handleDisabledDeleteClick = (e) => {
