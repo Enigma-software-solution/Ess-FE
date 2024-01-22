@@ -104,8 +104,8 @@ const UserTable = () => {
         {
             title: "Role",
             dataIndex: "role",
-            render: (text, record) => capitalize(record?.role).split('_').join(' ')
-           
+            render: (text, record) => capitalize(record?.role).split('_')
+
         },
         {
             title: "Status",
