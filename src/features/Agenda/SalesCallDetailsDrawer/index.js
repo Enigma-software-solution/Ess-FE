@@ -114,7 +114,7 @@ const SalesCallDetailsDrawer = () => {
                   </tr> */}
                   <tr>
                     <th className="fw-bold">Job Title :</th>
-                    <td>{selectedEvent?.apply?.positionToApply}</td>
+                    <td>{selectedEvent?.apply?.positionToApply.split('_').join(' ')}</td>
                   </tr>
                   <tr>
                     <th className="fw-bold">Call Duration :</th>
