@@ -42,17 +42,19 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
     const [fieldsEdited, setFieldsEdited] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date())
 
+    console.log(allUsers, "userssss")
+
     const [form] = Form.useForm();
 
-    const usersWithProjectManagerRole = allUsers?.filter(user => user.role === ROLES?.PROJECT_MANAGER)
+    const usersWithProjectManagerRole = allUsers?.filter(user => user?.role === ROLES?.PROJECT_MANAGER)
         .map(user => ({
-            id: user._id,
+            id: user?._id,
             name: `${user?.first_name} ${user?.last_name}`
         }));
 
     const usersWithDeveloperRole = allUsers?.filter(user => user?.role === ROLES?.USER)
         .map(user => ({
-            id: user._id,
+            id: user?._id,
             name: `${user?.first_name} ${user?.last_name}`
         }));
 
@@ -259,7 +261,7 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                         <Form.Item
                             label="Created On"
                             name="createdOn"
-                            rules={[{ required: false }]} 
+                            rules={[{ required: false }]}
                         >
                             <DatePicker
                                 onChange={onChange}
