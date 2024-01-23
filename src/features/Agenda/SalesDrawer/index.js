@@ -17,7 +17,7 @@ import {
   getSelectedEvent,
   isSalesDrawer,
 } from "src/store/slices/agendaSlice/selector";
-import { closeSalesDrawer, setSelectedEvent } from "src/store/slices/agendaSlice";
+import { closeEventDrawer, closeSalesDrawer, setSelectedEvent } from "src/store/slices/agendaSlice";
 import { differenceInMinutes } from "date-fns";
 import dayjs from "dayjs";
 import { isEmpty } from "lodash";
@@ -74,8 +74,6 @@ const SalesEventDrawer = ({ selectedDate, setSelectedDate }) => {
   const handleSubmit = async (values) => {
     setLoading(true);
 
-    console.log(values, 'val')
-
     const CreateData = {
       createdBy: loggedInUser.id,
       start: new Date(selectedDate.start).toString(),
@@ -128,6 +126,8 @@ const SalesEventDrawer = ({ selectedDate, setSelectedDate }) => {
     } finally {
       setLoading(false);
       dispatch(closeSalesDrawer());
+      dispatch(closeEventDrawer());
+      dispatch(setSelectedEvent(null));
     }
   };
 
