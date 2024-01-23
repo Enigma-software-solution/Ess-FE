@@ -13,7 +13,6 @@ import locale from 'antd/locale/en_US';
 const { RangePicker } = DatePicker;
 const { Option } = Select;
 
-
 const STATUS_OPTIONS = [
     { value: 'present', label: 'Present' },
     { value: 'absent', label: 'Absent' },
@@ -30,7 +29,7 @@ const AttendanceReport = () => {
     const [selectedMonth, setSelectedMonth] = useState(null);
     const [selectedRange, setSelectedRange] = useState(null);
     const [selectedDate, setSelectedDate] = useState(null);
-
+    const [isSubmitDisabled, setIsSubmitDisabled] = useState(false);
     const [selectedFilters, setSelectedFilters] = useState({
         status: null,
         userId: null,
@@ -83,6 +82,15 @@ const AttendanceReport = () => {
             setIsLoading(false);
         }
     };
+    const handleUserChange = (value) => {
+        setSelectedFilters(prevFilters => ({
+            ...prevFilters,
+            userId: value,
+            dateRange: [],
+            date: null,
+            month: null,
+        }));
+    };
 
     const handleDateChange = (value) => {
         setSelectedDate(value)
@@ -96,13 +104,6 @@ const AttendanceReport = () => {
         setSelectedFilters(prevFilters => ({
             ...prevFilters,
             status: value
-        }));
-    };
-
-    const handleUserChange = (value) => {
-        setSelectedFilters(prevFilters => ({
-            ...prevFilters,
-            userId: value
         }));
     };
 
@@ -127,10 +128,27 @@ const AttendanceReport = () => {
         }
     }
 
-    const handleSubmit = () => {
-        getAttendanceReports(selectedFilters);
-        handleReset();
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        await getAttendanceReports(selectedFilters);
+
+        setSelectedFilters({
+            status: null,
+            userId: null,
+            dateRange: [],
+            date: null,
+            month: null,
+            pageSize: 1000,
+        });
+        setSelectedDate(null);
+        setSelectedMonth(null);
+        setSelectedRange(null);
+        setType('Select Type');
+        setIsSubmitDisabled(true);
     };
+    useEffect(() => {
+        setIsSubmitDisabled(false);
+    }, [selectedFilters]);
 
     const handleReset = () => {
         setSelectedFilters({
@@ -144,7 +162,6 @@ const AttendanceReport = () => {
         setSelectedMonth(null);
         setSelectedRange(null);
         setType('Select Type');
-
         getAttendanceReports({
             status: null,
             userId: null,
@@ -154,7 +171,6 @@ const AttendanceReport = () => {
             pageSize: 1000,
         });
     };
-
 
     useEffect(() => {
         if (!users?.length) {
@@ -173,7 +189,6 @@ const AttendanceReport = () => {
         if (type === 'dateRange') return <RangePicker onChange={handleRangePicker} value={selectedRange} />;
         return null;
     };
-
     return (
         <StyledPage>
             <Flex justify="space-between" className="mb-3">
@@ -227,9 +242,10 @@ const AttendanceReport = () => {
                     </Flex>
                     <Flex>
                         <Space size={6}>
-                            <Button type="primary" onClick={handleSubmit}>
+                            <Button type="primary" onClick={handleSubmit} disabled={!selectedFilters.userId || isSubmitDisabled}>
                                 Submit
                             </Button>
+
                             <Button onClick={handleReset}>
                                 Reset
                             </Button>
