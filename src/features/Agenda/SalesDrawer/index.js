@@ -54,8 +54,10 @@ const SalesEventDrawer = ({ selectedDate, setSelectedDate }) => {
     );
 
     if (selectedEvent) {
-      EditStartDate = updatedStartDate.$d;
-      EditEndDate = updatedEndDate.$d;
+      if (updatedStartDate.$d && updatedEndDate.$d) {
+        EditStartDate = updatedStartDate.$d;
+        EditEndDate = updatedEndDate.$d;
+      }
       form.setFieldsValue({
         callDuration: durationInMinutes.toString() + "min",
       });
@@ -72,6 +74,8 @@ const SalesEventDrawer = ({ selectedDate, setSelectedDate }) => {
   const handleSubmit = async (values) => {
     setLoading(true);
 
+    console.log(values, 'val')
+
     const CreateData = {
       createdBy: loggedInUser.id,
       start: new Date(selectedDate.start).toString(),
@@ -79,13 +83,31 @@ const SalesEventDrawer = ({ selectedDate, setSelectedDate }) => {
       ...values,
       eventType: "salesCall",
     };
-    const updateData = {
-      createdBy: loggedInUser.id,
-      start: EditStartDate,
-      end: EditEndDate,
-      eventType: "salesCall",
-      ...values,
-    };
+
+    let updateData = {}
+
+    if (selectedEvent?._id) {
+
+      if (EditStartDate !== null && EditEndDate !== null) {
+        updateData = {
+          createdBy: loggedInUser.id,
+          start: EditStartDate,
+          end: EditEndDate,
+          eventType: "salesCall",
+          ...values,
+        };
+      } else {
+        updateData = {
+          createdBy: loggedInUser.id,
+          start: selectedEvent.start,
+          end: selectedEvent.end,
+          eventType: "salesCall",
+          ...values,
+        };
+      }
+    }
+
+
 
     try {
       if (selectedEvent?._id) {
