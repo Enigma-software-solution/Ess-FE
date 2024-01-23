@@ -45,8 +45,7 @@ const clientSlice = createSlice({
     });
 
     builder.addCase(updateClientApi.fulfilled, (state, action) => {
-
-      state.data = state?.data?.map(client => {
+      state.data.client = state?.data.client?.map(client => {
         if (client?._id === action?.payload?.data?._id) {
           return action?.payload.data
         }

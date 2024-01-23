@@ -47,7 +47,7 @@ const userSlice = createSlice({
         });
 
         builder.addCase(updateUserApi.fulfilled, (state, action) => {
-            state.data = state?.data?.map(user => {
+            state.data.Users = state?.data?.Users?.map(user => {
                 if (user?._id === action?.payload?.data?._id) {
                     return action?.payload?.data
                 }
