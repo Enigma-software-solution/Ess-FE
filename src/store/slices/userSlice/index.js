@@ -43,7 +43,7 @@ const userSlice = createSlice({
 
         builder.addCase(registerUser.fulfilled, (state, action) => {
             state.status = "succeeded";
-            state.data = [action?.payload?.user, ...state?.data];
+            state.data.Users = [action?.payload?.user, ...state?.data?.Users];
         });
 
         builder.addCase(updateUserApi.fulfilled, (state, action) => {

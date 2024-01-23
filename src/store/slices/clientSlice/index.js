@@ -41,7 +41,7 @@ const clientSlice = createSlice({
 
     builder.addCase(createClientApi.fulfilled, (state, action) => {
       state.status = "succeeded";
-      state.data = [action?.payload?.data, ...state.data];
+      state.data.client = [action?.payload?.data, ...state?.data?.client];
     });
 
     builder.addCase(updateClientApi.fulfilled, (state, action) => {
