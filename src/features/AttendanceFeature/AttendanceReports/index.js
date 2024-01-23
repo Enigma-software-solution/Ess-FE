@@ -193,9 +193,9 @@ const AttendanceReport = () => {
                                     option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                                 }
                             >
-                                {users.map(user => (
-                                    <Option key={user._id} value={user._id}>
-                                        {`${user.first_name} ${user.last_name}`}
+                                {users?.map(user => (
+                                    <Option key={user?._id} value={user?._id}>
+                                        {`${user?.first_name} ${user?.last_name}`}
                                     </Option>
                                 ))}
                             </Select>
