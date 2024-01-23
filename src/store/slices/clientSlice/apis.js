@@ -2,9 +2,9 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import api from "src/helpers/api";
 
-export const getAllClientsApi = createAsyncThunk("clients/get-clients", async () => {
+export const getAllClientsApi = createAsyncThunk("clients/get-clients", async (params) => {
     try {
-        const response = await api.get("/client");
+        const response = await api.get(`/client?${params}`);
         return response;
     } catch (error) {
         throw error;

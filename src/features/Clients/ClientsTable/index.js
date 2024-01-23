@@ -1,24 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { deleteClientApi, getAllClientsApi, updateClientApi } from "src/store/slices/clientSlice/apis";
-import { getAllClientsSelector, isClientLoading } from "src/store/slices/clientSlice/selectors";
-import { Popconfirm, Table } from "antd";
+import { isClientLoading } from "src/store/slices/clientSlice/selectors";
+import { Pagination, Popconfirm, Table } from "antd";
 import Header from "../Header";
 import EditButton from "src/components/buttons/EditButton";
 import DeleteButton from "src/components/buttons/DeleteButton";
-import Loader from "src/components/Loader";
 import { setSelectedClient } from "src/store/slices/clientSlice";
 import { StyledBadge } from "./styled";
 import { toast } from 'react-toastify';
 import { capitalize } from "lodash";
 import dayjs from 'dayjs';
-
+import qs from 'qs';
 
 const ClientTable = () => {
     const dispatch = useDispatch();
     const [isOpen, setIsOpen] = useState(false);
+    const [clients, setClients] = useState(null);
     const isLoading = useSelector(isClientLoading);
-    const clients = useSelector(getAllClientsSelector);
+
+    const { paginator } = clients || {};
+    const { totalItems, pageSize, page } = paginator || {};
+
     const handleChangeStatus = (e, record) => {
         e.stopPropagation();
         if (record._id) {
@@ -28,20 +31,13 @@ const ClientTable = () => {
                     ...record,
                     active: record?.active === "active" ? 'inactive' : 'active'
                 }
-
             };
             dispatch(updateClientApi(data));
         } else {
             console.error("Client record does not have a valid _id");
         }
     };
-    useEffect(() => {
-        try {
-            dispatch(getAllClientsApi());
-        } catch (err) {
-            console.log(err);
-        }
-    }, []);
+
     const handleConfirmDelete = (recordToDelete, e) => {
         e.stopPropagation();
         dispatch(deleteClientApi(recordToDelete._id));
@@ -51,15 +47,33 @@ const ClientTable = () => {
         e.stopPropagation();
         toast.warn('Active clients cannot be deleted.');
     };
+
     const handleEdit = (record, e) => {
         e.stopPropagation();
         dispatch(setSelectedClient(record));
         setIsOpen(true);
     };
 
+    const fetchClients = async (params) => {
+        try {
+            const res = await dispatch(getAllClientsApi(params)).unwrap();
+            setClients(res?.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
+
+    useEffect(() => {
+        fetchClients();
+    }, []);
+
+    const onPaginationChange = (page, pageSize) => {
+        const params = { page, pageSize };
+        const queryStringResult = qs.stringify(params);
+        fetchClients(queryStringResult);
+    };
 
     const columns = [
-
         {
             title: "Client Name",
             dataIndex: "clientName",
@@ -170,16 +184,25 @@ const ClientTable = () => {
         },
     ];
 
-    if (isLoading) {
-        return <Loader />
-    }
-
     return (
         <div>
             <Header isOpen={isOpen} setIsOpen={setIsOpen} />
-            <Table dataSource={clients} columns={columns} />
+            <Table dataSource={clients?.client} columns={columns} loading={isLoading} pagination={false} />
+            {paginator && clients?.client?.length && (
+                <Pagination
+                    style={{ padding: '10px', display: 'flex', justifyContent: 'flex-end' }}
+                    total={totalItems}
+                    showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
+                    defaultPageSize={pageSize}
+                    defaultCurrent={page}
+                    onChange={onPaginationChange}
+                    showSizeChanger
+                    loading={isLoading}
+                />
+            )}
         </div>
     );
 };
 
 export default ClientTable;
+
