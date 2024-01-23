@@ -7,24 +7,28 @@ import { getLogedInUser, getUserId } from "src/store/slices/authSlice/selectors"
 import { createDailyProjectUpdateApi, updateDailyUpdate } from "src/store/slices/projectDailyUpdates/apis";
 import { toast } from "react-toastify";
 import dayjs from "dayjs";
-import { getAllProjectDailyUpdates,  } from "src/store/slices/projectDailyUpdates/selectors";
+import { getAllProjectDailyUpdates, } from "src/store/slices/projectDailyUpdates/selectors";
 import ReactQuill from "react-quill";
 
 const { Option } = Select;
 
 const AddProjectDailyUpdateModal = ({ open, handleClose, selectedProject }) => {
- 
+
 
     const allClients = useSelector(getAllClientsSelector)
 
-       const todayAllUpdates = useSelector(getAllProjectDailyUpdates);
+    const todayAllUpdates = useSelector(getAllProjectDailyUpdates);
     const filteredUpdatesId = todayAllUpdates?.dailyUpdates?.map((update) => update?.project?._id);
     const loggedInUser = useSelector(getLogedInUser);
-    const [filteredClients,setfilteredClients] = useState();
-    
+    const [filteredClients, setfilteredClients] = useState();
+
     const [form] = Form.useForm();
     const [content, setContent] = useState('');
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        dispatch(getAllClientsApi())
+    }, [])
 
     const userId = useSelector(getUserId);
     const onFinish = async (values) => {
@@ -33,12 +37,12 @@ const AddProjectDailyUpdateModal = ({ open, handleClose, selectedProject }) => {
                 ...values,
                 content,
             };
-    
+
             if (!content) {
                 toast.error('Content cannot be empty');
                 return;
             }
-    
+
             if (selectedProject) {
 
                 const res = await dispatch(updateDailyUpdate({ id: userId, formData })).unwrap();
@@ -54,13 +58,12 @@ const AddProjectDailyUpdateModal = ({ open, handleClose, selectedProject }) => {
                     handleClose(false);
                 }
             }
-    
-         
+
+
         } catch (error) {
             console.error("An error occurred:", error);
         }
     };
-    
 
 
     const handleCancel = () => {
@@ -83,7 +86,7 @@ const AddProjectDailyUpdateModal = ({ open, handleClose, selectedProject }) => {
         });
     }, [selectedProject]);
 
- 
+
 
     useEffect(() => {
 
@@ -101,13 +104,13 @@ const AddProjectDailyUpdateModal = ({ open, handleClose, selectedProject }) => {
                 break;
         }
 
-}, [loggedInUser]);
+    }, [loggedInUser]);
 
 
 
     return (
         <div>
-          
+
             <Modal
                 title="Daily Project Update"
                 open={open}
@@ -146,21 +149,21 @@ const AddProjectDailyUpdateModal = ({ open, handleClose, selectedProject }) => {
                         name="content"
                         rules={[{ required: true, message: "Please input content" }]}
                     >
-                          <ReactQuill
+                        <ReactQuill
                             style={{ height: '200px' }}
                             theme="snow"
                             value={content}
                             onChange={setContent}
-                            />
+                        />
                     </Form.Item>
 
                     <Form.Item>
-                    <Flex justify="end" gap={4} className='mt-3'>
-                        <Button onClick={handleCancel}>Cancel</Button>
-                        <Button type="primary" htmlType="submit">
-                            {selectedProject ? "Update" : 'Save'}
-                        </Button>
-                    </Flex>
+                        <Flex justify="end" gap={4} className='mt-3'>
+                            <Button onClick={handleCancel}>Cancel</Button>
+                            <Button type="primary" htmlType="submit">
+                                {selectedProject ? "Update" : 'Save'}
+                            </Button>
+                        </Flex>
                     </Form.Item>
                 </Form>
             </Modal>

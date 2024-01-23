@@ -56,7 +56,7 @@ const userSlice = createSlice({
         });
 
         builder.addCase(deleteUserApi.fulfilled, (state, action) => {
-            state.data = state?.data?.filter((user) => user?._id !== action?.payload?.userId)
+            state.data.Users = state?.data?.Users?.filter((user) => user?._id !== action?.payload?.userId)
         });
     },
 
