@@ -83,6 +83,16 @@ const AttendanceReport = () => {
             setIsLoading(false);
         }
     };
+    const handleUserChange = (value) => {
+        setSelectedFilters(prevFilters => ({
+            ...prevFilters,
+            userId: value,
+            dateRange: [],
+            date: null,
+            month: null,
+        }));
+    };
+
 
     const handleDateChange = (value) => {
         setSelectedDate(value)
@@ -96,13 +106,6 @@ const AttendanceReport = () => {
         setSelectedFilters(prevFilters => ({
             ...prevFilters,
             status: value
-        }));
-    };
-
-    const handleUserChange = (value) => {
-        setSelectedFilters(prevFilters => ({
-            ...prevFilters,
-            userId: value
         }));
     };
 
@@ -127,10 +130,19 @@ const AttendanceReport = () => {
         }
     }
 
-    const handleSubmit = () => {
-        getAttendanceReports(selectedFilters);
-        handleReset();
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        await getAttendanceReports(selectedFilters);
+
+
     };
+
+
+    <Button type="primary" onClick={handleSubmit}>
+        Submit
+    </Button>
+
 
     const handleReset = () => {
         setSelectedFilters({
@@ -227,9 +239,10 @@ const AttendanceReport = () => {
                     </Flex>
                     <Flex>
                         <Space size={6}>
-                            <Button type="primary" onClick={handleSubmit}>
+                            <Button type="primary" onClick={handleSubmit} disabled={!selectedFilters.userId}>
                                 Submit
                             </Button>
+
                             <Button onClick={handleReset}>
                                 Reset
                             </Button>
