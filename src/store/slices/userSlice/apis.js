@@ -2,9 +2,9 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import api from "src/helpers/api";
 
-export const getAllUsersApi = createAsyncThunk("users/get-users", async () => {
+export const getAllUsersApi = createAsyncThunk("users/get-users", async (params) => {
     try {
-        const response = await api.get("/users");
+        const response = await api.get(`/users?${params}`);
         return response;
     } catch (error) {
         throw error;

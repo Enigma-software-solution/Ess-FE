@@ -1,44 +1,53 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Popconfirm, Table } from "antd";
+import { Pagination, Popconfirm, Table } from "antd";
 import EditButton from "src/components/buttons/EditButton";
 import DeleteButton from "src/components/buttons/DeleteButton";
-import { getAllUsers, isUserLoading } from "src/store/slices/userSlice/selectors";
+import {isUserLoading } from "src/store/slices/userSlice/selectors";
 import { deleteUserApi, getAllUsersApi, updateUserApi } from "src/store/slices/userSlice/apis";
 import Header from "../Header";
 import { setSelectedUser } from "src/store/slices/userSlice";
 import CreateUserDrawer from "../CreateUserDrawer";
 import { StyledBadge } from "./styled";
-import Loader from "src/components/Loader";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { routes } from "src/constant/routes";
 import { capitalize } from "lodash";
 import dayjs from "dayjs";
+import qs from 'qs';
 
 const UserTable = () => {
-
     const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
+    const [users, setUsers] = useState(null);
+    
+    const dispatch = useDispatch();
+    const isLoading = useSelector(isUserLoading);
+    
+    const { paginator } = users || {};
+    const { totalItems, pageSize, page } = paginator || {};
 
     const handleSearch = (value) => {
         setSearchQuery(value);
     };
 
-
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
-
-
-    const isLoading = useSelector(isUserLoading)
-    const clients = useSelector(getAllUsers);
+    const fetchUsers = async (params) => {
+        try {
+            const res = await dispatch(getAllUsersApi(params)).unwrap();
+            setUsers(res?.data);
+        } catch (error) {
+            console.error('Error fetching data:', error);
+        }
+    };
 
     useEffect(() => {
-        try {
-            dispatch(getAllUsersApi());
-        } catch (err) {
-            console.log(err);
-        }
+        fetchUsers();
     }, []);
+
+    const onPaginationChange = async (page, pageSize) => {
+        const params = { page, pageSize };
+        const queryStringResult = qs.stringify(params);
+        fetchUsers(queryStringResult);
+    };
 
     const handleEdit = (e, record) => {
         e.stopPropagation();
@@ -56,10 +65,6 @@ const UserTable = () => {
         dispatch(deleteUserApi(recordToDelete._id));
     };
 
-    const handleButtonClick = (record) => {
-        navigate(`${routes.USER_ATTENDANCE_DETAILS}/${record._id}`);
-    };
-
     const handleChangeStatus = (e, record) => {
         e.stopPropagation();
         if (record._id) {
@@ -69,18 +74,12 @@ const UserTable = () => {
                     ...record,
                     status: record?.status === "active" ? 'inactive' : 'active'
                 }
-
             };
             dispatch(updateUserApi(data));
         } else {
             console.error("User record does not have a valid _id");
         }
     };
-
-    const filteredClients = clients?.filter((client) => {
-        const fullName = `${client?.first_name} ${client?.last_name}`.toLowerCase();
-        return fullName.includes(searchQuery.toLowerCase());
-    });
 
     const columns = [
         {
@@ -105,15 +104,12 @@ const UserTable = () => {
             title: "Role",
             dataIndex: "role",
             render: (text, record) => capitalize(record?.role).split('_')
-
         },
         {
             title: "Status",
             dataIndex: "status",
             render: (text, record) => {
                 const isActive = text === "active";
-
-
                 return (
                     <div className="d-flex gap-1">
                         <Popconfirm
@@ -126,7 +122,7 @@ const UserTable = () => {
                                 {capitalize(text)}
                             </StyledBadge>
                         </Popconfirm>
-                    </div >
+                    </div>
                 );
             }
         },
@@ -161,15 +157,24 @@ const UserTable = () => {
         },
     ];
 
-    if (isLoading) {
-        return <Loader />
-    }
-
     return (
         <>
             <div>
                 <Header onSearch={handleSearch} />
-                <Table dataSource={filteredClients} columns={columns} />
+                <Table dataSource={users?.Users || []} columns={columns} 
+                loading={isLoading} pagination={false} />
+                {paginator && users?.Users?.length && (
+                    <Pagination
+                        style={{ padding: '10px', display: 'flex', justifyContent: 'flex-end' }}
+                        total={totalItems}
+                        showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
+                        defaultPageSize={pageSize}
+                        defaultCurrent={page}
+                        onChange={onPaginationChange}
+                        showSizeChanger
+                        loading={isLoading}
+                    />
+                )}
             </div>
             <CreateUserDrawer isOpen={isEditDrawerOpen} handleDrawer={handleDrawer} />
         </>
