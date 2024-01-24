@@ -76,6 +76,7 @@ const ProfileTable = () => {
             key: "state",
             title: "City or State",
             dataIndex: "state",
+            render: (text) => capitalize(text),
         },
         {
             title: "Status",

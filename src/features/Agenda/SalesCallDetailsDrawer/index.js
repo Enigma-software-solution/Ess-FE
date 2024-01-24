@@ -106,7 +106,7 @@ const SalesCallDetailsDrawer = () => {
                 <tbody>
                   <tr>
                     <th className="fw-bold">Company Name :</th>
-                    <td>{selectedEvent?.apply?.companyName}</td>
+                    <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.apply?.companyName}</td>
                   </tr>
                   {/* <tr>
                     <th className="fw-bold">Call With :</th>
@@ -114,11 +114,11 @@ const SalesCallDetailsDrawer = () => {
                   </tr> */}
                   <tr>
                     <th className="fw-bold">Job Title :</th>
-                    <td>{selectedEvent?.apply?.positionToApply.split('_').join(' ')}</td>
+                    <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.apply?.positionToApply.split('_').join(' ')}</td>
                   </tr>
                   <tr>
                     <th className="fw-bold">Call Duration :</th>
-                    <td>{selectedEvent?.callDuration} seconds</td>
+                    <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.callDuration} </td>
                   </tr>
                   {/* <tr>
                     <th className="fw-bold">Number of Guests :</th>
@@ -126,7 +126,7 @@ const SalesCallDetailsDrawer = () => {
                   </tr> */}
                   <tr>
                     <th className="fw-bold">Call Type :</th>
-                    <td>{selectedEvent?.callType}</td>
+                    <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.callType}</td>
                   </tr>
                   {/* <tr>
                     <th className="fw-bold">Call Mode :</th>
@@ -134,7 +134,7 @@ const SalesCallDetailsDrawer = () => {
                   </tr> */}
                   <tr>
                     <th className="fw-bold">Apply Platform :</th>
-                    <td>{selectedEvent?.apply?.platform}</td>
+                    <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.apply?.platform}</td>
                   </tr>
                   {/* <tr>
                     <th className="fw-bold">Call Platform :</th>
@@ -160,7 +160,7 @@ const SalesCallDetailsDrawer = () => {
                   </tr>
                   <tr>
                     <th className="fw-bold">Company Information :</th>
-                    <td>{selectedEvent?.companyInformation}</td>
+                    <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.companyInformation}</td>
                   </tr>
                 </tbody>
               </table>
@@ -177,18 +177,20 @@ const SalesCallDetailsDrawer = () => {
         )}
 
         {selectedEvent && selectedEvent?.start && selectedEvent?.end && (
-          <div className="w-100  text-end">
+          <div className="w-100 text-end">
             <div className="mb-1">
               <span className="fw-bold">Profile:</span>
-              <span className="m-3">{selectedEvent?.apply?.profile?.name}</span>
+              <span className="m-3" style={{ textTransform: 'capitalize' }}>
+                {selectedEvent?.apply?.profile?.name}
+              </span>
             </div>
             <div className="mb-1">
               <span className="fw-bold">Created By:</span>
-              <span className="m-3">
+              <span className="m-3" style={{ textTransform: 'capitalize' }}>
                 {selectedEvent?.createdBy?.first_name} {selectedEvent?.createdBy?.last_name}
               </span>
             </div>
-            <div className="mb-1 ">
+            <div className="mb-1">
               <span className="fw-bold">Created Date:</span>
               <span className="m-3">
                 {selectedEvent?.createdAt ? new Date(selectedEvent?.createdAt).toLocaleDateString() : ''}
@@ -196,6 +198,7 @@ const SalesCallDetailsDrawer = () => {
             </div>
           </div>
         )}
+
       </Drawer>
 
       <NotesDrawer
