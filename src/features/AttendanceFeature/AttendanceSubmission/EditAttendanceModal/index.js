@@ -3,6 +3,7 @@ import { Modal, Input, Form, Select, Button, Flex } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSelectedAttendance } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/selectors';
 import { updateAttendaceApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api';
+import { format, parseISO } from 'date-fns';
 
 const { Option } = Select;
 
@@ -20,6 +21,8 @@ const EditAttendanceModal = ({ visible, onClose }) => {
 
     const dispatch = useDispatch();
     const selectedAttendance = useSelector(getSelectedAttendance);
+
+    console.log(selectedAttendance, "datessss")
 
     useEffect(() => {
         // Set initial values when selectedAttendance changes
@@ -61,7 +64,10 @@ const EditAttendanceModal = ({ visible, onClose }) => {
                 initialValues={{
                     firstName: selectedAttendance?.user?.first_name || '',
                     lastName: selectedAttendance?.user?.last_name || '',
-                    checkInTime: selectedAttendance?.checkInTime || '',
+                    // createdAt: selectedAttendance?.createdAt || '',
+                    createdAt: selectedAttendance?.createdAt
+                        ? format(parseISO(selectedAttendance.createdAt), 'yyyy-MM-dd HH:mm:ss')
+                        : '',
                     status: selectedAttendance?.status || '',
                 }}
                 onFinish={handleSubmit}
@@ -73,7 +79,7 @@ const EditAttendanceModal = ({ visible, onClose }) => {
                 <Form.Item label="Last Name" name="lastName">
                     <Input disabled />
                 </Form.Item>
-                <Form.Item label="Check In Time" name="checkInTime">
+                <Form.Item label="Check In Time" name="createdAt">
                     <Input disabled />
                 </Form.Item>
                 <Form.Item label="Status" name="status">
