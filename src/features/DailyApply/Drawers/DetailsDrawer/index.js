@@ -2,6 +2,7 @@ import React from 'react';
 import { Drawer, Card, Table } from 'antd';
 import { EventLabel, EventValue, StyledDetailsDiv } from './styled';
 import { format } from 'date-fns';
+import { capitalize } from "lodash";
 
 const DetailsDailyApplyDrawer = ({ isOpen, handleDetailsDrawer, selectedRecord }) => {
     // Define columns and data
@@ -20,12 +21,15 @@ const DetailsDailyApplyDrawer = ({ isOpen, handleDetailsDrawer, selectedRecord }
     ];
 
     const data = [
-        { key: '1', property: 'Client Job Position :', value: selectedRecord?.clientJobPosition },
-        { key: '2', property: 'Company Name Name :', value: selectedRecord?.companyName },
-        { key: '3', property: 'Platform :', value: selectedRecord?.platform },
-        { key: '4', property: 'Position To Apply :', value: selectedRecord?.positionToApply.split('_') },
+        { key: '1', property: 'Client Job Position :', value: capitalize(selectedRecord?.clientJobPosition) },
+        { key: '2', property: 'Company Name Name :', value: capitalize(selectedRecord?.companyName) },
+        {
+            key: '3', property: 'Platform :', value: capitalize(selectedRecord?.platform)
+        },
+        { key: '4', property: 'Position To Apply :', value: capitalize(selectedRecord?.positionToApply).split('_') },
         // Add more rows as needed
     ];
+
 
     return (
         <Drawer
@@ -62,22 +66,25 @@ const DetailsDailyApplyDrawer = ({ isOpen, handleDetailsDrawer, selectedRecord }
                 <div className="w-100 d-flex flex-column align-items-end px-4" style={{ marginTop: '20px' }}>
                     <div>
                         <EventLabel>Date:</EventLabel>
-                        <EventValue style={{ marginLeft: '10px' }}>
+                        <EventValue style={{ marginLeft: '10px', textTransform: 'capitalize' }}>
                             {format(new Date(selectedRecord?.createdAt), 'dd-MM-yyyy')}
                         </EventValue>
                     </div>
                     <div>
                         <EventLabel>Profile:</EventLabel>
-                        <EventValue style={{ marginLeft: '10px' }}>{selectedRecord?.profile?.name}</EventValue>
+                        <EventValue style={{ marginLeft: '10px', textTransform: 'capitalize' }}>
+                            {selectedRecord?.profile?.name}
+                        </EventValue>
                     </div>
                     <div>
                         <EventLabel>Created by:</EventLabel>
-                        <EventValue style={{ marginLeft: '10px' }}>
+                        <EventValue style={{ marginLeft: '10px', textTransform: 'capitalize' }}>
                             {selectedRecord?.createdBy?.first_name} {selectedRecord?.createdBy?.last_name}
                         </EventValue>
                     </div>
                 </div>
             )}
+
         </Drawer>
     );
 };

@@ -68,9 +68,9 @@ const CustomCalendar = () => {
       toast.warn("Cannot create events on past dates.");
       return;
     }
-      dispatch(setSelectedEvent(null))
-      setIsSelectEventTypeModal(true)
-      setSelectedDate({ start: slot.start, end: slot.end });
+    dispatch(setSelectedEvent(null))
+    setIsSelectEventTypeModal(true)
+    setSelectedDate({ start: slot.start, end: slot.end });
   };
 
   const onEventClick = async (event) => {
