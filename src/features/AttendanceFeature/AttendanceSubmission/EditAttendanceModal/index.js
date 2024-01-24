@@ -1,9 +1,10 @@
 import React, { useEffect } from 'react';
-import { Modal, Input, Form, Select, Button, Flex } from 'antd';
+import { Modal, Input, Form, Select, Button, Flex, TimePicker } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSelectedAttendance } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/selectors';
 import { updateAttendaceApi } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/api';
 import { format, parseISO } from 'date-fns';
+import dayjs from 'dayjs';
 
 const { Option } = Select;
 
@@ -29,7 +30,9 @@ const EditAttendanceModal = ({ visible, onClose }) => {
         form.setFieldsValue({
             firstName: selectedAttendance?.user?.first_name || '',
             lastName: selectedAttendance?.user?.last_name || '',
-            checkInTime: selectedAttendance?.checkInTime || '',
+            checkInTime: selectedAttendance?.checkInTime
+                ? dayjs(selectedAttendance.checkInTime, 'HH:mm:ss')
+                : '',
             status: selectedAttendance?.status || '',
         });
     }, [selectedAttendance]);
@@ -44,6 +47,7 @@ const EditAttendanceModal = ({ visible, onClose }) => {
             const data = {
                 id: selectedAttendance._id,
                 status: value.status,
+                checkInTime: value.checkInTime,
             };
             await dispatch(updateAttendaceApi(data));
             onClose();
@@ -64,10 +68,7 @@ const EditAttendanceModal = ({ visible, onClose }) => {
                 initialValues={{
                     firstName: selectedAttendance?.user?.first_name || '',
                     lastName: selectedAttendance?.user?.last_name || '',
-                    // createdAt: selectedAttendance?.createdAt || '',
-                    createdAt: selectedAttendance?.createdAt
-                        ? format(parseISO(selectedAttendance.createdAt), 'yyyy-MM-dd HH:mm:ss')
-                        : '',
+                    checkInTime: selectedAttendance?.checkInTime ? dayjs(selectedAttendance?.checkInTime, 'HH:mm:ss') : '',
                     status: selectedAttendance?.status || '',
                 }}
                 onFinish={handleSubmit}
@@ -79,8 +80,11 @@ const EditAttendanceModal = ({ visible, onClose }) => {
                 <Form.Item label="Last Name" name="lastName">
                     <Input disabled />
                 </Form.Item>
-                <Form.Item label="Check In Time" name="createdAt">
-                    <Input disabled />
+                <Form.Item label="Check In Time" >
+                    <TimePicker
+                        value={selectedAttendance?.checkInTime ? dayjs(selectedAttendance.checkInTime, 'HH:mm:ss') : null}
+                        format="h:mm A"
+                    />
                 </Form.Item>
                 <Form.Item label="Status" name="status">
                     <Select>

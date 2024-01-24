@@ -85,7 +85,8 @@ export const updateAttendaceApi = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await api.patch(`/attendance/${data.id}`, {
-        status: data.status
+        status: data.status,
+        checkInTime: data.checkInTime
       });
       toast.success("Attendance Updated Successfully")
 
