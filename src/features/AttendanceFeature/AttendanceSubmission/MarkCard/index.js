@@ -68,7 +68,7 @@ const MarkCard = ({ user, isLoading, handleSubmit, attendanceDate }) => {
                 {capitalize(user?.first_name) + ' ' + capitalize(user?.last_name)}
             </h5>
             <Form form={form} onFinish={onSubmit}>
-                <Form.Item name="checkInTime">
+                {/* <Form.Item name="checkInTime">
                     <TimePicker
                         style={{ width: '100%' }}
                         placeholder="Select Time"
@@ -78,7 +78,7 @@ const MarkCard = ({ user, isLoading, handleSubmit, attendanceDate }) => {
                         onChange={(time) => setCheckInTime(time)}
                         defaultValue={dayjs(checkInTime)}
                     />
-                </Form.Item>
+                </Form.Item> */}
                 <Form.Item name="status">
                     <Select
                         ref={selectRef}
@@ -96,7 +96,7 @@ const MarkCard = ({ user, isLoading, handleSubmit, attendanceDate }) => {
                         open={selectOpen}
                     />
                 </Form.Item>
-                 <Form.Item name="notes">
+                <Form.Item name="notes">
                     <TextArea rows={3} placeholder="Notes" />
                 </Form.Item>
                 <Button htmlType="submit" type="primary" disabled={isLoading}>
