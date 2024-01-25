@@ -42,8 +42,6 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
     const [fieldsEdited, setFieldsEdited] = useState(false);
     const [selectedDate, setSelectedDate] = useState(new Date())
 
-    console.log(allUsers, "userssss")
-
     const [form] = Form.useForm();
 
     const usersWithProjectManagerRole = allUsers?.filter(user => user?.role === ROLES?.PROJECT_MANAGER)
