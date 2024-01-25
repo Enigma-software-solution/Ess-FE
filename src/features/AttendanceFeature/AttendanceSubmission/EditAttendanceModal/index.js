@@ -55,6 +55,11 @@ const EditAttendanceModal = ({ visible, onClose }) => {
             console.error('Form submission error:', error);
         }
     };
+
+    const handleTimeChange = (timeString) => {
+        // You can log or perform any action with the selected time
+        console.log('Selected Time:', timeString);
+    };
     return (
         <Modal
             title="Edit Attendance"
@@ -82,8 +87,9 @@ const EditAttendanceModal = ({ visible, onClose }) => {
                 </Form.Item>
                 <Form.Item label="Check In Time" >
                     <TimePicker
-                        value={selectedAttendance?.checkInTime ? dayjs(selectedAttendance.checkInTime, 'HH:mm:ss') : null}
+                        value={selectedAttendance?.checkInTime ? dayjs(selectedAttendance?.checkInTime) : null}
                         format="h:mm A"
+                        onChange={handleTimeChange}
                     />
                 </Form.Item>
                 <Form.Item label="Status" name="status">
