@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Modal, Input, Form, Select, Button, Flex, TimePicker } from 'antd';
 import { useDispatch, useSelector } from 'react-redux';
 import { getSelectedAttendance } from 'src/store/slices/attendanceSlice/GetAttendanceSlice/selectors';
@@ -18,20 +18,18 @@ const statusOptions = [
 ];
 
 const EditAttendanceModal = ({ visible, onClose }) => {
+    const [editTime, setEditTime] = useState(null)
     const [form] = Form.useForm();
 
     const dispatch = useDispatch();
     const selectedAttendance = useSelector(getSelectedAttendance);
 
-    console.log(selectedAttendance, "datessss")
-
     useEffect(() => {
-        // Set initial values when selectedAttendance changes
         form.setFieldsValue({
             firstName: selectedAttendance?.user?.first_name || '',
             lastName: selectedAttendance?.user?.last_name || '',
             checkInTime: selectedAttendance?.checkInTime
-                ? dayjs(selectedAttendance.checkInTime, 'HH:mm:ss')
+                ? dayjs(selectedAttendance.checkInTime, 'h:mm A')
                 : '',
             status: selectedAttendance?.status || '',
         });
@@ -42,14 +40,15 @@ const EditAttendanceModal = ({ visible, onClose }) => {
         onClose();
     };
 
-    const handleSubmit = async (value) => {
+    const handleSubmit = async (values) => {
         try {
             const data = {
                 id: selectedAttendance._id,
-                status: value.status,
-                checkInTime: value.checkInTime,
+                status: values.status,
+                checkInTime: editTime || values.checkInTime.format('HH:mm:ss'),
             };
             await dispatch(updateAttendaceApi(data));
+            setEditTime(null)
             onClose();
         } catch (error) {
             console.error('Form submission error:', error);
@@ -57,9 +56,9 @@ const EditAttendanceModal = ({ visible, onClose }) => {
     };
 
     const handleTimeChange = (timeString) => {
-        // You can log or perform any action with the selected time
-        console.log('Selected Time:', timeString);
+        setEditTime(timeString)
     };
+
     return (
         <Modal
             title="Edit Attendance"
@@ -87,7 +86,7 @@ const EditAttendanceModal = ({ visible, onClose }) => {
                 </Form.Item>
                 <Form.Item label="Check In Time" >
                     <TimePicker
-                        value={selectedAttendance?.checkInTime ? dayjs(selectedAttendance?.checkInTime) : null}
+                        value={editTime ? dayjs(editTime, 'HH:mm:ss') : (selectedAttendance?.checkInTime ? dayjs(selectedAttendance?.checkInTime) : null)}
                         format="h:mm A"
                         onChange={handleTimeChange}
                     />
