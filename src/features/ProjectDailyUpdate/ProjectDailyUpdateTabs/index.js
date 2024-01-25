@@ -1,6 +1,5 @@
-import { Button, Tabs } from "antd";
+import { Tabs } from "antd";
 import React, { useState, useEffect } from "react";
-import NewUpdate from "./DailyProjectNewUpdate";
 import { useNavigate, useLocation } from "react-router-dom";
 import { routes } from "src/constant/routes";
 
@@ -22,7 +21,6 @@ const ProjectDailyUpdateTabs = () => {
 
 
   useEffect(() => {
-    // Find the key based on the current URL
     const foundKey =
       items?.find((item) => location.pathname.includes(item?.key))?.key || "1";
     setActiveKey(foundKey);
@@ -43,6 +41,7 @@ const ProjectDailyUpdateTabs = () => {
           <Tabs.TabPane key={item?.key} tab={item?.label} />
         ))}
       </Tabs>
+      
     </div>
   );
 };

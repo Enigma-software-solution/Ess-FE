@@ -32,7 +32,7 @@ const userSlice = createSlice({
         builder.addCase(getAllUsersApi.fulfilled, (state, action) => {
             state.status = "succeeded";
             state.loading = false;
-            state.data = action.payload.users;
+            state.data = action.payload.data;
         });
 
         builder.addCase(getAllUsersApi.rejected, (state, action) => {
@@ -43,21 +43,20 @@ const userSlice = createSlice({
 
         builder.addCase(registerUser.fulfilled, (state, action) => {
             state.status = "succeeded";
-            state.data = [action?.payload?.user, ...state?.data];
+            state.data.Users = [action?.payload?.user, ...state?.data?.Users];
         });
 
         builder.addCase(updateUserApi.fulfilled, (state, action) => {
-
-            state.data = state?.data?.map(user => {
-                if (user?._id === action?.payload?._id) {
-                    return action?.payload
+            state.data.Users = state?.data?.Users?.map(user => {
+                if (user?._id === action?.payload?.data?._id) {
+                    return action?.payload?.data
                 }
                 return user
             })
         });
 
         builder.addCase(deleteUserApi.fulfilled, (state, action) => {
-            state.data = state?.data?.filter((user) => user?._id !== action?.payload?.userId)
+            state.data.Users = state?.data?.Users?.filter((user) => user?._id !== action?.payload?.userId)
         });
     },
 

@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { Form, Input, Button, Avatar, message } from "antd";
 import { UserOutlined } from "@ant-design/icons";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FormContainer, Title, Wrapper } from "./styled";
 import { loginUser } from "src/store/slices/authSlice/apis";
-import { toast } from "react-toastify";
 import { routes } from "src/constant/routes";
 
 const LoginForm = () => {
@@ -29,9 +28,6 @@ const LoginForm = () => {
     }
   };
 
-  const handleSignUpClick = () => {
-    navigate("/signup");
-  };
 
   const handleForgotPassword = () => {
     navigate(routes.FORGOT_PASSWORD);
@@ -77,9 +73,7 @@ const LoginForm = () => {
             </Button>
           </Form.Item>
         </Form>
-        <Button type="default" block onClick={handleSignUpClick}>
-          Don't have account? Signup
-        </Button>
+
       </FormContainer>
     </Wrapper>
   );

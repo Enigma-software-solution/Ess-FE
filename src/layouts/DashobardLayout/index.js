@@ -21,7 +21,7 @@ const DashboardLayout = () => {
   const userRole = authUser?.role
 
   const isAttendanceRoute = location.pathname.includes("attendance") && (userRole === 'admin' || userRole === 'hr')
-  const isProjectDailyUpdates = location.pathname.includes("project-daily-updates") && (userRole === 'admin' || userRole === 'hr' || userRole === 'user' || userRole === 'sales_executive')
+  const isProjectDailyUpdates = location.pathname.includes("project-daily-updates") && (userRole === 'admin' || userRole === 'hr' || userRole === 'user' || userRole === 'sales_executive' || userRole === 'project_manager')
 
 
   return (

@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import CreateUserDrawer from "../CreateUserDrawer";
 import AddButton from "src/components/buttons/AddButton";
 import Search from "antd/es/input/Search";
-import { Flex } from "antd";
+import { Flex, Input } from "antd";
+import CustomSearchField from "src/components/SearchField";
 
 const Header = ({ onSearch }) => {
 
@@ -21,8 +22,7 @@ const Header = ({ onSearch }) => {
     return (
         <div>
             <Flex justify="space-between" className="mb-3">
-                <Search size="large" placeholder="input search text" enterButton
-                    style={{ width: '300px' }} onChange={handleSearchChange} />
+                <CustomSearchField onChange={handleSearchChange} text="Search User" />
                 <AddButton onClick={handleDrawer} text="New User" />
             </Flex>
             <CreateUserDrawer isOpen={isOpen} handleDrawer={handleDrawer} />

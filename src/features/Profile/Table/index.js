@@ -3,13 +3,14 @@ import { Popconfirm, Table } from 'antd';
 import EditButton from 'src/components/buttons/EditButton';
 import DeleteButton from 'src/components/buttons/DeleteButton';
 import { useDispatch, useSelector } from 'react-redux';
-import { deteleProfileApi, getProfilesApi } from "src/store/slices/profielSlice/apis";
+import { deteleProfileApi, getProfilesApi, updateProfileApi } from "src/store/slices/profielSlice/apis";
 import { getAllProfiles, isProfileLaoding } from "src/store/slices/profielSlice/selectors";
 import Header from "../Header";
 import { setSelectedProfile } from "src/store/slices/profielSlice";
 import CreateProfileDrawer from "../Drawers/CreateProfileDrawer";
 import Loader from "src/components/Loader";
-import { getPolicyApi } from "src/store/slices/policySlice/apis";
+import { StyledBadge } from "./styled";
+import { capitalize } from "lodash";
 
 const ProfileTable = () => {
     const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
@@ -19,6 +20,8 @@ const ProfileTable = () => {
     const dispatch = useDispatch()
 
     const profileData = useSelector(getAllProfiles)
+
+
 
     const handleEdit = (record, e) => {
         e.stopPropagation();
@@ -35,12 +38,29 @@ const ProfileTable = () => {
         e.stopPropagation();
         dispatch(deteleProfileApi(recordToDelete._id));
     };
+    const handleChangeStatus = (e, record) => {
+        e.stopPropagation();
+        if (record._id) {
+            dispatch(updateProfileApi({
+                id: record._id,
+                data: {
+                    ...record,
+                    status: record?.status === "active" ? 'inactive' : 'active'
+                }
+            }));
+        } else {
+            console.error("User record does not have a valid _id");
+        }
+    };
+
+
 
     const columns = [
         {
             key: "name",
             title: "Profile Name",
             dataIndex: "name",
+            render: (text) => capitalize(text),
         },
         {
             key: "email",
@@ -53,9 +73,31 @@ const ProfileTable = () => {
             dataIndex: "phoneNumber",
         },
         {
-            key: "status",
+            key: "state",
+            title: "City or State",
+            dataIndex: "state",
+            render: (text) => capitalize(text),
+        },
+        {
             title: "Status",
             dataIndex: "status",
+            render: (text, record) => {
+                const isActive = text === "active";
+                return (
+                    <div className="d-flex gap-1">
+                        <Popconfirm
+                            title={`Are you sure to ${isActive ? "deactivate" : "activate"} this Profile?`}
+                            onConfirm={(e) => handleChangeStatus(e, record)}
+                            okText="Yes"
+                            cancelText="No"
+                        >
+                            <StyledBadge onClick={(e) => e.stopPropagation()} status={text}>
+                                {capitalize(text)}
+                            </StyledBadge>
+                        </Popconfirm>
+                    </div >
+                );
+            }
         },
         {
             key: "action",

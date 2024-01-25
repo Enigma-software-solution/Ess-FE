@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import DailyApplyDrawer from "../Drawers/CreateDrawer";
-import { Button } from "antd";
+import { Button, Select } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProfiles } from "src/store/slices/profielSlice/selectors";
 import CustomSearchField from "src/components/SearchField";
@@ -11,6 +11,8 @@ import CustomSelect from "src/components/formElements/CustomSelect";
 import { Wrapper } from "./styled";
 import qs from "qs";
 import { ROLES } from "src/constant/roles";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Header = ({ pageSize, onSearch }) => {
   const dispatch = useDispatch();
@@ -21,11 +23,21 @@ const Header = ({ pageSize, onSearch }) => {
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [selectedDateRange, setSelectedDateRange] = useState(null);
 
+  const allProfilesData = allProfiles.map((profile) => ({
+    value: profile._id,
+    label: profile.name,
+  }));
+
   const handleDrawer = () => {
     setIsOpen(!isOpen);
   };
 
   const handleSubmit = () => {
+    if (!selectedProfile && !selectedDateRange) {
+      toast.warn("Please fill all the filters before searching.");
+      return;
+    }
+
     const params = {};
 
     if (selectedProfile) {
@@ -67,19 +79,23 @@ const Header = ({ pageSize, onSearch }) => {
 
   return (
     <>
+   
+      <ToastContainer />
+
       <div className="d-flex justify-content-between mb-1">
-        <CustomSearchField onChange={search} />
+        <CustomSearchField onChange={search} text="Search Apply" />
         <AddButton onClick={handleDrawer} text="New Apply" />
       </div>
       <Wrapper>
         <div className="d-flex gap-3">
           {logedInUser && logedInUser?.role === ROLES.ADMIN && (
-            <CustomSelect
+            <Select
               style={{ width: "180px" }}
               value={selectedProfile}
               valueField="_id"
               labelField="name"
-              options={allProfiles}
+              placeholder="Select Profile"
+              options={allProfilesData}
               onChange={handleChangeProfile}
             />
           )}

@@ -48,7 +48,6 @@ const ResetPassword = () => {
                 <Avatar size={64} icon={<UserOutlined />} style={{ marginBottom: 24 }} />
                 <Title>Reset Password</Title>
                 <Form name="resetPassword" onFinish={onFinish}>
-                    {/* Your form components */}
                     <Form.Item
                         name="password"
                         rules={[{ required: true, message: "Please input your password!" }]}
@@ -72,7 +71,7 @@ const ResetPassword = () => {
                         </Button>
 
                     </Form.Item>
-                    <Button type="link"  onClick={handleLogin}>
+                    <Button type="link" onClick={handleLogin}>
                         Login
                     </Button>
                 </Form>

@@ -11,6 +11,7 @@ import { setSelectedApply } from "src/store/slices/dailyApplySlice";
 import qs from "qs";
 import DetailsDailyApplyDrawer from "../Drawers/DetailsDrawer";
 import { StyledTable } from "./styled";
+import { capitalize } from "lodash";
 import Loader from "src/components/Loader";
 
 const CreateDailyAppliesTable = () => {
@@ -36,8 +37,13 @@ const CreateDailyAppliesTable = () => {
         dispatch(deteleDailyAppliesApi(recordToDelete._id));
     };
 
-    const handleRowClick = (record) => {
-        setSelectedRecord(record); // Set the selected record
+    const handleRowClick = (record, e) => {
+
+        if (e && e.target && e.target.tagName.toLowerCase() === 'a') {
+            return;
+        }
+
+        setSelectedRecord(record);
         setIsDetailsDrawerOpen(true);
     };
 
@@ -45,38 +51,46 @@ const CreateDailyAppliesTable = () => {
         {
             title: "No",
             dataIndex: "serialNo",
-            render: (text, record, index) => index + 1,
+            render: (text, record, index) => {
+                const currentPage = selectPagination?.page || 1;
+                const itemsPerPage = selectPagination?.pageSize || pageSize;
+                const adjustedIndex = (currentPage - 1) * itemsPerPage + index + 1;
+                return adjustedIndex;
+            },
             width: '40px'
         },
         {
             key: "companyName",
             title: "Company Name",
-            sorter: (a, b) => a?.companyName.localeCompare(b?.companyName),
             dataIndex: "companyName",
-
+            render: (text) => capitalize(text),
         },
         {
-            title: "Client Job Position ",
-            sorter: (a, b) => a?.clientJobPosition.localeCompare(b?.clientJobPosition),
+            title: "Client Job Position",
             dataIndex: "clientJobPosition",
-
+            render: (text) => capitalize(text),
         },
         {
             title: "Position To Apply",
             dataIndex: "positionToApply",
-            width: '14%'
+            width: '14%',
+            render: (text, record) => capitalize(record?.positionToApply).split('_'),
         },
         {
             title: "Platform",
             dataIndex: "platform",
-            width: '10%'
-
+            width: '10%',
+            render: (text) => capitalize(text),
         },
         {
             title: "Link",
             dataIndex: "link",
             ellipsis: true,
-            render: (text) => <a href={text} style={{ textDecoration: "none" }}>{text}</a>,
+            render: (text) => (
+                <a href={text} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none" }}>
+                    {text}
+                </a>
+            ),
         },
         {
             key: "action",

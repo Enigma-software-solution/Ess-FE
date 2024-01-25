@@ -55,9 +55,9 @@ const TodaySubmittedTable = ({ todayAllAttendance }) => {
             dataIndex: 'notes',
             ellipsis: true,
             render: (text, record) => (
-                <Tooltip title={text} placement="topLeft" arrowPointAtCenter>
+                <Tooltip title={capitalize(text)} placement="topLeft" arrowPointAtCenter>
                     <div style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
-                        {text}
+                        {capitalize(text)}
                     </div>
                 </Tooltip>
             ),
@@ -66,11 +66,20 @@ const TodaySubmittedTable = ({ todayAllAttendance }) => {
             title: "Status",
             dataIndex: "status",
             render: (text) => {
+                const tagStyle = {
+                    width: '60px',
+                    display: 'inline-block',
+                    textAlign: 'center',
+                };
+
                 return (
-                    <Tag color={CheckAttendanceStatusColor(text)}>{text}</Tag>
+                    <Tag color={CheckAttendanceStatusColor(text)} style={tagStyle}>
+                        {capitalize(text)}
+                    </Tag>
                 );
             },
         },
+
         {
             key: "action",
             title: "Action",
@@ -79,7 +88,8 @@ const TodaySubmittedTable = ({ todayAllAttendance }) => {
                 <div className="d-flex gap-1">
                     <EditButton onClick={(e) => handleEdit(record, e)} />
                     <Popconfirm
-                        title="Are you sure to delete this task?"
+                        title="Are you sure you want to delete
+                                   this user attendance?"
                         onConfirm={(e) => handleConfirmDelete(record, e)}
                         onCancel={(e) => e.stopPropagation()}
                         okText="Yes"

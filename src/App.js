@@ -32,18 +32,17 @@ import ResetPassword from "./pages/Auth/ResetPassword";
 import AfterConfirmationEmail from "./pages/Auth/AfterConfirmationEmail";
 import Policy from "./pages/Policy";
 
-import { enUS, fr } from 'date-fns/locale';
 import { ROLES } from "./constant/roles";
 import MarkAttendance from "./pages/Attendance/MarkAttendance";
 import AttendenceDetails from "./features/AttendanceFeature/SingleUserAttendanceDetails";
-import SignUpPage from "./pages/Auth/SignUp";
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
 import UpdateProjectTable from "./features/ProjectDailyUpdate/ProjectDailyUpdateTabs/DailyProjectUpdateHistory";
 
 import ErrorBoundary from "./components/ErrorBoundary";
-import DailyProjectNewUpdate from "./features/ProjectDailyUpdate/ProjectDailyUpdateTabs/DailyProjectNewUpdate";
+import ProjectDailyUpdateSubmission from "./features/ProjectDailyUpdate/ProjectDailyUpdateTabs/ProjectDailyUpdateSubmission";
+import TeamStructurePage from "./pages/TeamStructure";
 
 function App() {
   const dispatch = useDispatch();
@@ -58,7 +57,7 @@ function App() {
     <div className="App">
       <ErrorBoundary>
         <ThemeProvider theme={theme} >
-          <ConfigProvider theme={theme} locale={enUS}>
+          <ConfigProvider theme={theme} >
 
             <GlobalStyles />
             <Routes>
@@ -67,7 +66,7 @@ function App() {
 
                   <Route path={routes.PROFILE_SETTINGS} element={<ProfileSettings />} />
 
-                  <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.SALES_EXECUTIVE, ROLES.USER]} />} >
+                  <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.SALES_EXECUTIVE, ROLES.USER, ROLES.HR]} />} >
                     <Route index element={<Dashobard />} />
                     <Route path={routes.USERS} element={<UsersPage />} />
                   </Route>
@@ -95,9 +94,13 @@ function App() {
                   </Route>
 
                   {/* PROJECT UPDATE ROUTES */}
-                  <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.HR, ROLES.SALES_EXECUTIVE, ROLES.USER]} />}>
-                    <Route path={routes.NEW_UPDATE} element={<DailyProjectNewUpdate />} />
+                  <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.HR, ROLES.USER, ROLES.PROJECT_MANAGER]} />}>
+                    <Route path={routes.NEW_UPDATE} element={<ProjectDailyUpdateSubmission />} />
                     <Route path={routes.UPDATE_HISTORY} element={<UpdateProjectTable />} />
+                  </Route>
+
+                  <Route element={<RoleRoute allowedRoles={[ROLES.ADMIN, ROLES.HR, ROLES.USER, ROLES.SALES_EXECUTIVE]} />}>
+                    <Route path={routes.TEAM_STRUCTURE} element={<TeamStructurePage />} />
                   </Route>
 
                 </Route>
@@ -106,7 +109,7 @@ function App() {
 
               {/* Auth ROUTES */}
               <Route path="/login" element={<Login />} />
-              <Route path="/Signup" element={<SignUpPage />} />
+              {/* <Route path="/Signup" element={<SignUpPage />} /> this is not mendatory */}
               <Route path={`${routes.AfterConfirmationEmail}/confirm-email/:token`} element={<AfterConfirmationEmail />} />
               <Route path={routes.FORGOT_PASSWORD} element={<ForgotPassword />} />
               <Route path={`${routes.RESET_PASSWORD}/:token`} element={<ResetPassword />} />
@@ -119,7 +122,7 @@ function App() {
               <Route path="*" element={<NotFound />} />
             </Routes>
           </ConfigProvider>
-          <ToastContainer />
+          <ToastContainer autoClose={2000} />
         </ThemeProvider>
       </ErrorBoundary>
     </div>

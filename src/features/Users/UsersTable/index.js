@@ -13,6 +13,7 @@ import Loader from "src/components/Loader";
 import { Link, useNavigate } from "react-router-dom";
 import { routes } from "src/constant/routes";
 import { capitalize } from "lodash";
+import dayjs from "dayjs";
 
 const UserTable = () => {
 
@@ -76,12 +77,10 @@ const UserTable = () => {
         }
     };
 
-    const filteredClients = clients.filter((client) => {
+    const filteredClients = clients?.filter((client) => {
         const fullName = `${client?.first_name} ${client?.last_name}`.toLowerCase();
         return fullName.includes(searchQuery.toLowerCase());
     });
-
-
 
     const columns = [
         {
@@ -96,8 +95,17 @@ const UserTable = () => {
             key: "email",
         },
         {
+            title: "Joining Date",
+            dataIndex: "joining_date",
+            key: "joining_date",
+            width: 150,
+            render: (text, record) => dayjs(record?.joining_date).format('YYYY-MM-DD'),
+        },
+        {
             title: "Role",
             dataIndex: "role",
+            render: (text, record) => capitalize(record?.role).split('_')
+
         },
         {
             title: "Status",
@@ -115,7 +123,7 @@ const UserTable = () => {
                             cancelText="No"
                         >
                             <StyledBadge onClick={(e) => e.stopPropagation()} status={text}>
-                                {text}
+                                {capitalize(text)}
                             </StyledBadge>
                         </Popconfirm>
                     </div >

@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Calendar, Views, dateFnsLocalizer } from "react-big-calendar";
+import { Calendar, Views, dateFnsLocalizer, } from "react-big-calendar";
 import format from "date-fns/format";
 import parse from "date-fns/parse";
 import startOfWeek from "date-fns/startOfWeek";
@@ -12,7 +12,7 @@ import { getAllEvents, isEventLaoding } from "src/store/slices/agendaSlice/selec
 import { CallType } from "src/constant/callTypes";
 import { toast } from "react-toastify";
 import SalesDrawer from "../SalesDrawer";
-import EventDetailsDrawer from "../SalesCallDetailsDrawer";
+import SalesCallDetailsDrawer from "../SalesCallDetailsDrawer";
 import CustomEvent from "./CustomEvent";
 import ClientEventDrawer from "../ClientEventDrawer";
 import SelectEventTypeModal from "../SelectEventTypeModal";
@@ -21,6 +21,7 @@ import CustomToolbar from "./CustomToolbar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Spin } from "antd";
 import Loader from "src/components/Loader";
+import SalesEventDrawer from "../SalesDrawer";
 
 
 const locales = { 'en-US': enUS }
@@ -31,7 +32,6 @@ const localizer = dateFnsLocalizer({
   startOfWeek,
   getDay,
   locales,
-  timeZone: 'America/New_York',
 });
 
 
@@ -68,16 +68,13 @@ const CustomCalendar = () => {
       toast.warn("Cannot create events on past dates.");
       return;
     }
-    if (currentView !== "month") {
-      dispatch(setSelectedEvent(null))
-
-      setIsSelectEventTypeModal(true)
-      setSelectedDate({ start: slot.start, end: slot.end });
-    }
+    dispatch(setSelectedEvent(null))
+    setIsSelectEventTypeModal(true)
+    setSelectedDate({ start: slot.start, end: slot.end });
   };
 
   const onEventClick = async (event) => {
-    if (event?.eventType === 'clientCall') {
+    if (event?.eventType === 'clientcall') {
       setIsClientCallDetailsModal(true)
       dispatch(setSelectedEvent(event));
       return
@@ -135,7 +132,7 @@ const CustomCalendar = () => {
         popup
         eventPropGetter={getEventStyle}
         onView={onView}
-        defaultView={Views.MONTH}
+        defaultView={Views.WEEK}
         views={["day", "week", "work_week", "month", "agenda"]}
         min={new Date(0, 0, 0, workDayStartHour)}
         max={new Date(0, 0, 0, workDayEndHour)}
@@ -150,10 +147,10 @@ const CustomCalendar = () => {
       <SelectEventTypeModal isOpen={isSelectEventTypeModal} handleClose={() => setIsSelectEventTypeModal(false)} />
       <ClientCallDetailsModal isOpen={isClientCallDetailsModal} handleClose={() => setIsClientCallDetailsModal(false)} />
 
-      <SalesDrawer selectedDate={selectedDate} />
-      <ClientEventDrawer selectedDate={selectedDate} />
+      <SalesEventDrawer selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
+      <ClientEventDrawer selectedDate={selectedDate} setSelectedDate={setSelectedDate} />
 
-      <EventDetailsDrawer />
+      <SalesCallDetailsDrawer />
     </div>
   );
 };

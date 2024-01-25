@@ -1,5 +1,5 @@
-import React, { useEffect } from 'react';
-import { Form, Row, Col, Input, Select, Space, Drawer, Button } from 'antd';
+import React, { useEffect, useState } from 'react';
+import { Form, Row, Col, Input, Select, Space, Drawer, Button, DatePicker } from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
 import { getSelectedUser } from 'src/store/slices/userSlice/selectors';
 import { updateUserApi } from 'src/store/slices/userSlice/apis';
@@ -7,25 +7,28 @@ import { registerUser } from 'src/store/slices/authSlice/apis';
 import CustomInput from 'src/components/formElements/CustomInput';
 import { ROLES, rolesDropdown } from 'src/constant/roles';
 import CustomSelect from 'src/components/formElements/CustomSelect';
+import dayjs from 'dayjs'
 import { getLogedInUser } from 'src/store/slices/authSlice/selectors';
 
 const { Option } = Select;
-
 const initialFormValues = {
     email: '',
     first_name: '',
     last_name: '',
     role: "",
-    password: ""
+    password: "",
+    joining_date: dayjs()
 };
 
 const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
-    const authUser = useSelector(getLogedInUser)
-    const loggedInUserRole = authUser.role
+    const authUser = useSelector(getLogedInUser);
+    const loggedInUserRole = authUser.role;
     const dispatch = useDispatch();
     const selectedUser = useSelector(getSelectedUser);
-
+    const [selectedDate, setSelectedDate] = useState(new Date())
     const [form] = Form.useForm();
+    const [fieldsEdited, setFieldsEdited] = useState(false);
+    const isEditMode = !!selectedUser;
 
     useEffect(() => {
         if (selectedUser) {
@@ -40,31 +43,52 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
         }
     }, [selectedUser, form]);
 
-    const isEditMode = !!selectedUser;
+    useEffect(() => {
+        const isFormEdited = form.isFieldsTouched();
+        setFieldsEdited(isFormEdited);
+    }, [form]);
 
+    const onChange = (date, dateString) => {
+        setSelectedDate(date)
+    };
+    const disabledDate = (current) => {
+        return current && current < dayjs().startOf('day');
+    };
     const handleSubmit = async (values) => {
         try {
-            const user = { ...values };
+            const user = {
+                ...values,
+                role: values.role.charAt(0).toUpperCase() + values.role.slice(1).toLowerCase()
+            };
+
             if (isEditMode) {
                 dispatch(updateUserApi({ user, userId: selectedUser?._id }));
             } else {
                 dispatch(registerUser(user));
             }
+
             form.setFieldsValue(initialFormValues);
+            setFieldsEdited(false);
             handleDrawer();
         } catch (error) {
             console.error('Form submission error:', error);
         }
     };
 
+    const handleCancel = () => {
+        form.setFieldsValue(initialFormValues);
+        setFieldsEdited(false);
+        handleDrawer();
+    };
+
     return (
         <Drawer
             open={isOpen}
-            onClose={handleDrawer}
+            onClose={handleCancel}
             width={800}
             title={isEditMode ? "Update User" : "Create User"}
         >
-            <Form form={form} layout="vertical" hideRequiredMark onFinish={handleSubmit}>
+            <Form form={form} layout="vertical" hideRequiredMark onFinish={handleSubmit} onValuesChange={() => setFieldsEdited(true)}>
                 <Row gutter={16}>
                     <Col span={12}>
                         <Form.Item
@@ -83,9 +107,7 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
                         >
                             <Input placeholder="Please enter Last Name" />
                         </Form.Item>
-
                     </Col>
-
                 </Row>
 
                 {!isEditMode && (
@@ -112,27 +134,51 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
                         </Row>
                     </>
                 )}
-                <Col>
 
-                    <Form.Item>
-                        <CustomInput
-                            disabled={loggedInUserRole !== ROLES.ADMIN}
+                <Row gutter={16}>
+                    <Col span={12}>
+                        <Form.Item
+                            label="Joining Date"
+                            name="joining_date"
+                            rules={[{ required: false }]}
+                        >
+                            <DatePicker
+                                onChange={onChange}
+                                allowClear={false}
+                                defaultValue={dayjs()}
+                                disabledDate={disabledDate}
+                                style={{ width: '100%' }}
+                            />
+                        </Form.Item>
+                    </Col>
+                    <Col span={12}>
+                        <Form.Item
                             label="Roles"
                             name="role"
                             rules={[{ required: true }]}
-                            component={CustomSelect}
-                            placeholder="Select Role"
-                            options={rolesDropdown}
-                            style={{ width: "200px" }}
-                        />
-                    </Form.Item>
-                </Col>
+                        >
+                            <CustomInput
+                                disabled={loggedInUserRole !== ROLES.ADMIN}
+                                component={CustomSelect}
+                                placeholder="Select Role"
+                                options={rolesDropdown}
+                                style={{ width: '100%' }}
+                            />
+                        </Form.Item>
+                    </Col>
+                </Row>
                 <Form.Item>
                     <Space>
-                        <Button onClick={handleDrawer}>Cancel</Button>
-                        <Button type="primary" htmlType="submit">
-                            Submit
-                        </Button>
+                        <Button onClick={handleCancel}>Cancel</Button>
+                        {!isEditMode ? (
+                            <Button type="primary" htmlType="submit">
+                                Save
+                            </Button>
+                        ) : (
+                            <Button type="primary" htmlType="submit" disabled={!fieldsEdited}>
+                                Update
+                            </Button>
+                        )}
                     </Space>
                 </Form.Item>
             </Form>

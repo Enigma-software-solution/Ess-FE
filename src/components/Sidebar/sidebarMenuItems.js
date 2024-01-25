@@ -1,4 +1,4 @@
-import { ContainerOutlined, CalendarOutlined, DashboardOutlined, CheckSquareOutlined, ProfileOutlined, UserSwitchOutlined, UsergroupAddOutlined, FormOutlined } from '@ant-design/icons';
+import { ContainerOutlined, CalendarOutlined, DashboardOutlined, CheckSquareOutlined, ProfileOutlined, UserSwitchOutlined, UsergroupAddOutlined, FormOutlined, ProjectOutlined, TeamOutlined } from '@ant-design/icons';
 import { ROLES } from 'src/constant/roles';
 import { routes } from 'src/constant/routes';
 
@@ -85,7 +85,7 @@ export const sidebarMenuItems = [
         title: 'Agenda',
         icon: <CalendarOutlined />,
         path: routes.AGENDA,
-        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.SALES_EXECUTIVE],
+        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.SALES_EXECUTIVE, ROLES.HR],
     },
     {
         key: routes.PROFILE,
@@ -113,20 +113,28 @@ export const sidebarMenuItems = [
         title: 'Users',
         icon: <UserSwitchOutlined />,
         path: routes.USERS,
-        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.HR],
+        roles: [ROLES.SUPER_ADMIN, ROLES.HR, ROLES.ADMIN],
+    },
+    {
+        key: routes.NEW_UPDATE,
+        title: 'Project Update',
+        icon: <ProjectOutlined />,
+        path: routes.NEW_UPDATE,
+        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.HR, ROLES.USER, ROLES.PROJECT_MANAGER],
     },
     {
         key: routes.POLICIES,
         title: 'Policy',
         icon: <FormOutlined />,
         path: routes.POLICIES,
-        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.HR, ROLES.USER],
+        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.HR, ROLES.USER, ROLES.PROJECT_MANAGER],
     },
+
     {
-        key: routes.NEW_UPDATE,
-        title: 'Project Update',
-        icon: <FormOutlined />,
-        path: routes.NEW_UPDATE,
-        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.HR, ROLES.USER, ROLES.SALES_EXECUTIVE],
+        key: routes.TEAM_STRUCTURE,
+        title: 'Team Structure',
+        icon: <TeamOutlined />,
+        path: routes.TEAM_STRUCTURE,
+        roles: [ROLES.SUPER_ADMIN, ROLES.ADMIN, ROLES.HR, ROLES.USER, ROLES.PROJECT_MANAGER, ROLES.SALES_EXECUTIVE],
     },
 ];
