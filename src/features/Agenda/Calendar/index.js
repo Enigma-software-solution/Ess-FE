@@ -74,7 +74,7 @@ const CustomCalendar = () => {
   };
 
   const onEventClick = async (event) => {
-    if (event?.eventType === 'clientCall') {
+    if (event?.eventType === 'clientcall') {
       setIsClientCallDetailsModal(true)
       dispatch(setSelectedEvent(event));
       return
@@ -83,6 +83,7 @@ const CustomCalendar = () => {
     dispatch(setSelectedEvent(event));
     dispatch(showEventDrawer());
   };
+
   const getEventStyle = (event) => {
     const colorMap = {
       [CallType.Initial]: "#3498db",
