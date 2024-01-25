@@ -62,9 +62,7 @@ const ForgotPassword = () => {
             Login
           </Button>
         </Form>
-        {/* <Button type="default" block onClick={handle}>
-                    Don't have account? Signup
-                </Button> */}
+
       </FormContainer>
     </Wrapper>
   );

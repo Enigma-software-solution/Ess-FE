@@ -255,22 +255,7 @@ const AttendanceReport = () => {
             </StyledDiv>
 
             {<AttendanceHistory reports={reports?.attendance ?? []} isLoading={isLoading} />}
-            {/* {reports?.paginator && reports?.attendance.length ? (
-                <Pagination
-                    style={{ padding: '10px', display: 'flex', justifyContent: 'flex-end' }}
-                    total={totalItems}
-                    showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
-                    defaultPageSize={pageSize}
-                    defaultCurrent={page}
-                    onChange={(page, pageSize) => {
-                        onPaginationChange(page, pageSize);
-                    }}
-                    showSizeChanger
-                    onShowSizeChange={(current, pageSize) => {
-                        onPaginationChange(1, 1);
-                    }}
-                />
-            ) : null} */}
+
         </StyledPage>
 
     );
