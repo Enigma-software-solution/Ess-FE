@@ -119,6 +119,8 @@ const UpdateProjectTable = () => {
     }
   };
 
+  // console.log(updateHistory, "updateee")
+
 
   const getUpdateHistory = async (filters) => {
     const params = {};
@@ -265,7 +267,7 @@ const UpdateProjectTable = () => {
               showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
               defaultPageSize={pageSize}
               defaultCurrent={page}
-              onChange={onPaginationChange} 
+              onChange={onPaginationChange}
               showSizeChanger
             />
 

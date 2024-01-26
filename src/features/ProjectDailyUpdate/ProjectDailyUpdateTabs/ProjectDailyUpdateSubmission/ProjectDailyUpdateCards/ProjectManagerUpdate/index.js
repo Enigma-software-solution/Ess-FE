@@ -1,22 +1,30 @@
 import React, { useState } from 'react';
 import { Input, Rate, Button } from 'antd';
 import { capitalize } from 'lodash';
+import { useDispatch } from 'react-redux';
+import { updateDailyUpdate } from 'src/store/slices/projectDailyUpdates/apis';
 
 const ProjectManagerUpdate = ({ record, isProjectManager }) => {
-    const [editedText, setEditedText] = useState(record.project?.projectManagerUpdate || '');
-    const [editedRating, setEditedRating] = useState(record.project?.projectManagerRating || 0);
+    console.log(record, "rec")
+    const [managerFeedback, setManagerFeedback] = useState(record?.managerFeedback || '');
+    const [rating, setRating] = useState(record.rating || 0);
+
+    const dispatch = useDispatch();
 
     const handleTextChange = (e) => {
-        setEditedText(e.target.value);
+        setManagerFeedback(e.target.value);
     };
 
     const handleRatingChange = (value) => {
-        setEditedRating(value);
+        setRating(value);
     };
 
     const handleSave = () => {
-        console.log('Save Text:', editedText);
-        console.log('Save Rating:', editedRating);
+        const data = {
+            managerFeedback: managerFeedback,
+            rating: rating,
+        }
+        dispatch(updateDailyUpdate({ id: record._id, data }));
     };
 
     return (
@@ -29,12 +37,12 @@ const ProjectManagerUpdate = ({ record, isProjectManager }) => {
             {isProjectManager ? (
                 <>
                     <Input.TextArea
-                        value={editedText}
+                        value={managerFeedback}
                         onChange={handleTextChange}
                         placeholder='Write your update...'
                         autoSize={{ minRows: 3, maxRows: 5 }}
                     />
-                    <Rate value={editedRating} onChange={handleRatingChange} style={{ marginTop: '10px' }} />
+                    <Rate value={rating} onChange={handleRatingChange} style={{ marginTop: '10px' }} />
                     <Button type='primary' onClick={handleSave} style={{ marginTop: '10px' }}>
                         Save
                     </Button>

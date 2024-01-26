@@ -109,7 +109,7 @@ const ProjectDailyUpdateCards = ({ todayAllUpdates }) => {
                                 <div className='d-flex gap-1'>
                                     <EditButton onClick={(e) => handleClick(record, e)} />
                                     <Popconfirm
-                                        title='Are you sure to delete this client?'
+                                        title='Are you sure to delete this Project Update?'
                                         onConfirm={(e) => handleConfirmDelete(record, e)}
                                         onCancel={(e) => e.stopPropagation()}
                                         okText='Yes'

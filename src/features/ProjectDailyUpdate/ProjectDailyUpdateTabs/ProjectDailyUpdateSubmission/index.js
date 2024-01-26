@@ -22,6 +22,8 @@ const ProjectDailyUpdateSubmission = () => {
         dispatch(setModalVisible(true));
     };
 
+    console.log(filteredUpdates, "ssssssssssssss")
+
     useEffect(() => {
 
         switch (loggedInUser?.role) {
@@ -44,7 +46,9 @@ const ProjectDailyUpdateSubmission = () => {
 
 
     return (
+
         <>
+
             {loggedInUser?.role === ROLES?.USER && (
                 <Button onClick={showModal} type="primary">
                     ADD PROJECT UPDATE
