@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import DeleteButton from 'src/components/buttons/DeleteButton';
 import EditButton from 'src/components/buttons/EditButton';
 import { deteleDailyProjectUpdatesApi, getDailyProjectUpdateApi, updateDailyUpdate } from 'src/store/slices/projectDailyUpdates/apis';
-import { getAllProjectDailyUpdates, getSelectedProjectDailyUpdates } from 'src/store/slices/projectDailyUpdates/selectors';
+import { getSelectedProjectDailyUpdates } from 'src/store/slices/projectDailyUpdates/selectors';
 import qs from 'qs';
 import { getLogedInUser } from 'src/store/slices/authSlice/selectors';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -14,6 +14,7 @@ import { setSelectedProjectDailyUpdate } from 'src/store/slices/projectDailyUpda
 import TextArea from 'antd/es/input/TextArea';
 import { capitalize } from 'lodash';
 import { CardWrapper } from './styled';
+import ProjectManagerUpdate from './ProjectManagerUpdate';
 
 const ProjectDailyUpdateCards = ({ todayAllUpdates }) => {
     const dispatch = useDispatch();
@@ -49,7 +50,7 @@ const ProjectDailyUpdateCards = ({ todayAllUpdates }) => {
     useEffect(() => {
         let params;
 
-        switch (authUser.role) {
+        switch (authUser?.role) {
             case "admin":
                 params = qs.stringify({
                     date: new Date(),
@@ -87,6 +88,8 @@ const ProjectDailyUpdateCards = ({ todayAllUpdates }) => {
         setEditedContentMap((prevMap) => ({ ...prevMap, [recordId]: value }))
     };
 
+    console.log(todayAllUpdates, "todayAllUpdatestodayAllUpdates")
+
     return (
         <>
             <Swiper
@@ -94,6 +97,7 @@ const ProjectDailyUpdateCards = ({ todayAllUpdates }) => {
                 modules={[Pagination]}
                 slidesPerView={4}
                 spaceBetween={20}
+                height={70}
                 grabCursor={true}
                 style={{ padding: '30px', marginBottom: '40px' }}
             >
@@ -119,10 +123,10 @@ const ProjectDailyUpdateCards = ({ todayAllUpdates }) => {
                             </Flex>
                             <hr />
                             <h6 className='text-center pb-2'>
-                                {capitalize(record.project?.projectManager?.first_name)} {capitalize(record.project?.projectManager?.last_name || 'No project manager')}
+                                {capitalize(record.user?.first_name)} {capitalize(record.user?.last_name || 'No project manager')}
                             </h6>
                             <TextArea
-                                rows={7}
+                                rows={2}
                                 placeholder='Update'
                                 readOnly={selectedProject !== record}
                                 defaultValue={capitalize(editedContentMap[record._id] || stripHtmlTags(record?.content))}
@@ -143,6 +147,10 @@ const ProjectDailyUpdateCards = ({ todayAllUpdates }) => {
                             <Flex align='center' justify='end' className='mt-2'>
                                 {format(new Date(record?.date), 'MM/dd/yyyy')}
                             </Flex>
+                            <ProjectManagerUpdate
+                                record={record}
+                                isProjectManager={authUser?.id === record.project?.projectManager?._id}
+                            />
                         </CardWrapper>
                     </SwiperSlide>
                 ))}
