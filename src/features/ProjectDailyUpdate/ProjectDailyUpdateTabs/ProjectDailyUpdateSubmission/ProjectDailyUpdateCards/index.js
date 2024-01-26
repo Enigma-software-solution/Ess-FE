@@ -88,8 +88,6 @@ const ProjectDailyUpdateCards = ({ todayAllUpdates }) => {
         setEditedContentMap((prevMap) => ({ ...prevMap, [recordId]: value }))
     };
 
-    console.log(todayAllUpdates, "todayAllUpdatestodayAllUpdates")
-
     return (
         <>
             <Swiper
@@ -122,7 +120,7 @@ const ProjectDailyUpdateCards = ({ todayAllUpdates }) => {
                                 </div>
                             </Flex>
                             <hr />
-                            <h6 className='text-center pb-2'>
+                            <h6 className=' pb-2'>
                                 {capitalize(record.user?.first_name)} {capitalize(record.user?.last_name || 'No project manager')}
                             </h6>
                             <TextArea
@@ -144,7 +142,7 @@ const ProjectDailyUpdateCards = ({ todayAllUpdates }) => {
                                     </Flex>
                                 </>
                             )}
-                            <Flex align='center' justify='end' className='mt-2'>
+                            <Flex align='center' justify='end' >
                                 {format(new Date(record?.date), 'MM/dd/yyyy')}
                             </Flex>
                             <ProjectManagerUpdate
