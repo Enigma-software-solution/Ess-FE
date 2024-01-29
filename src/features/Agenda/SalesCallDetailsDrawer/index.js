@@ -132,10 +132,10 @@ const SalesCallDetailsDrawer = () => {
                     <th className="fw-bold">Call Mode :</th>
                     <td>{selectedEvent?.callMode}</td>
                   </tr> */}
-                  <tr>
+                  {/* <tr>
                     <th className="fw-bold">Apply Platform :</th>
                     <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.apply?.platform}</td>
-                  </tr>
+                  </tr> */}
                   {/* <tr>
                     <th className="fw-bold">Call Platform :</th>
                     <td>{selectedEvent?.callPlatform}</td>
@@ -153,10 +153,11 @@ const SalesCallDetailsDrawer = () => {
                     </td>
                   </tr>
                   <tr>
-                    <th className="fw-bold">Apply Link :</th>
-                    <td>
-                      <a href={selectedEvent?.apply?.link} target="_blank">Apply Link</a>
-                    </td>
+                    <tr>
+                      <th className="fw-bold">Phone Number :</th>
+                      <td>{selectedEvent?.apply?.phoneNumber}</td>
+                    </tr>
+
                   </tr>
                   <tr>
                     <th className="fw-bold">Company Information :</th>
