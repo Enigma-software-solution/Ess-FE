@@ -1,4 +1,4 @@
-import { Button, DatePicker, Flex, Pagination, Select, Space, Table } from 'antd';
+import { Button, DatePicker, Flex, Pagination, Rate, Select, Space, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDailyProjectUpdateApi } from 'src/store/slices/projectDailyUpdates/apis';
@@ -76,12 +76,33 @@ const UpdateProjectTable = () => {
       },
     },
     {
-      title: 'Update',
+      title: 'Developer Update',
       dataIndex: 'content',
       key: 'Update',
       render: (text, record) => (
         <span dangerouslySetInnerHTML={{ __html: record?.content }} />
       ),
+    },
+    {
+      title: 'PM FeedBack',
+      dataIndex: 'managerFeedback',
+      key: 'managerFeedback',
+    },
+    {
+      title: 'PM Rating',
+      dataIndex: 'rating',
+      key: 'rating',
+      width: 200,
+      render: (rating, record) => (
+        <Rate value={rating} style={{ marginTop: '10px' }} />
+      ),
+    },
+    {
+      title: 'Project Name',
+      dataIndex: 'project',
+      key: 'Project',
+      render: (text, record) =>
+        record?.project?.clientName || 'No client name',
     },
     {
       title: 'Date',
@@ -118,6 +139,9 @@ const UpdateProjectTable = () => {
       setIsLoading(false);
     }
   };
+
+
+  console.log(updateHistory, "updateee")
 
 
   const getUpdateHistory = async (filters) => {
@@ -265,7 +289,7 @@ const UpdateProjectTable = () => {
               showTotal={(total, range) => `${range[0]}-${range[1]} of ${total} items`}
               defaultPageSize={pageSize}
               defaultCurrent={page}
-              onChange={onPaginationChange} 
+              onChange={onPaginationChange}
               showSizeChanger
             />
 

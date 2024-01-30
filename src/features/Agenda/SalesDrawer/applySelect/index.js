@@ -35,22 +35,6 @@ const ApplySelect = ({ onSelect }) => {
             {applies?.map((apply) => (
                 <Option key={apply._id} value={apply._id}>
                     {apply.companyName}
-                    {/* <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}  >
-
-
-                        {apply?.companyName}{' '}
-                        {apply?.clientJobPosition && ` -  ${apply?.clientJobPosition} `}
-                        <span
-                            style={{
-                                fontSize: '80%',
-                                opacity: 0.7,
-                                display: 'flex',
-                                justifyContent: 'flex-end',
-                            }}
-                        >
-                            {format(new Date(apply.createdAt), 'dd-MM-yyyy')}
-                        </span>
-                    </div> */}
 
                 </Option>
             ))}
