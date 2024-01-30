@@ -153,11 +153,10 @@ const SalesCallDetailsDrawer = () => {
                     </td>
                   </tr>
                   <tr>
-                    <tr>
-                      <th className="fw-bold">Phone Number :</th>
-                      <td>{selectedEvent?.apply?.phoneNumber}</td>
-                    </tr>
-
+                    <th className="fw-bold">Phone Number :</th>
+                    <td style={{ textTransform: 'capitalize', fontFamily: 'inherit', fontSize: 'inherit', fontWeight: 'inherit' }}>
+                      {selectedEvent?.phoneNumber}
+                    </td>
                   </tr>
                   <tr>
                     <th className="fw-bold">Company Information :</th>
