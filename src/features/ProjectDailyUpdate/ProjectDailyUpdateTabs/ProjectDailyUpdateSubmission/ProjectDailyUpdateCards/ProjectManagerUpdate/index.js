@@ -51,8 +51,8 @@ const ProjectManagerUpdate = ({ record, isProjectManager }) => {
                 </>
             ) : (
                 <>
-                    <div>Update: {record?.managerFeedback || 'No update available'}</div>
-                    <div>Rating:{<Rate value={record?.rating} style={{ marginTop: '10px' }} /> || 'No rating available'}</div>
+                    <div><strong>Update:</strong> {record?.managerFeedback || 'No update available'}</div>
+                    <div><strong>Rating:</strong>{<Rate value={record?.rating} style={{ marginTop: '10px' }} /> || 'No rating available'}</div>
                 </>
             )}
         </div>
