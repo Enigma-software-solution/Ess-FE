@@ -76,7 +76,7 @@ const UpdateProjectTable = () => {
       },
     },
     {
-      title: 'Update',
+      title: 'Developer Update',
       dataIndex: 'content',
       key: 'Update',
       render: (text, record) => (
