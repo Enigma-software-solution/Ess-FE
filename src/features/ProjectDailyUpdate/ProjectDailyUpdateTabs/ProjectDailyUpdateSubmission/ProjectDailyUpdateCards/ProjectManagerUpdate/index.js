@@ -5,6 +5,8 @@ import { useDispatch } from 'react-redux';
 import { updateDailyUpdate } from 'src/store/slices/projectDailyUpdates/apis';
 
 const ProjectManagerUpdate = ({ record, isProjectManager }) => {
+
+    console.log(record, "recordd")
     const [managerFeedback, setManagerFeedback] = useState(record?.managerFeedback || '');
     const [rating, setRating] = useState(record.rating || 0);
 
@@ -49,8 +51,8 @@ const ProjectManagerUpdate = ({ record, isProjectManager }) => {
                 </>
             ) : (
                 <>
-                    <div>Update: {record?.project?.projectManagerUpdate || 'No update available'}</div>
-                    <div>Rating: {record?.project?.projectManagerRating || 'No rating available'}</div>
+                    <div>Update: {record?.managerFeedback || 'No update available'}</div>
+                    <div>Rating:{<Rate value={record?.rating} style={{ marginTop: '10px' }} /> || 'No rating available'}</div>
                 </>
             )}
         </div>
