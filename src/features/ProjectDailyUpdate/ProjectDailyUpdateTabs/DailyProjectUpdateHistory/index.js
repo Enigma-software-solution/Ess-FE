@@ -1,4 +1,4 @@
-import { Button, DatePicker, Flex, Pagination, Select, Space, Table } from 'antd';
+import { Button, DatePicker, Flex, Pagination, Rate, Select, Space, Table } from 'antd';
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getDailyProjectUpdateApi } from 'src/store/slices/projectDailyUpdates/apis';
@@ -84,6 +84,27 @@ const UpdateProjectTable = () => {
       ),
     },
     {
+      title: 'PM FeedBack',
+      dataIndex: 'managerFeedback',
+      key: 'managerFeedback',
+    },
+    {
+      title: 'PM Rating',
+      dataIndex: 'rating',
+      key: 'rating',
+      width: 200,
+      render: (rating, record) => (
+        <Rate value={rating} style={{ marginTop: '10px' }} />
+      ),
+    },
+    {
+      title: 'Project Name',
+      dataIndex: 'project',
+      key: 'Project',
+      render: (text, record) =>
+        record?.project?.clientName || 'No client name',
+    },
+    {
       title: 'Date',
       dataIndex: 'date',
       key: 'Date',
@@ -119,7 +140,8 @@ const UpdateProjectTable = () => {
     }
   };
 
-  // console.log(updateHistory, "updateee")
+
+  console.log(updateHistory, "updateee")
 
 
   const getUpdateHistory = async (filters) => {

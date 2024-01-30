@@ -22,8 +22,6 @@ const ProjectDailyUpdateSubmission = () => {
         dispatch(setModalVisible(true));
     };
 
-    console.log(filteredUpdates, "ssssssssssssss")
-
     useEffect(() => {
 
         switch (loggedInUser?.role) {
@@ -57,7 +55,7 @@ const ProjectDailyUpdateSubmission = () => {
 
             {modalVisible && <AddProjectDailyUpdateModal open={modalVisible} handleClose={() => dispatch(setModalVisible(false))} selectedProject={selectedProject} />}
             <ProjectDailyUpdateCards todayAllUpdates={filteredUpdates} />
-            <ViewDailyProjectUpdateTable todayAllUpdates={filteredUpdates} />
+            {/* <ViewDailyProjectUpdateTable todayAllUpdates={filteredUpdates} /> */}
         </>
     );
 };
