@@ -108,10 +108,7 @@ const SalesCallDetailsDrawer = () => {
                     <th className="fw-bold">Company Name :</th>
                     <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.apply?.companyName}</td>
                   </tr>
-                  {/* <tr>
-                    <th className="fw-bold">Call With :</th>
-                    <td>{selectedEvent?.callWith}</td>
-                  </tr> */}
+                  
                   <tr>
                     <th className="fw-bold">Job Title :</th>
                     <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.apply?.positionToApply.split('_').join(' ')}</td>
@@ -120,32 +117,17 @@ const SalesCallDetailsDrawer = () => {
                     <th className="fw-bold">Call Duration :</th>
                     <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.callDuration} </td>
                   </tr>
-                  {/* <tr>
-                    <th className="fw-bold">Number of Guests :</th>
-                    <td>{selectedEvent?.numOfGuests}</td>
-                  </tr> */}
+                  
                   <tr>
                     <th className="fw-bold">Call Type :</th>
                     <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.callType}</td>
                   </tr>
-                  {/* <tr>
-                    <th className="fw-bold">Call Mode :</th>
-                    <td>{selectedEvent?.callMode}</td>
-                  </tr> */}
-                  {/* <tr>
+                 
+                  <tr>
                     <th className="fw-bold">Apply Platform :</th>
                     <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.apply?.platform}</td>
-                  </tr> */}
-                  {/* <tr>
-                    <th className="fw-bold">Call Platform :</th>
-                    <td>{selectedEvent?.callPlatform}</td>
-                  </tr> */}
-                  {/* <tr>
-                    <th className="fw-bold">Mail Link :</th>
-                    <td>
-                      <a href={selectedEvent?.mailLink}>Mail</a>
-                    </td>
-                  </tr> */}
+                  </tr>
+                  
                   <tr>
                     <th className="fw-bold">Call Link :</th>
                     <td>

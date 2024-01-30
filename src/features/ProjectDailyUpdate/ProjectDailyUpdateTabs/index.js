@@ -33,6 +33,7 @@ const ProjectDailyUpdateTabs = () => {
 
   return (
     <div>
+
       <Tabs
         activeKey={activeKey}
         onChange={onChange}
@@ -41,7 +42,7 @@ const ProjectDailyUpdateTabs = () => {
           <Tabs.TabPane key={item?.key} tab={item?.label} />
         ))}
       </Tabs>
-      
+
     </div>
   );
 };

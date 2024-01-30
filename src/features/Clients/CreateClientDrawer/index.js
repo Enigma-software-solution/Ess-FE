@@ -271,38 +271,6 @@ const CreateClientDrawer = ({ isOpen, handleDrawer }) => {
                         </Form.Item>
                     </Col>
 
-                    {/* <Col span={12}>
-                        <Form.Item name="apply" label="Apply" >
-                            <Select
-                                style={{ width: "100%" }}
-                                showSearch
-                                onSearch={fetchApplyData}
-                                placeholder="Select an applies"
-                                optionFilterProp="children"
-                                value={applyId}
-                                onChange={(value) => setApplyId(value)}
-                            >
-                                {applies?.map((apply) => (
-                                    <Option key={apply?._id} value={apply?._id}>
-                                        {apply?.clientName}{" "}
-                                        {apply?.clientJobPosition && ` -  ${apply?.clientJobPosition} `}
-                                        <span
-                                            style={{
-                                                fontSize: "80%",
-                                                opacity: 0.7,
-                                                display: "flex",
-                                                justifyContent: "flex-end",
-                                            }}
-                                        >
-                                            {format(new Date(apply?.createdAt), "dd-MM-yyyy")}
-                                        </span>
-                                    </Option>
-                                ))}
-                            </Select>
-                        </Form.Item>
-
-                    </Col> */}
-
                 </Row >
                 <Form.Item>
                     <Space>

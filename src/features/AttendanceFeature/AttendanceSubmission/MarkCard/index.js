@@ -68,17 +68,7 @@ const MarkCard = ({ user, isLoading, handleSubmit, attendanceDate }) => {
                 {capitalize(user?.first_name) + ' ' + capitalize(user?.last_name)}
             </h5>
             <Form form={form} onFinish={onSubmit}>
-                {/* <Form.Item name="checkInTime">
-                    <TimePicker
-                        style={{ width: '100%' }}
-                        placeholder="Select Time"
-                        use12Hours
-                        format="h:mm a"
-                        size="large"
-                        onChange={(time) => setCheckInTime(time)}
-                        defaultValue={dayjs(checkInTime)}
-                    />
-                </Form.Item> */}
+
                 <Form.Item name="status">
                     <Select
                         ref={selectRef}
