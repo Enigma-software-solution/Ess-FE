@@ -22,6 +22,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import { Spin } from "antd";
 import Loader from "src/components/Loader";
 import SalesEventDrawer from "../SalesDrawer";
+import Search from "antd/es/input/Search";
 
 
 const locales = { 'en-US': enUS }
@@ -45,8 +46,6 @@ const CustomCalendar = () => {
   const [currentView, setCurrentView] = useState("month");
   const [isSelectEventTypeModal, setIsSelectEventTypeModal] = useState(false)
   const [isClientCallDetailsModal, setIsClientCallDetailsModal] = useState(false)
-
-
 
   useEffect(() => {
     const newEvents = events?.map((e) => ({
@@ -100,6 +99,18 @@ const CustomCalendar = () => {
     };
   };
 
+  const [searchInput, setSearchInput] = useState("");
+  // const [searchResults, setSearchResults] = useState([]);
+
+  const handleSearch = () => {
+    // Filter events based on first name
+    const filteredEvents = preparedEvents.filter((event) =>
+      event.createdBy?.first_name?.toLowerCase().includes(searchInput.toLowerCase())
+    );
+    setIsClientCallDetailsModal(true)
+    dispatch(setSelectedEvent(filteredEvents[0]));
+  };
+
   useEffect(() => {
     dispatch(getAllEventsApi());
   }, []);
@@ -114,7 +125,19 @@ const CustomCalendar = () => {
   }
 
   return (
-    <div style={{ height: 'calc(100vh - 110px)', backgroundColor: '#fff' }}>
+    <div style={{ height: 'calc(100vh - 110px)', backgroundColor: '#fff', marginTop: '20px' }}>
+
+      <div style={{ marginBottom: '10px' }}>
+        <Search
+          type="text"
+          placeholder="Search by First Name"
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+          style={{ width: "20%" }}
+          onSearch={handleSearch}
+        />
+      </div>
+
       <Calendar
         localizer={localizer}
         events={preparedEvents}

@@ -1,7 +1,7 @@
 import React from 'react'
 import TodayCount from './TodayCount'
 import OnLeave from './OnLeave'
-import ReportChart from './ReportChart'
+// import ReportChart from './ReportChart'
 import { Row, Col } from 'antd';
 
 const AttandanceDashbaord = () => {
@@ -12,7 +12,7 @@ const AttandanceDashbaord = () => {
             <Row gutter={20}>
                 <Col sm={24} md={18}>
                     <TodayCount />
-                    <ReportChart />
+                    {/* <ReportChart /> */}
                 </Col>
                 <Col sm={24} md={6}>
                     <OnLeave />

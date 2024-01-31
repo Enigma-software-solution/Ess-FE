@@ -17,7 +17,6 @@ const ClientCallDetailsModal = ({ isOpen, handleClose }) => {
     const clientCallDetails = useSelector(getSelectedEvent)
 
 
-
     return (
         <Modal
             title="Client call details"
@@ -46,7 +45,7 @@ const ClientCallDetailsModal = ({ isOpen, handleClose }) => {
                         </div>
                     )}
 
-                    <p>Assign To: {clientCallDetails?.assignTo?.first_name}</p>
+                    <p>Assign To: {clientCallDetails?.assignTo ? clientCallDetails?.assignTo?.first_name : clientCallDetails?.createdBy?.first_name}</p>
                     <p>Duration: {clientCallDetails?.callDuration}</p>
                     <p>Call Type: {clientCallDetails?.callType}</p>
                 </Flex>
