@@ -51,7 +51,7 @@ export const DeleteEventsApi = createAsyncThunk(
 
 export const updateEventNotes = createAsyncThunk("agenda/update-event-notes", async (data) => {
   try {
-    const response = await api.put(`/event/${data?.eventId}/notes`, { notes: data?.notes });
+    const response = await api.put(`/event/${data?.eventId}/notes`, { notes: data?.notes , callStatus: data?.callStatus , callLeads: data?.callLeads  });
     toast.success(response?.message)
     return response;
   } catch (error) {

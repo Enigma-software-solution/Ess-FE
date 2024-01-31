@@ -1,16 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Drawer, Form, Button, Select, DatePicker, TimePicker, Space } from "antd";
+import { Drawer, Form, Button, Select, TimePicker } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import CustomInput from "src/components/formElements/CustomInput";
 import CustomSelect from "src/components/formElements/CustomSelect";
-import { formatDate, formatTime } from "src/utils/formatsOfDate";
+import { formatDate } from "src/utils/formatsOfDate";
 import { getLogedInUser } from "src/store/slices/authSlice/selectors";
 import {
   UpdateEventsApi,
   createEventsApi,
 } from "src/store/slices/agendaSlice/apis";
-import { CallTypeDropdown } from "src/constant/callTypes";
-import { CallPlatformDropdown } from "src/constant/callplatform";
+import {CallTypeDropdown } from "src/constant/callTypes";
 import ApplySelect from "./applySelect";
 import {
   checkNotesDrawer,
@@ -20,9 +19,7 @@ import {
 import { closeEventDrawer, closeSalesDrawer, setSelectedEvent } from "src/store/slices/agendaSlice";
 import { differenceInMinutes } from "date-fns";
 import dayjs from "dayjs";
-import { isEmpty } from "lodash";
 
-const { Option } = Select;
 
 const SalesEventDrawer = ({ selectedDate, setSelectedDate }) => {
   const dispatch = useDispatch();
@@ -259,6 +256,8 @@ const SalesEventDrawer = ({ selectedDate, setSelectedDate }) => {
           type="textArea"
 
         />
+
+       
       </Form>
     </Drawer>
   );
