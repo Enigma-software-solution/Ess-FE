@@ -44,10 +44,22 @@ const NotesDrawer = () => {
     if (selectedEvent?.notes) {
       setValue(selectedEvent?.notes);
     } else {
-      // Set value to null if there are no notes for the selected event
       setValue(null);
     }
+  
+    if (selectedEvent) {
+      setSelectedValues({
+        callStatus: selectedEvent.callStatus,
+        callLeads: selectedEvent.callLeads,
+      });
+    } else {
+      setSelectedValues({
+        callStatus: null,
+        callLeads: null,
+      });
+    }
   }, [selectedEvent]);
+  
 
   const toolbarOptions = [
     ["bold", "italic", "underline", "strike"],

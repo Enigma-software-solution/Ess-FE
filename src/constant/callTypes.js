@@ -52,15 +52,15 @@ export const CallStatus = [
 export const CallLeads = [
     {
         label: "Priority Lead",
-        value: "PriorityLead"
+        value: "priority_lead"
     },
     {
         label: "Bad Lead",
-        value: "BadLead"
+        value: "bad_lead"
     },
     {
         label: "Good Lead",
-        value: "GoodLead"
+        value: "good_lead"
     },
     {
         label: "Garbage",

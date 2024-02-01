@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Card, Drawer, Popconfirm } from "antd";
+import { Button, Card, Drawer, Popconfirm, Tag } from "antd";
 import { format } from "date-fns";
 import {
   checkEventDrawer,
@@ -20,6 +20,8 @@ import {
 } from "src/store/slices/agendaSlice";
 import { toast } from "react-toastify";
 import UserList from "../UserList";
+import { CheckAgendaLeadsColor } from "src/components/Utils/checkAgendaLeadsColor";
+import { CheckAgendaStatusColor } from "src/components/Utils/checkAgendaStatusColor";
 
 const SalesCallDetailsDrawer = () => {
   const dispatch = useDispatch();
@@ -51,6 +53,12 @@ const SalesCallDetailsDrawer = () => {
     dispatch(showSalesDrawer());
   };
 
+  const tagStyle = {
+    width: '80px',
+    display: 'inline-block',
+    textAlign: 'center',
+    textTransform: 'capitalize',
+  };
   return (
     <div className="mb-1">
       <Drawer
@@ -86,7 +94,25 @@ const SalesCallDetailsDrawer = () => {
                 <UserList selectedEvent={selectedEvent} />
               </div>
             </div>
-
+            <div className="d-flex justify-content-between">
+            <div style={{ marginLeft: '20px',marginTop:"10px", gap:'10px',display:'flex' }}>
+              <div className="mb-1">
+                <span className="fw-bold">Call Status:</span>
+                <span className="m-3" style={{ textTransform: 'capitalize' }}>
+                  <Tag color={CheckAgendaStatusColor(selectedEvent?.callStatus)} style={tagStyle}>
+                    {selectedEvent?.callStatus}
+                  </Tag>
+                </span>
+              </div>
+              <div className="mb-1">
+                <span className="fw-bold">Call Leads:</span>
+                <span className="m-3" >
+                  <Tag color={CheckAgendaLeadsColor(selectedEvent?.callLeads)} style={tagStyle}>
+                    {selectedEvent?.callLeads.split('_').join(' ')}
+                  </Tag>
+                </span>
+              </div>
+            </div>
             <div className="d-flex justify-content-end align-items-end flex-column  mb-1">
               <p>
                 <strong> Date:</strong> {format(new Date(selectedEvent?.start), "dd-MM-yyyy")}
@@ -96,6 +122,8 @@ const SalesCallDetailsDrawer = () => {
                 {format(new Date(selectedEvent?.end), "p")}
               </p>
             </div>
+            </div>
+
           </div>
         )}
 
@@ -108,7 +136,7 @@ const SalesCallDetailsDrawer = () => {
                     <th className="fw-bold">Company Name :</th>
                     <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.apply?.companyName}</td>
                   </tr>
-                  
+
                   <tr>
                     <th className="fw-bold">Job Title :</th>
                     <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.apply?.positionToApply.split('_').join(' ')}</td>
@@ -117,17 +145,17 @@ const SalesCallDetailsDrawer = () => {
                     <th className="fw-bold">Call Duration :</th>
                     <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.callDuration} </td>
                   </tr>
-                  
+
                   <tr>
                     <th className="fw-bold">Call Type :</th>
                     <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.callType}</td>
                   </tr>
-                 
+
                   <tr>
                     <th className="fw-bold">Apply Platform :</th>
                     <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.apply?.platform}</td>
                   </tr>
-                  
+
                   <tr>
                     <th className="fw-bold">Call Link :</th>
                     <td>
