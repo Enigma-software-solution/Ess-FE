@@ -134,12 +134,12 @@ const SalesCallDetailsDrawer = () => {
                       <a href={selectedEvent?.callLink} target="_blank">Call</a>
                     </td>
                   </tr>
-                  {/* <tr>
-                    <th className="fw-bold">Apply Link :</th>
-                    <td>
-                      <a href={selectedEvent?.apply?.link} target="_blank">Apply Link</a>
+                  <tr>
+                    <th className="fw-bold">Phone Number :</th>
+                    <td style={{ textTransform: 'capitalize', fontFamily: 'inherit', fontSize: 'inherit', fontWeight: 'inherit' }}>
+                      {selectedEvent?.phoneNumber}
                     </td>
-                  </tr> */}
+                  </tr>
                   <tr>
                     <th className="fw-bold">Company Information :</th>
                     <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.companyInformation}</td>
