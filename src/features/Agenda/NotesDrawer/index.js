@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Drawer, Space } from "antd";
+import { Button, Drawer, Space, Modal } from "antd";
 import { FullscreenExitOutlined, FullscreenOutlined } from "@ant-design/icons";
 import ReactQuill from "react-quill";
 import { useDispatch, useSelector } from "react-redux";
@@ -18,7 +18,7 @@ const NotesDrawer = () => {
   const dispatch = useDispatch();
   const isDrawer = useSelector(checkNotesDrawer);
 
-  const onClose = () => {
+  const handleClose = () => {
     dispatch(closeNotesDrawer());
   };
 
@@ -30,7 +30,7 @@ const NotesDrawer = () => {
 
     try {
       await dispatch(updateEventNotes(data));
-      onClose();
+      handleClose();
     } catch (err) {
       console.log(err);
     }
@@ -48,60 +48,50 @@ const NotesDrawer = () => {
   const toolbarOptions = [
     ["bold", "italic", "underline", "strike"],
     ["blockquote", "code-block"],
-
     [{ header: 1 }, { header: 2 }],
     [{ list: "ordered" }, { list: "bullet" }],
     [{ script: "sub" }, { script: "super" }],
     [{ indent: "-1" }, { indent: "+1" }],
     [{ direction: "rtl" }],
-
     [{ size: ["small", false, "large", "huge"] }],
     [{ header: [1, 2, 3, 4, 5, 6, false] }],
-
     [{ color: [] }, { background: [] }],
     [{ align: [] }],
-
     ["clean"],
   ];
 
   return (
-    <div>
-      <Drawer
-        placement="right"
-        closable={true}
-        onClose={onClose}
-        open={isDrawer}
-        width={isFullScreen ? "85%" : "45%"}
-        destroyOnClose
-        extra={
-          <Space>
-            <Button onClick={handleSave} type="primary">
-              Save
-            </Button>
-
-            <Button
-              onClick={() => setIsFullScreen(!isFullScreen)}
-              className="d-flex justify-center align-items-center"
-            >
-              {isFullScreen ? (
-                <FullscreenExitOutlined />
-              ) : (
-                <FullscreenOutlined />
-              )}
-            </Button>
-          </Space>
-        }
-      >
-        <ReactQuill
-          modules={{
-            toolbar: toolbarOptions,
-          }}
-          theme="snow"
-          value={value}
-          onChange={setValue}
-        />
-      </Drawer>
-    </div>
+    <Drawer
+      title="Notes"
+      placement="right"
+      onClose={handleClose}
+      visible={isDrawer}
+      width={isFullScreen ? "85%" : "45%"}
+      footer={
+        <Space>
+          <Button key="save" type="primary" onClick={handleSave}>
+            Save
+          </Button>
+        </Space>
+      }
+      extra={
+        <Button
+          onClick={() => setIsFullScreen(!isFullScreen)}
+          className="d-flex justify-center align-items-center"
+        >
+          {isFullScreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
+        </Button>
+      }
+    >
+      <ReactQuill
+        modules={{
+          toolbar: toolbarOptions,
+        }}
+        theme="snow"
+        value={value}
+        onChange={setValue}
+      />
+    </Drawer>
   );
 };
 
