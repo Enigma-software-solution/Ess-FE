@@ -26,6 +26,7 @@ const SalesCallDetailsDrawer = () => {
   const isEventDrawer = useSelector(checkEventDrawer);
   const isNotesDrawer = useSelector(checkNotesDrawer);
   const selectedEvent = useSelector(getSelectedEvent);
+
   const event = useSelector(getAllEvents);
 
   const handleNotesDrawer = () => {
@@ -58,7 +59,7 @@ const SalesCallDetailsDrawer = () => {
         placement="right"
         closable={true}
         onClose={onClose}
-        open={isEventDrawer}
+        visible={isEventDrawer}
         width={selectedEvent?.notes ? "70%" : "50%"}
         extra={
           <div className="d-flex w-100 gap-1 justify-content-end mb-1">
@@ -75,7 +76,7 @@ const SalesCallDetailsDrawer = () => {
         }
       >
         {selectedEvent?.start && selectedEvent?.end && (
-          <div className="mb-1"  >
+          <div className="mb-1">
             <div style={{ display: "flex", justifyContent: 'space-between', gap: "20px", marginBottom: '20px' }}>
               <Button type="primary" onClick={handleNotesDrawer}>
                 {selectedEvent?.notes ? "Update Notes" : "Add Notes"}
@@ -108,7 +109,7 @@ const SalesCallDetailsDrawer = () => {
                     <th className="fw-bold">Company Name :</th>
                     <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.apply?.companyName}</td>
                   </tr>
-                  
+
                   <tr>
                     <th className="fw-bold">Job Title :</th>
                     <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.apply?.positionToApply.split('_').join(' ')}</td>
@@ -117,17 +118,17 @@ const SalesCallDetailsDrawer = () => {
                     <th className="fw-bold">Call Duration :</th>
                     <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.callDuration} </td>
                   </tr>
-                  
+
                   <tr>
                     <th className="fw-bold">Call Type :</th>
                     <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.callType}</td>
                   </tr>
-                 
+
                   <tr>
                     <th className="fw-bold">Apply Platform :</th>
                     <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.apply?.platform}</td>
                   </tr>
-                  
+
                   <tr>
                     <th className="fw-bold">Call Link :</th>
                     <td>

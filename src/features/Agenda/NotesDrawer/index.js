@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Button, Drawer, Space, Modal } from "antd";
+import { Button, Drawer, Space } from "antd";
 import { FullscreenExitOutlined, FullscreenOutlined } from "@ant-design/icons";
 import ReactQuill from "react-quill";
 import { useDispatch, useSelector } from "react-redux";
@@ -10,9 +10,10 @@ import {
 } from "src/store/slices/agendaSlice/selector";
 import { closeNotesDrawer } from "src/store/slices/agendaSlice";
 
-const NotesDrawer = () => {
+const NotesDrawer = ({ isDrawerOpen, handleDrawerClose }) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
-  const [value, setValue] = useState(null); // Change this to null
+  const [value, setValue] = useState("");
+  const [editorInitialized, setEditorInitialized] = useState(false);
 
   const selectedEvent = useSelector(getSelectedEvent);
   const dispatch = useDispatch();
@@ -25,7 +26,7 @@ const NotesDrawer = () => {
   const handleSave = async () => {
     const data = {
       eventId: selectedEvent._id,
-      notes: value === '<p><br></p>' ? null : value,
+      notes: value === "<p><br></p>" ? null : value,
     };
 
     try {
@@ -38,12 +39,21 @@ const NotesDrawer = () => {
 
   useEffect(() => {
     if (selectedEvent?.notes) {
-      setValue(selectedEvent?.notes);
+      setValue(selectedEvent.notes);
     } else {
-      // Set value to null if there are no notes for the selected event
-      setValue(null);
+      setValue("");
     }
   }, [selectedEvent]);
+
+  useEffect(() => {
+
+    if (isDrawerOpen && !editorInitialized) {
+
+      setTimeout(() => {
+        setEditorInitialized(true);
+      }, 100);
+    }
+  }, [isDrawerOpen, editorInitialized]);
 
   const toolbarOptions = [
     ["bold", "italic", "underline", "strike"],
@@ -83,14 +93,16 @@ const NotesDrawer = () => {
         </Button>
       }
     >
-      <ReactQuill
-        modules={{
-          toolbar: toolbarOptions,
-        }}
-        theme="snow"
-        value={value}
-        onChange={setValue}
-      />
+      {isDrawerOpen && editorInitialized && (
+        <ReactQuill
+          modules={{
+            toolbar: toolbarOptions,
+          }}
+          theme="snow"
+          value={value}
+          onChange={setValue}
+        />
+      )}
     </Drawer>
   );
 };
