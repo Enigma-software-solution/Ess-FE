@@ -52,8 +52,9 @@ const CreateUserDrawer = ({ isOpen, handleDrawer }) => {
         setSelectedDate(date)
     };
     const disabledDate = (current) => {
-        return current && current < dayjs().startOf('day');
+        return current && current > dayjs().endOf('day');
     };
+
     const handleSubmit = async (values) => {
         try {
             const user = {
