@@ -11,7 +11,7 @@ import { setSelectedEvent, showEventDrawer } from "src/store/slices/agendaSlice"
 import { getAllEvents, isEventLaoding } from "src/store/slices/agendaSlice/selector";
 import { CallType } from "src/constant/callTypes";
 import { toast } from "react-toastify";
-import SalesDrawer from "../SalesDrawer";
+import { Pagination } from "swiper/modules";
 import SalesCallDetailsDrawer from "../SalesCallDetailsDrawer";
 import CustomEvent from "./CustomEvent";
 import ClientEventDrawer from "../ClientEventDrawer";
@@ -19,10 +19,13 @@ import SelectEventTypeModal from "../SelectEventTypeModal";
 import ClientCallDetailsModal from "../ClientCallDetailsModal";
 import CustomToolbar from "./CustomToolbar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
-import { Spin } from "antd";
+import { Card, List, Spin } from "antd";
 import Loader from "src/components/Loader";
 import SalesEventDrawer from "../SalesDrawer";
 import Search from "antd/es/input/Search";
+import { CloseCircleOutlined } from "@ant-design/icons";
+import { Link } from "react-router-dom";
+import { Swiper, SwiperSlide } from 'swiper/react';
 
 
 const locales = { 'en-US': enUS }
@@ -46,6 +49,8 @@ const CustomCalendar = () => {
   const [currentView, setCurrentView] = useState("month");
   const [isSelectEventTypeModal, setIsSelectEventTypeModal] = useState(false)
   const [isClientCallDetailsModal, setIsClientCallDetailsModal] = useState(false)
+  const [isCallSearched, setIsCallSearched] = useState(false)
+  const [searchedCalls, setSearchedCalls] = useState(false)
 
   useEffect(() => {
     const newEvents = events?.map((e) => ({
@@ -103,12 +108,20 @@ const CustomCalendar = () => {
   // const [searchResults, setSearchResults] = useState([]);
 
   const handleSearch = () => {
-    // Filter events based on first name
-    const filteredEvents = preparedEvents.filter((event) =>
-      event.createdBy?.first_name?.toLowerCase().includes(searchInput.toLowerCase())
-    );
-    setIsClientCallDetailsModal(true)
-    dispatch(setSelectedEvent(filteredEvents[0]));
+    const filteredEvents = events.filter((event) => {
+      if (event.createdBy) {
+        return event?.createdBy?.first_name.toLowerCase().includes(searchInput.toLowerCase());
+      }
+      return false;
+    });
+    console.log(filteredEvents, "ssssssssss")
+    setSearchedCalls(filteredEvents)
+    setIsCallSearched(true)
+  };
+
+  const handleClearSearch = () => {
+    setSearchInput('');
+    setIsCallSearched(false);
   };
 
   useEffect(() => {
@@ -135,10 +148,18 @@ const CustomCalendar = () => {
           onChange={(e) => setSearchInput(e.target.value)}
           style={{ width: "20%" }}
           onSearch={handleSearch}
+          suffix={ // Add a suffix to the Search input
+            isCallSearched ? (
+              <CloseCircleOutlined
+                style={{ color: 'rgba(0, 0, 0, 0.45)', cursor: 'pointer', position: 'absolute', right: '8px', top: '50%', transform: 'translateY(-50%)' }}
+                onClick={handleClearSearch}
+              />
+            ) : null
+          }
         />
       </div>
 
-      <Calendar
+      {!isCallSearched && <Calendar
         localizer={localizer}
         events={preparedEvents}
         startAccessor="start"
@@ -165,7 +186,43 @@ const CustomCalendar = () => {
             dayHeaderFormat: (date) => format(date, 'MMMM d, yyyy'),
           }
         }
-      />
+      />}
+
+      {isCallSearched && <Swiper
+        pagination={{ clickable: true }}
+        modules={[Pagination]}
+        slidesPerView={4}
+        spaceBetween={10}
+        grabCursor={true}
+        style={{ padding: '30px', marginBottom: '40px' }}
+      >
+        {searchedCalls.map((call) => (
+          <>
+            <SwiperSlide>
+              <Card
+                size="small"
+                title={call?.apply?.companyName}
+                style={{
+                  marginTop: "20px",
+                  boxShadow: "0 4px 8px rgba(0.5, 0.5, 0.5, 0.5)",
+                }}
+              >
+                <p>{call?.createdBy?.first_name}</p>
+                <p>{call?.callType}</p>
+                <p>{call?.callDuration}</p>
+                <p>
+                  Call Link{" "}
+                  <Link to={call?.apply?.link} style={{ float: "right" }}>
+                    {call?.apply?.link}
+                  </Link>
+                </p>
+              </Card>
+            </SwiperSlide>
+
+          </>
+        ))}
+      </Swiper>
+      }
 
       <SelectEventTypeModal isOpen={isSelectEventTypeModal} handleClose={() => setIsSelectEventTypeModal(false)} />
       <ClientCallDetailsModal isOpen={isClientCallDetailsModal} handleClose={() => setIsClientCallDetailsModal(false)} />
