@@ -14,7 +14,6 @@ const NotesDrawer = ({ isDrawerOpen, handleDrawerClose }) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
   const [value, setValue] = useState("");
   const [editorInitialized, setEditorInitialized] = useState(false);
-
   const selectedEvent = useSelector(getSelectedEvent);
   const dispatch = useDispatch();
   const isDrawer = useSelector(checkNotesDrawer);
