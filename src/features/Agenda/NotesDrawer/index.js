@@ -11,7 +11,7 @@ import { CallLeads, CallStatus } from "src/constant/callTypes";
 
 const NotesDrawer = () => {
   const [isFullScreen, setIsFullScreen] = useState(false);
-  const [value, setValue] = useState(null); // Change this to null
+  const [value, setValue] = useState(null);
 
   const selectedEvent = useSelector(getSelectedEvent);
   const dispatch = useDispatch();
@@ -43,8 +43,6 @@ const NotesDrawer = () => {
   useEffect(() => {
     if (selectedEvent?.notes) {
       setValue(selectedEvent?.notes);
-    } else {
-      setValue(null);
     }
   
     if (selectedEvent) {

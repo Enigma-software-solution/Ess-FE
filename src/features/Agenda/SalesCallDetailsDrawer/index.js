@@ -147,10 +147,10 @@ const SalesCallDetailsDrawer = () => {
                     <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.callType}</td>
                   </tr>
 
-                  <tr>
+                  {/* <tr>
                     <th className="fw-bold">Apply Platform :</th>
                     <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.apply?.platform}</td>
-                  </tr>
+                  </tr> */}
 
                   <tr>
                     <th className="fw-bold">Call Link :</th>
