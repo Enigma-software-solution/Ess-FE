@@ -108,7 +108,7 @@ const SalesCallDetailsDrawer = () => {
                     <th className="fw-bold">Company Name :</th>
                     <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.apply?.companyName}</td>
                   </tr>
-                  
+
                   <tr>
                     <th className="fw-bold">Job Title :</th>
                     <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.apply?.positionToApply.split('_').join(' ')}</td>
@@ -117,29 +117,29 @@ const SalesCallDetailsDrawer = () => {
                     <th className="fw-bold">Call Duration :</th>
                     <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.callDuration} </td>
                   </tr>
-                  
+
                   <tr>
                     <th className="fw-bold">Call Type :</th>
                     <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.callType}</td>
                   </tr>
-                 
-                  <tr>
+
+                  {/* <tr>
                     <th className="fw-bold">Apply Platform :</th>
                     <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.apply?.platform}</td>
-                  </tr>
-                  
+                  </tr> */}
+
                   <tr>
                     <th className="fw-bold">Call Link :</th>
                     <td>
                       <a href={selectedEvent?.callLink} target="_blank">Call</a>
                     </td>
                   </tr>
-                  <tr>
+                  {/* <tr>
                     <th className="fw-bold">Apply Link :</th>
                     <td>
                       <a href={selectedEvent?.apply?.link} target="_blank">Apply Link</a>
                     </td>
-                  </tr>
+                  </tr> */}
                   <tr>
                     <th className="fw-bold">Company Information :</th>
                     <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.companyInformation}</td>
