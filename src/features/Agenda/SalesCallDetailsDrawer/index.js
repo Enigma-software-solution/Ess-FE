@@ -22,6 +22,7 @@ import { toast } from "react-toastify";
 import UserList from "../UserList";
 import { CheckAgendaLeadsColor } from "src/components/Utils/checkAgendaLeadsColor";
 import { CheckAgendaStatusColor } from "src/components/Utils/checkAgendaStatusColor";
+import { StyledTag } from "./styled";
 
 const SalesCallDetailsDrawer = () => {
   const dispatch = useDispatch();
@@ -53,12 +54,7 @@ const SalesCallDetailsDrawer = () => {
     dispatch(showSalesDrawer());
   };
 
-  const tagStyle = {
-    width: '80px',
-    display: 'inline-block',
-    textAlign: 'center',
-    textTransform: 'capitalize',
-  };
+
   return (
     <div className="mb-1">
       <Drawer
@@ -99,17 +95,17 @@ const SalesCallDetailsDrawer = () => {
               <div className="mb-1">
                 <span className="fw-bold">Call Status:</span>
                 <span className="m-3" style={{ textTransform: 'capitalize' }}>
-                  <Tag color={CheckAgendaStatusColor(selectedEvent?.callStatus)} style={tagStyle}>
+                  <StyledTag color={CheckAgendaStatusColor(selectedEvent?.callStatus)} >
                     {selectedEvent?.callStatus}
-                  </Tag>
+                  </StyledTag>
                 </span>
               </div>
               <div className="mb-1">
                 <span className="fw-bold">Call Leads:</span>
                 <span className="m-3" >
-                  <Tag color={CheckAgendaLeadsColor(selectedEvent?.callLeads)} style={tagStyle}>
+                  <StyledTag color={CheckAgendaLeadsColor(selectedEvent?.callLeads)} >
                     {selectedEvent?.callLeads.split('_').join(' ')}
-                  </Tag>
+                  </StyledTag>
                 </span>
               </div>
             </div>
