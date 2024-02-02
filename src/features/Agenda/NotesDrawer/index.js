@@ -9,10 +9,10 @@ import { closeNotesDrawer } from "src/store/slices/agendaSlice";
 import { CallLeads, CallStatus } from "src/constant/callTypes";
 
 
-const NotesDrawer = () => {
+const NotesDrawer = ({ isDrawerOpen, handleDrawerClose }) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
-  const [value, setValue] = useState(null);
-
+  const [value, setValue] = useState("");
+  const [editorInitialized, setEditorInitialized] = useState(false);
   const selectedEvent = useSelector(getSelectedEvent);
   const dispatch = useDispatch();
   const isDrawer = useSelector(checkNotesDrawer);
@@ -20,6 +20,7 @@ const NotesDrawer = () => {
     callStatus: null,
     callLeads: null,
   });
+  
   const onClose = () => {
     dispatch(closeNotesDrawer());
   };
@@ -59,22 +60,28 @@ const NotesDrawer = () => {
   }, [selectedEvent]);
   
 
+  useEffect(() => {
+
+    if (isDrawerOpen && !editorInitialized) {
+
+      setTimeout(() => {
+        setEditorInitialized(true);
+      }, 100);
+    }
+  }, [isDrawerOpen, editorInitialized]);
+
   const toolbarOptions = [
     ["bold", "italic", "underline", "strike"],
     ["blockquote", "code-block"],
-
     [{ header: 1 }, { header: 2 }],
     [{ list: "ordered" }, { list: "bullet" }],
     [{ script: "sub" }, { script: "super" }],
     [{ indent: "-1" }, { indent: "+1" }],
     [{ direction: "rtl" }],
-
     [{ size: ["small", false, "large", "huge"] }],
     [{ header: [1, 2, 3, 4, 5, 6, false] }],
-
     [{ color: [] }, { background: [] }],
     [{ align: [] }],
-
     ["clean"],
   ];
 
@@ -86,34 +93,29 @@ const NotesDrawer = () => {
     setSelectedValues((prevValues) => ({ ...prevValues, callLeads: value }));
   };
   return (
-    <div>
-      <Drawer
-        placement="right"
-        closable={true}
-        onClose={onClose}
-        open={isDrawer}
-        width={isFullScreen ? "85%" : "45%"}
-        destroyOnClose
-        extra={
-          <Space>
-            <Button onClick={handleSave} type="primary">
-              Save
-            </Button>
-
-            <Button
-              onClick={() => setIsFullScreen(!isFullScreen)}
-              className="d-flex justify-center align-items-center"
-            >
-              {isFullScreen ? (
-                <FullscreenExitOutlined />
-              ) : (
-                <FullscreenOutlined />
-              )}
-            </Button>
-          </Space>
-        }
-      >
-        <Flex gap="10px" className="mb-3">
+    <Drawer
+      title="Notes"
+      placement="right"
+      onClose={onClose}
+      visible={isDrawer}
+      width={isFullScreen ? "85%" : "45%"}
+      footer={
+        <Space>
+          <Button key="save" type="primary" onClick={handleSave}>
+            Save
+          </Button>
+        </Space>
+      }
+      extra={
+        <Button
+          onClick={() => setIsFullScreen(!isFullScreen)}
+          className="d-flex justify-center align-items-center"
+        >
+          {isFullScreen ? <FullscreenExitOutlined /> : <FullscreenOutlined />}
+        </Button>
+      }
+    >
+      <Flex gap="10px" className="mb-3">
           <Select
             name="callStatus"
             placeholder="Select Status"
@@ -142,6 +144,7 @@ const NotesDrawer = () => {
             ))}
           </Select>
         </Flex>
+      {isDrawerOpen && editorInitialized && (
         <ReactQuill
           modules={{
             toolbar: toolbarOptions,
@@ -150,8 +153,8 @@ const NotesDrawer = () => {
           value={value}
           onChange={setValue}
         />
-      </Drawer>
-    </div>
+      )}
+    </Drawer>
   );
 };
 

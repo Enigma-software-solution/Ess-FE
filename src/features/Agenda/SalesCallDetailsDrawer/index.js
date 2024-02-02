@@ -29,6 +29,7 @@ const SalesCallDetailsDrawer = () => {
   const isEventDrawer = useSelector(checkEventDrawer);
   const isNotesDrawer = useSelector(checkNotesDrawer);
   const selectedEvent = useSelector(getSelectedEvent);
+
   const event = useSelector(getAllEvents);
 
   const handleNotesDrawer = () => {
@@ -62,7 +63,7 @@ const SalesCallDetailsDrawer = () => {
         placement="right"
         closable={true}
         onClose={onClose}
-        open={isEventDrawer}
+        visible={isEventDrawer}
         width={selectedEvent?.notes ? "70%" : "50%"}
         extra={
           <div className="d-flex w-100 gap-1 justify-content-end mb-1">
@@ -79,7 +80,7 @@ const SalesCallDetailsDrawer = () => {
         }
       >
         {selectedEvent?.start && selectedEvent?.end && (
-          <div className="mb-1"  >
+          <div className="mb-1">
             <div style={{ display: "flex", justifyContent: 'space-between', gap: "20px", marginBottom: '20px' }}>
               <Button type="primary" onClick={handleNotesDrawer}>
                 {selectedEvent?.notes ? "Update Notes" : "Add Notes"}
