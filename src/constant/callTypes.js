@@ -29,6 +29,46 @@ export const CallTypeDropdown = [
     }
 ];
 
+export const CallStatus = [
+    {
+        label: "Done",
+        value: "done"
+    },
+    {
+        label: "Reschedule",
+        value: "reschedule"
+    },
+    {
+        label: "Cancel",
+        value: "cancel"
+    },
+    {
+        label: "Missed",
+        value: "missed"
+    }
+  
+];
+
+export const CallLeads = [
+    {
+        label: "Priority Lead",
+        value: "priority_lead"
+    },
+    {
+        label: "Bad Lead",
+        value: "bad_lead"
+    },
+    {
+        label: "Good Lead",
+        value: "good_lead"
+    },
+    {
+        label: "Garbage",
+        value: "garbage"
+    }
+  
+];
+
 
 export const ClientCallTypeDropdown = [
     {
