@@ -139,7 +139,6 @@ const SalesEventDrawer = ({ selectedDate, setSelectedDate }) => {
     callLink: "",
     callType: "",
     callMode: "",
-    phoneNumber:"",
     callPlatform: "",
     apply: "",
     companyInformation: "",
@@ -235,14 +234,6 @@ const SalesEventDrawer = ({ selectedDate, setSelectedDate }) => {
           name="callLink"
           rules={[{ required: true }]}
           type="text"
-        />
-        <CustomInput
-          label="Phone Number"
-          name="phoneNumber"
-          placeholder="Please the Phone Number "
-          rules={[{ required: true, message: 'Please enter Phone Number' }]}
-          type="text"
-
         />
         <CustomInput
           label="Call Type"
