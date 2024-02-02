@@ -1,6 +1,6 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Button, Card, Drawer, Popconfirm } from "antd";
+import { Button, Card, Drawer, Popconfirm, Tag } from "antd";
 import { format } from "date-fns";
 import {
   checkEventDrawer,
@@ -20,6 +20,9 @@ import {
 } from "src/store/slices/agendaSlice";
 import { toast } from "react-toastify";
 import UserList from "../UserList";
+import { CheckAgendaLeadsColor } from "src/components/Utils/checkAgendaLeadsColor";
+import { CheckAgendaStatusColor } from "src/components/Utils/checkAgendaStatusColor";
+import { StyledTag } from "./styled";
 
 const SalesCallDetailsDrawer = () => {
   const dispatch = useDispatch();
@@ -51,6 +54,7 @@ const SalesCallDetailsDrawer = () => {
   const handleUpdate = () => {
     dispatch(showSalesDrawer());
   };
+
 
   return (
     <div className="mb-1">
@@ -87,7 +91,25 @@ const SalesCallDetailsDrawer = () => {
                 <UserList selectedEvent={selectedEvent} />
               </div>
             </div>
-
+            <div className="d-flex justify-content-between">
+            <div style={{ marginLeft: '20px',marginTop:"10px", gap:'10px',display:'flex' }}>
+              <div className="mb-1">
+                <span className="fw-bold">Call Status:</span>
+                <span className="m-3" style={{ textTransform: 'capitalize' }}>
+                  <StyledTag color={CheckAgendaStatusColor(selectedEvent?.callStatus)} >
+                    {selectedEvent?.callStatus}
+                  </StyledTag>
+                </span>
+              </div>
+              <div className="mb-1">
+                <span className="fw-bold">Call Leads:</span>
+                <span className="m-3" >
+                  <StyledTag color={CheckAgendaLeadsColor(selectedEvent?.callLeads)} >
+                    {selectedEvent?.callLeads.split('_').join(' ')}
+                  </StyledTag>
+                </span>
+              </div>
+            </div>
             <div className="d-flex justify-content-end align-items-end flex-column  mb-1">
               <p>
                 <strong> Date:</strong> {format(new Date(selectedEvent?.start), "dd-MM-yyyy")}
@@ -97,6 +119,8 @@ const SalesCallDetailsDrawer = () => {
                 {format(new Date(selectedEvent?.end), "p")}
               </p>
             </div>
+            </div>
+
           </div>
         )}
 

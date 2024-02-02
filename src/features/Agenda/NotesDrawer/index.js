@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Button, Drawer, Space } from "antd";
+import { Button, Drawer, Flex, Select, Space } from "antd";
 import { FullscreenExitOutlined, FullscreenOutlined } from "@ant-design/icons";
 import ReactQuill from "react-quill";
 import { useDispatch, useSelector } from "react-redux";
 import { updateEventNotes } from "src/store/slices/agendaSlice/apis";
-import {
-  checkNotesDrawer,
-  getSelectedEvent,
-} from "src/store/slices/agendaSlice/selector";
+import {checkNotesDrawer,getSelectedEvent} from "src/store/slices/agendaSlice/selector";
 import { closeNotesDrawer } from "src/store/slices/agendaSlice";
+import { CallLeads, CallStatus } from "src/constant/callTypes";
+
 
 const NotesDrawer = ({ isDrawerOpen, handleDrawerClose }) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
@@ -17,20 +16,26 @@ const NotesDrawer = ({ isDrawerOpen, handleDrawerClose }) => {
   const selectedEvent = useSelector(getSelectedEvent);
   const dispatch = useDispatch();
   const isDrawer = useSelector(checkNotesDrawer);
-
-  const handleClose = () => {
+  const [selectedValues, setSelectedValues] = useState({
+    callStatus: null,
+    callLeads: null,
+  });
+  
+  const onClose = () => {
     dispatch(closeNotesDrawer());
   };
 
   const handleSave = async () => {
     const data = {
       eventId: selectedEvent._id,
-      notes: value === "<p><br></p>" ? null : value,
+      notes: value === '<p><br></p>' ? null : value,
+      callStatus: selectedValues.callStatus,
+      callLeads: selectedValues.callLeads,
     };
 
     try {
       await dispatch(updateEventNotes(data));
-      handleClose();
+      onClose();
     } catch (err) {
       console.log(err);
     }
@@ -40,7 +45,20 @@ const NotesDrawer = ({ isDrawerOpen, handleDrawerClose }) => {
     if (selectedEvent?.notes) {
       setValue(selectedEvent?.notes);
     }
+  
+    if (selectedEvent) {
+      setSelectedValues({
+        callStatus: selectedEvent.callStatus,
+        callLeads: selectedEvent.callLeads,
+      });
+    } else {
+      setSelectedValues({
+        callStatus: null,
+        callLeads: null,
+      });
+    }
   }, [selectedEvent]);
+  
 
   useEffect(() => {
 
@@ -67,11 +85,18 @@ const NotesDrawer = ({ isDrawerOpen, handleDrawerClose }) => {
     ["clean"],
   ];
 
+  const handleStatusChange = (value) => {
+    setSelectedValues((prevValues) => ({ ...prevValues, callStatus: value }));
+  };
+
+  const handleLeadsChange = (value) => {
+    setSelectedValues((prevValues) => ({ ...prevValues, callLeads: value }));
+  };
   return (
     <Drawer
       title="Notes"
       placement="right"
-      onClose={handleClose}
+      onClose={onClose}
       visible={isDrawer}
       width={isFullScreen ? "85%" : "45%"}
       footer={
@@ -90,6 +115,35 @@ const NotesDrawer = ({ isDrawerOpen, handleDrawerClose }) => {
         </Button>
       }
     >
+      <Flex gap="10px" className="mb-3">
+          <Select
+            name="callStatus"
+            placeholder="Select Status"
+            style={{ minWidth: '120px', width: '250px' }}
+            onChange={handleStatusChange}
+            value={selectedValues.callStatus}
+          >
+            {CallStatus.map((option) => (
+              <Select.Option key={option.value} value={option.value}>
+                {option.label}
+              </Select.Option>
+            ))}
+          </Select>
+
+          <Select
+            name="callLeads"
+            placeholder="Select Leads"
+            style={{ minWidth: '120px', width: '250px' }}
+            onChange={handleLeadsChange}
+            value={selectedValues.callLeads}
+          >
+            {CallLeads.map((option) => (
+              <Select.Option key={option.value} value={option.value}>
+                {option.label}
+              </Select.Option>
+            ))}
+          </Select>
+        </Flex>
       {isDrawerOpen && editorInitialized && (
         <ReactQuill
           modules={{

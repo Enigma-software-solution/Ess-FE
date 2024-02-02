@@ -17,7 +17,6 @@ const ClientCallDetailsModal = ({ isOpen, handleClose }) => {
     const clientCallDetails = useSelector(getSelectedEvent)
 
 
-
     return (
         <Modal
             title="Client call details"
