@@ -29,7 +29,6 @@ const SalesCallDetailsDrawer = () => {
   const isEventDrawer = useSelector(checkEventDrawer);
   const isNotesDrawer = useSelector(checkNotesDrawer);
   const selectedEvent = useSelector(getSelectedEvent);
-
   const event = useSelector(getAllEvents);
 
   const handleNotesDrawer = () => {
@@ -92,33 +91,33 @@ const SalesCallDetailsDrawer = () => {
               </div>
             </div>
             <div className="d-flex justify-content-between">
-            <div style={{ marginLeft: '20px',marginTop:"10px", gap:'10px',display:'flex' }}>
-              <div className="mb-1">
-                <span className="fw-bold">Call Status:</span>
-                <span className="m-3" style={{ textTransform: 'capitalize' }}>
-                  <StyledTag color={CheckAgendaStatusColor(selectedEvent?.callStatus)} >
-                    {selectedEvent?.callStatus}
-                  </StyledTag>
-                </span>
+              <div style={{ marginLeft: '20px', marginTop: "10px", gap: '10px', display: 'flex' }}>
+                <div className="mb-1">
+                  <span className="fw-bold">Call Status:</span>
+                  <span className="m-3" style={{ textTransform: 'capitalize' }}>
+                    <StyledTag color={CheckAgendaStatusColor(selectedEvent?.callStatus)} >
+                      {selectedEvent?.callStatus}
+                    </StyledTag>
+                  </span>
+                </div>
+                <div className="mb-1">
+                  <span className="fw-bold">Call Leads:</span>
+                  <span className="m-3" >
+                    <StyledTag color={CheckAgendaLeadsColor(selectedEvent?.callLeads)} >
+                      {selectedEvent?.callLeads ? selectedEvent?.callLeads.split('_').join(' ') : ''}
+                    </StyledTag>
+                  </span>
+                </div>
               </div>
-              <div className="mb-1">
-                <span className="fw-bold">Call Leads:</span>
-                <span className="m-3" >
-                  <StyledTag color={CheckAgendaLeadsColor(selectedEvent?.callLeads)} >
-                    {selectedEvent?.callLeads.split('_').join(' ')}
-                  </StyledTag>
-                </span>
+              <div className="d-flex justify-content-end align-items-end flex-column  mb-1">
+                <p>
+                  <strong> Date:</strong> {format(new Date(selectedEvent?.start), "dd-MM-yyyy")}
+                </p>
+                <p>
+                  <strong> Time:</strong> {format(new Date(selectedEvent?.start), "p")} -{" "}
+                  {format(new Date(selectedEvent?.end), "p")}
+                </p>
               </div>
-            </div>
-            <div className="d-flex justify-content-end align-items-end flex-column  mb-1">
-              <p>
-                <strong> Date:</strong> {format(new Date(selectedEvent?.start), "dd-MM-yyyy")}
-              </p>
-              <p>
-                <strong> Time:</strong> {format(new Date(selectedEvent?.start), "p")} -{" "}
-                {format(new Date(selectedEvent?.end), "p")}
-              </p>
-            </div>
             </div>
 
           </div>
