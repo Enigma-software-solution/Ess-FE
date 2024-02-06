@@ -9,7 +9,7 @@ import {
   UpdateEventsApi,
   createEventsApi,
 } from "src/store/slices/agendaSlice/apis";
-import {CallTypeDropdown } from "src/constant/callTypes";
+import { CallTypeDropdown } from "src/constant/callTypes";
 import ApplySelect from "./applySelect";
 import {
   checkNotesDrawer,
@@ -135,6 +135,7 @@ const SalesEventDrawer = ({ selectedDate, setSelectedDate }) => {
     callWith: "",
     callLink: "",
     callType: "",
+    phoneNumber: "",
     callMode: "",
     callPlatform: "",
     apply: "",
@@ -179,7 +180,7 @@ const SalesEventDrawer = ({ selectedDate, setSelectedDate }) => {
       width={500}
       destroyOnClose
       extra={
-        <div className="align-righ">
+        <div className="align-righ" style={{ position: "fixed", bottom: 20, right: 20 }}>
           <Button
             type="primary"
             htmlType="submit"
@@ -233,6 +234,13 @@ const SalesEventDrawer = ({ selectedDate, setSelectedDate }) => {
           type="text"
         />
         <CustomInput
+          label="Phone Number"
+          name="phoneNumber"
+          rules={[{ required: true }]}
+          type="text"
+          placeholder="Please Enter Your Phone Number"
+        />
+        <CustomInput
           label="Call Type"
           name="callType"
           rules={[{ required: true }]}
@@ -256,8 +264,6 @@ const SalesEventDrawer = ({ selectedDate, setSelectedDate }) => {
           type="textArea"
 
         />
-
-       
       </Form>
     </Drawer>
   );

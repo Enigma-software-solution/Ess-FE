@@ -4,14 +4,14 @@ import { FullscreenExitOutlined, FullscreenOutlined } from "@ant-design/icons";
 import ReactQuill from "react-quill";
 import { useDispatch, useSelector } from "react-redux";
 import { updateEventNotes } from "src/store/slices/agendaSlice/apis";
-import {checkNotesDrawer,getSelectedEvent} from "src/store/slices/agendaSlice/selector";
+import { checkNotesDrawer, getSelectedEvent } from "src/store/slices/agendaSlice/selector";
 import { closeNotesDrawer } from "src/store/slices/agendaSlice";
 import { CallLeads, CallStatus } from "src/constant/callTypes";
 
 
 const NotesDrawer = ({ isDrawerOpen, handleDrawerClose }) => {
   const [isFullScreen, setIsFullScreen] = useState(false);
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState(null);
   const [editorInitialized, setEditorInitialized] = useState(false);
   const selectedEvent = useSelector(getSelectedEvent);
   const dispatch = useDispatch();
@@ -20,7 +20,7 @@ const NotesDrawer = ({ isDrawerOpen, handleDrawerClose }) => {
     callStatus: null,
     callLeads: null,
   });
-  
+
   const onClose = () => {
     dispatch(closeNotesDrawer());
   };
@@ -45,7 +45,7 @@ const NotesDrawer = ({ isDrawerOpen, handleDrawerClose }) => {
     if (selectedEvent?.notes) {
       setValue(selectedEvent?.notes);
     }
-  
+
     if (selectedEvent) {
       setSelectedValues({
         callStatus: selectedEvent.callStatus,
@@ -58,8 +58,15 @@ const NotesDrawer = ({ isDrawerOpen, handleDrawerClose }) => {
       });
     }
   }, [selectedEvent]);
-  
 
+  useEffect(() => {
+    if (selectedEvent?.notes) {
+      setValue(selectedEvent?.notes);
+    } else {
+
+      setValue(null);
+    }
+  }, [selectedEvent]);
   useEffect(() => {
 
     if (isDrawerOpen && !editorInitialized) {
@@ -116,34 +123,34 @@ const NotesDrawer = ({ isDrawerOpen, handleDrawerClose }) => {
       }
     >
       <Flex gap="10px" className="mb-3">
-          <Select
-            name="callStatus"
-            placeholder="Select Status"
-            style={{ minWidth: '120px', width: '250px' }}
-            onChange={handleStatusChange}
-            value={selectedValues.callStatus}
-          >
-            {CallStatus.map((option) => (
-              <Select.Option key={option.value} value={option.value}>
-                {option.label}
-              </Select.Option>
-            ))}
-          </Select>
+        <Select
+          name="callStatus"
+          placeholder="Select Status"
+          style={{ minWidth: '120px', width: '250px' }}
+          onChange={handleStatusChange}
+          value={selectedValues.callStatus}
+        >
+          {CallStatus.map((option) => (
+            <Select.Option key={option.value} value={option.value}>
+              {option.label}
+            </Select.Option>
+          ))}
+        </Select>
 
-          <Select
-            name="callLeads"
-            placeholder="Select Leads"
-            style={{ minWidth: '120px', width: '250px' }}
-            onChange={handleLeadsChange}
-            value={selectedValues.callLeads}
-          >
-            {CallLeads.map((option) => (
-              <Select.Option key={option.value} value={option.value}>
-                {option.label}
-              </Select.Option>
-            ))}
-          </Select>
-        </Flex>
+        <Select
+          name="callLeads"
+          placeholder="Select Leads"
+          style={{ minWidth: '120px', width: '250px' }}
+          onChange={handleLeadsChange}
+          value={selectedValues.callLeads}
+        >
+          {CallLeads.map((option) => (
+            <Select.Option key={option.value} value={option.value}>
+              {option.label}
+            </Select.Option>
+          ))}
+        </Select>
+      </Flex>
       {isDrawerOpen && editorInitialized && (
         <ReactQuill
           modules={{
