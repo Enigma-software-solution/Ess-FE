@@ -77,13 +77,24 @@ const Header = ({ pageSize, onSearch }) => {
     onSearch(params);
   };
 
+  const handleImportExcel = () => {
+    // Trigger the file input click event
+    document.getElementById("fileInput").click();
+  };
+
+  const handleFileChange = (event) => {
+    // Handle the selected file
+    const file = event.target.files[0];
+    console.log("Selected file:", file);
+    // Add your code to handle the uploaded Excel file
+  };
+
   return (
     <>
-   
       <ToastContainer />
-
       <div className="d-flex justify-content-between mb-1">
         <CustomSearchField onChange={search} text="Search Apply" />
+
         <AddButton onClick={handleDrawer} text="New Apply" />
       </div>
       <Wrapper>
@@ -106,6 +117,14 @@ const Header = ({ pageSize, onSearch }) => {
         </div>
 
         <div className="d-flex gap-2">
+          <Button type="primary" onClick={handleImportExcel}>Import Excel</Button>
+          <input
+            type="file"
+            id="fileInput"
+            accept=".xls,.xlsx"
+            style={{ display: "none" }}
+            onChange={handleFileChange}
+          />
           <Button type="primary" onClick={handleSubmit}>
             Search
           </Button>
