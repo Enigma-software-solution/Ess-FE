@@ -69,13 +69,14 @@ const CreateDailyAppliesTable = () => {
             title: "Client Job Position",
             dataIndex: "clientJobPosition",
             render: (text) => capitalize(text),
+            width: '16%',
         },
-        {
-            title: "Position To Apply",
-            dataIndex: "positionToApply",
-            width: '14%',
-            render: (text, record) => capitalize(record?.positionToApply).split('_'),
-        },
+        // {
+        //     title: "Position To Apply",
+        //     dataIndex: "positionToApply",
+        //     width: '14%',
+        //     render: (text, record) => capitalize(record?.positionToApply).split('_'),
+        // },
         {
             title: "Platform",
             dataIndex: "platform",
