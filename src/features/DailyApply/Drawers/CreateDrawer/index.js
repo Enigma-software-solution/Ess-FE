@@ -7,18 +7,16 @@ import { getAllProfiles } from 'src/store/slices/profielSlice/selectors';
 import { getUserId } from 'src/store/slices/authSlice/selectors';
 import { getSelectedApply } from 'src/store/slices/dailyApplySlice/selectors';
 import CustomSelect from 'src/components/formElements/CustomSelect';
-import { platformOptions } from 'src/constant/platformOptions';
-import { applyPosition } from 'src/constant/applyPosition';
 import CustomInput from 'src/components/formElements/CustomInput';
 
 
 const initialFormValues = {
   clientJobPosition: '',
   companyName: '',
-  link: localStorage.getItem('link') || '',
+  link: '',
   profile: '',
-  platform: localStorage.getItem('platform') || 'glassdoor',
-  positionToApply: 'full_stack',
+  platform: ' ',
+  positionToApply: '',
 };
 
 const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
@@ -43,7 +41,7 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
         link: selectedApply?.link,
         profile: selectedApply?.profile?._id,
         platform: selectedApply?.platform,
-        positionToApply: selectedApply?.positionToApply,
+        // positionToApply: selectedApply?.positionToApply,
       });
     } else {
       form.setFieldsValue(initialFormValues);
@@ -69,7 +67,7 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
         clientJobPosition: values?.clientJobPosition,
         companyName: values?.companyName,
         platform: values?.platform,
-        positionToApply: values?.positionToApply,
+        // positionToApply: values?.positionToApply,
         link: values?.link,
         createdBy: userId,
         profile: values?.profile,
@@ -138,23 +136,21 @@ const CreateDailyApplyDrawer = ({ isOpen, handleDrawer }) => {
               name="platform"
               label="Platform"
               rules={[{ required: true, message: 'Please select a Platform' }]}
-              component={CustomSelect}
-              options={platformOptions}
+              type='text'
             />
           </Col>
         </Row>
         <Row gutter={16}>
-          <Col span={12}>
+          {/* <Col span={12}>
             <CustomInput
               name="positionToApply"
               label="Position"
               rules={[
                 { required: true, message: 'Please select the Position for applying' },
               ]}
-              component={CustomSelect}
-              options={applyPosition}
+              type='text'
             />
-          </Col>
+          </Col> */}
           <Col span={12}>
             <CustomInput
               name="clientJobPosition"

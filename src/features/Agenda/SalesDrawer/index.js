@@ -42,6 +42,11 @@ const SalesEventDrawer = ({ selectedDate, setSelectedDate }) => {
   let EditEndDate = null;
 
   const handleTimeChange = (dates, dateString) => {
+    if (!dates || dates.length < 2) {
+
+      return;
+    }
+
     const updatedStartDate = dayjs(dates[0]);
     const updatedEndDate = dayjs(dates[1]);
 
@@ -58,15 +63,13 @@ const SalesEventDrawer = ({ selectedDate, setSelectedDate }) => {
       form.setFieldsValue({
         callDuration: durationInMinutes.toString() + "min",
       });
-
     } else if (selectedDate) {
-
       setSelectedDate({
         start: updatedStartDate.format("ddd MMM DD YYYY HH:mm:ss [GMT]ZZ"),
         end: updatedEndDate.format("ddd MMM DD YYYY HH:mm:ss [GMT]ZZ"),
       });
     }
-  };
+  }
 
   const handleSubmit = async (values) => {
     setLoading(true);
