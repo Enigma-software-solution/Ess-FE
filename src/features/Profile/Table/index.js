@@ -19,8 +19,13 @@ const ProfileTable = () => {
 
     const dispatch = useDispatch()
 
-    const profileData = useSelector(getAllProfiles)
+    const profileData = useSelector(getAllProfiles);
 
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const handleSearch = (value) => {
+        setSearchQuery(value);
+    };
 
 
     const handleEdit = (record, e) => {
@@ -128,11 +133,17 @@ const ProfileTable = () => {
         return <Loader />
     }
 
+    const filteredProfiles = profileData?.filter((profile) => {
+        const profileName = `${profile?.name}`.toLowerCase();
+        return profileName.includes(searchQuery.toLowerCase());
+    });
+
+
     return (
         <>
             <div>
-                <Header />
-                <Table dataSource={profileData} columns={columns} />
+                <Header onSearch={handleSearch} />
+                <Table dataSource={filteredProfiles} columns={columns} />
             </div>
             <CreateProfileDrawer isOpen={isEditDrawerOpen} handleDrawer={handleDrawer} />
         </>

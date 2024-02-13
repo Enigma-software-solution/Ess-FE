@@ -19,6 +19,12 @@ const ClientTable = () => {
     const [isOpen, setIsOpen] = useState(false);
     const isLoading = useSelector(isClientLoading);
     const clients = useSelector(getAllClientsSelector);
+    const [searchQuery, setSearchQuery] = useState('');
+
+    const handleSearch = (value) => {
+        setSearchQuery(value);
+    };
+
     const handleChangeStatus = (e, record) => {
         e.stopPropagation();
         if (record._id) {
@@ -174,10 +180,15 @@ const ClientTable = () => {
         return <Loader />
     }
 
+    const filteredClients = clients?.filter((client) => {
+        const clientName = `${client?.clientName}`.toLowerCase();
+        return clientName.includes(searchQuery.toLowerCase());
+    });
+
     return (
         <div>
-            <Header isOpen={isOpen} setIsOpen={setIsOpen} />
-            <Table dataSource={clients} columns={columns} />
+            <Header isOpen={isOpen} setIsOpen={setIsOpen}  onSearch={handleSearch} />
+            <Table dataSource={filteredClients} columns={columns} />
         </div>
     );
 };
