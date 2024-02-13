@@ -63,3 +63,16 @@ export const getDailyApplyStats = createAsyncThunk("dailyApply/get-dailyApply-st
     throw error;
   }
 });
+
+
+export const uploadFile = createAsyncThunk(
+  "dailyApply/upload-dailyApply",
+  async (data, { rejectWithValue }) => {
+    try {
+      const response = await api.post("/apply/upload", data);
+      return response;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data || "An error occurred during file upload");
+    }
+  }
+);

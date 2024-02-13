@@ -1,7 +1,7 @@
 import {
   createSlice,
 } from "@reduxjs/toolkit";
-import { createDailyAppliesApi, deteleDailyAppliesApi, getdailyAppliesApi, updateDailyAppliesApi, getDailyApplyStats } from "./apis";
+import { createDailyAppliesApi, deteleDailyAppliesApi, getdailyAppliesApi, updateDailyAppliesApi, getDailyApplyStats, uploadFile } from "./apis";
 // import { toast } from "react-toastify";
 
 
@@ -12,6 +12,7 @@ const initialState = {
   selectedApply: undefined,
   stats: null,
   loading: false,
+
 };
 
 
@@ -23,6 +24,10 @@ const dailyApplySlice = createSlice({
     setSelectedApply(state, action) {
       state.selectedApply = action.payload;
     },
+
+    setLoading(state, action){
+      state.loading = action.payload;
+    }
 
   },
 
@@ -64,7 +69,22 @@ const dailyApplySlice = createSlice({
 
     builder.addCase(getDailyApplyStats.fulfilled, (state, action) => {
       state.stats = action.payload.data
-    })
+    });
+
+
+    builder.addCase(uploadFile.pending, (state, action) => {
+      state.loading = true;
+      state.status = "loading";
+    });
+
+    builder.addCase(uploadFile.fulfilled, (state, action) => {
+      state.status = "succeeded";
+      state.loading = false;
+      state.data.daily_applies = [action?.payload?.data, ...state?.data?.daily_applies];
+    });
+
+
+
 
   }
 
