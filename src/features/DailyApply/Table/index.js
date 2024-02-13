@@ -12,7 +12,6 @@ import qs from "qs";
 import DetailsDailyApplyDrawer from "../Drawers/DetailsDrawer";
 import { StyledTable } from "./styled";
 import { capitalize } from "lodash";
-import Loader from "src/components/Loader";
 
 const CreateDailyAppliesTable = () => {
     const dispatch = useDispatch();
@@ -23,7 +22,7 @@ const CreateDailyAppliesTable = () => {
     const [selectedRecord, setSelectedRecord] = useState(null);
     const [selectPagination, setSelectedPagination] = useState(null)
     const [selectedFilters, setSelectedFilters] = useState(null)
-
+    
     const { totalItems, pageSize, totalPages, page } = dailyAppliesData?.paginator ?? {};
 
     const handleEdit = (record, e) => {

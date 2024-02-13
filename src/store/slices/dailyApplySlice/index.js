@@ -72,6 +72,19 @@ const dailyApplySlice = createSlice({
     });
 
 
+    builder.addCase(uploadFile.pending, (state, action) => {
+      state.loading = true;
+      state.status = "loading";
+    });
+
+    builder.addCase(uploadFile.fulfilled, (state, action) => {
+      state.status = "succeeded";
+      state.loading = false;
+      state.data.daily_applies = [action?.payload?.data, ...state?.data?.daily_applies];
+    });
+
+
+
 
   }
 
