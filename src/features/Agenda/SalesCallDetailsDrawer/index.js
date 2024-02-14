@@ -54,6 +54,9 @@ const SalesCallDetailsDrawer = () => {
     dispatch(showSalesDrawer());
   };
 
+  const transformCallLeads = (callLeads) => {
+    return callLeads ? callLeads.replace(/_/g, ' ') : '';
+  };
 
   return (
     <div className="mb-1">
@@ -102,9 +105,9 @@ const SalesCallDetailsDrawer = () => {
                 </div>
                 <div className="mb-1">
                   <span className="fw-bold">Call Leads:</span>
-                  <span className="m-3" >
-                    <StyledTag color={CheckAgendaLeadsColor(selectedEvent?.callLeads)} >
-                      {selectedEvent?.callLeads ? selectedEvent?.callLeads.split('_').join(' ') : ''}
+                  <span className="m-3">
+                    <StyledTag color={selectedEvent && CheckAgendaLeadsColor(selectedEvent?.callLeads)}>
+                      {selectedEvent && transformCallLeads(selectedEvent?.callLeads)}
                     </StyledTag>
                   </span>
                 </div>
@@ -119,7 +122,6 @@ const SalesCallDetailsDrawer = () => {
                 </p>
               </div>
             </div>
-
           </div>
         )}
 
@@ -135,7 +137,7 @@ const SalesCallDetailsDrawer = () => {
 
                   <tr>
                     <th className="fw-bold">Job Title :</th>
-                    <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.apply?.positionToApply.split('_').join(' ')}</td>
+                    <td style={{ textTransform: 'capitalize' }}>{selectedEvent?.apply?.positionToApply ? selectedEvent?.apply?.positionToApply.replace(/_/g, ' ') : ''}</td>
                   </tr>
                   <tr>
                     <th className="fw-bold">Call Duration :</th>
