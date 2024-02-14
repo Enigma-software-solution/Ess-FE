@@ -1,39 +1,36 @@
 import React, { useState } from "react";
-import DailyApplyDrawer from "../Drawers/CreateDrawer";
+// import DailyApplyDrawer from "../Drawers/CreateDrawer";
 import { Button, Select, Modal } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { getAllProfiles } from "src/store/slices/profielSlice/selectors";
 import CustomSearchField from "src/components/SearchField";
 import DateRangePicker from "src/components/DateRangePicker";
-import AddButton from "src/components/buttons/AddButton";
+// import AddButton from "src/components/buttons/AddButton";
 import { getLogedInUser } from "src/store/slices/authSlice/selectors";
 import { Wrapper } from "./styled";
 import { ROLES } from "src/constant/roles";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { getdailyAppliesApi, uploadFile } from "src/store/slices/dailyApplySlice/apis";
-import * as ExcelJS from 'exceljs'; 
-import qs from "qs";
 import { handleFileExtract } from "src/utils/extractExcelData";
 
 const Header = ({ pageSize, onSearch }) => {
   const dispatch = useDispatch();
   const allProfiles = useSelector(getAllProfiles);
   const logedInUser = useSelector(getLogedInUser);
-  const [isOpen, setIsOpen] = useState(false);
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [selectedModalProfile, setSelectedModalProfile] = useState(null);
   const [selectedDateRange, setSelectedDateRange] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false); 
   const [selectedFile, setSelectedFile] = useState(null);
+    // const [isOpen, setIsOpen] = useState(false);
   const allProfilesData = allProfiles.map((profile) => ({
     value: profile._id,
     label: profile.name,
   }));
 
-  const handleDrawer = () => {
-    setIsOpen(!isOpen);
-  };
+  // const handleDrawer = () => {
+  //   setIsOpen(!isOpen);
+  // };
 
   const handleSubmit = () => {
     if (!selectedProfile && !selectedDateRange) {
@@ -110,7 +107,7 @@ const Header = ({ pageSize, onSearch }) => {
       <ToastContainer />
       <div className="d-flex justify-content-between mb-1">
         <CustomSearchField onChange={search} text="Search Apply" />
-        <AddButton onClick={handleDrawer} text="New Apply" />
+        {/* <AddButton onClick={handleDrawer} text="New Apply" /> */}
       </div>
       <Wrapper>
         <div className="d-flex gap-3">
@@ -178,7 +175,7 @@ const Header = ({ pageSize, onSearch }) => {
         </div>
       </Wrapper>
 
-      <DailyApplyDrawer isOpen={isOpen} handleDrawer={handleDrawer} />
+      {/* <DailyApplyDrawer isOpen={isOpen} handleDrawer={handleDrawer} /> */}
     </>
   );
 };
