@@ -52,7 +52,7 @@ export const handleFileExtract = async (file, selectedModalProfile, logedInUser,
           rowData.createdBy = logedInUser.id;
           jsonData.push(rowData);
         }
-
+        setIsModalVisible(false);
         const batchPromise = dispatch(uploadFile(jsonData))
           .catch(error => {
             console.error("Error uploading batch:", error);
@@ -74,7 +74,7 @@ export const handleFileExtract = async (file, selectedModalProfile, logedInUser,
       };
       const queryStringResult = qs.stringify(params);
       dispatch(getdailyAppliesApi(queryStringResult));
-      setIsModalVisible(false);
+      
     };
     reader.readAsArrayBuffer(file);
 
