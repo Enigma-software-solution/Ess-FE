@@ -29,7 +29,6 @@ const SalesEventDrawer = ({ selectedDate, setSelectedDate }) => {
 
   const selectedEvent = useSelector(getSelectedEvent);
 
-  // const isEditable = !isEmpty(selectedEvent)
 
   const [loading, setLoading] = useState(false);
   const [form] = Form.useForm();
