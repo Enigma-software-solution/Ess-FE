@@ -182,7 +182,7 @@ const SalesEventDrawer = ({ selectedDate, setSelectedDate }) => {
       width={500}
       destroyOnClose
       extra={
-        <div className="align-righ" style={{ position: "fixed", bottom: 20, right: 20 }}>
+        <div className="align-right" style={{ position: "fixed", bottom: 20, right: 20 }}>
           <Button
             type="primary"
             htmlType="submit"
