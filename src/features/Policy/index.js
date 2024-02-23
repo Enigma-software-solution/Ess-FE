@@ -1,4 +1,4 @@
-import { Empty, Flex, } from 'antd'
+import { Flex } from 'antd'
 import React, { useEffect } from 'react'
 import PolicySidebar from './PolicySidebar'
 import PolicyContent from './PolicyContent'
@@ -11,8 +11,6 @@ const Policy = () => {
     const dispatch = useDispatch()
 
     const policyList = useSelector(getAllPolicy);
-
-
     const isLoading = useSelector(getLoading)
 
     useEffect(() => {

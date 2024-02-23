@@ -12,7 +12,7 @@ import { getAllUsers } from "src/store/slices/userSlice/selectors";
 import { createEventsApi } from "src/store/slices/agendaSlice/apis";
 import { getAllClientsSelector } from "src/store/slices/clientSlice/selectors";
 import { getAllClientsApi } from "src/store/slices/clientSlice/apis";
-import { CallType, CallTypeDropdown, ClientCallTypeDropdown } from "src/constant/callTypes";
+import { ClientCallTypeDropdown } from "src/constant/callTypes";
 import dayjs from "dayjs";
 
 const ClientEventDrawer = ({ selectedDate, setSelectedDate }) => {
@@ -21,9 +21,9 @@ const ClientEventDrawer = ({ selectedDate, setSelectedDate }) => {
     const loggedInUser = useSelector(getLogedInUser);
     const users = useSelector(getAllUsers);
     const clients = useSelector(getAllClientsSelector);
-
     const [loading, setLoading] = useState(false);
     const [form] = Form.useForm();
+    const [callDuration, setCallDuration] = useState(null);
 
     const handleClose = () => {
         dispatch(closeClientEventDrawer());
@@ -37,10 +37,20 @@ const ClientEventDrawer = ({ selectedDate, setSelectedDate }) => {
             end: updatedEndDate,
         });
     };
+    const calculateAndSetCallDuration = () => {
+        const startTime = dayjs(selectedDate.start);
+        const endTime = dayjs(selectedDate.end);
+        const duration = endTime.diff(startTime, 'minutes');
+        const hours = Math.floor(duration / 60);
+        const minutes = duration % 60;
 
+        setCallDuration(`${hours} hours ${minutes} minutes`);
+        form.setFieldsValue({
+            callDuration: `${duration} minutes`,
+        });
+    };
     const handleSubmit = async (values) => {
         setLoading(true);
-
         try {
             const createData = {
                 createdBy: loggedInUser.id,
@@ -48,7 +58,6 @@ const ClientEventDrawer = ({ selectedDate, setSelectedDate }) => {
                 ...values,
                 eventType: "clientCall",
             };
-
             await dispatch(createEventsApi(createData));
             await form.resetFields();
         } catch (error) {
@@ -57,8 +66,6 @@ const ClientEventDrawer = ({ selectedDate, setSelectedDate }) => {
             setLoading(false);
         }
     };
-
-
     useEffect(() => {
         if (!users?.length) {
             dispatch(getAllUsersApi());
@@ -71,6 +78,12 @@ const ClientEventDrawer = ({ selectedDate, setSelectedDate }) => {
             dispatch(getAllClientsApi());
         }
     }, []);
+
+    useEffect(() => {
+        if (selectedDate.start && selectedDate.end) {
+            calculateAndSetCallDuration();
+        }
+    }, [selectedDate]);
 
     return (
         <Drawer
@@ -99,34 +112,30 @@ const ClientEventDrawer = ({ selectedDate, setSelectedDate }) => {
                 form={form}
                 labelCol={{ span: 6 }}
                 wrapperCol={{ span: 18 }}
-            >
-                <div className="d-flex justify-content-end align-items-end flex-column mb-3">
+            >    <div className="d-flex justify-content-end align-items-end flex-column mb-3">
                     <p>Date: {formatDate(selectedDate?.start)}</p>
                     <div className="mt-2 ">
                         <span>Time :  </span>
                         <TimePicker.RangePicker
                             format="hh:mm A"
-                            defaultValue={
-                                selectedDate
+                            value={
+                                selectedDate.start && selectedDate.end
                                     ? [
                                         dayjs(selectedDate.start),
                                         dayjs(selectedDate.end),
                                     ]
                                     : undefined
                             }
-                            onChange={handleTimeChange} // Add onChange to update the time
+                            onChange={handleTimeChange}
                         />
                     </div>
                 </div>
-
                 <CustomInput
-                    placeholder="call duration"
                     label="Call duration"
                     name="callDuration"
                     rules={[{ required: true }]}
                     type="text"
                 />
-
                 <CustomInput
                     label="Client"
                     name="client"
@@ -137,7 +146,6 @@ const ClientEventDrawer = ({ selectedDate, setSelectedDate }) => {
                     labelField="clientName"
                     valueField="clientName"
                 />
-
                 <CustomInput
                     label="Assign To"
                     name="assignTo"
@@ -148,7 +156,6 @@ const ClientEventDrawer = ({ selectedDate, setSelectedDate }) => {
                     labelField="first_name"
                     valueField="_id"
                 />
-
                 <CustomInput
                     label="Call Type"
                     name="callType"
