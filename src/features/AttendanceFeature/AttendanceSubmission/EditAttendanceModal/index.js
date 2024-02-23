@@ -45,7 +45,7 @@ const EditAttendanceModal = ({ visible, onClose }) => {
             const data = {
                 id: selectedAttendance._id,
                 status: values.status,
-                checkInTime: editTime || values.checkInTime.format('HH:mm:ss'),
+                checkInTime: editTime || values.checkInTime?.format('HH:mm:ss'),
             };
             await dispatch(updateAttendaceApi(data));
             setEditTime(null)
