@@ -12,6 +12,7 @@ import { ROLES } from "src/constant/roles";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { handleFileExtract } from "src/utils/extractExcelData";
+import { uploadCSVFile } from "src/store/slices/dailyApplySlice/apis";
 
 const Header = ({ pageSize, onSearch }) => {
   const dispatch = useDispatch();
@@ -20,9 +21,11 @@ const Header = ({ pageSize, onSearch }) => {
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [selectedModalProfile, setSelectedModalProfile] = useState(null);
   const [selectedDateRange, setSelectedDateRange] = useState(null);
-  const [isModalVisible, setIsModalVisible] = useState(false); 
-  const [selectedFile, setSelectedFile] = useState(null);
-    // const [isOpen, setIsOpen] = useState(false);
+  const [isModalVisible, setIsModalVisible] = useState(false);
+  const [file, setFile] = useState();
+  // const [isOpen, setIsOpen] = useState(false);
+
+  const fileReader = new FileReader();
   const allProfilesData = allProfiles.map((profile) => ({
     value: profile._id,
     label: profile.name,
@@ -82,25 +85,108 @@ const Header = ({ pageSize, onSearch }) => {
 
   const handleModalOpen = () => {
     setIsModalVisible(true);
-    setSelectedModalProfile(null); 
+    setSelectedModalProfile(null);
   };
-  
+
   const handleModalCancel = () => {
     setIsModalVisible(false);
-    setSelectedModalProfile(null); 
+    setSelectedModalProfile(null);
   };
 
-  const handleFileSubmit = async () => {
-    await handleFileExtract(selectedFile, selectedModalProfile, logedInUser, dispatch,setIsModalVisible);
-  };
-  
-  
+  // const handleFileSubmit = async () => {
+  //   await handleFileExtract(
+  //     // selectedFile,
+  //     selectedModalProfile,
+  //     logedInUser,
+  //     dispatch,
+  //     setIsModalVisible
+  //   );
+  // };
 
-  const handleFileChange = (event) => {
-    const file = event.target.files[0];
-    
-    setSelectedFile(file);
+  const handleOnChange = (e) => {
+    setFile(e.target.files[0]);
   };
+
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+
+    if (file) {
+      // const formData = new FormData();
+      // formData.append("file", "file");
+
+      // console.log(formData, "2222222");
+
+      dispatch(uploadCSVFile(file))
+        .then((response) => {
+          if (uploadCSVFile.fulfilled.match(response)) {
+            // Handle success
+            toast.success("CSV uploaded successfully!");
+          } else if (uploadCSVFile.rejected.match(response)) {
+            // Handle failure
+            toast.error("CSV upload failed: " + response.payload);
+          }
+        })
+        .catch((error) => {
+          toast.error("An unexpected error occurred: " + error.message);
+        });
+
+      setIsModalVisible(false);
+    } else {
+      toast.warn("Please select a file before submitting.");
+    }
+  };
+
+  // const handleOnSubmit = (e) => {
+  //   e.preventDefault();
+
+  //   if (file) {
+  //     fileReader.onload = function (event) {
+  //       const csvOutput = event.target.result;
+
+  //       const rows = csvOutput.split("\n");
+
+  //       const csvData = rows.map((row) => row.split(","));
+
+  //       console.log("CSV Data:", csvData);
+  //       const data = csvData.slice(1);
+
+  //       const jsonData = data.map((row) => {
+  //         return {
+  //           companyName: row[0],
+  //           clientJobPosition: row[1],
+  //           platform: row[2],
+  //           createdBy: row[3],
+  //           link: row[4],
+  //           profile: row[5],
+  //         };
+  //       });
+
+  //       console.log(jsonData);
+  //       dispatch(uploadCSVFile(jsonData))
+  //         .then((response) => {
+  //           if (uploadCSVFile.fulfilled.match(response)) {
+  //             // Handle success
+  //             console.log("CSV uploaded successfully:", response.payload);
+  //           } else if (uploadCSVFile.rejected.match(response)) {
+  //             // Handle failure
+  //             console.error("CSV upload failed:", response.payload);
+  //           }
+  //         })
+  //         .catch((error) => {
+  //           console.error("An error occurred:", error);
+  //         });
+  //     };
+
+  //     fileReader.readAsText(file);
+  //   }
+  //   setIsModalVisible(false);
+  // };
+
+  // const handleFileChange = (event) => {
+  //   const file = event.target.files[0];
+
+  //   setSelectedFile(file);
+  // };
 
   return (
     <>
@@ -129,7 +215,9 @@ const Header = ({ pageSize, onSearch }) => {
         </div>
 
         <div className="d-flex gap-2">
-          <Button type="primary" onClick={handleModalOpen}>Import Excel</Button>
+          <Button type="primary" onClick={handleModalOpen}>
+            Import Excel
+          </Button>
           <Modal
             title="Import Excel File"
             visible={isModalVisible}
@@ -138,33 +226,52 @@ const Header = ({ pageSize, onSearch }) => {
               <Button key="back" onClick={handleModalCancel}>
                 Cancel
               </Button>,
-              <Button key="submit" type="primary" onClick={handleFileSubmit}>
+              <Button
+                key="submit"
+                type="primary"
+                onClick={(e) => {
+                  handleOnSubmit(e);
+                }}
+              >
                 Submit
               </Button>,
             ]}
           >
-             <Select
+            <Select
               placeholder="Select Profile"
-              style={{ minWidth: '200px', width: '300px', marginBottom: '1.5rem' }}
+              style={{
+                minWidth: "200px",
+                width: "300px",
+                marginBottom: "1.5rem",
+              }}
               value={selectedModalProfile}
               onChange={handleChangeModalProfile}
             >
-              {allProfilesData.map(profile => (
+              {allProfilesData?.map((profile) => (
                 <Select.Option key={profile.value} value={profile.value}>
                   {profile.label}
                 </Select.Option>
               ))}
             </Select>
 
-            <input
-              type="file"
-              id="fileInput"
-              accept=".xls,.xlsx"
-              style={{ display: "block", marginBottom: "1.5rem" }}
-              onChange={handleFileChange}
-              disabled={selectedModalProfile==null}
-            />
-           
+            <div style={{ textAlign: "center" }}>
+              <form>
+                <input
+                  type={"file"}
+                  id={"csvFileInput"}
+                  accept={".csv"}
+                  onChange={handleOnChange}
+                />
+
+                {/* <Button
+                  onClick={(e) => {
+                    handleOnSubmit(e);
+                  }}
+                >
+                  IMPORT CSV
+                </Button> */}
+              </form>
+            </div>
           </Modal>
           <Button type="primary" onClick={handleSubmit}>
             Search
