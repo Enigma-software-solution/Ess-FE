@@ -22,8 +22,10 @@ const Header = ({ pageSize, onSearch }) => {
   const [selectedModalProfile, setSelectedModalProfile] = useState(null);
   const [selectedDateRange, setSelectedDateRange] = useState(null);
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [file, setFile] = useState();
+  const [file, setFile] = useState(null);
   // const [isOpen, setIsOpen] = useState(false);
+
+  const loggedInUser = useSelector(getLogedInUser);
 
   const fileReader = new FileReader();
   const allProfilesData = allProfiles.map((profile) => ({
@@ -86,22 +88,14 @@ const Header = ({ pageSize, onSearch }) => {
   const handleModalOpen = () => {
     setIsModalVisible(true);
     setSelectedModalProfile(null);
+    setFile(null);
   };
 
   const handleModalCancel = () => {
     setIsModalVisible(false);
     setSelectedModalProfile(null);
+    setFile(null);
   };
-
-  // const handleFileSubmit = async () => {
-  //   await handleFileExtract(
-  //     // selectedFile,
-  //     selectedModalProfile,
-  //     logedInUser,
-  //     dispatch,
-  //     setIsModalVisible
-  //   );
-  // };
 
   const handleOnChange = (e) => {
     setFile(e.target.files[0]);
@@ -110,19 +104,20 @@ const Header = ({ pageSize, onSearch }) => {
   const handleOnSubmit = (e) => {
     e.preventDefault();
 
-    if (file) {
-      // const formData = new FormData();
-      // formData.append("file", "file");
+    if (file && selectedModalProfile) {
+      const createdBy = loggedInUser?.id;
+      const payload = {
+        file,
+        profileId: selectedModalProfile,
+        createdBy,
+      };
 
-      // console.log(formData, "2222222");
-
-      dispatch(uploadCSVFile(file))
+      dispatch(uploadCSVFile(payload))
         .then((response) => {
           if (uploadCSVFile.fulfilled.match(response)) {
-            // Handle success
             toast.success("CSV uploaded successfully!");
+            handleModalCancel();
           } else if (uploadCSVFile.rejected.match(response)) {
-            // Handle failure
             toast.error("CSV upload failed: " + response.payload);
           }
         })
@@ -135,58 +130,6 @@ const Header = ({ pageSize, onSearch }) => {
       toast.warn("Please select a file before submitting.");
     }
   };
-
-  // const handleOnSubmit = (e) => {
-  //   e.preventDefault();
-
-  //   if (file) {
-  //     fileReader.onload = function (event) {
-  //       const csvOutput = event.target.result;
-
-  //       const rows = csvOutput.split("\n");
-
-  //       const csvData = rows.map((row) => row.split(","));
-
-  //       console.log("CSV Data:", csvData);
-  //       const data = csvData.slice(1);
-
-  //       const jsonData = data.map((row) => {
-  //         return {
-  //           companyName: row[0],
-  //           clientJobPosition: row[1],
-  //           platform: row[2],
-  //           createdBy: row[3],
-  //           link: row[4],
-  //           profile: row[5],
-  //         };
-  //       });
-
-  //       console.log(jsonData);
-  //       dispatch(uploadCSVFile(jsonData))
-  //         .then((response) => {
-  //           if (uploadCSVFile.fulfilled.match(response)) {
-  //             // Handle success
-  //             console.log("CSV uploaded successfully:", response.payload);
-  //           } else if (uploadCSVFile.rejected.match(response)) {
-  //             // Handle failure
-  //             console.error("CSV upload failed:", response.payload);
-  //           }
-  //         })
-  //         .catch((error) => {
-  //           console.error("An error occurred:", error);
-  //         });
-  //     };
-
-  //     fileReader.readAsText(file);
-  //   }
-  //   setIsModalVisible(false);
-  // };
-
-  // const handleFileChange = (event) => {
-  //   const file = event.target.files[0];
-
-  //   setSelectedFile(file);
-  // };
 
   return (
     <>
@@ -262,14 +205,6 @@ const Header = ({ pageSize, onSearch }) => {
                   accept={".csv"}
                   onChange={handleOnChange}
                 />
-
-                {/* <Button
-                  onClick={(e) => {
-                    handleOnSubmit(e);
-                  }}
-                >
-                  IMPORT CSV
-                </Button> */}
               </form>
             </div>
           </Modal>

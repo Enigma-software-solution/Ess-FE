@@ -84,14 +84,13 @@ export const uploadFile = createAsyncThunk(
 
 export const uploadCSVFile = createAsyncThunk(
   "dailyApply/upload-csv",
-  async (file, { rejectWithValue }) => {
+  async ({ file, profileId, createdBy }, { rejectWithValue }) => {
     try {
       let formData1 = new FormData();
-      console.log(file, "fileeeeeeeee");
 
       formData1.append("file", file);
-
-      console.log(formData1, "file in formData");
+      formData1.append("profileId", profileId);
+      formData1.append("createdBy", createdBy);
 
       const response = await api.post("/apply/upload/csv", formData1, {
         headers: {
