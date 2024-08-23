@@ -2,25 +2,27 @@ import { createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import api from "src/helpers/api";
 
-export const getdailyAppliesApi = createAsyncThunk("dailyApply/get-dailyApply", async (q) => {
-  try {
-    const response = await api.get(`/apply?${q}`);
-    return response;
-  } catch (error) {
-    throw error;
+export const getdailyAppliesApi = createAsyncThunk(
+  "dailyApply/get-dailyApply",
+  async (q) => {
+    try {
+      const response = await api.get(`/apply?${q}`);
+      return response;
+    } catch (error) {
+      throw error;
+    }
   }
-});
-
+);
 
 export const createDailyAppliesApi = createAsyncThunk(
   "dailyApply/post-dailyApply",
   async (applyData, { rejectWithValue }) => {
     try {
       const response = await api.post("/apply", applyData);
-      toast.success(response?.message)
+      toast.success(response?.message);
       return response;
     } catch (error) {
-      toast.warn(error.response.data.message || error?.message)
+      toast.warn(error.response.data.message || error?.message);
       return rejectWithValue(error.response?.data || "An error occurred");
     }
   }
@@ -31,7 +33,7 @@ export const updateDailyAppliesApi = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await api.patch(`/apply/${data.id}`, data.data);
-      toast.success("Apply Updated Successfully")
+      toast.success("Apply Updated Successfully");
 
       return response;
     } catch (error) {
@@ -45,7 +47,7 @@ export const deteleDailyAppliesApi = createAsyncThunk(
   async (applyId, { rejectWithValue }) => {
     try {
       const response = await api.delete(`/apply/${applyId}`);
-      toast.success("Apply deleted Successfully")
+      toast.success("Apply deleted Successfully");
 
       return { applyId };
     } catch (error) {
@@ -54,16 +56,17 @@ export const deteleDailyAppliesApi = createAsyncThunk(
   }
 );
 
-
-export const getDailyApplyStats = createAsyncThunk("dailyApply/get-dailyApply-stats", async (q) => {
-  try {
-    const response = await api.get(`/apply/stats`);
-    return response;
-  } catch (error) {
-    throw error;
+export const getDailyApplyStats = createAsyncThunk(
+  "dailyApply/get-dailyApply-stats",
+  async (q) => {
+    try {
+      const response = await api.get(`/apply/stats`);
+      return response;
+    } catch (error) {
+      throw error;
+    }
   }
-});
-
+);
 
 export const uploadFile = createAsyncThunk(
   "dailyApply/upload-dailyApply",
@@ -72,7 +75,38 @@ export const uploadFile = createAsyncThunk(
       const response = await api.post("/apply/upload", data);
       return response;
     } catch (error) {
-      return rejectWithValue(error?.response?.data || "An error occurred during file upload");
+      return rejectWithValue(
+        error?.response?.data || "An error occurred during file upload"
+      );
+    }
+  }
+);
+
+export const uploadCSVFile = createAsyncThunk(
+  "dailyApply/upload-csv",
+  async ({ file, profileId, createdBy }, { rejectWithValue }) => {
+    try {
+      let formData1 = new FormData();
+
+      formData1.append("file", file);
+      formData1.append("profileId", profileId);
+      formData1.append("createdBy", createdBy);
+
+      const response = await api.post("/apply/upload/csv", formData1, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      toast.success("CSV file uploaded successfully");
+      return response.data;
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "An error occurred during file upload"
+      );
+      return rejectWithValue(
+        error.response?.data || "An error occurred during file upload"
+      );
     }
   }
 );
